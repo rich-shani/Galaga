@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"waverogue",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"waverogue",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

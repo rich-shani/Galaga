@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"Rogue1e1Flip",
+  "closed":false,
+  "kind":1,
+  "name":"Rogue1e1Flip",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":16.0,"y":-16.0,},
+    {"speed":100.0,"x":16.0,"y":32.0,},
+    {"speed":100.0,"x":192.0,"y":240.0,},
+    {"speed":100.0,"x":256.0,"y":304.0,},
+    {"speed":100.0,"x":192.0,"y":368.0,},
+    {"speed":100.0,"x":96.0,"y":272.0,},
+    {"speed":100.0,"x":64.0,"y":240.0,},
+    {"speed":100.0,"x":32.0,"y":256.0,},
+    {"speed":100.0,"x":32.0,"y":288.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

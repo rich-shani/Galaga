@@ -1,0 +1,21 @@
+{
+  "$GMPath":"",
+  "%Name":"Transform1Flip",
+  "closed":false,
+  "kind":1,
+  "name":"Transform1Flip",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-240.0,"y":192.0,},
+    {"speed":100.0,"x":-80.0,"y":224.0,},
+    {"speed":100.0,"x":-48.0,"y":272.0,},
+    {"speed":100.0,"x":-48.0,"y":320.0,},
+    {"speed":100.0,"x":-48.0,"y":544.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

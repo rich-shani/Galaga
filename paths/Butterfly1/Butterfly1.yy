@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"Butterfly1",
+  "closed":false,
+  "kind":1,
+  "name":"Butterfly1",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":240.0,"y":160.0,},
+    {"speed":100.0,"x":240.0,"y":128.0,},
+    {"speed":100.0,"x":272.0,"y":128.0,},
+    {"speed":100.0,"x":272.0,"y":160.0,},
+    {"speed":100.0,"x":256.0,"y":192.0,},
+    {"speed":100.0,"x":80.0,"y":256.0,},
+    {"speed":100.0,"x":48.0,"y":272.0,},
+    {"speed":100.0,"x":48.0,"y":320.0,},
+    {"speed":100.0,"x":48.0,"y":768.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"Chall21",
+  "closed":false,
+  "kind":1,
+  "name":"Chall21",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":256.0,"y":-32.0,},
+    {"speed":100.0,"x":256.0,"y":128.0,},
+    {"speed":100.0,"x":240.0,"y":240.0,},
+    {"speed":100.0,"x":200.0,"y":352.0,},
+    {"speed":1.0,"x":198.0,"y":354.0,},
+    {"speed":100.0,"x":196.0,"y":352.0,},
+    {"speed":100.0,"x":240.0,"y":240.0,},
+    {"speed":100.0,"x":256.0,"y":128.0,},
+    {"speed":100.0,"x":256.0,"y":-32.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

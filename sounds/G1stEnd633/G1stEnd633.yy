@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"G1stEnd633",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":192,
+  "compression":0,
+  "conversionMode":0,
+  "duration":10.559864,
+  "name":"G1stEnd633",
+  "parent":{
+    "name":"Sounds",
+    "path":"folders/Sounds.yy",
+  },
+  "preload":true,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"G1stEnd633",
+  "type":0,
+  "volume":1.0,
+}

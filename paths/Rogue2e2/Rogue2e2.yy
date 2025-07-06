@@ -1,0 +1,24 @@
+{
+  "$GMPath":"",
+  "%Name":"Rogue2e2",
+  "closed":false,
+  "kind":1,
+  "name":"Rogue2e2",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-16.0,"y":496.0,},
+    {"speed":112.0,"x":16.0,"y":496.0,},
+    {"speed":125.0,"x":112.0,"y":480.0,},
+    {"speed":112.0,"x":224.0,"y":432.0,},
+    {"speed":155.0,"x":224.0,"y":224.0,},
+    {"speed":165.0,"x":64.0,"y":224.0,},
+    {"speed":165.0,"x":64.0,"y":384.0,},
+    {"speed":100.0,"x":192.0,"y":384.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

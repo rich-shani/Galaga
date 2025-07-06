@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"Ent2e1",
+  "closed":false,
+  "kind":1,
+  "name":"Ent2e1",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":224.0,"y":-16.0,},
+    {"speed":100.0,"x":224.0,"y":16.0,},
+    {"speed":100.0,"x":64.0,"y":208.0,},
+    {"speed":112.0,"x":-16.0,"y":288.0,},
+    {"speed":155.0,"x":16.0,"y":368.0,},
+    {"speed":165.0,"x":80.0,"y":400.0,},
+    {"speed":155.0,"x":128.0,"y":368.0,},
+    {"speed":112.0,"x":192.0,"y":304.0,},
+    {"speed":100.0,"x":256.0,"y":224.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

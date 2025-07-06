@@ -1,0 +1,23 @@
+{
+  "$GMPath":"",
+  "%Name":"Transform4",
+  "closed":false,
+  "kind":1,
+  "name":"Transform4",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":272.0,"y":144.0,},
+    {"speed":100.0,"x":272.0,"y":160.0,},
+    {"speed":100.0,"x":256.0,"y":192.0,},
+    {"speed":100.0,"x":152.0,"y":212.0,},
+    {"speed":100.0,"x":120.0,"y":256.0,},
+    {"speed":100.0,"x":120.0,"y":320.0,},
+    {"speed":100.0,"x":120.0,"y":528.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

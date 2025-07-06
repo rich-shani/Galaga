@@ -1,0 +1,27 @@
+{
+  "$GMPath":"",
+  "%Name":"BeeLoopFlip",
+  "closed":false,
+  "kind":1,
+  "name":"BeeLoopFlip",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-64.0,"y":0.0,},
+    {"speed":100.0,"x":-64.0,"y":48.0,},
+    {"speed":100.0,"x":-112.0,"y":80.0,},
+    {"speed":100.0,"x":-176.0,"y":80.0,},
+    {"speed":100.0,"x":-224.0,"y":48.0,},
+    {"speed":100.0,"x":-224.0,"y":-32.0,},
+    {"speed":100.0,"x":-176.0,"y":-64.0,},
+    {"speed":100.0,"x":-112.0,"y":-64.0,},
+    {"speed":100.0,"x":-64.0,"y":-32.0,},
+    {"speed":100.0,"x":-64.0,"y":48.0,},
+    {"speed":100.0,"x":-64.0,"y":208.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

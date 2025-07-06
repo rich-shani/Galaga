@@ -1,0 +1,27 @@
+{
+  "$GMPath":"",
+  "%Name":"Chall12Flip",
+  "closed":false,
+  "kind":1,
+  "name":"Chall12Flip",
+  "parent":{
+    "name":"Paths",
+    "path":"folders/Paths.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":480.0,"y":496.0,},
+    {"speed":100.0,"x":304.0,"y":496.0,},
+    {"speed":100.0,"x":192.0,"y":432.0,},
+    {"speed":100.0,"x":144.0,"y":368.0,},
+    {"speed":100.0,"x":144.0,"y":240.0,},
+    {"speed":100.0,"x":144.0,"y":176.0,},
+    {"speed":100.0,"x":208.0,"y":176.0,},
+    {"speed":100.0,"x":208.0,"y":240.0,},
+    {"speed":100.0,"x":208.0,"y":336.0,},
+    {"speed":100.0,"x":144.0,"y":336.0,},
+    {"speed":100.0,"x":-32.0,"y":96.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}
