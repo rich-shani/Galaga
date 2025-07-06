@@ -138,26 +138,3 @@ block1 = 0;
 
 // Similar to block1, likely a placeholder or unused flag.
 block2 = 0;
-
-/// @section Ship State Struct
-// Struct to manage the ship's state for cleaner condition checks.
-// Properties are derived from variables to simplify logic in the main code.
-ship_state = {
-    // True if the ship is alive (dead == 0) or respawning (dead == 2).
-    is_alive: dead == 0 || dead == 2,
-    
-    // True if the ship is caught (caught > 0, i.e., caught == 1 or caught == 2).
-    is_caught: caught > 0,
-    
-    // True if the ship is in double mode (double == 1).
-    is_double: double == 1,
-    
-    // True if the ship is moving to a formation position (moving == 1).
-    is_moving: moving == 1,
-    
-    // True if the game is in active gameplay mode (Controller.gameMode == GameMode.GAME_MODE).
-    in_game: Controller.gameMode == GameMode.GAME_MODE,
-    
-    // True if the ship can be controlled (Controller.start == 0 or Controller.start == 3).
-    can_control: Controller.start == 0 || Controller.start == 3
-};

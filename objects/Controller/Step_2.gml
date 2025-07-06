@@ -29,7 +29,7 @@ if keyboard_check_pressed(vk_f12) == true {
 // === MAIN GAME LOOP ===
 
 // Run the core gameplay logic only if the game is not in gameMode/demo mode
-if gameMode == GameMode.GAME_MODE {
+if (gameMode == GameMode.GAME_MODE) {
 
     // === ENEMY DIVE CAPACITY HANDLING ===
     if results == 0 {
