@@ -251,8 +251,8 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
      instance_number(Transform) == 0 &&
      nextlevel == 0 &&
      global.open == 0 &&
-     Ship.dead == 0 &&
-     start == 0 {
+     Ship.shipStatus == ShipState.ALIVE &&
+     start == StartMode.INITIALIZE {
     nextlevel = 1;       // Flag to begin next level
     alarm[10] = 90;      // Delay for level transition effects
   }
@@ -287,7 +287,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 }
 
                 // Advance to next wave if all counts are zero
-                if Ship.dead == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE &&
                     count1 == 0 && count2 == 0 &&
                     rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
@@ -326,7 +326,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 }
 
                 // Advance to next wave
-                if Ship.dead == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                 global.wave = 2;
@@ -362,7 +362,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 }
 
                 // Transition to next wave
-                if Ship.dead == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 3;
@@ -394,7 +394,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                     alarm[2] = 6;
                 }
 
-                if Ship.dead == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 4;
@@ -477,7 +477,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 }
 
                 // Advance wave if all enemies cleared and ship is alive
-                if Ship.dead == 0 && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 1;
                 script_execute(waverogue);
@@ -507,7 +507,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 alarm[2] = 6;
                 }
 
-                if Ship.dead == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE &&
                 count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                 global.divecap == global.divecapstart {
                 global.wave = 2;
@@ -539,7 +539,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 alarm[2] = 6;
                 }
 
-                if Ship.dead == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE &&
                 count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                 global.divecap == global.divecapstart {
                 global.wave = 3;
@@ -572,7 +572,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 }
 
                 // Advance wave once enemies are cleared
-                if Ship.dead == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 4;
@@ -656,7 +656,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 alarm[2] = 6;
                 }
 
-                if Ship.dead == 0 && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 1;
                 script_execute(waverogue);
@@ -686,7 +686,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 alarm[2] = 6;
                 }
 
-                if Ship.dead == 0 && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 2;
                 script_execute(waverogue);
@@ -718,7 +718,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 alarm[2] = 6;
                 }
 
-                if Ship.dead == 0 && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 3;
                 script_execute(waverogue);
@@ -750,7 +750,7 @@ if gameMode == GameMode.GAME_MODE and results == 0 {
                 alarm[2] = 6;
                 }
 
-                if Ship.dead == 0 && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 4;
                 script_execute(waverogue);
@@ -1035,7 +1035,7 @@ if gameMode == GameMode.INSTRUCTIONS {
         firstlife   = 20000;  // Score threshold for first extra life
         additional  = 70000;  // Score threshold for each subsequent extra life
 
-        start = 1;  // Game state is now started
+        start = StartMode.SHOW_PLAYER1;  // Game state is now started
 
         sound_play(GStart);  // Play game start sound
 

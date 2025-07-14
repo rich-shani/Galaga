@@ -26,7 +26,7 @@ else{spd = 3;}
 
 if global.transnum > 0{
 
-if dive = 0 and irandom(5) = 0 and global.divecap > 0 and uprohib = 0 and global.prohib = 0 and global.transform = 0 and Ship.dead = 0 and Ship.regain = 0 ///transforming
+if dive = 0 and irandom(5) = 0 and global.divecap > 0 and uprohib = 0 and global.prohib = 0 and global.transform = 0 and Ship.shipStatus == ShipState.ALIVE and Ship.regain = 0 ///transforming
 
 and instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) < 21 and global.open = 0 and Ship.alarm[4] = -1{
 
@@ -54,7 +54,7 @@ if dive = 0 and enter = 0{ ///convoy
 
     if global.divecap > 0 and global.open = 0 and Ship.alarm[4] = -1{
 
-        if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and alarm[2] = -1 and Ship.dead = 0 and Ship.regain = 0{
+        if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and alarm[2] = -1 and Ship.shipStatus == ShipState.ALIVE and Ship.regain = 0{
 
             dive = 1; direction = 90; global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
 
@@ -84,7 +84,7 @@ if dive = 1 and enter = 0{ ///charger
 
             else{loop = 1;
 
-            ///if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack  or (Ship.dead = 1 or Ship.regain = 1){
+            ///if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack  or (Ship.shipStatus = 1 or Ship.regain = 1){
 
              ///   if xstart > 224{path_start(Bee2,spd,0,false)}
 
@@ -134,7 +134,7 @@ if dive = 1 and enter = 0{ ///charger
 
         if loop = 2{
 
-            if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack  or (Ship.dead = 1 or Ship.regain = 1){
+            if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack  or (Ship.shipStatus == ShipState.DEAD or Ship.regain = 1){
 
                 if xstart > 224 and direction > 75 and direction < 80{path_end(); loop = 1;}
 

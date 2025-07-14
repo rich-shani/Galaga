@@ -1,4 +1,4 @@
-if Ship.gameover < 2{
+if global.gameover < 2{
 
 if y < 592 and x > -16 and x < 464{
 

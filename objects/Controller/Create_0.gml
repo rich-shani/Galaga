@@ -52,6 +52,13 @@ enum GameMode {
     GAME_MODE        // Active gameplay mode where the player controls the ship.
 }
 
+enum StartMode {
+	INITIALIZE,
+	SHOW_PLAYER1,
+	SHOW_STAGE1,
+	GAME_STARTED
+}
+
 /// @section Data Structures
 // Creates a data structure list to store dynamic game data.
 // Likely used for tracking enemies, scores, or other temporary game elements.
@@ -106,7 +113,7 @@ att = 0;
 
 // Start state, initialized to 0.
 // Determines control states (0 = normal gameplay, 3 = likely post-respawn or specific state).
-start = 0;
+start = StartMode.INITIALIZE;
 
 // Current stage or level, initialized to 0.
 // May track sub-levels within a wave or specific game phases.

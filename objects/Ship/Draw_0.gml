@@ -19,7 +19,7 @@ if (Controller.gameMode == GameMode.GAME_MODE || (Controller.att > 5 && Controll
     /// @subsection Control States
     // Only draw certain elements when the game is in active control states (Controller.start == 0 or 3).
     // Controller.start == 0 likely represents normal gameplay, while 3 may indicate a specific state (e.g., post-respawn).
-    if (Controller.start == 0 || Controller.start == 3) {
+    if (Controller.start == StartMode.INITIALIZE || Controller.start == StartMode.GAME_STARTED) {
         /// @subsubsection Shots
         // Draw the first shot if it is active (shot1x, shot1y are not off-screen).
         // Uses spr_shot with no scaling (1,1), rotation based on shot1dir, white color, and full opacity.
@@ -49,9 +49,9 @@ if (Controller.gameMode == GameMode.GAME_MODE || (Controller.att > 5 && Controll
         }
 
         /// @subsubsection Ship Rendering
-        // Draw the ship when alive (dead == 0) or respawning (dead == 2).
+        // Draw the ship when alive (shipStatus == 0) or respawning (shipStatus == 2).
         // Uses spr_ship at the ship’s position (x, y) with default frame (0).
-        if (dead == 0 || dead == 2) {
+        if (shipStatus == 0 || shipStatus == 2) {
             draw_sprite(spr_ship, 0, x, y);
             // If in double mode (double == 1), draw a second ship offset by SHIP_SPACE (28 pixels) to the right.
             if (double == 1) {
@@ -60,9 +60,9 @@ if (Controller.gameMode == GameMode.GAME_MODE || (Controller.att > 5 && Controll
         }
 
         /// @subsubsection Death Animation (Single Ship)
-        // Draw the explosion animation when the ship is dead (dead == 1), not caught (caught == 0), and at the bottom of the screen (y == 528).
+        // Draw the explosion animation when the ship is shipStatus (shipStatus == 1), not caught (caught == 0), and at the bottom of the screen (y == 528).
         // Uses spr_explode with frame index floor(deadanim + 5) for the explosion sequence, positioned at (x, y).
-        if (dead == 1 && caught == 0 && y == 528) {
+        if (shipStatus == 1 && caught == 0 && y == 528) {
             if (deadanim < 4) {
                 draw_sprite(spr_explode, floor(deadanim + 5), x, y);
             }
@@ -72,7 +72,7 @@ if (Controller.gameMode == GameMode.GAME_MODE || (Controller.att > 5 && Controll
         // Draw the ship when caught (caught == 1 or caught == 2) by a boss’s beam.
         // If alarm[2] == -1 and spinanim == 0, skip drawing (likely a transition state).
         // Otherwise, draw spr_ship with rotation (spinanim) to show the ship spinning, positioned at (x, y).
-        if (dead == 1 && caught == 1 || caught == 2) {
+        if (shipStatus == 1 && caught == 1 || caught == 2) {
             if (alarm[2] != -1 || spinanim != 0) {
                 draw_sprite_ext(spr_ship, 0, x, y, 1, 1, spinanim, c_white, 1);
             }

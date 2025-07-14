@@ -1,4 +1,4 @@
-if (Controller.start = 0 or Controller.start = 3) {
+if (Controller.start == StartMode.INITIALIZE or Controller.start == StartMode.GAME_STARTED) {
 
   /// draw lives
   lifecount = global.p1lives - 1;
@@ -493,21 +493,21 @@ else { /// screens
   draw_set_halign(fa_left);
   draw_set_color(c_aqua)
 
-      if Ship.gameover
+      if global.gameover
       = 2
   {
     draw_text(160, 288, string_hash_to_newline("GAME OVER"))
   }
 
   if start
-    = 1 { draw_text(176, 288, string_hash_to_newline("PLAYER 1")) };
+    = StartMode.SHOW_PLAYER1 { draw_text(176, 288, string_hash_to_newline("PLAYER 1")) };
   if start
-    > 1 { draw_text(160, 288, string_hash_to_newline("STAGE 1")) };
+    > StartMode.SHOW_PLAYER1 { draw_text(160, 288, string_hash_to_newline("STAGE 1")) };
   if start
-    = 3 { draw_text(160, 256, string_hash_to_newline("PLAYER 1")) };
+    = StartMode.GAME_STARTED { draw_text(160, 256, string_hash_to_newline("PLAYER 1")) };
 
   if start
-    = 0
+    = StartMode.INITIALIZE
     {
 
       if stage

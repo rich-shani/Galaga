@@ -1,2 +1,3 @@
-dead = 0;
+shipStatus = 0;
+
 

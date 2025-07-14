@@ -44,7 +44,7 @@ if dive = 0 and enter = 0{ ///convoy
 
     if global.divecap > 0 and global.bosscap > 0 and global.open = 0 and Ship.alarm[4] = -1{
 
-        if irandom(1) = 0 and global.prohib = 0 and uprohib = 0 and Ship.dead = 0 and Ship.regain = 0{
+        if irandom(1) = 0 and global.prohib = 0 and uprohib = 0 and Ship.shipStatus == ShipState.ALIVE and Ship.regain = 0{
 
             dive = 1; direction = 90;
 
@@ -202,7 +202,7 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
     if loop = 1{
 
-        if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -48 or (Ship.dead = 1 or Ship.regain = 1){
+        if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -48 or (Ship.shipStatus == ShipState.DEAD or Ship.regain = 1){
 
             if y < breathey{y = y + 3;
 
@@ -268,7 +268,7 @@ if dive = 1 and ret = 1 and enter = 0{ ///return
 
             loop = 0; beam = 0; beamsignal = 0; ret = 0;
 
-            dive = 0; dive2 = 0; intesc = 0; Ship.caught = 0; Ship.dead = 1; Ship.alarm[0] = 120;
+            dive = 0; dive2 = 0; intesc = 0; Ship.caught = 0; Ship.shipStatus = ShipState.DEAD; Ship.alarm[0] = 120;
 
             carrying = 1;
 

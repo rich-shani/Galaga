@@ -38,13 +38,19 @@ dub2 = 0;
 // Negative depth values in GameMaker indicate higher rendering priority.
 depth = -150;
 
+enum ShipState {
+	ALIVE,
+	DEAD,
+	RESPAWN
+}
+
 /// @section Ship State
 // Indicates the ship's life state (0 = alive, 1 = dead, 2 = respawning).
 // Used to control movement, shooting, and collision behavior.
-dead = 0;
+shipStatus = ShipState.ALIVE;
 
 // Death animation counter, tracks the progress of the death animation (0 to 4).
-// Incremented by 0.1 each step when dead == 1 to animate the ship's destruction.
+// Incremented by 0.1 each step when shipStatus == 1 to animate the ship's destruction.
 deadanim = 0;
 
 // Spin animation angle in degrees, set to 360 for default upright position.
@@ -99,9 +105,9 @@ newshipx = 0;
 // Used to position the regained ship during the regain animation.
 newshipy = 0;
 
-// Flag indicating if the ship is moving to a formation position (0 = not moving, 1 = moving).
+// Flag indicating if the ship is moving to a formation position
 // Used during regain or respawn to animate ship positioning.
-moving = 0;
+in_formation = false;
 
 /// @section Double Ship Death Animation
 // X-coordinate of the second ship (right ship) when hit in double mode.
@@ -115,7 +121,7 @@ deadanim2 = 0;
 /// @section Game Over
 // Flag indicating game over state (0 = game active, 1 = game over).
 // Set when the player's lives reach 0 and no regain is possible.
-gameover = 0;
+global.gameover = 0;
 
 /// @section Shooting Control
 // Flag to manage double shot timing (0 = allow second shot, 1 = skip second shot).

@@ -1,455 +1,98 @@
-/// @description Controls the player ship's behavior, including movement, shooting, collision detection, and state management in a space shooter game.
+ /// @description Controls the player ship's behavior, including movement, shooting, collision detection, and state management in a space shooter game.
 
 // Check if the game is in the main gameplay mode
 if (Controller.gameMode == GameMode.GAME_MODE) {
-    /// @section Movement
-    // Handle player ship movement (left and right) when conditions are met
-    if ((Controller.start == 0 || Controller.start == 3) && (dead == 0 || dead == 2) && moving == 0) {
-        // Check for left arrow key press and ensure ship stays within left boundary (x > 16)
-        if (keyboard_check(vk_left) && x > SHIP_MIN_X) {
-            x -= 3; // Move ship left by 3 pixels
-        } else {
-            // Check for right arrow key press and ensure ship stays within right boundary
-            if (keyboard_check(vk_right) && x < SHIP_MAX_X - (double * SHIP_SPACE)) {
-                x += 3; // Move ship right by 3 pixels
-            }
-        }
-        
-        deadanim = 0; // Reset death animation counter
-        
-        // Set spin animation to full circle (360 degrees) if not regaining a ship
-        if (regain == 0) {
-            spinanim = 360;
-        }
-    }
-    
-    /// @section Shooting
-    // Handle shooting mechanics when conditions allow
-    if (Controller.start == 0 && (dead == 0 || (caught == 1 && alarm[2] > -1)) && moving == 0) {
-        // Check for spacebar press to fire shots
-        if (keyboard_check_pressed(vk_space)) {
-            // First shot handling
-            if (shot1y > -31 && shot1x > -31 && shot1y < room_height + 31 && shot1x < room_width + 31) {
-                // Shot 1 is still active, do nothing
-            } else {
-                // Set shot direction based on ship state
-                shot1dir = (dead == 1) ? spinanim : 360;
-                
-                // Calculate initial shot position based on ship position and direction
-                shot1x = x - (SHIP_MIN_X * sin(degtorad(shot1dir)));
-                shot1y = y - (SHIP_MIN_X* cos(degtorad(shot1dir)));
-                
-                // Set double shot flag for first shot
-                dub1 = (double == 1) ? 1 : 0;
-                
-                // Play shooting sound
-                sound_stop(GShot);
-                sound_play(GShot);
-                
-                Controller.fire += 1; // Increment fire counter
-                Ship.skip = 1; // Set skip flag to manage double shot timing
-            }
-            
-            // Second shot handling if first shot is not skipped
-            if (Ship.skip == 0) {
-                if (shot2y > -31 && shot2x > -31 && shot2y < room_height + 31 && shot2x < room_width + 31) {
-                    // Shot 2 is still active, do nothing
-                } else {
-                    // Set shot direction based on ship state
-                    shot2dir = (dead == 1) ? spinanim : 360;
-                    
-                    // Calculate initial shot position
-                    shot2x = x - (SHIP_MIN_X* sin(degtorad(shot2dir)));
-                    shot2y = y - (SHIP_MIN_X* cos(degtorad(shot2dir)));
-                    
-                    // Set double shot flag for second shot
-                    dub2 = (double == 1) ? 1 : 0;
-                    
-                    // Play shooting sound
-                    sound_stop(GShot);
-                    sound_play(GShot);
-                    
-                    Controller.fire += 1; // Increment fire counter
-                }
-            }
-            
-            Ship.skip = 0; // Reset skip flag
-        }
-    }
-    
-    /// @section Shot Movement (Single/Left Ship)
-    // Update position of first shot if it's within room bounds
-    if (shot1y > -31 && shot1x > -31 && shot1y < room_height + 31 && shot1x < room_width + 31) {
-        shot1y -= (SHOT_SPEED * cos(degtorad(shot1dir))); // Move shot vertically
-        shot1x -= (SHOT_SPEED * sin(degtorad(shot1dir))); // Move shot horizontally
-    } else {
-        shot1x = SHOT_OFFSCREEN; // Move shot off-screen
-        shot1y = SHOT_OFFSCREEN;
-    }
-    
-    // Update position of second shot if it's within room bounds
-    if (shot2y > -31 && shot2x > -31 && shot2y < room_height + 31 && shot2x < room_width + 31) {
-        shot2y -= (SHOT_SPEED * cos(degtorad(shot2dir))); // Move shot vertically
-        shot2x -= (SHOT_SPEED * sin(degtorad(shot2dir))); // Move shot horizontally
-    } else {
-        shot2x = SHOT_OFFSCREEN; // Move shot off-screen
-        shot2y = SHOT_OFFSCREEN;
-    }
-
-    with Bee
-    {
-        if (y> -17)
-        {
-            if (abs (x - Ship.shot1x) < Ship.space and abs(y - Ship.shot1y) < Ship.space)
-            {
-              script_execute(shot1for2, 0);
-              Ship.shot1x = SHOT_OFFSCREEN;
-              Ship.shot1y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-
-            if (abs (x - Ship.shot2x) < Ship.space and abs(y - Ship.shot2y) < Ship.space)
-            {
-              script_execute(shot1for2, 1);
-              Ship.shot2x = SHOT_OFFSCREEN;
-              Ship.shot2y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-        }
-    }
-
-    with Butterfly
-    {
-        if (y> -17)
-        {
-            if (abs (x - Ship.shot1x) < Ship.space and abs(y - Ship.shot1y) < Ship.space)
-            {
-              script_execute(shot1for2, 0);
-              Ship.shot1x = SHOT_OFFSCREEN;
-              Ship.shot1y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-
-            if (abs (x - Ship.shot2x) < Ship.space and abs(y - Ship.shot2y) < Ship.space)
-            {
-              script_execute(shot1for2, 1);
-              Ship.shot2x = SHOT_OFFSCREEN;
-              Ship.shot2y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-        }
-    }
-
-    with (Transform) {
-        if (abs(x - Ship.shot1x) < Ship.space && abs(y - Ship.shot1y) < Ship.space) {
-            script_execute(shot1for2, 0); // Execute script for hit effect
-            Ship.shot1x = SHOT_OFFSCREEN; // Move shot off-screen
-            Ship.shot1y = SHOT_OFFSCREEN;
-            Controller.hits += 1; // Increment hit counter
-            instance_destroy(); // Destroy enemy instance
-        }
-        
-        if (abs(x - Ship.shot2x) < Ship.space && abs(y - Ship.shot2y) < Ship.space) {
-            script_execute(shot1for2, 1); // Execute script for hit effect
-            Ship.shot2x = SHOT_OFFSCREEN; // Move shot off-screen
-            Ship.shot2y = SHOT_OFFSCREEN;
-            Controller.hits += 1; // Increment hit counter
-            instance_destroy(); // Destroy enemy instance
-        }
-    }
-    
-    with (Fighter) {
-        if (y > -17) {
-            if (abs(x - Ship.shot1x) < Ship.space && abs(y - Ship.shot1y) < Ship.space) {
-                script_execute(shot1for2, 0); // Execute script for hit effect
-                Ship.shot1x = SHOT_OFFSCREEN; // Move shot off-screen
-                Ship.shot1y = SHOT_OFFSCREEN;
-                Controller.hits += 1; // Increment hit counter
-                instance_destroy(); // Destroy enemy instance
-                global.fighterstore = 0; // Reset fighter store
-            }
-            
-            if (abs(x - Ship.shot2x) < Ship.space && abs(y - Ship.shot2y) < Ship.space) {
-                script_execute(shot1for2, 1); // Execute script for hit effect
-                Ship.shot2x = SHOT_OFFSCREEN; // Move shot off-screen
-                Ship.shot2y = SHOT_OFFSCREEN;
-                Controller.hits += 1; // Increment hit counter
-                instance_destroy(); // Destroy enemy instance
-                global.fighterstore = 0; // Reset fighter store
-            }
-        }
-    }
-    
-    with (Boss) {
-        if (y > -17) {
-            // Handle first hit on boss
-            if (hit == 0) {
-                if (abs(x - Ship.shot1x) < Ship.space && abs(y - Ship.shot1y) < Ship.space) {
-                    script_execute(shot1for2, 0); // Execute script for hit effect
-                    Ship.shot1x = SHOT_OFFSCREEN; // Move shot off-screen
-                    Ship.shot1y = SHOT_OFFSCREEN;
-                    hit = 1; // Mark boss as hit
-                    Controller.hits += 1; // Increment hit counter
-                    sound_stop(GBoss1); // Stop boss hit sound
-                    sound_play(GBoss1); // Play boss hit sound
-                }
-                
-                if (abs(x - Ship.shot2x) < Ship.space && abs(y - Ship.shot2y) < Ship.space) {
-                    script_execute(shot1for2, 1); // Execute script for hit effect
-                    Ship.shot2x = SHOT_OFFSCREEN; // Move shot off-screen
-                    Ship.shot2y = SHOT_OFFSCREEN;
-                    hit = 1; // Mark boss as hit
-                    Controller.hits += 1; // Increment hit counter
-                    sound_stop(GBoss1); // Stop boss hit sound
-                    sound_play(GBoss1); // Play boss hit sound
-                }
-            }
-            
-            // Handle second hit on boss
-            if (hit == 1) {
-                if (abs(x - Ship.shot1x) < Ship.space && abs(y - Ship.shot1y) < Ship.space) {
-                    script_execute(shot1for2, 0); // Execute script for hit effect
-                    Ship.shot1x = SHOT_OFFSCREEN; // Move shot off-screen
-                    Ship.shot1y = SHOT_OFFSCREEN;
-                    if (carrying == 1 && dive == 1) {
-                        sound_loop(GRescue); // Play rescue sound
-                        Ship.regain = 1; // Set regain flag
-                        Ship.alarm[3] = 90; // Set regain timer
-                        Ship.newshipy = Fighter.y; // Store fighter position
-                        Ship.newshipx = Fighter.x;
-                        with (Fighter) { instance_destroy(); } // Destroy fighter
-                    }
-                    Controller.hits += 1; // Increment hit counter
-                    instance_destroy(); // Destroy boss
-                }
-                
-                if (abs(x - Ship.shot2x) < Ship.space && abs(y - Ship.shot2y) < Ship.space) {
-                    script_execute(shot1for2, 1); // Execute script for hit effect
-                    Ship.shot2x = SHOT_OFFSCREEN; // Move shot off-screen
-                    Ship.shot2y = SHOT_OFFSCREEN;
-                    if (carrying == 1 && dive == 1) {
-                        sound_loop(GRescue); // Play rescue sound
-                        Ship.regain = 1; // Set regain flag
-                        Ship.alarm[3] = 90; // Set regain timer
-                        Ship.newshipy = Fighter.y; // Store fighter position
-                        Ship.newshipx = Fighter.x;
-                        with (Fighter) { instance_destroy(); } // Destroy fighter
-                    }
-                    Controller.hits += 1; // Increment hit counter
-                    instance_destroy(); // Destroy boss
-                }
-            }
-        }
-    }
-
-    // NEED TO format
-        /// shooting enemies (right ship)
-
-    with Bee
-    {
-      if y
-        > -17
-        {
-
-          if abs (x - Ship.shot1x - SHIP_SPACE)
-            < Ship.space and abs(y - Ship.shot1y) < Ship.space and Ship.dub1 = 1
-            {
-              script_execute(shot1for2, 2);
-              Ship.shot1x = SHOT_OFFSCREEN;
-              Ship.shot1y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-
-          if abs (x - Ship.shot2x - SHIP_SPACE)
-            < Ship.space and abs(y - Ship.shot2y) < Ship.space and Ship.dub2 = 1
-            {
-              script_execute(shot1for2, 3);
-              Ship.shot2x = SHOT_OFFSCREEN;
-              Ship.shot2y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-        }
-    }
-
-    with Butterfly
-    {
-      if y
-        > -17
-        {
-
-          if abs (x - Ship.shot1x - SHIP_SPACE)
-            < Ship.space and abs(y - Ship.shot1y) < Ship.space and Ship.dub1 = 1
-            {
-              script_execute(shot1for2, 2);
-              Ship.shot1x = SHOT_OFFSCREEN;
-              Ship.shot1y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-
-          if abs (x - Ship.shot2x - SHIP_SPACE)
-            < Ship.space and abs(y - Ship.shot2y) < Ship.space and Ship.dub2 = 1
-            {
-              script_execute(shot1for2, 3);
-              Ship.shot2x = SHOT_OFFSCREEN;
-              Ship.shot2y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy()
-            }
-        }
-    }
-
-    with Transform
-    {
-
-      if abs (x - Ship.shot1x - SHIP_SPACE)
-        < Ship.space and abs(y - Ship.shot1y) < Ship.space and Ship.dub1 = 1
-        {
-          script_execute(shot1for2, 2);
-          Ship.shot1x = SHOT_OFFSCREEN;
-          Ship.shot1y = SHOT_OFFSCREEN;
-          Controller.hits += 1;
-          instance_destroy()
-        }
-
-      if abs (x - Ship.shot2x - SHIP_SPACE)
-        < Ship.space and abs(y - Ship.shot2y) < Ship.space and Ship.dub2 = 1
-        {
-          script_execute(shot1for2, 3);
-          Ship.shot2x = SHOT_OFFSCREEN;
-          Ship.shot2y = SHOT_OFFSCREEN;
-          Controller.hits += 1;
-          instance_destroy()
-        }
-    }
-
-    with Fighter
-    {
-      if y
-        > -17
-        {
-
-          if abs (x - Ship.shot1x - SHIP_SPACE)
-            < Ship.space and abs(y - Ship.shot1y) < Ship.space and Ship.dub1 = 1
-            {
-              script_execute(shot1for2, 2);
-              Ship.shot1x = SHOT_OFFSCREEN;
-              Ship.shot1y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy();
-              global.fighterstore = 0
-            }
-
-          if abs (x - Ship.shot2x - SHIP_SPACE)
-            < Ship.space and abs(y - Ship.shot2y) < Ship.space and Ship.dub2 = 1
-            {
-              script_execute(shot1for2, 3);
-              Ship.shot2x = SHOT_OFFSCREEN;
-              Ship.shot2y = SHOT_OFFSCREEN;
-              Controller.hits += 1;
-              instance_destroy();
-              global.fighterstore = 0
-            }
-        }
-    }
-
-    with Boss
-    {
-      if y
-        > -17
-        {
-
-          if hit
-            = 0
-            {
-
-              if abs (x - Ship.shot1x - SHIP_SPACE)
-                < Ship.space and abs(y - Ship.shot1y) < Ship.space and Ship.dub1
-                    = 1
-                {
-                  script_execute(shot1for2, 2);
-                  Ship.shot1x = SHOT_OFFSCREEN;
-                  Ship.shot1y = SHOT_OFFSCREEN;
-                  hit = 1;
-                  Controller.hits += 1;
-                  sound_stop(GBoss1);
-                  sound_play(GBoss1);
-                }
-
-              if abs (x - Ship.shot2x - SHIP_SPACE)
-                < Ship.space and abs(y - Ship.shot2y) < Ship.space and Ship.dub2
-                    = 1
-                {
-                  script_execute(shot1for2, 3);
-                  Ship.shot2x = SHOT_OFFSCREEN;
-                  Ship.shot2y = SHOT_OFFSCREEN;
-                  hit = 1;
-                  Controller.hits += 1;
-                  sound_stop(GBoss1);
-                  sound_play(GBoss1);
-                }
-            }
-
-          if hit
-            = 1
-            {
-
-              if abs (x - Ship.shot1x - SHIP_SPACE)
-                < Ship.space and abs(y - Ship.shot1y) < Ship.space and Ship.dub1
-                    = 1
-                {
-                  script_execute(shot1for2, 2);
-                  Ship.shot1x = SHOT_OFFSCREEN;
-                  Ship.shot1y = SHOT_OFFSCREEN;
-                  if carrying
-                    = 1 and dive = 1
-                    {
-                      Ship.regain = 1;
-                      Ship.alarm[3] = 90;
-                      Ship.newshipy = Fighter.y;
-                      Ship.newshipx = Fighter.x;
-                      with Fighter { instance_destroy() }
-                    };
-                  Controller.hits += 1;
-                  instance_destroy()
-                }
-
-              if abs (x - Ship.shot2x - SHIP_SPACE)
-                < Ship.space and abs(y - Ship.shot2y) < Ship.space and Ship.dub2
-                    = 1
-                {
-                  script_execute(shot1for2, 3);
-                  Ship.shot2x = SHOT_OFFSCREEN;
-                  Ship.shot2y = SHOT_OFFSCREEN;
-                  if carrying
-                    = 1 and dive = 1
-                    {
-                      Ship.regain = 1;
-                      Ship.alarm[3] = 90;
-                      Ship.newshipy = Fighter.y;
-                      Ship.newshipx = Fighter.x;
-                      with Fighter { instance_destroy() }
-                    };
-                  Controller.hits += 1;
-                  instance_destroy()
-                }
-            }
-        }
-    }
  
+   if (Controller.start == StartMode.INITIALIZE && !in_formation) {
+	   // check what state the ship is ...
+	   if (shipStatus == ShipState.ALIVE || shipStatus == ShipState.RESPAWN) {
+			/// @section Movement
+	        if (keyboard_check(vk_left) && x > SHIP_MIN_X) {
+	            x -= 3; // Move ship left by 3 pixels
+	        } else {
+	            // Check for right arrow key press and ensure ship stays within right boundary
+	            if (keyboard_check(vk_right) && x < SHIP_MAX_X - (double * SHIP_SPACE)) {
+	                x += 3; // Move ship right by 3 pixels
+	            }
+	        }
+		
+			/// @section Shooting
+		    // Check for spacebar press to fire shots
+		    if (keyboard_check_pressed(vk_space)) {
+		        // First shot handling
+		        if (shot1y > -31 && shot1x > -31 && shot1y < room_height + 31 && shot1x < room_width + 31) {
+		            // Shot 1 is still active, do nothing
+		        } else {
+		            // Set shot direction based on ship state
+		            shot1dir = (shipStatus == 1) ? spinanim : 360;
+                
+		            // Calculate initial shot position based on ship position and direction
+		            shot1x = x - (SHIP_MIN_X * sin(degtorad(shot1dir)));
+		            shot1y = y - (SHIP_MIN_X* cos(degtorad(shot1dir)));
+                
+		            // Set double shot flag for first shot
+		            dub1 = (double == 1) ? 1 : 0;
+                
+		            // Play shooting sound
+		            sound_stop(GShot);
+		            sound_play(GShot);
+                
+		            Controller.fire += 1; // Increment fire counter
+		            Ship.skip = 1; // Set skip flag to manage double shot timing
+		        }
+            
+		        // Second shot handling if first shot is not skipped
+		        if (Ship.skip == 0) {
+		            if (shot2y > -31 && shot2x > -31 && shot2y < room_height + 31 && shot2x < room_width + 31) {
+		                // Shot 2 is still active, do nothing
+		            } else {
+		                // Set shot direction based on ship state
+		                shot2dir = (shipStatus == 1) ? spinanim : 360;
+                    
+		                // Calculate initial shot position
+		                shot2x = x - (SHIP_MIN_X* sin(degtorad(shot2dir)));
+		                shot2y = y - (SHIP_MIN_X* cos(degtorad(shot2dir)));
+                    
+		                // Set double shot flag for second shot
+		                dub2 = (double == 1) ? 1 : 0;
+                    
+		                // Play shooting sound
+		                sound_stop(GShot);
+		                sound_play(GShot);
+                    
+		                Controller.fire += 1; // Increment fire counter
+		            }
+		        }
+            
+		        Ship.skip = 0; // Reset skip flag
+		    }
+		}
+	}
+
+    /// @section Shot Movement (Single/Left Ship)
+    // Update position of ship bullets ...
+	scr_move_ship_bullets();
+
+	// check collisions for non-Boss enemies
+	var enemies = [Bee, Butterfly, Transform, Fighter];
+	for (var i = 0; i < array_length(enemies); i++) {
+	    with (enemies[i]) {
+			scr_handle_shot_collision_enemy(id);
+		}
+	}
+
+	// Check collisions for Boss
+	with (Boss) {
+		scr_handle_shot_collision_boss(id);
+	}
+	
     /// @section Getting Hit (Single Ship)
-    // Handle collisions when ship is alive or caught and not moving
-    if ((dead == 0 || (caught == 1 && alarm[2] > -1)) && moving == 0) {
+    // Handle collisions when ship is alive or caught and not in formation
+    if ((shipStatus == ShipState.ALIVE || (caught == 1 && alarm[2] > -1)) && !in_formation) {
         if (double == 0) {
             with (Bee) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                    Ship.dead = 1; // Mark ship as dead
+                    Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -460,7 +103,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             with (Butterfly) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
                     if (escort == 0) {} // Placeholder for escort logic
-                    Ship.dead = 1; // Mark ship as dead
+                    Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -470,7 +113,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             
             with (Transform) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                    Ship.dead = 1; // Mark ship as dead
+                    Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -480,7 +123,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             
             with (Fighter) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
-                    Ship.dead = 1; // Mark ship as dead
+                    Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -491,7 +134,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             
             with (EnemyShot) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                    Ship.dead = 1; // Mark ship as dead
+                    Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -502,7 +145,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             with (Boss) {
                 if (hit == 1) {
                     if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                        Ship.dead = 1; // Mark ship as dead
+                        Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                         Ship.alarm[0] = 120; // Set death timer
                         if (carrying == 1 && dive == 1) {
                             sound_loop(GRescue); // Play rescue sound
@@ -520,7 +163,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 
                 if (hit == 0) {
                     if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                        Ship.dead = 1; // Mark ship as dead
+                        Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                         Ship.alarm[0] = 120; // Set death timer
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
@@ -727,7 +370,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
     
     /// @section Dead State
     // Handle ship death animation and respawn logic
-    if (dead == 1 && caught == 0) {
+    if (shipStatus == ShipState.DEAD && caught == 0) {
         if (deadanim < 4) {
             deadanim += 0.1; // Increment death animation counter
         }
@@ -737,10 +380,12 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             global.p1lives -= 1; // Decrease player lives
             
             if (global.p1lives > 0) {
-                Ship.dead = 2; // Set to respawn state
+                Ship.shipStatus = ShipState.RESPAWN; // Set to respawn state
                 Ship.x = 224; // Reset position
                 Ship.y = 528;
                 Ship.alarm[1] = 90; // Set respawn timer
+				
+				deadamin = 0;
             }
         }
     }
@@ -748,9 +393,9 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
     /// @section Getting Caught
     // Handle ship being caught by boss beam
     with (Boss) {
-        if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3 && Ship.x > x - 48 && Ship.x < x + 48 && Ship.dead == 0) {
+        if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3 && Ship.x > x - 48 && Ship.x < x + 48 && Ship.shipStatus == ShipState.ALIVE) {
             Ship.caught = 1; // Mark ship as caught
-            Ship.dead = 1; // Mark ship as dead
+            Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
             Ship.alarm[2] = 90; // Set caught timer
             Ship.grav = x; // Set gravity point to boss position
             sound_stop(GBeam); // Stop beam sound
@@ -806,7 +451,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             if (spinanim == 0) { spinanim = 360; } // Reset rotation
         } else {
             y = 528; // Snap to bottom of screen
-            dead = 0; // Reset dead state
+            shipStatus = 0; // Reset shipStatus state 
             caught = 0; // Reset caught state
             grav = 0; // Reset gravity
             spinanim = 360; // Reset rotation
@@ -817,12 +462,12 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
     /// @section Regaining Ship
     // Handle regaining a ship after rescue
     if (regain == 1) {
-        if (dead == 0) {
+        if (shipStatus == ShipState.ALIVE) {
             if (alarm[3] == -1 && global.divecap == global.divecapstart && instance_number(EnemyShot) == 0) {
                 x = (round(x / 2) * 2); // Round position
                 newshipx = (round(newshipx / 2) * 2);
                 newshipy = (round(newshipy / 2) * 2);
-                moving = 1; // Set moving state
+                in_formation = true; // Set moving state
                 
                 spinanim = 360; // Reset rotation
                 
@@ -844,7 +489,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     newshipy = 0;
                     double = 1; // Enable double ship mode
                     regain = 0; // Reset regain state
-                    moving = 0; // Reset moving state
+                    in_formation = false; // Reset moving state
                     sound_stop(GRescue); // Stop rescue sound
                 }
             } else {
@@ -856,7 +501,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 x = (round(x / 2) * 2); // Round position
                 newshipx = (round(newshipx / 2) * 2);
                 newshipy = (round(newshipy / 2) * 2);
-                moving = 1; // Set moving state
+                in_formation = true; // Set moving state
                 
                 spinanim = 360; // Reset rotation
                 
@@ -875,10 +520,10 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     newshipy = 0;
                     x = 224; // Set ship position
                     y = 528;
-                    dead = 0; // Reset dead state
+                    shipStatus = 0; // Reset shipStatus state
                     double = 0; // Disable double ship mode
                     regain = 0; // Reset regain state
-                    moving = 0; // Reset moving state
+                    in_formation = false; // Reset moving state
                     sound_stop(GRescue); // Stop rescue sound
                 }
             } else {
@@ -896,8 +541,8 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
     
     /// @section Game Over
     // Trigger game over state
-    if (dead == 1 && caught == 0 && regain == 0 && global.p1lives == 1 && gameover == 0) {
-        gameover = 1; // Set game over state
+    if (shipStatus == 1 && caught == 0 && regain == 0 && global.p1lives == 1 && global.gameover == 0) {
+        global.gameover = 1; // Set game over state
         alarm[10] = 120; // Set game over timer
     }
     

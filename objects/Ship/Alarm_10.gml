@@ -1,6 +1,6 @@
-if gameover = 1{gameover = 2; alarm[10] = 150; exit};
+if global.gameover = 1{gameover = 2; alarm[10] = 150; exit};
 
-if gameover = 2{
+if global.gameover = 2{
 
     with Bee{instance_destroy()}
 

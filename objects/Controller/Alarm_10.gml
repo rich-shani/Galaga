@@ -14,9 +14,9 @@ if (nextlevel == 1) {
         alarm[10] = 1;
     } else {
         /// @subsection Check for Active Enemy Shots or Ship Death
-        /// If there are active enemy shots (instance_number(EnemyShot) > 0) or the ship is dead (Ship.dead > 0),
+        /// If there are active enemy shots (instance_number(EnemyShot) > 0) or the ship is shipStatus (Ship.shipStatus > 0),
         /// delay the transition by setting alarm[10] to 1 step to allow these states to resolve.
-        if (instance_number(EnemyShot) > 0 || Ship.dead > 0) {
+        if (instance_number(EnemyShot) > 0 || Ship.shipStatus > 0) {
             alarm[10] = 1;
         } else {
             /// @subsubsection Initialize New Level
@@ -154,16 +154,13 @@ if (nextlevel == 2) {
     /// Reset nextlevel to 0 to indicate the level transition is complete.
     nextlevel = 0;
 
-    /// @subsection Challenge Mode and Game Start
-    /// If not in challenge mode (global.challcount == 0) and in the initial state (start == 0),
-    /// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.
-    if (global.challcount == 0 && start == 0) {
-        alarm[2] = 70;
-    }
-    
+    /// @subsection Challenge Mode and Game Start   
     /// If in the initial state (start == 0), set global.open to 1, possibly enabling a menu or game state.
-    if (start == 0) {
+    if (start == StartMode.INITIALIZE) {
         global.open = 1;
+		/// If not in challenge mode (global.challcount == 0) and in the initial state (start == 0),
+		/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.
+		if (global.challcount == 0) alarm[2] = 70;
     }
 
     /// @subsection Challenge Mode Path Adjustment
