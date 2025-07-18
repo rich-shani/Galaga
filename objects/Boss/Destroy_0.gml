@@ -4,7 +4,14 @@ if y < 592 and x > -16 and x < 464 and (y > -16 or global.challcount > 0){
 
 if dive = 1{Ship.alarm[4] = global.hold + irandom(global.hold);} else{global.p1score += 150};
 
-instance_create(round(x),round(y),Explosion); if beam = 1{sound_stop(GBeam)};
+	if (irandom(1)) {
+		instance_create(round(x), round(y), oExplosion);
+	}
+	else {
+		instance_create(round(x), round(y), oExplosion2);	
+	}
+
+if beam = 1{sound_stop(GBeam)};
 
 sound_stop(GBoss2); sound_play(GBoss2);
 

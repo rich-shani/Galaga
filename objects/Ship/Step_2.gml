@@ -1,7 +1,7 @@
  /// @description Controls the player ship's behavior, including movement, shooting, collision detection, and state management in a space shooter game.
 
 // Check if the game is in the main gameplay mode
-if (Controller.gameMode == GameMode.GAME_MODE) {
+if (Controller.gameMode == GameMode.GAME_ACTIVE) {
  
    if (Controller.start == StartMode.INITIALIZE && !in_formation) {
 	   // check what state the ship is ...
@@ -11,7 +11,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
 	            x -= 3; // Move ship left by 3 pixels
 	        } else {
 	            // Check for right arrow key press and ensure ship stays within right boundary
-	            if (keyboard_check(vk_right) && x < SHIP_MAX_X - (double * SHIP_SPACE)) {
+	            if (keyboard_check(vk_right) && x < SHIP_MAX_X - (shotMode * SHIP_SPACE)) {
 	                x += 3; // Move ship right by 3 pixels
 	            }
 	        }
@@ -31,7 +31,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
 		            shot1y = y - (SHIP_MIN_X* cos(degtorad(shot1dir)));
                 
 		            // Set double shot flag for first shot
-		            dub1 = (double == 1) ? 1 : 0;
+		            dub1 = (shotMode == ShotMode.DOUBLE) ? 1 : 0;
                 
 		            // Play shooting sound
 		            sound_stop(GShot);
@@ -54,7 +54,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
 		                shot2y = y - (SHIP_MIN_X* cos(degtorad(shot2dir)));
                     
 		                // Set double shot flag for second shot
-		                dub2 = (double == 1) ? 1 : 0;
+		                dub2 = (shotMode == ShotMode.DOUBLE) ? 1 : 0;
                     
 		                // Play shooting sound
 		                sound_stop(GShot);
@@ -89,7 +89,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
     /// @section Getting Hit (Single Ship)
     // Handle collisions when ship is alive or caught and not in formation
     if ((shipStatus == ShipState.ALIVE || (caught == 1 && alarm[2] > -1)) && !in_formation) {
-        if (double == 0) {
+        if (shotMode == ShotMode.SINGLE) {
             with (Bee) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
                     Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
@@ -134,7 +134,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             
             with (EnemyShot) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                    Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
+                    Ship.shipStatus = ShipState.DEAD; // Mark ship as dead
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -145,7 +145,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             with (Boss) {
                 if (hit == 1) {
                     if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                        Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
+                        Ship.shipStatus = ShipState.DEAD; // Mark ship as dead
                         Ship.alarm[0] = 120; // Set death timer
                         if (carrying == 1 && dive == 1) {
                             sound_loop(GRescue); // Play rescue sound
@@ -163,7 +163,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 
                 if (hit == 0) {
                     if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
-                        Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
+                        Ship.shipStatus = ShipState.DEAD; // Mark ship as dead
                         Ship.alarm[0] = 120; // Set death timer
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
@@ -175,7 +175,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
             }
         }
         
-        if (double == 1) {
+        if (shotMode == ShotMode.DOUBLE) {
             /// @section Getting Hit (Double Ship - Left)
             with (Bee) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.skip == 0) {
@@ -183,7 +183,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     Ship.secondx = Ship.x; // Store current position
                     Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy
@@ -197,7 +197,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     Ship.secondx = Ship.x; // Store current position
                     Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy
@@ -210,7 +210,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     Ship.secondx = Ship.x; // Store current position
                     Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy
@@ -223,7 +223,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     Ship.secondx = Ship.x; // Store current position
                     Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy
@@ -236,7 +236,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     Ship.secondx = Ship.x; // Store current position
                     Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy shot
@@ -250,7 +250,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                         Ship.secondx = Ship.x; // Store current position
                         Ship.deadanim2 = 0.25; // Start second death animation
                         Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
-                        Ship.double = 0; // Disable double ship mode
+                        Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         if (carrying == 1 && dive == 1) {
                             sound_loop(GRescue); // Play rescue sound
                             Ship.regain = 1; // Set regain flag
@@ -271,7 +271,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                         Ship.secondx = Ship.x; // Store current position
                         Ship.deadanim2 = 0.25; // Start second death animation
                         Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
-                        Ship.double = 0; // Disable double ship mode
+                        Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
                         hit = 1; // Mark boss as hit
@@ -286,7 +286,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
                     Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy
@@ -300,7 +300,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     Ship.deadanim2 = 0.25; // Start second death animation
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -309,7 +309,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
                     Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy
@@ -320,7 +320,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
                     Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy
@@ -331,7 +331,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
                     Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.double = 0; // Disable double ship mode
+                    Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
                     instance_destroy(); // Destroy enemy shot
@@ -343,7 +343,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                         Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
                         Ship.deadanim2 = 0.25; // Start second death animation
-                        Ship.double = 0; // Disable double ship mode
+                        Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
                         instance_destroy(); // Destroy boss
@@ -354,7 +354,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                         Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
                         Ship.deadanim2 = 0.25; // Start second death animation
-                        Ship.double = 0; // Disable double ship mode
+                        Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
                         hit = 1; // Mark boss as hit
@@ -387,6 +387,11 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
 				
 				deadamin = 0;
             }
+			else {
+				// GAME OVER
+				global.gameover = 1; // Set game over state
+				alarm[10] = 120; // Set game over timer
+			}
         }
     }
     
@@ -487,7 +492,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                 if (x == 210 && newshipx == 238 && newshipy == 528) {
                     newshipx = 0; // Reset new ship position
                     newshipy = 0;
-                    double = 1; // Enable double ship mode
+                    shotMode = ShotMode.DOUBLE; // Enable double ship mode
                     regain = 0; // Reset regain state
                     in_formation = false; // Reset moving state
                     sound_stop(GRescue); // Stop rescue sound
@@ -521,7 +526,7 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
                     x = 224; // Set ship position
                     y = 528;
                     shipStatus = 0; // Reset shipStatus state
-                    double = 0; // Disable double ship mode
+                    shotMode = ShotMode.SINGLE; // Disable double ship mode
                     regain = 0; // Reset regain state
                     in_formation = false; // Reset moving state
                     sound_stop(GRescue); // Stop rescue sound
@@ -541,10 +546,10 @@ if (Controller.gameMode == GameMode.GAME_MODE) {
     
     /// @section Game Over
     // Trigger game over state
-    if (shipStatus == 1 && caught == 0 && regain == 0 && global.p1lives == 1 && global.gameover == 0) {
-        global.gameover = 1; // Set game over state
-        alarm[10] = 120; // Set game over timer
-    }
+    //if (shipStatus == ShipState.DEAD && caught == 0 && regain == 0 && global.p1lives == 1 && global.gameover == 0) {
+    //    global.gameover = 1; // Set game over state
+    //    alarm[10] = 120; // Set game over timer
+    //}
     
     /// @section Highscore
     // Update highscore if current score is higher

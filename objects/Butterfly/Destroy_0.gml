@@ -4,7 +4,12 @@ if y < 592 and x > -16 and x < 464{
 
 if dive = 1{Ship.alarm[4] = global.hold + irandom(global.hold); if trans = 0{global.p1score += 160}} else{global.p1score += 80};
 
-instance_create(round(x),round(y),Explosion);
+	if (irandom(1)) {
+		instance_create(round(x), round(y), oExplosion);
+	}
+	else {
+		instance_create(round(x), round(y), oExplosion2);	
+	}
 
 if trans = 1{global.transcount = global.transcount + 1; global.p1score += 160; if global.transcount = 3{instance_create(round(x),round(y),TransPoints)}
 

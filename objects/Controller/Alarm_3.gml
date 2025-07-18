@@ -7,13 +7,13 @@ att += 1; if att = 15{alarm[3] = 10} else{alarm[3] = 60};
 
 if att == 6{attpos = 368};
 
-if att == 9{attpos = 272; attpause = 30; instance_create(384+x-16,336+y-16,Explosion); instance_create(384+x-16,336+y-16,Points1600);};
+if att == 9{attpos = 272; attpause = 30; instance_create(384+x-16,336+y-16,oExplosion); instance_create(384+x-16,336+y-16,Points1600);};
 
-if att == 12{attpos = 176; instance_create(288+x-16,336+y-16,Explosion); instance_create(288+x-16,336+y-16,Points800);};
+if att == 12{attpos = 176; instance_create(288+x-16,336+y-16,oExplosion); instance_create(288+x-16,336+y-16,Points800);};
 
-if att == 15{attpos = 80; instance_create(192+x-16,336+y-16,Explosion); instance_create(192+x-16,336+y-16,Points400);};
+if att == 15{attpos = 80; instance_create(192+x-16,336+y-16,oExplosion); instance_create(192+x-16,336+y-16,Points400);};
 
-if att == 17{instance_create(96,336,Explosion); instance_create(96,336,Points150); alarm[3] = 70};
+if att == 17{instance_create(96,336,oExplosion); instance_create(96,336,Points150); alarm[3] = 70};
 
 if att == 8 or att = 11{x=xstart; y=ystart; path_start(gameMode,3,0,0)};
 

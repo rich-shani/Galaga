@@ -58,7 +58,7 @@ if dive = 0 and enter = 0{ ///convoy
 
         if global.bosscount = 1 and global.beamcheck = 0 and global.fighterstore = 0 and
 
-            instance_number(Fighter) = 0 and Ship.double = 0{beam = 1; alarm[2] = 23} else{beam = 0}; global.beamcheck = 0;
+            instance_number(Fighter) = 0 and Ship.shotMode == ShotMode.SINGLE{beam = 1; alarm[2] = 23} else{beam = 0}; global.beamcheck = 0;
 
             global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
 

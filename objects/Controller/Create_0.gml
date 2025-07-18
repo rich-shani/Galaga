@@ -47,9 +47,11 @@ global.wave = 0;
 // Enum defining the possible game modes for state management.
 // Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
 enum GameMode {
+	INITIALIZE,
     ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
     INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
-    GAME_MODE        // Active gameplay mode where the player controls the ship.
+    GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
+	GAME_PAUSED
 }
 
 enum StartMode {
@@ -105,7 +107,8 @@ attshotx = 0;
 /// @section Game Mode and State
 // Initial game mode, set to attract mode (demo mode).
 // Controls whether the game is in gameplay, instructions, or demo state.
-gameMode = GameMode.ATTRACT_MODE;
+gameMode = GameMode.INITIALIZE;
+audio_play_sound(Galaga_Theme_Remix,1,false);
 
 // Attract mode state or timer, initialized to 0.
 // Likely incremented to control the sequence of events in attract mode (e.g., demo ship movement).
@@ -232,3 +235,10 @@ tenrank = 0;
 // Hundreds digit for rank display, initialized to 0.
 // Completes the ranking digit system for high-score UI.
 hundrank = 0;
+
+// grab a handle to the pause/unpause screen effect
+// set the FX filter to a random color
+layer_pause_fx = layer_get_fx("PauseEffect");
+
+// is the Game Paused?
+isGamePaused = false;

@@ -1,6 +1,11 @@
 if global.gameover < 2{
 
-instance_create(round(x),round(y),Explosion);
+	if (irandom(1)) {
+		instance_create(round(x), round(y), oExplosion);
+	}
+	else {
+		instance_create(round(x), round(y), oExplosion2);	
+	}
 
 if y < 576{
 

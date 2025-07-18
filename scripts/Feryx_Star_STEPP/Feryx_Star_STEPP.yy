@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Feryx_Star_STEPP",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Feryx_Star_STEPP",
+  "parent":{
+    "name":"forEASYuse",
+    "path":"folders/Scripts/Feryx_Starfield/forEASYuse.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

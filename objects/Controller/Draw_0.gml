@@ -9,6 +9,14 @@ if (Controller.start == StartMode.INITIALIZE or Controller.start == StartMode.GA
   };
 }
 
+// Is the Game Paused?
+if (Controller.isGamePaused) {
+	draw_set_font(fAtari24);
+	draw_set_color(c_green);
+	
+	draw_text(50,265, "GAME PAUSED");
+}
+
 draw_set_font(font0);
 draw_set_halign(fa_right);
 

@@ -12,10 +12,10 @@ if (Controller.attshot == 1) {
 }
 
 /// @section Main Gameplay and Attract Mode Rendering
-// Render game elements when in gameplay mode (Controller.gameMode == GameMode.GAME_MODE)
+// Render game elements when in gameplay mode (Controller.gameMode == GameMode.GAME_ACTIVE)
 // or in specific attract mode states (Controller.att between 6 and 17, inclusive).
 // Controller.att likely represents the attract mode state or timer.
-if (Controller.gameMode == GameMode.GAME_MODE || (Controller.att > 5 && Controller.att < 18)) {
+if (Controller.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller.att < 18)) {
     /// @subsection Control States
     // Only draw certain elements when the game is in active control states (Controller.start == 0 or 3).
     // Controller.start == 0 likely represents normal gameplay, while 3 may indicate a specific state (e.g., post-respawn).
@@ -53,8 +53,8 @@ if (Controller.gameMode == GameMode.GAME_MODE || (Controller.att > 5 && Controll
         // Uses spr_ship at the ship’s position (x, y) with default frame (0).
         if (shipStatus == 0 || shipStatus == 2) {
             draw_sprite(spr_ship, 0, x, y);
-            // If in double mode (double == 1), draw a second ship offset by SHIP_SPACE (28 pixels) to the right.
-            if (double == 1) {
+            // If in double mode, draw a second ship offset by SHIP_SPACE (28 pixels) to the right.
+            if (shotMode == ShotMode.DOUBLE) {
                 draw_sprite(spr_ship, 0, x + SHIP_SPACE, y);
             }
         }

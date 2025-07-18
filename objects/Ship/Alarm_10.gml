@@ -1,4 +1,4 @@
-if global.gameover = 1{gameover = 2; alarm[10] = 150; exit};
+if global.gameover = 1{global.gameover = 2; alarm[10] = 150; exit};
 
 if global.gameover = 2{
 

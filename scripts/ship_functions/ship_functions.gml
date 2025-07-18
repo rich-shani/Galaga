@@ -57,7 +57,7 @@ function handle_player_hit(enemy_x, enemy_y, enemy_instance, is_double, is_right
             secondx = is_right ? (Ship.x + SHIP_SPACE) : Ship.x;
             deadanim2 = 0.25;
             if (!is_right) Ship.x += SHIP_SPACE;
-            double = 0;
+            shotMode = ShotMode.SINGLE;
         } else {
             shipStatus = 1;
             alarm[0] = 120;

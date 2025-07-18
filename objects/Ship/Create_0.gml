@@ -87,10 +87,15 @@ grav = 0;
 // Used to manage capture state transitions.
 beamcheck = 0;
 
+enum ShotMode {
+	SINGLE,
+	DOUBLE 
+}
+
 /// @section Double Ship Mode
 // Indicates if the ship is in double mode (0 = single ship, 1 = two ships).
 // Affects movement boundaries, shooting, and collision detection.
-double = 0;
+shotMode = ShotMode.SINGLE;
 
 /// @section Ship Regain Logic
 // Flag for regaining a ship after rescue (0 = not regaining, 1 = regaining).

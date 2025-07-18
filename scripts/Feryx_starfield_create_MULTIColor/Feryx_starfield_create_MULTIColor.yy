@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Feryx_starfield_create_MULTIColor",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Feryx_starfield_create_MULTIColor",
+  "parent":{
+    "name":"Feryx_Starfield",
+    "path":"folders/Scripts/Feryx_Starfield.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

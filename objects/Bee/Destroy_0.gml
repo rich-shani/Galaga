@@ -12,7 +12,12 @@ else{global.p1score += 50};
 
 if global.challcount = 0{Controller.shotcount += 1; if Controller.shotcount = 8{instance_create(round(x),round(y),TransPoints)}}
 
-instance_create(round(x),round(y),Explosion);
+	if (irandom(1)) {
+		instance_create(round(x), round(y), oExplosion);
+	}
+	else {
+		instance_create(round(x), round(y), oExplosion2);	
+	}
 
 if trans = 1{global.transcount = global.transcount + 1; global.p1score += 160; if global.transcount = 3{instance_create(round(x),round(y),TransPoints)}
 

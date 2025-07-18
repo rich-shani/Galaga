@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Feryx_Performance",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Feryx_Performance",
+  "parent":{
+    "name":"Feryx_Starfield",
+    "path":"folders/Scripts/Feryx_Starfield.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
