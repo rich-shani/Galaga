@@ -38,7 +38,7 @@ function newlevel() {
 	///hold
 	global.hold -= 3; if global.hold < 1{global.hold = 1};
 	///starspeed
-	if global.lvl = 4 or global.lvl = 8 or global.lvl = 12{Stars.alarm[0] = 120};
+	if global.lvl = 4 or global.lvl = 8 or global.lvl = 12{};
 
 	///if keyboard_check_pressed(ord("1")) = true{global.transnum = global.transnum + 1; if global.transnum = 4{global.transnum = 0}};
 	///if keyboard_check_pressed(ord("2")) = true{global.pattern = global.pattern + 1; if global.pattern = 3{global.pattern = 0}; room_restart();}

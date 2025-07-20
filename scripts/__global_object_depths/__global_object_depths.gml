@@ -28,7 +28,7 @@ function __global_object_depths() {
 	global.__objectNames[2] = "Boss";
 	global.__objectNames[3] = "Controller";
 	global.__objectNames[4] = "Ship";
-	global.__objectNames[5] = "Explosion";
+	global.__objectNames[5] = "oExplosion3";
 	global.__objectNames[6] = "EnemyShot";
 	global.__objectNames[7] = "Transform";
 	global.__objectNames[8] = "TransPoints";

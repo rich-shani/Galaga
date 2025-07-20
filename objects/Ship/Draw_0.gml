@@ -45,7 +45,8 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Contro
         // Uses spr_explode with the frame index calculated as floor(deadanim2 + 5) to select the appropriate explosion frame.
         // Positioned at secondx (right ship’s X-coordinate) and y=528 (bottom of the screen).
         if (deadanim2 > 0 && deadanim2 < 4) {
-            draw_sprite(spr_explode, floor(deadanim2 + 5), secondx, 528);
+           // draw_sprite(spr_explode, floor(deadanim2 + 5), secondx, 528);
+		   draw_sprite(sExplosion3, floor(deadanim2 + 5), secondx, 528);
         }
 
         /// @subsubsection Ship Rendering
@@ -64,7 +65,8 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Contro
         // Uses spr_explode with frame index floor(deadanim + 5) for the explosion sequence, positioned at (x, y).
         if (shipStatus == 1 && caught == 0 && y == 528) {
             if (deadanim < 4) {
-                draw_sprite(spr_explode, floor(deadanim + 5), x, y);
+                //draw_sprite(spr_explode, floor(deadanim + 5), x, y);
+				draw_sprite(sExplosion3, floor(deadanim + 5), x, y);
             }
         }
 

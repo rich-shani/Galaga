@@ -61,6 +61,8 @@ enum StartMode {
 	GAME_STARTED
 }
 
+global.CRT_SHADER = new CRTShaderCreate();
+
 /// @section Data Structures
 // Creates a data structure list to store dynamic game data.
 // Likely used for tracking enemies, scores, or other temporary game elements.
@@ -108,7 +110,6 @@ attshotx = 0;
 // Initial game mode, set to attract mode (demo mode).
 // Controls whether the game is in gameplay, instructions, or demo state.
 gameMode = GameMode.INITIALIZE;
-audio_play_sound(Galaga_Theme_Remix,1,false);
 
 // Attract mode state or timer, initialized to 0.
 // Likely incremented to control the sequence of events in attract mode (e.g., demo ship movement).

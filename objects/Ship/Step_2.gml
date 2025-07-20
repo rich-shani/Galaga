@@ -96,6 +96,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -107,6 +108,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -117,6 +119,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -127,6 +130,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                     global.fighterstore = 0; // Reset fighter store
                 }
@@ -138,6 +142,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy shot
                 }
             }
@@ -157,6 +162,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                         }
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
+						instance_create(round(x), round(y), oExplosion3);
                         instance_destroy(); // Destroy boss
                     }
                 }
@@ -167,6 +173,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                         Ship.alarm[0] = 120; // Set death timer
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
+						instance_create(round(x), round(y), oExplosion3);
                         hit = 1; // Mark boss as hit
                         sound_stop(GBoss1); // Stop boss hit sound
                         sound_play(GBoss1); // Play boss hit sound
@@ -186,6 +193,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -200,6 +208,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -213,6 +222,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -226,6 +236,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -239,6 +250,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy shot
                 }
             }
@@ -261,6 +273,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                         }
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
+						instance_create(round(x), round(y), oExplosion3);
                         instance_destroy(); // Destroy boss
                     }
                 }
@@ -274,6 +287,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                         Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
+						instance_create(round(x), round(y), oExplosion3);
                         hit = 1; // Mark boss as hit
                         sound_stop(GBoss1); // Stop boss hit sound
                         sound_play(GBoss1); // Play boss hit sound
@@ -289,6 +303,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -300,6 +315,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.deadanim2 = 0.25; // Start second death animation
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     instance_destroy(); // Destroy enemy
                 }
@@ -312,6 +328,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -323,6 +340,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy
                 }
             }
@@ -334,6 +352,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
+					instance_create(round(x), round(y), oExplosion3);
                     instance_destroy(); // Destroy enemy shot
                 }
             }
@@ -346,6 +365,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                         Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
+						instance_create(round(x), round(y), oExplosion3);
                         instance_destroy(); // Destroy boss
                     }
                 }
@@ -357,6 +377,7 @@ if (Controller.gameMode == GameMode.GAME_ACTIVE) {
                         Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
+						instance_create(round(x), round(y), oExplosion3);
                         hit = 1; // Mark boss as hit
                         sound_stop(GBoss1); // Stop boss hit sound
                         sound_play(GBoss1); // Play boss hit sound

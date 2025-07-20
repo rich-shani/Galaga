@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"CRTFunctions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"CRTFunctions",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

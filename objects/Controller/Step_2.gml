@@ -1003,7 +1003,7 @@ if gameMode == GameMode.INSTRUCTIONS {
 		audio_stop_sound(Galaga_Theme_Remix);
 		
         // === INITIALIZE GAME STATE ===
-        global.lvl           = 0;
+        global.lvl           = 10;
         global.chall         = 0;
         global.challcount    = 1;
         global.divecapstart  = 2;

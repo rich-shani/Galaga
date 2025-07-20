@@ -1,4 +1,16 @@
+//// Create or resize surface
+//if (!surface_exists(effect_surface) || surface_get_width(effect_surface) != camera_get_view_width(view_camera[0])) {
+//    if (surface_exists(effect_surface)) surface_free(effect_surface);
+//    effect_surface = surface_create(camera_get_view_width(view_camera[0]), camera_get_view_height(view_camera[0]));
+//}
+
+//// Set surface target and draw the normal scene
+//surface_set_target(effect_surface);
+//draw_clear_alpha(c_black, 0);
+//draw_set_alpha(1);
+
 if (Controller.start == StartMode.INITIALIZE or Controller.start == StartMode.GAME_STARTED) {
+
 
   /// draw lives
   lifecount = global.p1lives - 1;
@@ -10,7 +22,7 @@ if (Controller.start == StartMode.INITIALIZE or Controller.start == StartMode.GA
 }
 
 // Is the Game Paused?
-if (Controller.isGamePaused) {
+if (Controller.isGamePaused) { 
 	draw_set_font(fAtari24);
 	draw_set_color(c_green);
 	
@@ -629,3 +641,13 @@ else { /// screens
         }
     }
 }
+
+//draw_camera(view_camera[0]);  // this draws everything in the view
+
+//surface_reset_target();
+
+//if (surface_exists(effect_surface)) {
+//    shader_set(Shader1); // replace with your shader
+//    draw_surface(effect_surface, 0, 0);
+//    shader_reset();
+//}
