@@ -1,7 +1,7 @@
 // === FRAME CONTROL ===
 if (gameMode == GameMode.INITIALIZE) {
 	gameMode = GameMode.ATTRACT_MODE;
-	audio_play_sound(Galaga_Theme_Remix,1,false);
+	audio_play_sound(Galaga_Attract_Mode,1,false);
 }
 
 // Increment the global 'flip' variable, used for animation timing or cyclic events
@@ -1000,7 +1000,9 @@ if gameMode == GameMode.INSTRUCTIONS {
     if keyboard_check_pressed(vk_space) == true {
 
         gameMode = GameMode.GAME_ACTIVE;
-		audio_stop_sound(Galaga_Theme_Remix);
+		if (audio_is_playing(Galaga_Attract_Mode)) {
+			audio_stop_sound(Galaga_Attract_Mode);
+		}
 		
         // === INITIALIZE GAME STATE ===
         global.lvl           = 10;

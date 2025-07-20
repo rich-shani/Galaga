@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"Galaga_Attract_Mode",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":0,
+  "conversionMode":0,
+  "duration":103.584,
+  "name":"Galaga_Attract_Mode",
+  "parent":{
+    "name":"Sounds",
+    "path":"folders/Sounds.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"Galaga_Attract_Mode.mp3",
+  "type":0,
+  "volume":1.0,
+}
