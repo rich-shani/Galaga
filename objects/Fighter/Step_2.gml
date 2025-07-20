@@ -1,4 +1,4 @@
-if (Controller.gameMode == GameMode.GAME_ACTIVE) {
+if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	if enter = 0{
 

@@ -1,7 +1,7 @@
 blip = 0;
 
 // gameMode mode ... 30 steps, one per second, unless we're at step 15
-if gameMode == GameMode.ATTRACT_MODE{
+if global.gameMode == GameMode.ATTRACT_MODE{
 
 att += 1; if att = 15{alarm[3] = 10} else{alarm[3] = 60};
 
@@ -15,7 +15,7 @@ if att == 15{attpos = 80; instance_create(192+x-16,336+y-16,oExplosion); instanc
 
 if att == 17{instance_create(96,336,oExplosion); instance_create(96,336,Points150); alarm[3] = 70};
 
-if att == 8 or att = 11{x=xstart; y=ystart; path_start(gameMode,3,0,0)};
+if att == 8 or att = 11{x=xstart; y=ystart; path_start(global.gameMode,3,0,0)};
 
 if att == 14{path_end(); x=xstart; y=ystart; path_start(AttractFlip,3,0,0)};
 

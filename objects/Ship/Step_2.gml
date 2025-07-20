@@ -1,9 +1,9 @@
  /// @description Controls the player ship's behavior, including movement, shooting, collision detection, and state management in a space shooter game.
 
 // Check if the game is in the main gameplay mode
-if (Controller.gameMode == GameMode.GAME_ACTIVE) {
+if (global.gameMode == GameMode.GAME_ACTIVE) {
  
-   if (Controller.start == StartMode.INITIALIZE && !in_formation) {
+   if (global.startMode == StartMode.INITIALIZE && !in_formation) {
 	   // check what state the ship is ...
 	   if (shipStatus == ShipState.ALIVE || shipStatus == ShipState.RESPAWN) {
 			/// @section Movement

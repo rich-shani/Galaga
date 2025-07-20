@@ -9,7 +9,7 @@
 //draw_clear_alpha(c_black, 0);
 //draw_set_alpha(1);
 
-if (Controller.start == StartMode.INITIALIZE or Controller.start == StartMode.GAME_STARTED) {
+if (global.startMode == StartMode.INITIALIZE or global.startMode == StartMode.GAME_STARTED) {
 
 
   /// draw lives
@@ -22,7 +22,7 @@ if (Controller.start == StartMode.INITIALIZE or Controller.start == StartMode.GA
 }
 
 // Is the Game Paused?
-if (Controller.isGamePaused) { 
+if (global.isGamePaused) { 
 	draw_set_font(fAtari24);
 	draw_set_color(c_green);
 	
@@ -197,7 +197,7 @@ if instance_number (Ship)
 
 else { /// screens
 
-  if gameMode
+  if global.gameMode
     == GameMode.ATTRACT_MODE
     {
 
@@ -471,7 +471,7 @@ else { /// screens
         }
     }
 
-  if gameMode
+  if global.gameMode
     == GameMode.INSTRUCTIONS
     {
 
@@ -519,18 +519,18 @@ else { /// screens
     draw_text(160, 288, string_hash_to_newline("GAME OVER"))
   }
 
-  if start
+  if global.startMode
     = StartMode.SHOW_PLAYER1 { draw_text(176, 288, string_hash_to_newline("PLAYER 1")) };
-  if start
+  if global.startMode
     > StartMode.SHOW_PLAYER1 { draw_text(160, 288, string_hash_to_newline("STAGE 1")) };
-  if start
+  if global.startMode
     = StartMode.GAME_STARTED { draw_text(160, 256, string_hash_to_newline("PLAYER 1")) };
 
-  if start
+  if global.startMode
     = StartMode.INITIALIZE
     {
 
-      if stage
+      if global.stage
         = 1
         {
 

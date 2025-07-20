@@ -123,10 +123,6 @@ secondx = 0;
 // Incremented by 0.1 each step when the right ship is hit.
 deadanim2 = 0;
 
-/// @section Game Over
-// Flag indicating game over state (0 = game active, 1 = game over).
-// Set when the player's lives reach 0 and no regain is possible.
-global.gameover = 0;
 
 /// @section Shooting Control
 // Flag to manage double shot timing (0 = allow second shot, 1 = skip second shot).

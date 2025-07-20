@@ -1,15 +1,14 @@
-if (gameMode == GameMode.GAME_ACTIVE || gameMode == GameMode.GAME_PAUSED) {
+if (global.gameMode == GameMode.GAME_ACTIVE || global.gameMode == GameMode.GAME_PAUSED) {
 	// toggle the Game Pause setting
-	isGamePaused = !isGamePaused;
+	global.isGamePaused = !global.isGamePaused;
 	
-	gameMode = (isGamePaused) ? GameMode.GAME_PAUSED :  GameMode.GAME_ACTIVE;
+	global.gameMode = (global.isGamePaused) ? GameMode.GAME_PAUSED :  GameMode.GAME_ACTIVE;
 	
 	// pause or un-pause any sounds ...
-	if (isGamePaused) {
+	if (global.isGamePaused) {
 		
 		// PAUSE game, suspend the sounds and set screen effect to black and white
 		audio_pause_all();
-		
 			
 		if (layer_pause_fx != -1) 
 		{

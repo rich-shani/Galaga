@@ -1,4 +1,5 @@
 #region SHADER
+	global.CRT_SHADER = new CRTShaderCreate();
 	
 	UCRTParams = shader_get_uniform(CRTShader, "params");
 

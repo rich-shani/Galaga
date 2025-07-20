@@ -21,7 +21,7 @@ if (nextlevel == 1) {
         } else {
             /// @subsubsection Initialize New Level
             /// Set stage to 1 to indicate the start of a new level or wave.
-            stage = 1;
+            global.stage = 1;
             
             /// Reset results flag to 0, likely to clear any previous level-end results display.
             results = 0;
@@ -103,7 +103,7 @@ if (nextlevel == 1) {
 if (nextlevel == 2) {
     /// @subsection Reset Stage and Counters
     /// Reset stage to 0, indicating the start of a new wave or level phase.
-    stage = 0;
+    global.stage = 0;
     
     /// Reset alternate counter (alt) to 0, likely used for toggling states or animations.
     alt = 0;
@@ -156,7 +156,7 @@ if (nextlevel == 2) {
 
     /// @subsection Challenge Mode and Game Start   
     /// If in the initial state (start == 0), set global.open to 1, possibly enabling a menu or game state.
-    if (start == StartMode.INITIALIZE) {
+    if (global.startMode == StartMode.INITIALIZE) {
         global.open = 1;
 		/// If not in challenge mode (global.challcount == 0) and in the initial state (start == 0),
 		/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.

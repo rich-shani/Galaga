@@ -96,7 +96,7 @@ if (global.lvl > 0 && rank > 0) {
 
     // Play a ranking sound (GRank) if a challenge mode is active (global.challcount > 0) and the game is in the initial state (start == 0).
     // Likely used to provide audio feedback during the ranking display.
-    if (global.challcount > 0 && start == StartMode.INITIALIZE) {
+    if (global.challcount > 0 && global.startMode == StartMode.INITIALIZE) {
         sound_play(GRank);
     }
 

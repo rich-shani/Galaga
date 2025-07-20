@@ -1,8 +1,4 @@
 // === FRAME CONTROL ===
-if (gameMode == GameMode.INITIALIZE) {
-	gameMode = GameMode.ATTRACT_MODE;
-	audio_play_sound(Galaga_Attract_Mode,1,false);
-}
 
 // Increment the global 'flip' variable, used for animation timing or cyclic events
 global.flip = global.flip + 1;
@@ -33,7 +29,7 @@ if keyboard_check_pressed(vk_f12) == true {
 // === MAIN GAME LOOP ===
 
 // Run the core gameplay logic only if the game is not in gameMode/demo mode
-if (gameMode == GameMode.GAME_ACTIVE) {
+if (global.gameMode == GameMode.GAME_ACTIVE) {
 
     // === ENEMY DIVE CAPACITY HANDLING ===
     if results == 0 {
@@ -243,7 +239,7 @@ if results > 1 and results < 5 {
 // FULLY ANNOTATED WAVE AND PATTERN SPAWNING LOGIC (GML)
 // ================================================================
 
-if gameMode == GameMode.GAME_ACTIVE and results == 0 {
+if global.gameMode == GameMode.GAME_ACTIVE and results == 0 {
 
   // === LEVEL TRANSITION CHECK ===
   // If no enemies are present and all game conditions are met,
@@ -256,7 +252,7 @@ if gameMode == GameMode.GAME_ACTIVE and results == 0 {
      nextlevel == 0 &&
      global.open == 0 &&
      Ship.shipStatus == ShipState.ALIVE &&
-     start == StartMode.INITIALIZE {
+     global.startMode == StartMode.INITIALIZE {
     nextlevel = 1;       // Flag to begin next level
     alarm[10] = 90;      // Delay for level transition effects
   }
@@ -904,7 +900,7 @@ else {
 }
 // === gameMode ATTRACT MODE ===
 
-if gameMode == GameMode.ATTRACT_MODE {
+if global.gameMode == GameMode.ATTRACT_MODE {
 
     // Countdown timer to slow down or pause gameMode activity temporarily
     if attpause > 0 {
@@ -961,7 +957,7 @@ if gameMode == GameMode.ATTRACT_MODE {
     if keyboard_check_pressed(vk_space) == true {
 
         sound_play(GCredit);     // Play credit sound
-        gameMode = GameMode.INSTRUCTIONS;             // Move to gameMode screen 2 (instructions or title)
+        global.gameMode = GameMode.INSTRUCTIONS;             // Move to gameMode screen 2 (instructions or title)
 
         path_end();              // Stop any path-following movement
         x = xstart;              // Reset object to original x
@@ -994,14 +990,14 @@ if gameMode == GameMode.ATTRACT_MODE {
 
 // === gameMode MODE PHASE 2 ===
 // gameMode = 2 is usually a "press space to start" state
-if gameMode == GameMode.INSTRUCTIONS {
+if global.gameMode == GameMode.INSTRUCTIONS {
 
     // If player presses space, start the actual game
     if keyboard_check_pressed(vk_space) == true {
 
-        gameMode = GameMode.GAME_ACTIVE;
-		if (audio_is_playing(Galaga_Attract_Mode)) {
-			audio_stop_sound(Galaga_Attract_Mode);
+        global.gameMode = GameMode.GAME_ACTIVE;
+		if (audio_is_playing(Galaga_Attract_Mode_Theme)) {
+			audio_stop_sound(Galaga_Attract_Mode_Theme);
 		}
 		
         // === INITIALIZE GAME STATE ===
@@ -1042,7 +1038,7 @@ if gameMode == GameMode.INSTRUCTIONS {
         firstlife   = 20000;  // Score threshold for first extra life
         additional  = 70000;  // Score threshold for each subsequent extra life
 
-        start = StartMode.SHOW_PLAYER1;  // Game state is now started
+        global.startMode = StartMode.SHOW_PLAYER1;  // Game state is now started
 
         sound_play(GStart);  // Play game start sound
 
