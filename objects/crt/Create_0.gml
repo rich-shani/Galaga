@@ -98,10 +98,12 @@ crt_apply = function() {
 		draw_sprite_stretched(overlay_image, 0, 0, 0, output_width, output_height);
 	}
 
-	draw_text(10, 10, string(fps) + " / " + string(fps_real));
-	draw_text(10, 30, string(surface_get_width(application_surface)));
-	draw_text(10, 50, string(display_get_gui_width()));
-
+	if (keyboard_check(vk_shift)) {
+		draw_text(10, 10, string(fps) + " / " + string(fps_real));
+		draw_text(10, 30, string(surface_get_width(application_surface)));
+		draw_text(10, 50, string(display_get_gui_width()));
+	}
+	
 	if keyboard_check_pressed(vk_escape) {
 		game_end();
 	}	

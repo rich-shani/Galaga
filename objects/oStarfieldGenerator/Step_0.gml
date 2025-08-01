@@ -1,3 +1,3 @@
-if (!global.isGamePaused) {
-	Feryx_starfield_stepp();
-}
+//if (!global.isGamePaused) {
+//	Feryx_starfield_stepp();
+//}

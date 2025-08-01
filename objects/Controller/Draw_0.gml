@@ -409,7 +409,7 @@ else { /// screens
 
                                       draw_text(224, 480 + 32,
                                           string_hash_to_newline(
-                                              "2024 Richard Shannon"))
+                                              "2025 Richard Shannon"))
                 }
             }
         }
@@ -482,7 +482,7 @@ else { /// screens
       draw_set_color(c_yellow);
 
       draw_text(
-          64, 208 + 64, string_hash_to_newline("1ST BONUS FOR 30000 PTS"));
+          64, 208 + 64, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
 
       draw_text(
           64, 208 + 64 + 48, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
@@ -507,7 +507,7 @@ else { /// screens
                       draw_set_color(c_red)
 
                           draw_text(224, 480 + 32,
-                              string_hash_to_newline("2024 Richard Shannon"))
+                              string_hash_to_newline("2025 Richard Shannon"))
     }
 
   draw_set_halign(fa_left);

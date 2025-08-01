@@ -2,5 +2,28 @@
 
 //Feryx_starfield_create_Color_different(0,0,1024,1024,30,10,random(255));//colorized stars ONE COLOR
 
-Feryx_starfield_create_MULTIColor(0,3,1579,888,30,4); //colorized stars FULL RANDOM MULTIPLE COLOR
+//Feryx_starfield_create_MULTIColor(0,3,1579,888,30,4); //colorized stars FULL RANDOM MULTIPLE COLOR
+
+// get the viewport width 
+var viewport_width = view_get_wport(view_current);
+
+// particle system
+ps = part_system_create();
+part_system_depth(ps, depth);
+
+//emitter
+pe = part_emitter_create(ps);
+part_emitter_region(ps, pe, 0, viewport_width, -16, -128, ps_shape_rectangle, ps_distr_linear);
+
+// particle
+pt = part_type_create();
+part_type_sprite(pt, sParticle, false, false, true);
+part_type_alpha1(pt, 0.7);					// 70% alpha mix
+part_type_color_rgb(pt,0,255,0,255,0,255);
+part_type_direction(pt, 270, 270, 0, 0);	// 270 degree is straight down
+part_type_life(pt, 500, 500);				/// 500 frames, less < 10 secs
+part_type_speed(pt, 0.5, 3, 0, 0);			// speed range
+part_type_size(pt, 0.1, 0.8, 0, 0);			// size variance
+
+part_emitter_stream(ps, pe, pt, -1);		// random effect
 

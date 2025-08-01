@@ -84,5 +84,6 @@ layer_pause_fx = layer_get_fx("PauseEffect");
 // is the Game Paused?
 global.isGamePaused = false;
 
-// wait, then trigger the alarm (to start the game)
-//alarm[0]=60*6;
+// start in fullscreen mode 
+window_set_fullscreen(true);
+fullScreen = window_get_fullscreen();

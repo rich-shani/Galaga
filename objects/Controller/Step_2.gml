@@ -1001,7 +1001,7 @@ if global.gameMode == GameMode.INSTRUCTIONS {
 		}
 		
         // === INITIALIZE GAME STATE ===
-        global.lvl           = 10;
+        global.lvl           = 0;
         global.chall         = 0;
         global.challcount    = 1;
         global.divecapstart  = 2;
