@@ -1,4 +1,5 @@
-// Create Event
+// Retro text scroller 
+
 messages = [
     "Galaga Redux",
     "F10: slow/normal\t\t\tF12: reset",
