@@ -73,21 +73,11 @@ if (global.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller
 			}
         }
 
-        /// @subsubsection Death Animation (Single Ship)
-        // Draw the explosion animation when the ship is shipStatus (shipStatus == 1), not caught (caught == 0), and at the bottom of the screen (y == 528).
-        // Uses spr_explode with frame index floor(deadanim + 5) for the explosion sequence, positioned at (x, y).
-        if (shipStatus == 1 && caught == 0 && y == 528) {
-            if (deadanim < 4) {
-                //draw_sprite(spr_explode, floor(deadanim + 5), x, y);
-				draw_sprite(sExplosion3, floor(deadanim + 5), x, y);
-            }
-        }
-
         /// @subsubsection Caught State Animation
-        // Draw the ship when caught (caught == 1 or caught == 2) by a boss’s beam.
+        // Draw the ship when caught by a boss’s beam.
         // If alarm[2] == -1 and spinanim == 0, skip drawing (likely a transition state).
         // Otherwise, draw spr_ship with rotation (spinanim) to show the ship spinning, positioned at (x, y).
-        if (shipStatus == 1 && caught == 1 || caught == 2) {
+        if (shipStatus == ShipState.CAPTURED || shipStatus == ShipState.RELEASING) {
             if (alarm[2] != -1 || spinanim != 0) {
                 draw_sprite_ext(spr_ship, 0, x, y, 1, 1, spinanim, c_white, 1);
             }

@@ -85,5 +85,5 @@ layer_pause_fx = layer_get_fx("PauseEffect");
 global.isGamePaused = false;
 
 // start in fullscreen mode 
-window_set_fullscreen(true);
+//window_set_fullscreen(true);
 fullScreen = window_get_fullscreen();

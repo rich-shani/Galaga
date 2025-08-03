@@ -78,6 +78,6 @@ draw_sprite_ext(spr_ship,5,x,y,1,1,direction-90,c_white,1);}
 
 
 
-if Ship.caught = 1 and Ship.alarm[2] = -1 and Ship.spinanim = 0 and beam = 1{draw_sprite(spr_ship,1,x,y+28)}
+if Ship.shipStatus == ShipState.CAPTURED and Ship.alarm[2] = -1 and Ship.spinanim = 0 and beam = 1{draw_sprite(spr_ship,1,x,y+28)}
 
 

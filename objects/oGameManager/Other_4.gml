@@ -4,5 +4,5 @@ sound_stop_all();
 
 if (global.gameMode == GameMode.INITIALIZE) {
 	global.gameMode = GameMode.ATTRACT_MODE;
-	audio_play_sound(Galaga_Attract_Mode_Theme,1,false);
+	audio_play_sound(Galaga_Theme_Remix,1,false);
 }

@@ -1,6 +1,6 @@
 {
   "$GMSprite":"",
-  "%Name":"spr_example_overlay_1",
+  "%Name":"sMonitorFrame",
   "bboxMode":0,
   "bbox_bottom":788,
   "bbox_left":0,
@@ -21,11 +21,11 @@
   "layers":[
     {"$GMImageLayer":"","%Name":"2b681a95-c8af-4c94-b52f-31edb5840725","blendMode":0,"displayName":"default","isLocked":false,"name":"2b681a95-c8af-4c94-b52f-31edb5840725","opacity":100.0,"resourceType":"GMImageLayer","resourceVersion":"2.0","visible":true,},
   ],
-  "name":"spr_example_overlay_1",
+  "name":"sMonitorFrame",
   "nineSlice":{
     "$GMNineSliceData":"",
     "bottom":123,
-    "enabled":false,
+    "enabled":true,
     "guideColour":[4294902015,4294902015,4294902015,4294902015,],
     "highlightColour":1728023040,
     "highlightStyle":1,
@@ -42,17 +42,17 @@
     ],
     "top":138,
   },
-  "origin":0,
+  "origin":1,
   "parent":{
-    "name":"Presets",
-    "path":"folders/SittingDuck's CRT Shader/Presets.yy",
+    "name":"Sprites",
+    "path":"folders/Sprites.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
   "resourceVersion":"2.0",
   "sequence":{
     "$GMSequence":"",
-    "%Name":"spr_example_overlay",
+    "%Name":"sMonitorFrame",
     "autoRecord":true,
     "backdropHeight":768,
     "backdropImageOpacity":0.5,
@@ -76,7 +76,7 @@
       "resourceType":"KeyframeStore<MomentsEventKeyframe>",
       "resourceVersion":"2.0",
     },
-    "name":"spr_example_overlay",
+    "name":"sMonitorFrame",
     "playback":1,
     "playbackSpeed":30.0,
     "playbackSpeedType":0,
@@ -88,13 +88,13 @@
     "tracks":[
       {"$GMSpriteFramesTrack":"","builtinName":0,"events":[],"inheritsTrackColour":true,"interpolation":1,"isCreationTrack":false,"keyframes":{"$KeyframeStore<SpriteFrameKeyframe>":"","Keyframes":[
             {"$Keyframe<SpriteFrameKeyframe>":"","Channels":{
-                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f61efc57-7cd8-4ddc-ad6d-5e00e509afd0","path":"sprites/spr_example_overlay_1/spr_example_overlay_1.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
+                "0":{"$SpriteFrameKeyframe":"","Id":{"name":"f61efc57-7cd8-4ddc-ad6d-5e00e509afd0","path":"sprites/sMonitorFrame/sMonitorFrame.yy",},"resourceType":"SpriteFrameKeyframe","resourceVersion":"2.0",},
               },"Disabled":false,"id":"52fca3e2-502f-4c0b-8b9f-dacefe1788ce","IsCreationKey":false,"Key":0.0,"Length":1.0,"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"2.0","Stretch":false,},
           ],"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"2.0",},"modifiers":[],"name":"frames","resourceType":"GMSpriteFramesTrack","resourceVersion":"2.0","spriteId":null,"trackColour":0,"tracks":[],"traits":0,},
     ],
     "visibleRange":null,
     "volume":1.0,
-    "xorigin":0,
+    "xorigin":294,
     "yorigin":0,
   },
   "swatchColours":null,

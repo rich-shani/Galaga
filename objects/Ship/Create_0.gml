@@ -40,6 +40,8 @@ depth = -150;
 
 enum ShipState {
 	ALIVE,
+	CAPTURED,
+	RELEASING,
 	DEAD,
 	RESPAWN
 }
@@ -48,10 +50,6 @@ enum ShipState {
 // Indicates the ship's life state (0 = alive, 1 = dead, 2 = respawning).
 // Used to control movement, shooting, and collision behavior.
 shipStatus = ShipState.ALIVE;
-
-// Death animation counter, tracks the progress of the death animation (0 to 4).
-// Incremented by 0.1 each step when shipStatus == 1 to animate the ship's destruction.
-deadanim = 0;
 
 // Spin animation angle in degrees, set to 360 for default upright position.
 // Modified during caught or regain states to rotate the ship visually.
@@ -73,11 +71,6 @@ spinanim = 360;
 
 // Horizontal offset for double ship mode (28 pixels between left and right ships).
 #macro SHIP_SPACE 28
-
-/// @section Capture and Gravity
-// Indicates if the ship is caught by a boss's beam (0 = free, 1 = caught, 2 = freeing).
-// Controls movement and animation when captured.
-caught = 0;
 
 // X-coordinate of the gravity point (boss's position) when caught.
 // Used to pull the ship toward the boss during the capture state.

@@ -88,10 +88,12 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	
     /// @section Getting Hit (Single Ship)
     // Handle collisions when ship is alive or caught and not in formation
-    if ((shipStatus == ShipState.ALIVE || (caught == 1 && alarm[2] > -1)) && !in_formation) {
+ //   if ((shipStatus == ShipState.ALIVE || (shipStatus == ShipState.CAPTURED && alarm[2] > -1)) && !in_formation) {
+	if (shipStatus == ShipState.ALIVE) {
         if (shotMode == ShotMode.SINGLE) {
             with (Bee) {
-                if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
+            //    if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
+				if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
@@ -102,7 +104,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
             
             with (Butterfly) {
-                if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
+                if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     if (escort == 0) {} // Placeholder for escort logic
                     Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
@@ -114,7 +116,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
             
             with (Transform) {
-                if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
+                if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
@@ -137,7 +139,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
             
             with (EnemyShot) {
-                if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
+                if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     Ship.shipStatus = ShipState.DEAD; // Mark ship as dead
                     Ship.alarm[0] = 120; // Set death timer
                     sound_stop(GDie); // Stop death sound
@@ -149,7 +151,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             
             with (Boss) {
                 if (hit == 1) {
-                    if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
+                    if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                         Ship.shipStatus = ShipState.DEAD; // Mark ship as dead
                         Ship.alarm[0] = 120; // Set death timer
                         if (carrying == 1 && dive == 1) {
@@ -168,7 +170,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                 }
                 
                 if (hit == 0) {
-                    if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
+                    if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                         Ship.shipStatus = ShipState.DEAD; // Mark ship as dead
                         Ship.alarm[0] = 120; // Set death timer
                         sound_stop(GDie); // Stop death sound
@@ -391,37 +393,34 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
     
     /// @section Dead State
     // Handle ship death animation and respawn logic
-    if (shipStatus == ShipState.DEAD && caught == 0) {
-        if (deadanim < 4) {
-            deadanim += 0.1; // Increment death animation counter
-        }
-        
-        // Check conditions for respawning
-        if (regain == 0 && ((global.divecap == global.divecapstart) || (instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) == 0)) && (instance_number(Fighter) == 0 || Fighter.dive == 0) && alarm[0] == -1) {
-            global.p1lives -= 1; // Decrease player lives
+	if (!global.gameover) {
+	    if (shipStatus == ShipState.DEAD && alarm[0] ==-1) {
+	        global.p1lives -= 1; // Decrease player lives
+		
+	        // Check conditions for respawning
+	  //      if (regain == 0 && ((global.divecap == global.divecapstart) || (instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) == 0)) && (instance_number(Fighter) == 0 || Fighter.dive == 0) && alarm[0] == -1) {
+
             
-            if (global.p1lives > 0) {
-                Ship.shipStatus = ShipState.RESPAWN; // Set to respawn state
-                Ship.x = 224; // Reset position
-                Ship.y = 528;
-                Ship.alarm[1] = 90; // Set respawn timer
-				
-				deadamin = 0;
-            }
-			else {
-				// GAME OVER
-				global.gameover = 1; // Set game over state
-				alarm[10] = 120; // Set game over timer
-			}
-        }
-    }
-    
+	            if (global.p1lives > 0) {
+	                Ship.shipStatus = ShipState.RESPAWN; // Set to respawn state
+	                Ship.x = 224; // Reset position
+	                Ship.y = 528;
+	                Ship.alarm[1] = 90; // Set respawn timer
+	            }
+				else {
+					// GAME OVER
+					global.gameover = 1; // Set game over state
+					alarm[10] = 120; // Set game over timer
+				}
+	//        }
+	    }
+	}
+	
     /// @section Getting Caught
     // Handle ship being caught by boss beam
     with (Boss) {
         if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3 && Ship.x > x - 48 && Ship.x < x + 48 && Ship.shipStatus == ShipState.ALIVE) {
-            Ship.caught = 1; // Mark ship as caught
-            Ship.shipStatus = ShipState.DEAD; // Mark ship as shipStatus
+            Ship.shipStatus = ShipState.CAPTURED; // Mark ship as caught
             Ship.alarm[2] = 90; // Set caught timer
             Ship.grav = x; // Set gravity point to boss position
             sound_stop(GBeam); // Stop beam sound
@@ -434,7 +433,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
     }
     
     // Handle caught state movement and animation
-    if (caught == 1) {
+    if (Ship.shipStatus == ShipState.CAPTURED) {
         y = 396 + ((alarm[2] * 136) / 90); // Move ship vertically towards boss
         
         if (grav > 0) {
@@ -460,7 +459,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
         }
         
         if (bosscheck == 0) {
-            caught = 2; // Set to freeing state
+            Ship.shipStatus = ShipState.RELEASING; // Set to freeing state
             bosscheck = 0;
             alarm[2] = -1; // Reset timers
             alarm[0] = -1;
@@ -470,15 +469,15 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
     }
     
     // Handle freeing state after being caught
-    if (caught == 2) {
+    if (Ship.shipStatus = ShipState.RELEASING) {
         if (y < 528) {
             y += 6; // Move ship downwards
             spinanim -= 22.5; // Continue rotation
             if (spinanim == 0) { spinanim = 360; } // Reset rotation
         } else {
             y = 528; // Snap to bottom of screen
-            shipStatus = 0; // Reset shipStatus state 
-            caught = 0; // Reset caught state
+            shipStatus = ShipState.ALIVE; // Reset shipStatus state 
+        
             grav = 0; // Reset gravity
             spinanim = 360; // Reset rotation
             sound_stop(GCaptured); // Stop captured sound
@@ -559,11 +558,6 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
         }
     }
     
-    /// @section Second Explosion Animation
-    // Handle second death animation
-    if (deadanim2 > 0 && deadanim2 < 4) {
-        deadanim2 += 0.1; // Increment second death animation counter
-    }
     
     /// @section Game Over
     // Trigger game over state

@@ -35,17 +35,17 @@ draw_set_halign(fa_right);
 draw_set_color(c_red);
 
 if blink
-  = 0 { draw_text(80, 0, string_hash_to_newline("1UP")) };
+  = 0 { draw_text(80, 20, string_hash_to_newline("1UP")) };
 
-draw_text(304, 0, string_hash_to_newline("HIGH SCORE"));
+draw_text(304, 20, string_hash_to_newline("HIGH SCORE"));
 
 /// if blink = 0{draw_text(416,0,"2UP")}
 
 draw_set_color(c_white);
 
-draw_text(96, 16, string_hash_to_newline(global.p1score));
+draw_text(96, 36, string_hash_to_newline(global.p1score));
 
-draw_text(272, 16, string_hash_to_newline(global.disp))
+draw_text(272, 36, string_hash_to_newline(global.disp))
 
     /// draw_text(428,16,global.p2score);
 
@@ -561,8 +561,7 @@ else { /// screens
           with Boss
       {
 
-        if Ship
-          .caught = 1 and Ship.alarm[2] = -1 and Ship.spinanim = 0 and beam
+        if Ship.shipStatus == ShipState.CAPTURED and Ship.alarm[2] = -1 and Ship.spinanim = 0 and beam
               = 1 and direction = 270
           {
 

@@ -268,7 +268,7 @@ if dive = 1 and ret = 1 and enter = 0{ ///return
 
             loop = 0; beam = 0; beamsignal = 0; ret = 0;
 
-            dive = 0; dive2 = 0; intesc = 0; Ship.caught = 0; Ship.shipStatus = ShipState.DEAD; Ship.alarm[0] = 120;
+            dive = 0; dive2 = 0; intesc = 0; Ship.shipStatus = ShipState.DEAD; Ship.alarm[0] = 120;
 
             carrying = 1;
 

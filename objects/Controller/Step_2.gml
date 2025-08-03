@@ -996,8 +996,8 @@ if global.gameMode == GameMode.INSTRUCTIONS {
     if keyboard_check_pressed(vk_space) == true {
 
         global.gameMode = GameMode.GAME_ACTIVE;
-		if (audio_is_playing(Galaga_Attract_Mode_Theme)) {
-			audio_stop_sound(Galaga_Attract_Mode_Theme);
+		if (audio_is_playing(Galaga_Theme_Remix)) {
+			audio_stop_sound(Galaga_Theme_Remix);
 		}
 		
         // === INITIALIZE GAME STATE ===
