@@ -53,7 +53,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller
         // Draw the ship when alive (shipStatus == 0) or respawning (shipStatus == 2).
         // Uses spr_ship at the ship’s position (x, y) with default frame (0).
         if (shipStatus == 0 || shipStatus == 2) {
-            draw_sprite(spr_ship, 0, x, y);
+            //draw_sprite(spr_ship, 0, x, y);
+			draw_sprite_ext(spr_ship,0,x,y,1,1,0,c_white,1)
 			
 			if (!global.isGamePaused) {
 				// if we're not paused, then animate the thrusters

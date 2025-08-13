@@ -42,15 +42,16 @@ global.wave = 0;
 // Enum defining the possible game modes for state management.
 // Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
 enum GameMode {
-	INITIALIZE,
+	INITIALIZE = 0,
     ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
     INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
     GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
-	GAME_PAUSED
+	GAME_PAUSED,
+	ENTER_INITIALS
 }
 
 enum StartMode {
-	INITIALIZE,
+	INITIALIZE = 0,
 	SHOW_PLAYER1,
 	SHOW_STAGE1,
 	GAME_STARTED

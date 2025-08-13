@@ -1,5 +1,5 @@
 {
-  "$GMProject":"",
+  "$GMProject":"v1",
   "%Name":"Galaga",
   "AudioGroups":[
     {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
@@ -38,13 +38,14 @@
     {"$GMFolder":"","%Name":"Tile Sets","folderPath":"folders/Tile Sets.yy","name":"Tile Sets","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Timelines","folderPath":"folders/Timelines.yy","name":"Timelines","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
+  "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"atari.ttf","CopyToMask":-1,"filePath":"datafiles","name":"atari.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.11.0.179",
+    "IDEVersion":"2024.13.1.193",
   },
   "name":"Galaga",
   "resources":[
@@ -66,6 +67,7 @@
     {"id":{"name":"EnemyShot","path":"objects/EnemyShot/EnemyShot.yy",},},
     {"id":{"name":"Explosion","path":"objects/Explosion/Explosion.yy",},},
     {"id":{"name":"Fighter","path":"objects/Fighter/Fighter.yy",},},
+    {"id":{"name":"oBaseEnemy","path":"objects/oBaseEnemy/oBaseEnemy.yy",},},
     {"id":{"name":"oEnemy","path":"objects/oEnemy/oEnemy.yy",},},
     {"id":{"name":"oEnemyBee","path":"objects/oEnemyBee/oEnemyBee.yy",},},
     {"id":{"name":"oEnemyButterfly","path":"objects/oEnemyButterfly/oEnemyButterfly.yy",},},
@@ -174,6 +176,7 @@
     {"id":{"name":"Transform4","path":"paths/Transform4/Transform4.yy",},},
     {"id":{"name":"Transform4Flip","path":"paths/Transform4Flip/Transform4Flip.yy",},},
     {"id":{"name":"Galaga","path":"rooms/Galaga/Galaga.yy",},},
+    {"id":{"name":"Galaga2","path":"rooms/Galaga2/Galaga2.yy",},},
     {"id":{"name":"__global_object_depths","path":"scripts/__global_object_depths/__global_object_depths.yy",},},
     {"id":{"name":"__init_action","path":"scripts/__init_action/__init_action.yy",},},
     {"id":{"name":"__init_global","path":"scripts/__init_global/__init_global.yy",},},
@@ -181,6 +184,7 @@
     {"id":{"name":"action_move_point","path":"scripts/action_move_point/action_move_point.yy",},},
     {"id":{"name":"action_restart_game","path":"scripts/action_restart_game/action_restart_game.yy",},},
     {"id":{"name":"challenging","path":"scripts/challenging/challenging.yy",},},
+    {"id":{"name":"Controller_functions","path":"scripts/Controller_functions/Controller_functions.yy",},},
     {"id":{"name":"CRTFunctions","path":"scripts/CRTFunctions/CRTFunctions.yy",},},
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},
     {"id":{"name":"newlevel","path":"scripts/newlevel/newlevel.yy",},},
@@ -265,6 +269,7 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
+    {"roomId":{"name":"Galaga2","path":"rooms/Galaga2/Galaga2.yy",},},
     {"roomId":{"name":"Galaga","path":"rooms/Galaga/Galaga.yy",},},
   ],
   "templateType":null,

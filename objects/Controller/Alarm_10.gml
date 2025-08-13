@@ -29,6 +29,9 @@ if (nextlevel == 1) {
             /// Increment the global level counter (global.lvl) to advance to the next level or wave.
             global.lvl += 1;
             
+			/// set the game state to ACTIVE
+			global.gameMode = GameMode.GAME_ACTIVE;
+			
             /// Execute the newlevel script to set up the new level (e.g., spawn enemies, reset timers).
             script_execute(newlevel);
 

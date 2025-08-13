@@ -1,3 +1,6 @@
+// Inherit the parent event
+event_inherited();
+
 /// @description Initializes an enemy object and controls its movement behavior in a space shooter game.
 /// This script is executed in the Create or Step event of an enemy object (e.g., Bee, Butterfly).
 /// It sets up initial variables, assigns movement paths based on wave and pattern, and manages rogue enemy behavior.

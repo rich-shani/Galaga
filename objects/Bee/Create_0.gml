@@ -1,3 +1,6 @@
+// Inherit the parent event
+event_inherited();
+
 uprohib = 0;
 
 dive2 = 0;

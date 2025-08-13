@@ -1,3 +1,6 @@
+// Inherit the parent event
+event_inherited();
+
 if rogue = 1 and (y > 592 or x < -16 or x > 464){instance_destroy()};
 
 anim = anim + 1; if anim = 12{anim = 0};

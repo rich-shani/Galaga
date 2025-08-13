@@ -35,17 +35,17 @@ draw_set_halign(fa_right);
 draw_set_color(c_red);
 
 if blink
-  = 0 { draw_text(80, 20, string_hash_to_newline("1UP")) };
+  = 0 { draw_text(80, 10, string_hash_to_newline("1UP")) };
 
-draw_text(304, 20, string_hash_to_newline("HIGH SCORE"));
+draw_text(304, 10, string_hash_to_newline("HIGH SCORE"));
 
 /// if blink = 0{draw_text(416,0,"2UP")}
 
 draw_set_color(c_white);
 
-draw_text(96, 36, string_hash_to_newline(global.p1score));
+draw_text(96, 26, string_hash_to_newline(global.p1score));
 
-draw_text(272, 36, string_hash_to_newline(global.disp))
+draw_text(272, 26, string_hash_to_newline(global.disp))
 
     /// draw_text(428,16,global.p2score);
 
@@ -641,12 +641,3 @@ else { /// screens
     }
 }
 
-//draw_camera(view_camera[0]);  // this draws everything in the view
-
-//surface_reset_target();
-
-//if (surface_exists(effect_surface)) {
-//    shader_set(Shader1); // replace with your shader
-//    draw_surface(effect_surface, 0, 0);
-//    shader_reset();
-//}
