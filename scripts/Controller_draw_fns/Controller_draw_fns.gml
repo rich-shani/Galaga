@@ -1,3 +1,20 @@
+function Draw_Scores() {
+	
+	draw_set_halign(fa_right);
+
+	draw_set_color(c_red);
+	if (blink) { draw_text(80, 10, string_hash_to_newline("1UP")) };
+	draw_text(304, 10, string_hash_to_newline("HIGH SCORE"));
+
+	draw_set_color(c_white);
+	draw_text(96, 26, string_hash_to_newline(global.p1score));
+	draw_text(272, 26, string_hash_to_newline(global.disp))
+
+	draw_set_halign(fa_left);
+	
+	return;
+}
+
 function Draw_Results() {
 
 	draw_set_color(c_red);

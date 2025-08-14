@@ -946,7 +946,7 @@ function Attract_Mode() {
 }
 
 function Show_Instructions() {
-	   // If player presses space, start the actual game
+	// if player presses space, start the actual game
     if keyboard_check_pressed(vk_space) == true {
 
         global.gameMode = GameMode.GAME_ACTIVE;

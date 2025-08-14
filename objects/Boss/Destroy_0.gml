@@ -1,4 +1,4 @@
-if global.gameover < 2{
+if !global.gameover {
 
 if y < 592 and x > -16 and x < 464 and (y > -16 or global.challcount > 0){
 

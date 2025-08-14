@@ -57,7 +57,7 @@ att = 0;
 /// @section UI and Visual Effects
 // Blink counter, initialized to 0.
 // Likely used for blinking UI elements, such as score or lives display.
-blink = 0;
+blink = 1;
 
 // Results flag, initialized to 0.
 // Probably used to trigger the display of end-of-level or game-over results.

@@ -409,7 +409,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	            }
 				else {
 					// GAME OVER
-					global.gameover = 1; // Set game over state
+					global.gameover = true; // Set game over state
 					alarm[10] = 120; // Set game over timer
 				}
 	//        }

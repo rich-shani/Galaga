@@ -77,7 +77,7 @@ global.startMode = StartMode.INITIALIZE;
 /// @section Game Over
 // Flag indicating game over state (0 = game active, 1 = game over).
 // Set when the player's lives reach 0 and no regain is possible.
-global.gameover = 0;
+global.gameover = false;
 
 // grab a handle to the pause/unpause screen effect
 // set the FX filter to a random color
