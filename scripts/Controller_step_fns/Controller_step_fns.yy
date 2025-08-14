@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"Controller_functions",
+  "%Name":"Controller_step_fns",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Controller_functions",
+  "name":"Controller_step_fns",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

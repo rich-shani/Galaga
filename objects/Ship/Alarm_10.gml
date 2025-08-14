@@ -12,7 +12,7 @@ if global.gameover = 2{
 
     with Fighter{instance_destroy()}
 
-    with Controller{global.gameMode = GameMode.ENTER_INITIALS; results = 1; alarm[9] = 450};
+    with Controller{global.gameMode = GameMode.SHOW_RESULTS; results = 1; alarm[9] = 450};
 
     with Stars{
 

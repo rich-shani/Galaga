@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"Controller_draw_fns",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Controller_draw_fns",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

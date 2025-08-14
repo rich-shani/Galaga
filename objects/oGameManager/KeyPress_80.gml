@@ -1,5 +1,6 @@
 // only allow Pause during the Game
-//if (global.gameMode == GameMode.GAME_ACTIVE || global.gameMode == GameMode.GAME_PAUSED) {
+if (global.gameMode == GameMode.GAME_ACTIVE) {
+
 	// toggle the Game Pause setting
 	global.isGamePaused = !global.isGamePaused;
 	
@@ -16,9 +17,6 @@
 		
 		// PAUSE game, suspend the sounds and set screen effect to black and white
 		audio_pause_all();
-		
-		// pause the starfield
-
 		
 		if (layer_pause_fx != -1) 
 		{
@@ -41,4 +39,4 @@
 			}		
 		}
 	}
-//}
+}

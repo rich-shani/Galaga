@@ -865,7 +865,7 @@ function Attract_Mode() {
     if attpause > 0 {
         attpause -= 1;
     }
-
+	
     // Between att values 8 to 14, the ship will simulate shooting
     if att > 7 and att < 15 {
 

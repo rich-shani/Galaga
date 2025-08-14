@@ -47,6 +47,7 @@ enum GameMode {
     INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
     GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
 	GAME_PAUSED,
+	SHOW_RESULTS,
 	ENTER_INITIALS
 }
 
