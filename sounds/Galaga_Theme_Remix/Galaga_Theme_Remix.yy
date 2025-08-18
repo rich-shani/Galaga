@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":279.504,
+  "duration":279.46378,
   "name":"Galaga_Theme_Remix",
   "parent":{
     "name":"Sounds",

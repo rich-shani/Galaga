@@ -56,7 +56,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	    y = breathey
 
-	    if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and Ship.shipStatus = ShipState.ALIVE and global.divecap > 0 and global.open = 0 and Ship.alarm[4] = -1{
+	    if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and Ship.shipStatus = ShipState.ACTIVE and global.divecap > 0 and global.open = 0 and Ship.alarm[4] = -1{
 
 	    if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack{}else{
 

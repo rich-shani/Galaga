@@ -16,10 +16,7 @@ if (Controller.attshot == 1) {
 // or in specific attract mode states (Controller.att between 6 and 17, inclusive).
 // Controller.att likely represents the attract mode state or timer.
 if (global.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller.att < 18)) {
-    /// @subsection Control States
-    // Only draw certain elements when the game is in active control states (Controller.start == 0 or 3).
-    // Controller.start == 0 likely represents normal gameplay, while 3 may indicate a specific state (e.g., post-respawn).
-    if (global.startMode == StartMode.INITIALIZE || global.startMode == StartMode.GAME_STARTED) {
+
         /// @subsubsection Shots
         // Draw the first shot if it is active (shot1x, shot1y are not off-screen).
         // Uses spr_shot with no scaling (1,1), rotation based on shot1dir, white color, and full opacity.
@@ -91,5 +88,5 @@ if (global.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller
         if (regain == 1) {
             draw_sprite_ext(spr_ship, 0, newshipx, newshipy, 1, 1, spinanim, c_white, 1);
         }
-    }
+  //  }
 }

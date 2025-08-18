@@ -29,7 +29,7 @@ else{spd = 3;}
 
 if global.transnum > 0{
 
-if dive = 0 and irandom(5) = 0 and global.divecap > 0 and uprohib = 0 and global.prohib = 0 and global.transform = 0 and Ship.shipStatus == ShipState.ALIVE and Ship.regain = 0 ///transforming
+if dive = 0 and irandom(5) = 0 and global.divecap > 0 and uprohib = 0 and global.prohib = 0 and global.transform = 0 and Ship.shipStatus == ShipState.ACTIVE and Ship.regain = 0 ///transforming
 
 and instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) < 21 and global.open = 0 and Ship.alarm[4] = -1{
 
@@ -57,7 +57,7 @@ if dive = 0 and enter = 0{ ///convoy
 
     if global.divecap > 0 and global.open = 0 and Ship.alarm[4] = -1{
 
-        if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and alarm[2] = -1 and Ship.shipStatus == ShipState.ALIVE and Ship.regain = 0{
+        if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and alarm[2] = -1 and Ship.shipStatus == ShipState.ACTIVE and Ship.regain = 0{
 
             dive = 1; direction = 90; global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
 

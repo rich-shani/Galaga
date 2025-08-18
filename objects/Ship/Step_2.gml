@@ -3,9 +3,9 @@
 // Check if the game is in the main gameplay mode
 if (global.gameMode == GameMode.GAME_ACTIVE) {
  
-   if (global.startMode == StartMode.INITIALIZE && !in_formation) {
-	   // check what state the ship is ...
-	   if (shipStatus == ShipState.ALIVE || shipStatus == ShipState.RESPAWN) {
+  if (!in_formation) {
+	   // we can only move when the Ship status is ACTIVE
+	   if (shipStatus == ShipState.ACTIVE) {
 			/// @section Movement
 	        if (keyboard_check(vk_left) && x > SHIP_MIN_X) {
 	            x -= 3; // Move ship left by 3 pixels
@@ -88,8 +88,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	
     /// @section Getting Hit (Single Ship)
     // Handle collisions when ship is alive or caught and not in formation
- //   if ((shipStatus == ShipState.ALIVE || (shipStatus == ShipState.CAPTURED && alarm[2] > -1)) && !in_formation) {
-	if (shipStatus == ShipState.ALIVE) {
+ //   if ((shipStatus == ShipState.ACTIVE || (shipStatus == ShipState.CAPTURED && alarm[2] > -1)) && !in_formation) {
+	if (shipStatus == ShipState.ACTIVE) {
         if (shotMode == ShotMode.SINGLE) {
             with (Bee) {
             //    if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.caught == 0) {
@@ -412,14 +412,13 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 					global.gameover = true; // Set game over state
 					alarm[10] = 120; // Set game over timer
 				}
-	//        }
 	    }
 	}
 	
     /// @section Getting Caught
     // Handle ship being caught by boss beam
     with (Boss) {
-        if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3 && Ship.x > x - 48 && Ship.x < x + 48 && Ship.shipStatus == ShipState.ALIVE) {
+        if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3 && Ship.x > x - 48 && Ship.x < x + 48 && Ship.shipStatus == ShipState.ACTIVE) {
             Ship.shipStatus = ShipState.CAPTURED; // Mark ship as caught
             Ship.alarm[2] = 90; // Set caught timer
             Ship.grav = x; // Set gravity point to boss position
@@ -476,7 +475,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             if (spinanim == 0) { spinanim = 360; } // Reset rotation
         } else {
             y = 528; // Snap to bottom of screen
-            shipStatus = ShipState.ALIVE; // Reset shipStatus state 
+            shipStatus = ShipState.ACTIVE; // Reset shipStatus state 
         
             grav = 0; // Reset gravity
             spinanim = 360; // Reset rotation
@@ -487,7 +486,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
     /// @section Regaining Ship
     // Handle regaining a ship after rescue
     if (regain == 1) {
-        if (shipStatus == ShipState.ALIVE) {
+        if (shipStatus == ShipState.ACTIVE) {
             if (alarm[3] == -1 && global.divecap == global.divecapstart && instance_number(EnemyShot) == 0) {
                 x = (round(x / 2) * 2); // Round position
                 newshipx = (round(newshipx / 2) * 2);
@@ -557,8 +556,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
         }
     }
-    
-    
+
     /// @section Game Over
     // Trigger game over state
     //if (shipStatus == ShipState.DEAD && caught == 0 && regain == 0 && global.p1lives == 1 && global.gameover == 0) {
@@ -570,25 +568,5 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
     // Update highscore if current score is higher
     if (global.p1score > global.disp) {
         global.disp = global.p1score;
-    }
-}
-
-/// @section Attract Mode
-// Handle attract mode movement (demo mode)
-if (Controller.att > 5 && Controller.attpause == 0) {
-    if (Controller.att == 8 || Controller.att == 11 || Controller.att == 14) {
-        // Move ship to controller's position
-        if (Ship.x < Controller.x + Controller.attpos - 3) { x += 3; }
-        else {
-            if (Ship.x > Controller.x + Controller.attpos + 3) { x -= 3; }
-            else { Ship.x = Controller.x + Controller.attpos; } // Snap to position
-        }
-    } else {
-        // Move ship to attract mode position
-        if (Ship.x < Controller.attpos - 3 + 16) { x += 3; }
-        else {
-            if (Ship.x > Controller.attpos + 3 + 16) { x -= 3; }
-            else { Ship.x = Controller.attpos + 16; } // Snap to position
-        }
     }
 }

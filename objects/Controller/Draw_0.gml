@@ -28,13 +28,17 @@ else { // Draw screen based on Game Mode
 		case GameMode.ENTER_INITIALS:
 			Draw_Enter_Initials();
 			break;
-		case GameMode.GAME_ACTIVE:
-			Draw_Lives();
-			break;
+	}
+	
+	// show CREDITS if we're not in an active game
+	if (global.gameMode < GameMode.GAME_STAGE_MESSAGE) {
+		Draw_Credits();
+	}
+	else {
+		Draw_Lives();
 	}
 
-  // draw_set_halign(fa_left);
-  draw_set_color(c_aqua)
+  draw_set_color(c_aqua);
 
   if global.gameover
   {
@@ -42,16 +46,18 @@ else { // Draw screen based on Game Mode
   }
 	else if (instance_number(Ship) > 0) {
 		
-	  if global.startMode
-	    = StartMode.SHOW_PLAYER1 { draw_text(176, 288, string_hash_to_newline("PLAYER 1")) };
-	  if global.startMode
-	    > StartMode.SHOW_PLAYER1 { draw_text(160, 288, string_hash_to_newline("STAGE 1")) };
-	  if global.startMode
-	    = StartMode.GAME_STARTED { draw_text(160, 256, string_hash_to_newline("PLAYER 1")) };
-
-	  if global.startMode
-	    = StartMode.INITIALIZE
-	    {
+	if global.gameMode == GameMode.GAME_PLAYER_MESSAGE { 
+		draw_text(176, 288, string_hash_to_newline("PLAYER 1"));
+	}
+	else if global.gameMode == GameMode.GAME_STAGE_MESSAGE { 
+		//draw_text(176, 288, string_hash_to_newline("PLAYER 1"));
+		draw_text(160, 288, string_hash_to_newline("STAGE 1"));
+	}
+	else if (global.gameMode == GameMode.GAME_READY) {
+		draw_text(160, 256, string_hash_to_newline("PLAYER 1"));
+		draw_text(160, 288, string_hash_to_newline("STAGE 1"));
+	}
+	else if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	      if global.stage
 	        = 1

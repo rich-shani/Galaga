@@ -89,9 +89,9 @@ function Game_Loop(){
 	    global.p1lives += 1;     // Add a life
 	}
 	
-	// === LEVEL TRANSITION CHECK ===
-	// If no enemies are present and all game conditions are met,
-	// initiate transition to the next level.
+	//// === LEVEL TRANSITION CHECK ===
+	//// If no enemies are present and all game conditions are met,
+	//// initiate transition to the next level.
 	if instance_number(Bee) == 0 &&
 	    instance_number(Butterfly) == 0 &&
 	    instance_number(Boss) == 0 &&
@@ -99,8 +99,8 @@ function Game_Loop(){
 	    instance_number(Transform) == 0 &&
 	    nextlevel == 0 &&
 	    global.open == 0 &&
-	    Ship.shipStatus == ShipState.ALIVE &&
-	    global.startMode == StartMode.INITIALIZE {
+	    Ship.shipStatus == ShipState.ACTIVE &&
+		global.gameMode == GameMode.GAME_ACTIVE {
 			
 		nextlevel = 1;       // Flag to begin next level
 		alarm[10] = 90;      // Delay for level transition effects
@@ -248,7 +248,7 @@ function Game_Loop(){
                 }
 
                 // Advance to next wave if all counts are zero
-                if Ship.shipStatus == ShipState.ALIVE &&
+                if Ship.shipStatus == ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 &&
                     rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
@@ -287,7 +287,7 @@ function Game_Loop(){
                 }
 
                 // Advance to next wave
-                if Ship.shipStatus == ShipState.ALIVE &&
+                if Ship.shipStatus == ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                 global.wave = 2;
@@ -323,7 +323,7 @@ function Game_Loop(){
                 }
 
                 // Transition to next wave
-                if Ship.shipStatus == ShipState.ALIVE &&
+                if Ship.shipStatus == ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 3;
@@ -355,7 +355,7 @@ function Game_Loop(){
                     alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ALIVE &&
+                if Ship.shipStatus == ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 4;
@@ -438,7 +438,7 @@ function Game_Loop(){
                 }
 
                 // Advance wave if all enemies cleared and ship is alive
-                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 1;
                 script_execute(waverogue);
@@ -468,7 +468,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ALIVE &&
+                if Ship.shipStatus == ShipState.ACTIVE &&
                 count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                 global.divecap == global.divecapstart {
                 global.wave = 2;
@@ -500,7 +500,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ALIVE &&
+                if Ship.shipStatus == ShipState.ACTIVE &&
                 count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                 global.divecap == global.divecapstart {
                 global.wave = 3;
@@ -533,7 +533,7 @@ function Game_Loop(){
                 }
 
                 // Advance wave once enemies are cleared
-                if Ship.shipStatus == ShipState.ALIVE &&
+                if Ship.shipStatus == ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 4;
@@ -617,7 +617,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 1;
                 script_execute(waverogue);
@@ -647,7 +647,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 2;
                 script_execute(waverogue);
@@ -679,7 +679,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 3;
                 script_execute(waverogue);
@@ -711,7 +711,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ALIVE && count1 == 0 && count2 == 0 &&
+                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 4;
                 script_execute(waverogue);
@@ -861,11 +861,30 @@ else {
 }
 
 function Attract_Mode() {
-	   // Countdown timer to slow down or pause gameMode activity temporarily
+	// Countdown timer to slow down or pause gameMode activity temporarily
     if attpause > 0 {
         attpause -= 1;
     }
 	
+	// Ship movement
+	if (att > 5 && attpause == 0) {
+	    if (att == 8 || att == 11 || att == 14) {
+	        // Move ship to controller's position
+	        if (Ship.x < Controller.x + attpos - 3) { Ship.x += 3; }
+	        else {
+	            if (Ship.x > Controller.x + attpos + 3) { Ship.x -= 3; }
+	            else { Ship.x = Controller.x + attpos; } // Snap to position
+	        }
+	    } else {
+	        // Move ship to attract mode position
+	        if (Ship.x < attpos - 3 + 16) { Ship.x += 3; }
+	        else {
+	            if (Ship.x > attpos + 3 + 16) { Ship.x -= 3; }
+	            else { Ship.x = attpos + 16; } // Snap to position
+	        }
+	    }
+	}
+
     // Between att values 8 to 14, the ship will simulate shooting
     if att > 7 and att < 15 {
 
@@ -943,13 +962,15 @@ function Attract_Mode() {
         attshotx = 0;
         attshoty = 0;
     }
+		
+
 }
 
 function Show_Instructions() {
 	// if player presses space, start the actual game
     if keyboard_check_pressed(vk_space) == true {
 
-        global.gameMode = GameMode.GAME_ACTIVE;
+ //       global.gameMode = GameMode.INITIALIZE_GAME;
 		if (audio_is_playing(Galaga_Theme_Remix)) {
 			audio_stop_sound(Galaga_Theme_Remix);
 		}
@@ -992,7 +1013,7 @@ function Show_Instructions() {
         firstlife   = 20000;  // Score threshold for first extra life
         additional  = 70000;  // Score threshold for each subsequent extra life
 
-        global.startMode = StartMode.SHOW_PLAYER1;  // Game state is now started
+		global.gameMode = GameMode.GAME_PLAYER_MESSAGE;
 
         sound_play(GStart);  // Play game start sound
 

@@ -30,7 +30,7 @@ if (nextlevel == 1) {
             global.lvl += 1;
             
 			/// set the game state to ACTIVE
-			global.gameMode = GameMode.GAME_ACTIVE;
+			//global.gameMode = GameMode.GAME_ACTIVE;
 			
             /// Execute the newlevel script to set up the new level (e.g., spawn enemies, reset timers).
             script_execute(newlevel);
@@ -158,13 +158,11 @@ if (nextlevel == 2) {
     nextlevel = 0;
 
     /// @subsection Challenge Mode and Game Start   
-    /// If in the initial state (start == 0), set global.open to 1, possibly enabling a menu or game state.
-    if (global.startMode == StartMode.INITIALIZE) {
-        global.open = 1;
-		/// If not in challenge mode (global.challcount == 0) and in the initial state (start == 0),
-		/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.
-		if (global.challcount == 0) alarm[2] = 70;
-    }
+	global.open = 1;
+	/// If not in challenge mode (global.challcount == 0) and in the initial state (start == 0),
+	/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.
+	if (global.challcount == 0) alarm[2] = 70;
+
 
     /// @subsection Challenge Mode Path Adjustment
     /// If in challenge mode 4 (global.chall == 4), adjust enemy paths (path1, path1flip) if their starting X position is 256.

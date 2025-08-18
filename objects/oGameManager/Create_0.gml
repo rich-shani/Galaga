@@ -43,19 +43,15 @@ global.wave = 0;
 // Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
 enum GameMode {
 	INITIALIZE = 0,
+	GAME_PAUSED,
     ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
     INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
+	GAME_PLAYER_MESSAGE,
+	GAME_STAGE_MESSAGE,
+	GAME_READY,
     GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
-	GAME_PAUSED,
 	SHOW_RESULTS,
 	ENTER_INITIALS
-}
-
-enum StartMode {
-	INITIALIZE = 0,
-	SHOW_PLAYER1,
-	SHOW_STAGE1,
-	GAME_STARTED
 }
 
 global.ArcadeSprites = true;
@@ -69,10 +65,6 @@ global.stage = 0;
 // Initial game mode, set to attract mode (demo mode).
 // Controls whether the game is in gameplay, instructions, or demo state.
 global.gameMode = GameMode.INITIALIZE;
-
-// Start state, initialized to 0.
-// Determines control states (0 = normal gameplay, 3 = likely post-respawn or specific state).
-global.startMode = StartMode.INITIALIZE;
 
 /// @section Game Over
 // Flag indicating game over state (0 = game active, 1 = game over).

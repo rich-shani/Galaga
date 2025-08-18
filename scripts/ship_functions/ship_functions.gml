@@ -51,7 +51,7 @@ function handle_shot_collision(shot_index, enemy_x, enemy_y, enemy_instance) {
 /// @param {bool} is_right Whether to check the right ship in double mode.
 function handle_player_hit(enemy_x, enemy_y, enemy_instance, is_double, is_right) {
     var check_x = is_right ? (Ship.x + SHIP_SPACE) : Ship.x;
-    if (abs(enemy_x - check_x) < space2 && abs(enemy_y - Ship.y) < space2 && (Ship.shipStatus == ShipState.ALIVE || (is_double && skip == 0))) {
+    if (abs(enemy_x - check_x) < space2 && abs(enemy_y - Ship.y) < space2 && (Ship.shipStatus == ShipState.ACTIVE || (is_double && skip == 0))) {
         if (is_double) {
             skip = 1;
             secondx = is_right ? (Ship.x + SHIP_SPACE) : Ship.x;

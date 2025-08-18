@@ -7,7 +7,11 @@ function Draw_Scores() {
 	draw_text(304, 10, string_hash_to_newline("HIGH SCORE"));
 
 	draw_set_color(c_white);
-	draw_text(96, 26, string_hash_to_newline(global.p1score));
+	// DRAW PLAYER1 SCORE (if we're passed the ATTRACT, and INSTRUCTIONS stage)
+	if (global.gameMode >= GameMode.GAME_PLAYER_MESSAGE) {	
+		draw_text(96, 26, string_hash_to_newline(global.p1score));
+	}
+	// DRAW HIGH SCORE
 	draw_text(272, 26, string_hash_to_newline(global.disp))
 
 	draw_set_halign(fa_left);
@@ -60,8 +64,7 @@ function Draw_Enter_Initials() {
 
 	draw_set_halign(fa_right);
 	draw_text(176, 176, string_hash_to_newline(global.p1score));
-
-	draw_set_halign(fa_left); /// 304,176
+	draw_set_halign(fa_left);
 
 	draw_set_color(c_red);
 	draw_text(192, 288, string_hash_to_newline("TOP 5"));
@@ -327,6 +330,8 @@ function Draw_Attract_Mode() {
 						draw_text(224, 480 + 32,
 							string_hash_to_newline(
 								"2025 Richard Shannon"))
+						
+						draw_set_halign(fa_left)
 					}
 			}
 	}
@@ -409,8 +414,8 @@ function Draw_Instructions() {
 	draw_sprite(spr_ship, 0, 32, 8 + 208 + 48 + 64);
 	draw_sprite(spr_ship, 0, 32, 8 + 208 + 48 + 48 + 64);
 
-	draw_set_halign(fa_center)
-	draw_set_color(c_white)
+	draw_set_halign(fa_center);
+	draw_set_color(c_white);
 
 	draw_text(224, 416 + 32, string_hash_to_newline("© 1981-2024 BANDAI"));
 	draw_text(224, 448 + 32,
@@ -419,6 +424,7 @@ function Draw_Instructions() {
 	draw_set_color(c_red)
 	draw_text(224, 480 + 32,
 	string_hash_to_newline("2025 Richard Shannon"));
+	draw_set_halign(fa_left);
 	
 	return;
 }
@@ -431,6 +437,13 @@ function Draw_Lives() {
 		draw_sprite(spr_ship, 0, 16 + (32 * (lifecount - 1)), 560);
 		lifecount = lifecount - 1
 	};
+	
+	return;
+}
+
+function Draw_Credits() {
+	draw_set_color(c_white);
+	draw_text(16, 550, "CREDIT 0");
 	
 	return;
 }

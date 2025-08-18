@@ -47,7 +47,7 @@ if dive = 0 and enter = 0{ ///convoy
 
     if global.divecap > 0 and global.bosscap > 0 and global.open = 0 and Ship.alarm[4] = -1{
 
-        if irandom(1) = 0 and global.prohib = 0 and uprohib = 0 and Ship.shipStatus == ShipState.ALIVE and Ship.regain = 0{
+        if irandom(1) = 0 and global.prohib = 0 and uprohib = 0 and Ship.shipStatus == ShipState.ACTIVE and Ship.regain = 0{
 
             dive = 1; direction = 90;
 

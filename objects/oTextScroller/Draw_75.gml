@@ -37,4 +37,7 @@ if (!window_get_fullscreen()) {
 	        draw_text_color(char_x, center_y + wave_y, msg[i], c_red, c_red, c_yellow, c_yellow, 1);
 	    }
 	}
+	
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
 }

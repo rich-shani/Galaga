@@ -9,7 +9,7 @@
   "bitRate":128,
   "compression":0,
   "conversionMode":0,
-  "duration":103.584,
+  "duration":103.55456,
   "name":"Galaga_Attract_Mode_Theme",
   "parent":{
     "name":"Sounds",
