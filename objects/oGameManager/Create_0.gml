@@ -24,6 +24,9 @@ global.p1score = 0;
 // Likely used to show the current high score on the UI, updated if p1score exceeds it.
 global.disp = 0;
 
+// number of game credits (coins entered)
+global.credits = 0;
+
 /// @section High Score Initials
 // Initials for the top 5 high scores, defaulting to two-letter placeholders.
 // Used to display player initials alongside high scores in the high-score table.
@@ -78,6 +81,5 @@ layer_pause_fx = layer_get_fx("PauseEffect");
 // is the Game Paused?
 global.isGamePaused = false;
 
-// start in fullscreen mode 
-//window_set_fullscreen(true);
+//window_set_fullscreen(false);
 fullScreen = window_get_fullscreen();

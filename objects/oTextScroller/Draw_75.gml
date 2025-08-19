@@ -31,7 +31,7 @@ if (!window_get_fullscreen()) {
 	    var char_x = scroll_x + (i * char_spacing);
     
 	    // Only draw visible characters
-	    if (char_x > -char_spacing && char_x < room_width) {
+	    if (char_x > -char_spacing && char_x < screen_width) {
 	        // Sine wave offset (apply during scrolling and holding)
 	        var wave_y = sin((char_x * frequency) + (i * phase_offset) + (current_time / 1000)) * amplitude;
 	        draw_text_color(char_x, center_y + wave_y, msg[i], c_red, c_red, c_yellow, c_yellow, 1);
@@ -39,5 +39,5 @@ if (!window_get_fullscreen()) {
 	}
 	
 	draw_set_halign(fa_left);
-	draw_set_valign(fa_top);
-}
+	draw_set_valign(fa_top); 
+}                     

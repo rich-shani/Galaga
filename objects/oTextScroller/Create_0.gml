@@ -25,7 +25,7 @@ scroll_x = screen_width;
 // Parameters for scrolling and wave
 scroll_speed = 3;          // Pixels per step
 char_spacing = 24;        // Spacing between characters (match font width)
-amplitude = 0;           // Wave height
+amplitude = 2;           // Wave height
 frequency = 0.1;          // Wave tightness
 phase_offset = 0.2;       // Wave progression per character
 center_x = screen_width / 2; // Where text centers during hold

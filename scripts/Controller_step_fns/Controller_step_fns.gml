@@ -932,7 +932,8 @@ function Attract_Mode() {
     }
 
     // === ADVANCE TO gameMode MODE SCREEN 2 ===
-    if keyboard_check_pressed(vk_space) == true {
+ //   if keyboard_check_pressed(vk_space) == true {
+	if (global.credits == 1) {
 
         sound_play(GCredit);     // Play credit sound
         global.gameMode = GameMode.INSTRUCTIONS;             // Move to gameMode screen 2 (instructions or title)
@@ -969,8 +970,9 @@ function Attract_Mode() {
 function Show_Instructions() {
 	// if player presses space, start the actual game
     if keyboard_check_pressed(vk_space) == true {
-
- //       global.gameMode = GameMode.INITIALIZE_GAME;
+		// 'use' credit to enter game mode
+		global.credits = 0;
+		
 		if (audio_is_playing(Galaga_Theme_Remix)) {
 			audio_stop_sound(Galaga_Theme_Remix);
 		}

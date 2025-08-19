@@ -443,7 +443,7 @@ function Draw_Lives() {
 
 function Draw_Credits() {
 	draw_set_color(c_white);
-	draw_text(16, 550, "CREDIT 0");
+	draw_text(16, 550, "CREDIT " + string(global.credits));
 	
 	return;
 }
