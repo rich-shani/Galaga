@@ -9,11 +9,16 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			/// @section Movement
 	        if (keyboard_check(vk_left) && x > SHIP_MIN_X) {
 	            x -= 3; // Move ship left by 3 pixels
+				shipDirection = 0;
 	        } else {
 	            // Check for right arrow key press and ensure ship stays within right boundary
 	            if (keyboard_check(vk_right) && x < SHIP_MAX_X - (shotMode * SHIP_SPACE)) {
 	                x += 3; // Move ship right by 3 pixels
+					shipDirection = 2;
 	            }
+				else {
+					shipDirection = 1;
+				}
 	        }
 		
 			/// @section Shooting

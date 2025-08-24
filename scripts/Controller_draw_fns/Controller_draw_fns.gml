@@ -3,16 +3,16 @@ function Draw_Scores() {
 	draw_set_halign(fa_right);
 
 	draw_set_color(c_red);
-	if (blink) { draw_text(80, 10, string_hash_to_newline("1UP")) };
-	draw_text(304, 10, string_hash_to_newline("HIGH SCORE"));
+	if (blink) { draw_text(80*global.scale, 10*global.scale, string_hash_to_newline("1UP")) };
+	draw_text(304*global.scale, 10*global.scale, string_hash_to_newline("HIGH SCORE"));
 
 	draw_set_color(c_white);
 	// DRAW PLAYER1 SCORE (if we're passed the ATTRACT, and INSTRUCTIONS stage)
 	if (global.gameMode >= GameMode.GAME_PLAYER_MESSAGE) {	
-		draw_text(96, 26, string_hash_to_newline(global.p1score));
+		draw_text(96*global.scale, 26*global.scale, string_hash_to_newline(global.p1score));
 	}
 	// DRAW HIGH SCORE
-	draw_text(272, 26, string_hash_to_newline(global.disp))
+	draw_text(272*global.scale, 26*global.scale, string_hash_to_newline(global.disp))
 
 	draw_set_halign(fa_left);
 	
@@ -149,30 +149,30 @@ function Draw_Attract_Mode() {
 	if att < 21 {
 		if att > 0 {
 			draw_set_color(c_aqua);
-			draw_text(170, 80, string_hash_to_newline("GALAGA"));
+			draw_text(170*global.scale, 80*global.scale, string_hash_to_newline("GALAGA"));
 
 			if att > 1 {
-				draw_text(176 - 48, 128, string_hash_to_newline("-- SCORE --"));
-					draw_text(176 - 40, 128, string_hash_to_newline("-        -"));
+				draw_text((176 - 48)*global.scale, 128*global.scale, string_hash_to_newline("-- SCORE --"));
+					draw_text((176 - 40)*global.scale, 128*global.scale, string_hash_to_newline("-        -"));
 
 					if att > 2 {
-						draw_text(176 - 48, 176,
+						draw_text((176 - 48)*global.scale, 176*global.scale,
 						string_hash_to_newline("    50    100"));
-						draw_sprite(spr_ship, 10 + floor(global.flip / 30), 128, 168 + 16)
+						draw_sprite(spr_ship, 10 + floor(global.flip / 30), 128*global.scale, (168 + 16)*global.scale);
 
 							if att
 								>
 								3 {
-									draw_text(176 - 48, 224,
+									draw_text((176 - 48)*global.scale, 224*global.scale,
 										string_hash_to_newline("    80    160"));
-									draw_sprite(spr_ship, 6 + floor(global.flip / 30), 128,
-										168 + 48 + 16)
+									draw_sprite(spr_ship, 6 + floor(global.flip / 30), 128*global.scale,
+										(168 + 48 + 16)*global.scale);
 
 									if att
 										>
 										4 {
 											draw_sprite(spr_ship, 2 + floor(global.flip / 30),
-												224, 168 + 48 + 48 + 24)
+												224*global.scale, (168 + 48 + 48 + 24)*global.scale);
 										}
 								}
 						}
@@ -186,12 +186,12 @@ function Draw_Attract_Mode() {
 				if att
 					<
 					8 {
-						draw_sprite_ext(spr_ship, 2 + floor(global.flip / 30), 384,
-							336, 1, 1, 0, c_white, 1);
+						draw_sprite_ext(spr_ship, 2 + floor(global.flip / 30), 384*global.scale,
+							336*global.scale, 1, 1, 0, c_white, 1);
 						draw_sprite_ext(spr_ship, 6 + floor(global.flip / 30),
-							384 + 32, 368, 1, 1, 0, c_white, 1);
+							(384 + 32)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
 						draw_sprite_ext(spr_ship, 6 + floor(global.flip / 30),
-							384 - 32, 368, 1, 1, 0, c_white, 1)
+							(384 - 32)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1)
 					};
 
 				if att
@@ -318,16 +318,16 @@ function Draw_Attract_Mode() {
 
 						draw_set_color(c_white)
 
-						draw_text(224, 416 + 32,
+						draw_text(224*global.scale, (416 + 32)*global.scale,
 							string_hash_to_newline("© 1981-2024 BANDAI"))
 
-						draw_text(224, 448 + 32,
+						draw_text(224*global.scale, (448 + 32)*global.scale,
 							string_hash_to_newline(
 								"  NAMCO ENTERTAINMENT, INC. "))
 
 						draw_set_color(c_red)
 
-						draw_text(224, 480 + 32,
+						draw_text(224*global.scale, (480 + 32)*global.scale,
 							string_hash_to_newline(
 								"2025 Richard Shannon"))
 						
@@ -342,53 +342,53 @@ function Draw_Attract_Mode() {
 
 			draw_set_halign(fa_left);
 			draw_set_color(c_blue);
-			draw_text(64, 112, string_hash_to_newline("THE GALACTIC HEROES"))
+			draw_text(64*global.scale, 112*global.scale, string_hash_to_newline("THE GALACTIC HEROES"))
 
 			draw_set_color(c_red);
-			draw_text(122, 224, string_hash_to_newline("-- BEST 5 --"));
-			draw_text(122 + 8, 224, string_hash_to_newline("-         -"));
+			draw_text(122*global.scale, 224*global.scale, string_hash_to_newline("-- BEST 5 --"));
+			draw_text((122 + 8)*global.scale, 224*global.scale, string_hash_to_newline("-         -"));
 
 			draw_set_color(c_aqua);
-			draw_text(160, 320, string_hash_to_newline("SCORE     NAME"));
+			draw_text(160*global.scale, 320*global.scale, string_hash_to_newline("SCORE     NAME"));
 
-			draw_text(64, 304 + 32 + 16, string_hash_to_newline("1ST"));
+			draw_text(64*global.scale, (304 + 32 + 16)*global.scale, string_hash_to_newline("1ST"));
 			draw_set_halign(fa_right);
-			draw_text(240, 304 + 32 + 16, string_hash_to_newline(global.galaga1));
+			draw_text(240*global.scale, 304 + 32 + 16, string_hash_to_newline(global.galaga1));
 			draw_set_halign(fa_left);
-			draw_text(336, 304 + 32 + 16, string_hash_to_newline(global.init1));
+			draw_text(336*global.scale, 304 + 32 + 16, string_hash_to_newline(global.init1));
 
-			draw_text(64, 304 + 32 + 32 + 16, string_hash_to_newline("2ND"));
+			draw_text(64*global.scale, 304 + 32 + 32 + 16, string_hash_to_newline("2ND"));
 			draw_set_halign(fa_right);
 			draw_text(
-				240, 304 + 32 + 32 + 16, string_hash_to_newline(global.galaga2));
+				240*global.scale, 304 + 32 + 32 + 16, string_hash_to_newline(global.galaga2));
 			draw_set_halign(fa_left);
 			draw_text(
-				336, 304 + 32 + 32 + 16, string_hash_to_newline(global.init2));
+				336*global.scale, 304 + 32 + 32 + 16, string_hash_to_newline(global.init2));
 
-			draw_text(64, 304 + 32 + 32 + 32 + 16, string_hash_to_newline("3RD"));
+			draw_text(64*global.scale, 304 + 32 + 32 + 32 + 16, string_hash_to_newline("3RD"));
 			draw_set_halign(fa_right);
-			draw_text(240, 304 + 32 + 32 + 32 + 16,
+			draw_text(240*global.scale, 304 + 32 + 32 + 32 + 16,
 				string_hash_to_newline(global.galaga3));
 			draw_set_halign(fa_left);
-			draw_text(336, 304 + 32 + 32 + 32 + 16,
+			draw_text(336*global.scale, 304 + 32 + 32 + 32 + 16,
 				string_hash_to_newline(global.init3));
 
 			draw_text(
-				64, 304 + 32 + 32 + 32 + 32 + 16, string_hash_to_newline("4TH"));
+				64*global.scale, 304 + 32 + 32 + 32 + 32 + 16, string_hash_to_newline("4TH"));
 			draw_set_halign(fa_right);
-			draw_text(240, 304 + 32 + 32 + 32 + 32 + 16,
+			draw_text(240*global.scale, 304 + 32 + 32 + 32 + 32 + 16,
 				string_hash_to_newline(global.galaga4));
 			draw_set_halign(fa_left);
-			draw_text(336, 304 + 32 + 32 + 32 + 32 + 16,
+			draw_text(336*global.scale, 304 + 32 + 32 + 32 + 32 + 16,
 				string_hash_to_newline(global.init4));
 
-			draw_text(64, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+			draw_text(64*global.scale, 304 + 32 + 32 + 32 + 32 + 32 + 16,
 				string_hash_to_newline("5TH"));
 			draw_set_halign(fa_right);
-			draw_text(240, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+			draw_text(240*global.scale, 304 + 32 + 32 + 32 + 32 + 32 + 16,
 				string_hash_to_newline(global.galaga5));
 			draw_set_halign(fa_left);
-			draw_text(336, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+			draw_text(336*global.scale, 304 + 32 + 32 + 32 + 32 + 32 + 16,
 				string_hash_to_newline(global.init5));
 		}
 		
@@ -434,7 +434,8 @@ function Draw_Lives() {
 	lifecount = global.p1lives - 1;
 	repeat(lifecount)
 	{
-		draw_sprite(spr_ship, 0, 16 + (32 * (lifecount - 1)), 560);
+	//	draw_sprite(spr_ship, 0, 16 + (32 * (lifecount - 1)), 560);
+		draw_sprite_ext(sXWing, 1, (20 + 40 * (lifecount - 1))*global.scale, 555*global.scale, 0.32, 0.32, 0, c_white, 1);
 		lifecount = lifecount - 1
 	};
 	
@@ -443,7 +444,7 @@ function Draw_Lives() {
 
 function Draw_Credits() {
 	draw_set_color(c_white);
-	draw_text(16, 550, "CREDIT " + string(global.credits));
+	draw_text(16*global.scale, 550*global.scale, "CREDIT " + string(global.credits));
 	
 	return;
 }

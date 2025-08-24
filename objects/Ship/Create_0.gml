@@ -50,6 +50,8 @@ enum ShipState {
 // Indicates the ship's life state (0 = alive, 1 = dead, 2 = respawning).
 // Used to control movement, shooting, and collision behavior.
 shipStatus = ShipState.ACTIVE;
+// 0 is left, 1 is level, 2 is right
+shipDirection = 1;
 
 // Spin animation angle in degrees, set to 360 for default upright position.
 // Modified during caught or regain states to rotate the ship visually.

@@ -10,7 +10,7 @@ if (window_get_fullscreen()) {
 	}
 
 	draw_sprite_stretched(decal, 0, 0, 0, window_get_width(), window_get_height());
-	draw_sprite_stretched(sMonitorFrame, 0, window_get_width()/2 - (monitor_width/2), 0, monitor_width,window_get_height());
+//	draw_sprite_stretched(sMonitorFrame, 0, window_get_width()/2 - (monitor_width/2), 0, monitor_width,window_get_height());
 }
 else {
 	if (inst != noone) {

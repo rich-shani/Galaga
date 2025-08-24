@@ -51,12 +51,13 @@ if (global.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller
         // Uses spr_ship at the ship’s position (x, y) with default frame (0).
         if (shipStatus == 0 || shipStatus == 2) {
             //draw_sprite(spr_ship, 0, x, y);
-			draw_sprite_ext(spr_ship,0,x,y,1,1,0,c_white,1)
+			//draw_sprite_ext(spr_ship,0,x,y,1,1,0,c_white,1);
+			draw_sprite_ext(sXWing,shipDirection,x,y,0.4,0.4,0,c_white,1);
 			
 			if (!global.isGamePaused) {
 				// if we're not paused, then animate the thrusters
-				draw_sprite(sLaserEmit,image_index/12,x-8,y+26);
-				draw_sprite(sLaserEmit,image_index/12,x+8,y+26);
+				draw_sprite(sLaserEmit,image_index/12,x-8,y+32);
+				draw_sprite(sLaserEmit,image_index/12,x+8,y+32);
 			}
 			
             // If in double mode, draw a second ship offset by SHIP_SPACE (28 pixels) to the right.

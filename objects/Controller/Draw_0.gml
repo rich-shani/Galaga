@@ -1,14 +1,17 @@
 // 1UP & HIGH SCORE (red text)
 
 // load retro Atari font
-draw_set_font(font0);
+if (global.roomname == "starwars") {
+	draw_set_font(fAtari32);	
+}
+else draw_set_font(fAtari12);
 
 // draw the scores (top of screen)
 Draw_Scores();
 	
 // is the Game Paused?
 if (global.isGamePaused) { 
-	draw_set_font(fAtari24);
+	draw_set_font(fAtari32);
 	draw_set_color(c_green);
 	
 	draw_text(50,265, "GAME PAUSED");

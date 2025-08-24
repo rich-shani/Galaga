@@ -39,7 +39,7 @@ for (var i = 0; i < oGameManager.nLives-1; i++ ) {
 
 // Is the Game Paused?
 if (oGameManager.isGamePaused) {
-	draw_set_font(fAtari24);
+	draw_set_font(fAtari32);
 	draw_set_color(c_green);
 	
 	draw_text(270,465, "GAME PAUSED");

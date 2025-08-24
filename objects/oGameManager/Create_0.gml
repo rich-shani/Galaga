@@ -83,3 +83,12 @@ global.isGamePaused = false;
 
 //window_set_fullscreen(false);
 fullScreen = window_get_fullscreen();
+
+// room name
+global.roomname = room_get_name(room);
+
+// scale the system based on the mode ...
+global.scale = 1;
+if (global.roomname == "starwars") {
+	global.scale = 2.4;
+}

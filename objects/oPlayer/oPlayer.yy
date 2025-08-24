@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_ship",
-    "path":"sprites/spr_ship/spr_ship.yy",
+    "name":"sXWing",
+    "path":"sprites/sXWing/sXWing.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -942,15 +942,6 @@ function Attract_Mode() {
         x = xstart;              // Reset object to original x
         y = ystart;              // Reset object to original y
 
-        // Recreate stars background
-        with Stars {
-            script_execute(stardelete);        // Delete old stars
-            starspeed = 2;                     // Temporarily increase star speed
-            starsp = starspeed;                // Store that speed
-            script_execute(fullstarscript, starsp); // Run full star generation script
-            starspeed = 0;                     // Reset star speed
-        }
-
         // Reset player ship position
         Ship.x = Ship.xstart;
         Ship.y = Ship.ystart;
@@ -963,8 +954,6 @@ function Attract_Mode() {
         attshotx = 0;
         attshoty = 0;
     }
-		
-
 }
 
 function Show_Instructions() {
