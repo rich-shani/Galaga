@@ -64,7 +64,7 @@ if dive = 0 and enter = 0{ ///convoy
             if xstart > 224{path_start(Butterfly1,spd,0,false)}
 
             else{path_start(Butterfly1Flip,spd,0,false)}
-
+			path_scale = global.scale;
         }
 
     }
@@ -169,6 +169,7 @@ if dive = 1 and escort = 0 and enter = 0{ ///charger, no escort
 
             }
 
+			path_scale = global.scale;
         }
 
     }
@@ -225,6 +226,7 @@ if dive = 1 and escort = 1 and enter = 0{ ///charger, escort
 
             if dir = -1{path_start(Boss1AltFlip,spd,0,false)};
 
+			path_scale = global.scale;
         }
 
     }
@@ -263,6 +265,7 @@ if dive = 1 and enter = 0{ ///charger
 
                 else{path_start(BeeLoopFlip,spd,0,false); loop = 2}
 
+				path_scale = global.scale;
             ///}
 
             }

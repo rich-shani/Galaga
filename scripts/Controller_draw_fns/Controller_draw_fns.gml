@@ -353,42 +353,42 @@ function Draw_Attract_Mode() {
 
 			draw_text(64*global.scale, (304 + 32 + 16)*global.scale, string_hash_to_newline("1ST"));
 			draw_set_halign(fa_right);
-			draw_text(240*global.scale, 304 + 32 + 16, string_hash_to_newline(global.galaga1));
+			draw_text(240*global.scale, (304 + 32 + 16)*global.scale, string_hash_to_newline(global.galaga1));
 			draw_set_halign(fa_left);
-			draw_text(336*global.scale, 304 + 32 + 16, string_hash_to_newline(global.init1));
+			draw_text(336*global.scale, (304 + 32 + 16)*global.scale, string_hash_to_newline(global.init1));
 
-			draw_text(64*global.scale, 304 + 32 + 32 + 16, string_hash_to_newline("2ND"));
+			draw_text(64*global.scale, (304 + 32 + 32 + 16)*global.scale, string_hash_to_newline("2ND"));
 			draw_set_halign(fa_right);
 			draw_text(
-				240*global.scale, 304 + 32 + 32 + 16, string_hash_to_newline(global.galaga2));
+				240*global.scale, (304 + 32 + 32 + 16)*global.scale, string_hash_to_newline(global.galaga2));
 			draw_set_halign(fa_left);
 			draw_text(
-				336*global.scale, 304 + 32 + 32 + 16, string_hash_to_newline(global.init2));
+				336*global.scale, (304 + 32 + 32 + 16)*global.scale, string_hash_to_newline(global.init2));
 
-			draw_text(64*global.scale, 304 + 32 + 32 + 32 + 16, string_hash_to_newline("3RD"));
+			draw_text(64*global.scale, (304 + 32 + 32 + 32 + 16)*global.scale, string_hash_to_newline("3RD"));
 			draw_set_halign(fa_right);
-			draw_text(240*global.scale, 304 + 32 + 32 + 32 + 16,
+			draw_text(240*global.scale, (304 + 32 + 32 + 32 + 16)*global.scale,
 				string_hash_to_newline(global.galaga3));
 			draw_set_halign(fa_left);
-			draw_text(336*global.scale, 304 + 32 + 32 + 32 + 16,
+			draw_text(336*global.scale, (304 + 32 + 32 + 32 + 16)*global.scale,
 				string_hash_to_newline(global.init3));
 
 			draw_text(
-				64*global.scale, 304 + 32 + 32 + 32 + 32 + 16, string_hash_to_newline("4TH"));
+				64*global.scale, (304 + 32 + 32 + 32 + 32 + 16)*global.scale, string_hash_to_newline("4TH"));
 			draw_set_halign(fa_right);
-			draw_text(240*global.scale, 304 + 32 + 32 + 32 + 32 + 16,
+			draw_text(240*global.scale, (304 + 32 + 32 + 32 + 32 + 16)*global.scale,
 				string_hash_to_newline(global.galaga4));
 			draw_set_halign(fa_left);
-			draw_text(336*global.scale, 304 + 32 + 32 + 32 + 32 + 16,
+			draw_text(336*global.scale, (304 + 32 + 32 + 32 + 32 + 16)*global.scale,
 				string_hash_to_newline(global.init4));
 
-			draw_text(64*global.scale, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+			draw_text(64*global.scale, (304 + 32 + 32 + 32 + 32 + 32 + 16)*global.scale,
 				string_hash_to_newline("5TH"));
 			draw_set_halign(fa_right);
-			draw_text(240*global.scale, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+			draw_text(240*global.scale, (304 + 32 + 32 + 32 + 32 + 32 + 16)*global.scale,
 				string_hash_to_newline(global.galaga5));
 			draw_set_halign(fa_left);
-			draw_text(336*global.scale, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+			draw_text(336*global.scale, (304 + 32 + 32 + 32 + 32 + 32 + 16)*global.scale,
 				string_hash_to_newline(global.init5));
 		}
 		
@@ -399,30 +399,38 @@ function Draw_Instructions() {
 		
 	draw_set_color(c_aqua);
 
-	draw_text(96, 208, string_hash_to_newline("PUSH START BUTTON"));
+	draw_text(96*global.scale, 208*global.scale, string_hash_to_newline("PUSH START BUTTON"));
 
 	draw_set_color(c_yellow);
 
-	draw_text(64, 208 + 64, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
+	draw_text(64*global.scale, (208 + 64)*global.scale, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
 
-	draw_text(64, 208 + 64 + 48, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
+	draw_text(64*global.scale, (208 + 64 + 48)*global.scale, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
 
-	draw_text(64, 208 + 64 + 48 + 48,
+	draw_text(64*global.scale, (208 + 64 + 48 + 48)*global.scale,
 	string_hash_to_newline("AND FOR EVERY 70000 PTS"));
 
-	draw_sprite(spr_ship, 0, 32, 8 + 208 + 64);
-	draw_sprite(spr_ship, 0, 32, 8 + 208 + 48 + 64);
-	draw_sprite(spr_ship, 0, 32, 8 + 208 + 48 + 48 + 64);
-
+	// which ship to draw ... 
+	if (global.roomname == "starwars") {
+		draw_sprite(sXWing, 0, 32*global.scale, (8 + 208 + 64)*global.scale);
+		draw_sprite(sXWing, 0, 32*global.scale, (8 + 208 + 48 + 64)*global.scale);
+		draw_sprite(sXWing, 0, 32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale);	
+	}
+	else {
+		draw_sprite(spr_ship, 0, 32*global.scale, (8 + 208 + 64)*global.scale);
+		draw_sprite(spr_ship, 0, 32*global.scale, (8 + 208 + 48 + 64)*global.scale);
+		draw_sprite(spr_ship, 0, 32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale);
+	}
+	
 	draw_set_halign(fa_center);
 	draw_set_color(c_white);
 
-	draw_text(224, 416 + 32, string_hash_to_newline("© 1981-2024 BANDAI"));
-	draw_text(224, 448 + 32,
+	draw_text(224*global.scale, (416 + 32)*global.scale, string_hash_to_newline("© 1981-2024 BANDAI"));
+	draw_text(224*global.scale, (448 + 32)*global.scale,
 	string_hash_to_newline("  NAMCO ENTERTAINMENT, INC. "));
 
 	draw_set_color(c_red)
-	draw_text(224, 480 + 32,
+	draw_text(224*global.scale, (480 + 32)*global.scale,
 	string_hash_to_newline("2025 Richard Shannon"));
 	draw_set_halign(fa_left);
 	

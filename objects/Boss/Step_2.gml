@@ -93,9 +93,10 @@ if dive = 0 and enter = 0{ ///convoy
 
                 }}
 
-            };
+            }
 
-        if beam = 0{ 
+    path_scale = global.scale;
+	if beam = 0{ 
 
             check = 0;
 
@@ -150,6 +151,7 @@ if dive = 0 and enter = 0{ ///convoy
                         global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; add = breathey - Boss.breathey - 32;
 
                         path_start(bosses[i].path_index,spd,0,false) i = 4;
+						path_scale = global.scale;
 
                     }
 
@@ -236,6 +238,8 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
             if xstart > 224{path_start(Boss1Alt,spd,0,false)}
 
             else{path_start(Boss1AltFlip,spd,0,false)}
+			
+			path_scale = global.scale;
 
         }
 

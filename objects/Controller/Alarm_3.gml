@@ -21,6 +21,8 @@ if att == 14{path_end(); x=xstart; y=ystart; path_start(AttractFlip,3,0,0)};
 
 if att == 16{path_end(); x=xstart; y=ystart};
 
+path_scale = global.scale;
+
 }
 
 // end of gameMode mode (step 30)

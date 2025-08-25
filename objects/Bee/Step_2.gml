@@ -67,6 +67,7 @@ if dive = 0 and enter = 0{ ///convoy
 
         }
 
+		path_scale = global.scale;
     }
 
 }
@@ -159,7 +160,8 @@ if dive = 1 and enter = 0{ ///charger
 
         }
 
-    }
+		path_scale = global.scale;
+   }
 
 }
 

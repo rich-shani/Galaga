@@ -31,5 +31,5 @@ if global.fastenter = 1{fasty = 50; timey = 63;};
 }
 
 
-
+path_scale = global.scale;
 

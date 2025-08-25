@@ -90,5 +90,5 @@ global.roomname = room_get_name(room);
 // scale the system based on the mode ...
 global.scale = 1;
 if (global.roomname == "starwars") {
-	global.scale = 2.4;
+	global.scale = 2.3;
 }

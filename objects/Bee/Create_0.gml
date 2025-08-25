@@ -246,4 +246,4 @@ else{
 
 }
 
-
+path_scale = global.scale;

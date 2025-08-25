@@ -6,6 +6,8 @@ if xstart > 224{path_start(Bee1,spd,0,false); global.transside = 1}
 
 else{path_start(Bee1Flip,spd,0,false); global.transside = 0}
 
+path_scale = global.scale;
+
 if global.transnum = 1{alarm[3] = 44;}
 
 if global.transnum = 2{alarm[3] = 25;}
