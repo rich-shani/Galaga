@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Transform4",
   "parent":{
-    "name":"Paths",
-    "path":"folders/Paths.yy",
+    "name":"original",
+    "path":"folders/Paths/original.yy",
   },
   "points":[
     {"speed":100.0,"x":272.0,"y":144.0,},

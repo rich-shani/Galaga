@@ -229,22 +229,22 @@ function Game_Loop(){
             if global.wave == 0 {
                 if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Random chance to spawn a rogue Bee
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(256, -16, Bee); // Spawn Bee from top
+	                // Random chance to spawn a rogue Bee
+	                if count1 > 0 || rogue1 > 0 {
+	                    if random(1) < (rogue1 / (rogue1 + count1)) {
+	                    rogueyes = 1;
+	                    }
+	                }
+	                instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
 
-                // Random chance to spawn a rogue Butterfly
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(448 - 256, -16, Butterfly); // Spawn Butterfly from top
-                alarm[2] = 6; // Delay before next possible spawn
+	                // Random chance to spawn a rogue Butterfly
+	                if count2 > 0 || rogue2 > 0 {
+	                    if random(1) < (rogue2 / (rogue2 + count2)) {
+	                    rogueyes = 1;
+	                    }
+	                }
+	                instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly); // Spawn Butterfly from top
+	                alarm[2] = 6; // Delay before next possible spawn
                 }
 
                 // Advance to next wave if all counts are zero
@@ -252,8 +252,8 @@ function Game_Loop(){
                     count1 == 0 && count2 == 0 &&
                     rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
-                global.wave = 1;
-                script_execute(waverogue); // Recalculate rogue spawn logic
+	                global.wave = 1;
+	                script_execute(waverogue); // Recalculate rogue spawn logic
                 }
             }
 
@@ -270,7 +270,7 @@ function Game_Loop(){
                         rogueyes = 1;
                     }
                     }
-                    instance_create(-16, 496, Boss); // Spawn Boss from bottom
+                    instance_create(-16*global.scale, 496*global.scale, Boss); // Spawn Boss from bottom
                     alarm[2] = 6;
                 }
 
@@ -281,7 +281,7 @@ function Game_Loop(){
                         rogueyes = 1;
                     }
                     }
-                    instance_create(-16, 496, Butterfly); // Spawn Butterfly from bottom
+                    instance_create(-16*global.scale, 496*global.scale, Butterfly); // Spawn Butterfly from bottom
                     alarm[2] = 6;
                 }
                 }
@@ -316,7 +316,7 @@ function Game_Loop(){
                     }
                     }
 
-                    instance_create(464, 496, Butterfly); // Butterfly spawns from bottom-right
+                    instance_create(464*global.scale, 496*global.scale, Butterfly); // Butterfly spawns from bottom-right
                     alt += 1;
                     if alt == 2 { alt = 0; } // Toggle alt
                     alarm[2] = 6; // Spawn delay
@@ -349,7 +349,7 @@ function Game_Loop(){
                     }
                     }
 
-                    instance_create(256, -16, Bee); // Bee from top
+                    instance_create(256*global.scale, -16*global.scale, Bee); // Bee from top
                     alt += 1;
                     if alt == 2 { alt = 0; }
                     alarm[2] = 6;
@@ -381,7 +381,7 @@ function Game_Loop(){
                     }
                     }
 
-                    instance_create(192, -16, Bee); // Bee appears from left-top
+                    instance_create(192*global.scale, -16*global.scale, Bee); // Bee appears from left-top
                     alt += 1;
                     if alt == 2 { alt = 0; }
                     alarm[2] = 6;
@@ -396,7 +396,7 @@ function Game_Loop(){
                 } else {
                     if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     alarm[2] == -1 {
-                    instance_create(192, -16, Fighter); // Spawn fighter unit
+                    instance_create(192*global.scale, -16*global.scale, Fighter); // Spawn fighter unit
                     }
                 }
 
@@ -424,7 +424,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(448 - 288, -16, Bee); // Bee from offset top-left
+                instance_create((448 - 288)*global.scale, -16*global.scale, Bee); // Bee from offset top-left
 
                 // Random chance for rogue Butterfly
                 if count2 > 0 || rogue2 > 0 {
@@ -432,7 +432,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(288, -16, Butterfly); // Butterfly from offset top-right
+                instance_create(288*global.scale, -16*global.scale, Butterfly); // Butterfly from offset top-right
 
                 alarm[2] = 6;
                 }
@@ -455,7 +455,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(-16, 496, Boss); // Boss from lower left
+                instance_create(-16*global.scale, 496*global.scale, Boss); // Boss from lower left
 
                 // Rogue Butterfly spawn
                 if count2 > 0 || rogue2 > 0 {
@@ -463,7 +463,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(-16, 496 - 32, Butterfly); // Slightly offset Butterfly
+                instance_create(-16*global.scale, (496 - 32)*global.scale, Butterfly); // Slightly offset Butterfly
 
                 alarm[2] = 6;
                 }
@@ -487,7 +487,7 @@ function Game_Loop(){
                     }
                 }
                 alt = 0;
-                instance_create(464, 496, Butterfly); // From far right
+                instance_create(464*global.scale, 496*global.scale, Butterfly); // From far right
 
                 if count2 > 0 || rogue2 > 0 {
                     if random(1) < (rogue2 / (rogue2 + count2)) {
@@ -495,7 +495,7 @@ function Game_Loop(){
                     }
                 }
                 alt = 1;
-                instance_create(464, 496 - 32, Butterfly); // Another butterfly
+                instance_create(464*global.scale, (496 - 32)*global.scale, Butterfly); // Another butterfly
 
                 alarm[2] = 6;
                 }
@@ -519,7 +519,7 @@ function Game_Loop(){
                         rogueyes = 1;
                     }
                     }
-                    instance_create(256 + 32, -16, Bee);  // Slightly offset Bee
+                    instance_create((256 + 32)*global.scale, -16*global.scale, Bee);  // Slightly offset Bee
 
                     alt = 1;
                     if count2 > 0 || rogue2 > 0 {
@@ -527,7 +527,7 @@ function Game_Loop(){
                         rogueyes = 1;
                     }
                     }
-                    instance_create(228 + 32, -16, Bee);  // Another Bee from nearby offset
+                    instance_create((228 + 32)*global.scale, -16*global.scale, Bee);  // Another Bee from nearby offset
 
                     alarm[2] = 6;
                 }
@@ -552,7 +552,7 @@ function Game_Loop(){
                     }
                     }
                     alt = 0;
-                    instance_create(448 - 256 - 32, -16, Bee); // Left Bee
+                    instance_create((448 - 256 - 32)*global.scale, -16*global.scale, Bee); // Left Bee
 
                     if count2 > 0 || rogue2 > 0 {
                     if random(1) < (rogue2 / (rogue2 + count2)) {
@@ -560,7 +560,7 @@ function Game_Loop(){
                     }
                     }
                     alt = 1;
-                    instance_create(448 - 228 - 32, -16, Bee); // Right Bee
+                    instance_create((448 - 228 - 32)*global.scale, -16*global.scale, Bee); // Right Bee
 
                     alarm[2] = 6;
                 }
@@ -578,7 +578,7 @@ function Game_Loop(){
 	                // Otherwise deploy a fighter if enemies are clear and alarm is ready
 	                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
 	                alarm[2] == -1 {
-	                instance_create(160, -16, Fighter); // Spawn Fighter unit from mid-top
+	                instance_create(160*global.scale, -16*global.scale, Fighter); // Spawn Fighter unit from mid-top
 	                }
 	            }
 			
@@ -605,7 +605,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(256, -16, Bee);  // From top center
+                instance_create(256*global.scale, -16*global.scale, Bee);  // From top center
 
                 // Spawn Butterfly with rogue chance
                 if count2 > 0 || rogue2 > 0 {
@@ -613,7 +613,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(448 - 256, -16, Butterfly);  // From top offset right
+                instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly);  // From top offset right
                 alarm[2] = 6;
                 }
 
@@ -634,7 +634,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(-16, 496, Boss); // From lower left
+                instance_create(-16*global.scale, 496*global.scale, Boss); // From lower left
 
                 // Rogue Butterfly spawn
                 if count2 > 0 || rogue2 > 0 {
@@ -642,7 +642,7 @@ function Game_Loop(){
                     rogueyes = 1;
                     }
                 }
-                instance_create(464, 496, Butterfly); // From lower right
+                instance_create(464*global.scale, 496*global.scale, Butterfly); // From lower right
 
                 alarm[2] = 6;
                 }
@@ -779,33 +779,33 @@ else {
                 // This wave is a doubled wave, meaning two spawns instead of one
 
                 if global.wave == 0 || global.wave == 3 || global.wave == 4 {
-                // Adjust path if in a specific challenge scenario
-                if global.chall == 4 {
-                    if global.wave == 4 && path_get_x(path1, 0) == 192 {
-                    // Shift paths right by 64 pixels
-                    path_shift(path1, 64, 0);
-                    path_shift(path1flip, 64, 0);
-                    }
-                }
+	                // Adjust path if in a specific challenge scenario
+	                if global.chall == 4 {
+	                    if global.wave == 4 && path_get_x(path1, 0) == 192 {
+		                    // Shift paths right by 64 pixels
+		                    path_shift(path1, 64*global.scale, 0);
+		                    path_shift(path1flip, 64*global.scale, 0);
+		                }
+					}
 
-                // Spawn two Bees on mirrored paths
-                instance_create(path_get_x(path1, 0), path_get_y(path1, 0), Bee);
-                instance_create(path_get_x(path1flip, 0), path_get_y(path1flip, 0), Bee);
-                alarm[2] = 6;
+	                // Spawn two Bees on mirrored paths
+	                instance_create(path_get_x(path1, 0)*global.scale, path_get_y(path1, 0)*global.scale, Bee);
+	                instance_create(path_get_x(path1flip, 0)*global.scale, path_get_y(path1flip, 0)*global.scale, Bee);
+	                alarm[2] = 6;
                 }
 
                 if global.wave == 1 {
-                // Spawn a Boss and a Bee
-                instance_create(path_get_x(path2, 0), path_get_y(path2, 0), Boss);
-                instance_create(path_get_x(path2flip, 0), path_get_y(path2flip, 0), Bee);
-                alarm[2] = 6;
+	                // Spawn a Boss and a Bee
+	                instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Boss);
+	                instance_create(path_get_x(path2flip, 0)*global.scale, path_get_y(path2flip, 0)*global.scale, Bee);
+	                alarm[2] = 6;
                 }
 
                 if global.wave == 2 {
-                // Spawn mirrored Bees
-                instance_create(path_get_x(path2, 0), path_get_y(path2, 0), Bee);
-                instance_create(path_get_x(path2flip, 0), path_get_y(path2flip, 0), Bee);
-                alarm[2] = 6;
+	                // Spawn mirrored Bees
+	                instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Bee);
+	                instance_create(path_get_x(path2flip, 0)*global.scale, path_get_y(path2flip, 0)*global.scale, Bee);
+	                alarm[2] = 6;
                 }
 
             } else {
@@ -814,32 +814,32 @@ else {
                 if global.wave == 0 || 
                 (global.wave == 3 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
                 (global.wave == 4 && (global.chall == 1 || global.chall == 6 || global.chall == 7)) {
-                // Single Bee spawn path for specific wave/challenge combinations
-                instance_create(path_get_x(path1, 0), path_get_y(path1, 0), Bee);
-                alarm[2] = 6;
+	                // Single Bee spawn path for specific wave/challenge combinations
+	                instance_create(path_get_x(path1, 0)*global.scale, path_get_y(path1, 0)*global.scale, Bee);
+	                alarm[2] = 6;
                 }
 
                 if global.wave == 1 {
-                // Alternates Boss/Bee depending on count
-                if count == 0 || count == 2 || count == 4 || count == 6 {
-                    instance_create(path_get_x(path2, 0), path_get_y(path2, 0), Boss);
-                } else {
-                    instance_create(path_get_x(path2, 0), path_get_y(path2, 0), Bee);
-                }
-                alarm[2] = 6;
+	                // Alternates Boss/Bee depending on count
+	                if count == 0 || count == 2 || count == 4 || count == 6 {
+	                    instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Boss);
+	                } else {
+	                    instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Bee);
+	                }
+	                alarm[2] = 6;
                 }
 
                 if global.wave == 2 {
-                // Spawn from mirrored path
-                instance_create(path_get_x(path2flip, 0), path_get_y(path2flip, 0), Bee);
-                alarm[2] = 6;
+	                // Spawn from mirrored path
+	                instance_create(path_get_x(path2flip, 0)*global.scale, path_get_y(path2flip, 0)*global.scale, Bee);
+	                alarm[2] = 6;
                 }
 
                 // Wave 3 or 4 mirrored Bee spawn if specific challenge pattern
                 if (global.wave == 4 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
-                (global.wave == 3 && (global.chall == 1 || global.chall == 6 || global.chall == 7)) {
-                instance_create(path_get_x(path1flip, 0), path_get_y(path1flip, 0), Bee);
-                alarm[2] = 6;
+	                (global.wave == 3 && (global.chall == 1 || global.chall == 6 || global.chall == 7)) {
+	                instance_create(path_get_x(path1flip, 0)*global.scale, path_get_y(path1flip, 0)*global.scale, Bee);
+	                alarm[2] = 6;
                 }
             }
         } // End of count check for spawning
@@ -870,16 +870,16 @@ function Attract_Mode() {
 	if (att > 5 && attpause == 0) {
 	    if (att == 8 || att == 11 || att == 14) {
 	        // Move ship to controller's position
-	        if (Ship.x < Controller.x + attpos - 3) { Ship.x += 3; }
+	        if (Ship.x < Controller.x + attpos - Ship.SHIP_MOVE_INCREMENT) { Ship.x += Ship.SHIP_MOVE_INCREMENT; }
 	        else {
-	            if (Ship.x > Controller.x + attpos + 3) { Ship.x -= 3; }
+	            if (Ship.x > Controller.x + attpos + Ship.SHIP_MOVE_INCREMENT) { Ship.x -= Ship.SHIP_MOVE_INCREMENT; }
 	            else { Ship.x = Controller.x + attpos; } // Snap to position
 	        }
 	    } else {
 	        // Move ship to attract mode position
-	        if (Ship.x < attpos - 3 + 16) { Ship.x += 3; }
+	        if (Ship.x < attpos - Ship.SHIP_MOVE_INCREMENT + 16) { Ship.x += Ship.SHIP_MOVE_INCREMENT; }
 	        else {
-	            if (Ship.x > attpos + 3 + 16) { Ship.x -= 3; }
+	            if (Ship.x > attpos + Ship.SHIP_MOVE_INCREMENT + 16) { Ship.x -= Ship.SHIP_MOVE_INCREMENT; }
 	            else { Ship.x = attpos + 16; } // Snap to position
 	        }
 	    }

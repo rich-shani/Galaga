@@ -5,8 +5,8 @@
   "kind":1,
   "name":"AttractFlip",
   "parent":{
-    "name":"Paths",
-    "path":"folders/Paths.yy",
+    "name":"original",
+    "path":"folders/Paths/original.yy",
   },
   "points":[
     {"speed":100.0,"x":272.0,"y":160.0,},

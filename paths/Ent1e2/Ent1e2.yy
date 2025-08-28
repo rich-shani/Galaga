@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Ent1e2",
   "parent":{
-    "name":"Paths",
-    "path":"folders/Paths.yy",
+    "name":"original",
+    "path":"folders/Paths/original.yy",
   },
   "points":[
     {"speed":100.0,"x":-16.0,"y":496.0,},

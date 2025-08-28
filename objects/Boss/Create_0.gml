@@ -85,7 +85,7 @@ if global.pattern = 2{
 }
 
 }
-
+ 
 ///
 
 if Controller.rogueyes = 1{rogue = 1; Controller.rogueyes = 0};

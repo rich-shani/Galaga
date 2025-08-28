@@ -59,20 +59,32 @@ spinanim = 360;
 
 /// @section Macros for Game Constants
 // Minimum X-coordinate for ship movement (left boundary, 16 pixels from room edge).
-#macro SHIP_MIN_X 16
-
-// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
-// 432 is derived from the room width minus the ship's sprite width.
-#macro SHIP_MAX_X 432
-
-// Off-screen coordinate for shots (-32 ensures shots are not visible/processed).
-#macro SHOT_OFFSCREEN -32
-
-// Speed of shots in pixels per step (12 pixels for consistent movement).
-#macro SHOT_SPEED 12
-
-// Horizontal offset for double ship mode (28 pixels between left and right ships).
-#macro SHIP_SPACE 28
+SHIP_MIN_X = 16;
+	// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
+	// 432 is derived from the room width minus the ship's sprite width.
+SHIP_MAX_X = 432;
+	// Off-screen coordinate for shots (-32 ensures shots are not visible/processed).
+SHOT_OFFSCREEN = -32;
+	// Speed of shots in pixels per step (12 pixels for consistent movement).
+SHOT_SPEED = 12;
+	// Horizontal offset for double ship mode (28 pixels between left and right ships).
+SHIP_SPACE = 28;
+	
+SHIP_MOVE_INCREMENT = 3;
+	
+if (global.roomname == "starwars") {
+	SHIP_MIN_X = 64;
+	// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
+	// 432 is derived from the room width minus the ship's sprite width.
+	SHIP_MAX_X = 968;
+	// Off-screen coordinate for shots (-32 ensures shots are not visible/processed).
+	SHOT_OFFSCREEN = -32;
+	// Speed of shots in pixels per step (12 pixels for consistent movement).
+	SHOT_SPEED = 24;
+	// Horizontal offset for double ship mode (28 pixels between left and right ships).
+	SHIP_SPACE = 56;
+	SHIP_MOVE_INCREMENT = 6;
+}
 
 // X-coordinate of the gravity point (boss's position) when caught.
 // Used to pull the ship toward the boss during the capture state.
@@ -113,11 +125,6 @@ in_formation = false;
 // X-coordinate of the second ship (right ship) when hit in double mode.
 // Stores the position for the death animation of the right ship.
 secondx = 0;
-
-// Second death animation counter (0 to 4), used for the right ship's destruction in double mode.
-// Incremented by 0.1 each step when the right ship is hit.
-deadanim2 = 0;
-
 
 /// @section Shooting Control
 // Flag to manage double shot timing (0 = allow second shot, 1 = skip second shot).

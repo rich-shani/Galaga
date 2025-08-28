@@ -13,27 +13,27 @@ if (global.lvl > 0 && rank > 0) {
         // If the ones digit is greater than 4, use a specific tile from bkgd_Rank (offset 16,0; 16x32 pixels).
         // Positioned at x=440-(16*rank), y=544, depth=-10 to ensure visibility above other elements.
         if (one > 4) {
-            tile_add(bkgd_Rank, 16, 0, 16, 32, 440 - (16 * rank), 544, -10);
+            tile_add(bkgd_Rank, 16, 0, 16, 32, 440*global.scale - (16 * rank), 544*global.scale, -10);
         }
         // Otherwise, use the default tile (offset 0,0) for digits 0-4.
         else {
-            tile_add(bkgd_Rank, 0, 0, 16, 32, 440 - (16 * rank), 544, -10);
+            tile_add(bkgd_Rank, 0, 0, 16, 32, 440*global.scale - (16 * rank), 544*global.scale, -10);
         }
     }
 
     // Display the ones digit for ranks slightly below onerank (onerank-1 to onerank-4).
     // Uses the default tile (0,0) for consistency, adjusting the x-position based on rank.
     if (rank == onerank - 1) {
-        tile_add(bkgd_Rank, 0, 0, 16, 32, 440 - (16 * rank), 544, -10);
+        tile_add(bkgd_Rank, 0, 0, 16, 32, 440*global.scale - (16 * rank), 544*global.scale, -10);
     }
     if (rank == onerank - 2) {
-        tile_add(bkgd_Rank, 0, 0, 16, 32, 440 - (16 * rank), 544, -10);
+        tile_add(bkgd_Rank, 0, 0, 16, 32, 440*global.scale - (16 * rank), 544*global.scale, -10);
     }
     if (rank == onerank - 3) {
-        tile_add(bkgd_Rank, 0, 0, 16, 32, 440 - (16 * rank), 544, -10);
+        tile_add(bkgd_Rank, 0, 0, 16, 32, 440*global.scale - (16 * rank), 544*global.scale, -10);
     }
     if (rank == onerank - 4) {
-        tile_add(bkgd_Rank, 0, 0, 16, 32, 440 - (16 * rank), 544, -10);
+        tile_add(bkgd_Rank, 0, 0, 16, 32, 440*global.scale - (16 * rank), 544*global.scale, -10);
     }
 
     /// @subsection Tens Digit
@@ -43,19 +43,19 @@ if (global.lvl > 0 && rank > 0) {
         // For tens digit > 4, use a wider tile (128,0; 32x32 pixels) to accommodate larger digits.
         // Position adjusted by (onerank*16) to align with the ones digit.
         if (ten > 4) {
-            tile_add(bkgd_Rank, 128, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 128, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
         // For tens digit 3 or 4, use tile at (96,0).
         if (ten == 3 || ten == 4) {
-            tile_add(bkgd_Rank, 96, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 96, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
         // For tens digit 2, use tile at (64,0).
         if (ten == 2) {
-            tile_add(bkgd_Rank, 64, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 64, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
         // For tens digit 1, use tile at (32,0).
         if (ten == 1) {
-            tile_add(bkgd_Rank, 32, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 32, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
     }
 
@@ -63,15 +63,15 @@ if (global.lvl > 0 && rank > 0) {
     if (tenrank > 1 && rank == onerank + tenrank - 1) {
         // For tens digit 8 or 9, use tile at (96,0).
         if (ten == 9 || ten == 8) {
-            tile_add(bkgd_Rank, 96, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 96, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
         // For tens digit 7, use tile at (64,0).
         if (ten == 7) {
-            tile_add(bkgd_Rank, 64, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 64, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
         // For tens digit 4 or 6, use tile at (32,0).
         if (ten == 6 || ten == 4) {
-            tile_add(bkgd_Rank, 32, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 32, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
     }
 
@@ -79,7 +79,7 @@ if (global.lvl > 0 && rank > 0) {
     if (tenrank > 2 && rank == onerank + tenrank - 2) {
         // For tens digit 9, use tile at (32,0).
         if (ten == 9) {
-            tile_add(bkgd_Rank, 32, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+            tile_add(bkgd_Rank, 32, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
         }
     }
 
@@ -87,7 +87,7 @@ if (global.lvl > 0 && rank > 0) {
     // Display the hundreds digit when rank exceeds the sum of onerank and tenrank.
     // Uses a wider tile (128,0; 32x32 pixels) for the hundreds place, positioned with the same offset logic.
     if (rank > tenrank + onerank) {
-        tile_add(bkgd_Rank, 128, 0, 32, 32, 440 - (32 * rank) + (onerank * 16), 544, -10);
+        tile_add(bkgd_Rank, 128, 0, 32, 32, 440*global.scale - (32 * rank) + (onerank * 16), 544*global.scale, -10);
     }
 
     /// @subsection Rank Update and Sound

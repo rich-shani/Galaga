@@ -11,6 +11,7 @@ global.galaga5 = 0; // Fifth place high score.
 // Flag to control sprite or screen flipping (0 = no flip, likely 1 = flip).
 // Possibly used for visual effects or mirroring game elements (e.g., ship or enemy sprites).
 global.flip = 0;
+global.animationIndex = 0;
 
 // Number of lives for Player 1, initialized to 3.
 // Decremented when the player ship is destroyed; game over when it reaches 0.
@@ -90,5 +91,13 @@ global.roomname = room_get_name(room);
 // scale the system based on the mode ...
 global.scale = 1;
 if (global.roomname == "starwars") {
-	global.scale = 2.3;
+	global.scale = 2;
+}
+
+// for each path, rescale using the global.scale factor
+var _pathIds = asset_get_ids(asset_path);
+
+// Loop through the array and scale each path
+for (var i = 0; i < array_length(_pathIds); i++) {
+    path_rescale(_pathIds[i], global.scale, global.scale);
 }

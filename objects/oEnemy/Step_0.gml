@@ -24,6 +24,7 @@ if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
 			path_start(BottomRight_toLeft,enemySpeed,path_action_stop,true);
 			break;
 	}
+	 
 }
 else if (enemyState == EnemyState.IN_THE_FORMATION) {
 	// rotate the angle of the sprite to face the direction of the path movement

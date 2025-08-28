@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Rogue2e1",
   "parent":{
-    "name":"Paths",
-    "path":"folders/Paths.yy",
+    "name":"original",
+    "path":"folders/Paths/original.yy",
   },
   "points":[
     {"speed":100.0,"x":224.0,"y":-16.0,},

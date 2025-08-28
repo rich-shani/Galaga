@@ -50,13 +50,13 @@ function handle_shot_collision(shot_index, enemy_x, enemy_y, enemy_instance) {
 /// @param {bool} is_double Whether the ship is in double mode.
 /// @param {bool} is_right Whether to check the right ship in double mode.
 function handle_player_hit(enemy_x, enemy_y, enemy_instance, is_double, is_right) {
-    var check_x = is_right ? (Ship.x + SHIP_SPACE) : Ship.x;
+    var check_x = is_right ? (Ship.x + Ship.SHIP_SPACE) : Ship.x;
     if (abs(enemy_x - check_x) < space2 && abs(enemy_y - Ship.y) < space2 && (Ship.shipStatus == ShipState.ACTIVE || (is_double && skip == 0))) {
         if (is_double) {
             skip = 1;
-            secondx = is_right ? (Ship.x + SHIP_SPACE) : Ship.x;
-            deadanim2 = 0.25;
-            if (!is_right) Ship.x += SHIP_SPACE;
+            secondx = is_right ? (Ship.x + Ship.SHIP_SPACE) : Ship.x;
+    //        deadanim2 = 0.25;
+            if (!is_right) Ship.x += Ship.SHIP_SPACE;
             shotMode = ShotMode.SINGLE;
         } else {
             shipStatus = 1;
@@ -132,11 +132,11 @@ function scr_handle_shot_collision(obj, shot_index, is_boss, boss_hit_state) {
 	    if (abs(x - shot_x) < Ship.space && abs(y - shot_y) < Ship.space) {
 	        script_execute(shot1for2, shot_index); // Execute hit effect
 	        if (shot_index == 0) {
-	            Ship.shot1x = SHOT_OFFSCREEN;
-	            Ship.shot1y = SHOT_OFFSCREEN;
+	            Ship.shot1x = Ship.SHOT_OFFSCREEN;
+	            Ship.shot1y = Ship.SHOT_OFFSCREEN;
 	        } else {
-	            Ship.shot2x = SHOT_OFFSCREEN;
-	            Ship.shot2y = SHOT_OFFSCREEN;
+	            Ship.shot2x = Ship.SHOT_OFFSCREEN;
+	            Ship.shot2y = Ship.SHOT_OFFSCREEN;
 	        }
 	        Controller.hits += 1; // Increment hit counter
         
@@ -172,35 +172,35 @@ function scr_handle_shot_collision(obj, shot_index, is_boss, boss_hit_state) {
 
 function scr_move_ship_bullets() {
 	if (Ship.shot1y > -31 && Ship.shot1x > -31 && Ship.shot1y < room_height + 31 && Ship.shot1x < room_width + 31) {
-        Ship.shot1y -= (SHOT_SPEED * cos(degtorad(Ship.shot1dir))); // Move shot vertically
-        Ship.shot1x -= (SHOT_SPEED * sin(degtorad(Ship.shot1dir))); // Move shot horizontally
+        Ship.shot1y -= (Ship.SHOT_SPEED * cos(degtorad(Ship.shot1dir))); // Move shot vertically
+        Ship.shot1x -= (Ship.SHOT_SPEED * sin(degtorad(Ship.shot1dir))); // Move shot horizontally
     } else {
-        Ship.shot1x = SHOT_OFFSCREEN; // Move shot off-screen
-        Ship.shot1y = SHOT_OFFSCREEN;
+        Ship.shot1x = Ship.SHOT_OFFSCREEN; // Move shot off-screen
+        Ship.shot1y = Ship.SHOT_OFFSCREEN;
     }
     
     //// Update position of second shot if it's within room bounds
     if (Ship.shot2y > -31 && Ship.shot2x > -31 && Ship.shot2y < room_height + 31 && Ship.shot2x < room_width + 31) {
-        Ship.shot2y -= (SHOT_SPEED * cos(degtorad(Ship.shot2dir))); // Move shot vertically
-        Ship.shot2x -= (SHOT_SPEED * sin(degtorad(Ship.shot2dir))); // Move shot horizontally
+        Ship.shot2y -= (Ship.SHOT_SPEED * cos(degtorad(Ship.shot2dir))); // Move shot vertically
+        Ship.shot2x -= (Ship.SHOT_SPEED * sin(degtorad(Ship.shot2dir))); // Move shot horizontally
     } else { 
-        Ship.shot2x = SHOT_OFFSCREEN; // Move shot off-screen
-        Ship.shot2y = SHOT_OFFSCREEN;
+        Ship.shot2x = Ship.SHOT_OFFSCREEN; // Move shot off-screen
+        Ship.shot2y = Ship.SHOT_OFFSCREEN;
     }
 }
 
 function scr_handle_enemy_collisions(id) {
 	// Handles collision detection and response for Bee, Butterfly, Transform, and Fighter objects
-	// Checks both shots with SHIP_SPACE offset and dub1/dub2 conditions
+	// Checks both shots with Ship.SHIP_SPACE offset and dub1/dub2 conditions
 
     // Skip if off-screen (y <= -17) for Bee, Butterfly, and Fighter, but not Transform
     if (id != Transform && y <= -17) return;
         
     // Check collision for shot1
-    if (abs(x - Ship.shot1x - SHIP_SPACE) < Ship.space && abs(y - Ship.shot1y) < Ship.space && Ship.dub1 == 1) {
+    if (abs(x - Ship.shot1x - Ship.SHIP_SPACE) < Ship.space && abs(y - Ship.shot1y) < Ship.space && Ship.dub1 == 1) {
         script_execute(shot1for2, 2); // Execute hit effect for shot1
-        Ship.shot1x = SHOT_OFFSCREEN; // Move shot1 off-screen
-        Ship.shot1y = SHOT_OFFSCREEN;
+        Ship.shot1x = Ship.SHOT_OFFSCREEN; // Move shot1 off-screen
+        Ship.shot1y = Ship.SHOT_OFFSCREEN;
         Controller.hits += 1; // Increment hit counter
         if (id == Fighter) {
             global.fighterstore = 0; // Reset fighter store for Fighter
@@ -209,10 +209,10 @@ function scr_handle_enemy_collisions(id) {
     }
         
     // Check collision for shot2
-    if (abs(x - Ship.shot2x - SHIP_SPACE) < Ship.space && abs(y - Ship.shot2y) < Ship.space && Ship.dub2 == 1) {
+    if (abs(x - Ship.shot2x - Ship.SHIP_SPACE) < Ship.space && abs(y - Ship.shot2y) < Ship.space && Ship.dub2 == 1) {
         script_execute(shot1for2, 3); // Execute hit effect for shot2
-        Ship.shot2x = SHOT_OFFSCREEN; // Move shot2 off-screen
-        Ship.shot2y = SHOT_OFFSCREEN;
+        Ship.shot2x = Ship.SHOT_OFFSCREEN; // Move shot2 off-screen
+        Ship.shot2y = Ship.SHOT_OFFSCREEN;
         Controller.hits += 1; // Increment hit counter
         if (id == Fighter) {
             global.fighterstore = 0; // Reset fighter store for Fighter
@@ -224,16 +224,16 @@ function scr_handle_enemy_collisions(id) {
 function scr_handle_boss_collisions(id) {
  
 	// Handles collision detection and response for Boss objects
-	// Manages two-hit system, SHIP_SPACE offset, dub1/dub2 conditions, and rescue logic
+	// Manages two-hit system, Ship.SHIP_SPACE offset, dub1/dub2 conditions, and rescue logic
 
     // Skip if off-screen (y <= -17)
     if (y <= -17) return;
     
     // Check collision for shot1
-    if (abs(x - Ship.shot1x - SHIP_SPACE) < Ship.space && abs(y - Ship.shot1y) < Ship.space && Ship.dub1 == 1) {
+    if (abs(x - Ship.shot1x - Ship.SHIP_SPACE) < Ship.space && abs(y - Ship.shot1y) < Ship.space && Ship.dub1 == 1) {
         script_execute(shot1for2, 2); // Execute hit effect for shot1
-        Ship.shot1x = SHOT_OFFSCREEN; // Move shot1 off-screen
-        Ship.shot1y = SHOT_OFFSCREEN;
+        Ship.shot1x = Ship.SHOT_OFFSCREEN; // Move shot1 off-screen
+        Ship.shot1y = Ship.SHOT_OFFSCREEN;
         Controller.hits += 1; // Increment hit counter
         
         if (hit == 0) {
@@ -253,10 +253,10 @@ function scr_handle_boss_collisions(id) {
     }
     
     // Check collision for shot2
-    if (abs(x - Ship.shot2x - SHIP_SPACE) < Ship.space && abs(y - Ship.shot2y) < Ship.space && Ship.dub2 == 1) {
+    if (abs(x - Ship.shot2x - Ship.SHIP_SPACE) < Ship.space && abs(y - Ship.shot2y) < Ship.space && Ship.dub2 == 1) {
         script_execute(shot1for2, 3); // Execute hit effect for shot2
-        Ship.shot2x = SHOT_OFFSCREEN; // Move shot2 off-screen
-        Ship.shot2y = SHOT_OFFSCREEN;
+        Ship.shot2x = Ship.SHOT_OFFSCREEN; // Move shot2 off-screen
+        Ship.shot2y = Ship.SHOT_OFFSCREEN;
         Controller.hits += 1; // Increment hit counter
         
         if (hit == 0) {

@@ -26,48 +26,59 @@ if (global.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller
         draw_sprite_ext(spr_shot, 0, shot2x, shot2y, 1, 1, shot2dir, c_white, 1);
 
         // Draw an additional shot for the right ship in double mode (dub1 == 1).
-        // Offset by SHIP_SPACE (28 pixels) to align with the right ship's position.
+        // Offset by Ship.SHIP_SPACE (28 pixels) to align with the right ship's position.
         if (dub1 == 1) {
-            draw_sprite_ext(spr_shot, 0, shot1x + SHIP_SPACE, shot1y, 1, 1, shot1dir, c_white, 1);
+            draw_sprite_ext(spr_shot, 0, shot1x + Ship.SHIP_SPACE, shot1y, 1, 1, shot1dir, c_white, 1);
         }
 
         // Draw an additional shot for the right ship’s second shot in double mode (dub2 == 1).
-        // Also offset by SHIP_SPACE for the right ship.
+        // Also offset by Ship.SHIP_SPACE for the right ship.
         if (dub2 == 1) {
-            draw_sprite_ext(spr_shot, 0, shot2x + SHIP_SPACE, shot2y, 1, 1, shot2dir, c_white, 1);
+            draw_sprite_ext(spr_shot, 0, shot2x + Ship.SHIP_SPACE, shot2y, 1, 1, shot2dir, c_white, 1);
         }
 
         /// @subsubsection Second Ship Death Animation
         // Draw the explosion animation for the right ship in double mode when hit (deadanim2 between 0 and 4).
         // Uses spr_explode with the frame index calculated as floor(deadanim2 + 5) to select the appropriate explosion frame.
         // Positioned at secondx (right ship’s X-coordinate) and y=528 (bottom of the screen).
-        if (deadanim2 > 0 && deadanim2 < 4) {
+ //       if (deadanim2 > 0 && deadanim2 < 4) {
            // draw_sprite(spr_explode, floor(deadanim2 + 5), secondx, 528);
-		   draw_sprite(sExplosion3, floor(deadanim2 + 5), secondx, 528);
-        }
+		//   draw_sprite(sExplosion3, floor(deadanim2 + 5), secondx, 528);
+  //      }
 
         /// @subsubsection Ship Rendering
         // Draw the ship when alive (shipStatus == 0) or respawning (shipStatus == 2).
         // Uses spr_ship at the ship’s position (x, y) with default frame (0).
         if (shipStatus == 0 || shipStatus == 2) {
-            //draw_sprite(spr_ship, 0, x, y);
-			//draw_sprite_ext(spr_ship,0,x,y,1,1,0,c_white,1);
-			draw_sprite_ext(sXWing,shipDirection,x,y,0.4,0.4,0,c_white,1);
+			
+			if (global.roomname == "starwars") {
+				draw_sprite_ext(sXWing,shipDirection,x,y,0.8,0.8,0,c_white,1);
+			}
+			else {
+				draw_sprite(spr_ship, 0, x, y);
+			}
 			
 			if (!global.isGamePaused) {
 				// if we're not paused, then animate the thrusters
-				draw_sprite(sLaserEmit,image_index/12,x-8,y+32);
-				draw_sprite(sLaserEmit,image_index/12,x+8,y+32);
+				draw_sprite(sLaserEmit,global.animationIndex/24*2,x-(8*global.scale),y+(24*global.scale));
+				draw_sprite(sLaserEmit,global.animationIndex/24*2,x+(8*global.scale),y+(24*global.scale));
 			}
 			
-            // If in double mode, draw a second ship offset by SHIP_SPACE (28 pixels) to the right.
+            // If in double mode, draw a second ship offset by Ship.SHIP_SPACE (28 pixels) to the right.
             if (shotMode == ShotMode.DOUBLE) {
-                draw_sprite(spr_ship, 0, x + SHIP_SPACE, y);
+                
+			
+				if (global.roomname == "starwars") {
+					draw_sprite_ext(sXWing,shipDirection,x+(Ship.SHIP_SPACE*2),y,0.8,0.8,0,c_white,1);
+				}
+				else {
+					draw_sprite(spr_ship, 0, x + Ship.SHIP_SPACE, y);
+				}
 			
 				if (!global.isGamePaused) {
 					// if we're not paused, then animate the thrusters
-					draw_sprite(sLaserEmit,image_index/12,x+SHIP_SPACE-8,y+26);
-					draw_sprite(sLaserEmit,image_index/12,x+SHIP_SPACE+8,y+26);
+					draw_sprite(sLaserEmit,global.animationIndex/24*2,x+Ship.SHIP_SPACE-(8*global.scale),y+(24*global.scale));
+					draw_sprite(sLaserEmit,global.animationIndex/24*2,x+Ship.SHIP_SPACE+(8*global.scale),y+(24*global.scale));
 				}
 			}
         }

@@ -7,17 +7,17 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	   // we can only move when the Ship status is ACTIVE
 	   if (shipStatus == ShipState.ACTIVE) {
 			/// @section Movement
-	        if (keyboard_check(vk_left) && x > SHIP_MIN_X) {
-	            x -= 3; // Move ship left by 3 pixels
+	        if (keyboard_check(vk_left) && x > Ship.SHIP_MIN_X) {
+	            x -= SHIP_MOVE_INCREMENT; // Move ship left by 3 pixels
 				shipDirection = 0;
 	        } else {
 	            // Check for right arrow key press and ensure ship stays within right boundary
-	            if (keyboard_check(vk_right) && x < SHIP_MAX_X - (shotMode * SHIP_SPACE)) {
-	                x += 3; // Move ship right by 3 pixels
-					shipDirection = 2;
+	            if (keyboard_check(vk_right) && x < Ship.SHIP_MAX_X - (shotMode * Ship.SHIP_SPACE)) {
+	                x += SHIP_MOVE_INCREMENT; // Move ship right by 3 pixels
+					shipDirection = 0;
 	            }
 				else {
-					shipDirection = 1;
+					shipDirection = 0;
 				}
 	        }
 		
@@ -32,8 +32,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 		            shot1dir = (shipStatus == 1) ? spinanim : 360;
                 
 		            // Calculate initial shot position based on ship position and direction
-		            shot1x = x - (SHIP_MIN_X * sin(degtorad(shot1dir)));
-		            shot1y = y - (SHIP_MIN_X* cos(degtorad(shot1dir)));
+		            shot1x = x - (Ship.SHIP_MIN_X * sin(degtorad(shot1dir)));
+		            shot1y = y - (Ship.SHIP_MIN_X* cos(degtorad(shot1dir)));
                 
 		            // Set double shot flag for first shot
 		            dub1 = (shotMode == ShotMode.DOUBLE) ? 1 : 0;
@@ -55,8 +55,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 		                shot2dir = (shipStatus == 1) ? spinanim : 360;
                     
 		                // Calculate initial shot position
-		                shot2x = x - (SHIP_MIN_X* sin(degtorad(shot2dir)));
-		                shot2y = y - (SHIP_MIN_X* cos(degtorad(shot2dir)));
+		                shot2x = x - (Ship.SHIP_MIN_X* sin(degtorad(shot2dir)));
+		                shot2y = y - (Ship.SHIP_MIN_X* cos(degtorad(shot2dir)));
                     
 		                // Set double shot flag for second shot
 		                dub2 = (shotMode == ShotMode.DOUBLE) ? 1 : 0;
@@ -195,8 +195,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.skip == 0) {
                     Ship.skip = 1; // Set skip flag
                     Ship.secondx = Ship.x; // Store current position
-                    Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
+            //        Ship.deadanim2 = 0.25; // Start second death animation
+                    Ship.x = (Ship.x + Ship.SHIP_SPACE); // Move to right ship position
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -210,8 +210,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                     if (escort == 0) {} // Placeholder for escort logic
                     Ship.skip = 1; // Set skip flag
                     Ship.secondx = Ship.x; // Store current position
-                    Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
+              //      Ship.deadanim2 = 0.25; // Start second death animation
+                    Ship.x = (Ship.x + Ship.SHIP_SPACE); // Move to right ship position
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -224,8 +224,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.skip == 0) {
                     Ship.skip = 1; // Set skip flag
                     Ship.secondx = Ship.x; // Store current position
-                    Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
+            //        Ship.deadanim2 = 0.25; // Start second death animation
+                    Ship.x = (Ship.x + Ship.SHIP_SPACE); // Move to right ship position
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -238,8 +238,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.skip == 0) {
                     Ship.skip = 1; // Set skip flag
                     Ship.secondx = Ship.x; // Store current position
-                    Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
+           //        Ship.deadanim2 = 0.25; // Start second death animation
+                    Ship.x = (Ship.x + Ship.SHIP_SPACE); // Move to right ship position
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -252,8 +252,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                 if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.skip == 0) {
                     Ship.skip = 1; // Set skip flag
                     Ship.secondx = Ship.x; // Store current position
-                    Ship.deadanim2 = 0.25; // Start second death animation
-                    Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
+          //          Ship.deadanim2 = 0.25; // Start second death animation
+                    Ship.x = (Ship.x + Ship.SHIP_SPACE); // Move to right ship position
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -267,8 +267,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                     if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.skip == 0) {
                         Ship.skip = 1; // Set skip flag
                         Ship.secondx = Ship.x; // Store current position
-                        Ship.deadanim2 = 0.25; // Start second death animation
-                        Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
+             //           Ship.deadanim2 = 0.25; // Start second death animation
+                        Ship.x = (Ship.x + Ship.SHIP_SPACE); // Move to right ship position
                         Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         if (carrying == 1 && dive == 1) {
                             sound_loop(GRescue); // Play rescue sound
@@ -289,8 +289,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                     if (abs(x - Ship.x) < Ship.space2 && abs(y - Ship.y) < Ship.space2 && Ship.skip == 0) {
                         Ship.skip = 1; // Set skip flag
                         Ship.secondx = Ship.x; // Store current position
-                        Ship.deadanim2 = 0.25; // Start second death animation
-                        Ship.x = (Ship.x + SHIP_SPACE); // Move to right ship position
+             //           Ship.deadanim2 = 0.25; // Start second death animation
+                        Ship.x = (Ship.x + Ship.SHIP_SPACE); // Move to right ship position
                         Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
@@ -304,9 +304,9 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             
             /// @section Getting Hit (Double Ship - Right)
             with (Bee) {
-                if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
-                    Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
-                    Ship.deadanim2 = 0.25; // Start second death animation
+                if (abs(x - (Ship.x + Ship.SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
+                    Ship.secondx = Ship.x + Ship.SHIP_SPACE; // Store right ship position
+         //           Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -316,10 +316,10 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
             
             with (Butterfly) {
-                if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
+                if (abs(x - (Ship.x + Ship.SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
                     if (escort == 0) {} // Placeholder for escort logic
-                    Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
-                    Ship.deadanim2 = 0.25; // Start second death animation
+                    Ship.secondx = Ship.x + Ship.SHIP_SPACE; // Store right ship position
+        //            Ship.deadanim2 = 0.25; // Start second death animation
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
 					instance_create(round(x), round(y), oExplosion3);
@@ -329,9 +329,9 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
             
             with (Transform) {
-                if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
-                    Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
-                    Ship.deadanim2 = 0.25; // Start second death animation
+                if (abs(x - (Ship.x + Ship.SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
+                    Ship.secondx = Ship.x + Ship.SHIP_SPACE; // Store right ship position
+      //             Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -341,9 +341,9 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
             
             with (Fighter) {
-                if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
-                    Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
-                    Ship.deadanim2 = 0.25; // Start second death animation
+                if (abs(x - (Ship.x + Ship.SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
+                    Ship.secondx = Ship.x + Ship.SHIP_SPACE; // Store right ship position
+         //           Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -353,9 +353,9 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             }
             
             with (EnemyShot) {
-                if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
-                    Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
-                    Ship.deadanim2 = 0.25; // Start second death animation
+                if (abs(x - (Ship.x + Ship.SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
+                    Ship.secondx = Ship.x + Ship.SHIP_SPACE; // Store right ship position
+        //            Ship.deadanim2 = 0.25; // Start second death animation
                     Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                     sound_stop(GDie); // Stop death sound
                     sound_play(GDie); // Play death sound
@@ -366,9 +366,9 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             
             with (Boss) {
                 if (hit == 1) {
-                    if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
-                        Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
-                        Ship.deadanim2 = 0.25; // Start second death animation
+                    if (abs(x - (Ship.x + Ship.SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
+                        Ship.secondx = Ship.x + Ship.SHIP_SPACE; // Store right ship position
+         //               Ship.deadanim2 = 0.25; // Start second death animation
                         Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound
@@ -378,9 +378,9 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
                 }
                 
                 if (hit == 0) {
-                    if (abs(x - (Ship.x + SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
-                        Ship.secondx = Ship.x + SHIP_SPACE; // Store right ship position
-                        Ship.deadanim2 = 0.25; // Start second death animation
+                    if (abs(x - (Ship.x + Ship.SHIP_SPACE)) < Ship.space2 && abs(y - Ship.y) < Ship.space2) {
+                        Ship.secondx = Ship.x + Ship.SHIP_SPACE; // Store right ship position
+            //            Ship.deadanim2 = 0.25; // Start second death animation
                         Ship.shotMode = ShotMode.SINGLE; // Disable double ship mode
                         sound_stop(GDie); // Stop death sound
                         sound_play(GDie); // Play death sound

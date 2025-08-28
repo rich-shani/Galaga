@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Boss1Flip",
   "parent":{
-    "name":"Paths",
-    "path":"folders/Paths.yy",
+    "name":"original",
+    "path":"folders/Paths/original.yy",
   },
   "points":[
     {"speed":100.0,"x":-240.0,"y":160.0,},

@@ -73,7 +73,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	            if xstart > 224{path_start(Boss1,spd,0,false)}
 
 	            else{path_start(Boss1Flip,spd,0,false)}
-
+ 
 	        }
 
 	    }}
@@ -145,7 +145,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	            if xstart > 224{path_start(Boss1Alt,spd,0,false)}
 
 	            else{path_start(Boss1AltFlip,spd,0,false)}
-
+ 
 	        }
 
 	    }

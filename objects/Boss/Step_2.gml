@@ -78,7 +78,7 @@ if dive = 0 and enter = 0{ ///convoy
                     path_start(Boss1,spd,0,false);
 
                 }}
-
+ 
             }
 
             else{path_start(Boss1Flip,spd,0,false)
@@ -92,10 +92,10 @@ if dive = 0 and enter = 0{ ///convoy
                     path_start(Boss1Flip,spd,0,false);
 
                 }}
-
+ 
             }
 
-    path_scale = global.scale;
+     
 	if beam = 0{ 
 
             check = 0;
@@ -151,7 +151,7 @@ if dive = 0 and enter = 0{ ///convoy
                         global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; add = breathey - Boss.breathey - 32;
 
                         path_start(bosses[i].path_index,spd,0,false) i = 4;
-						path_scale = global.scale;
+						 
 
                     }
 
@@ -239,7 +239,7 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
             else{path_start(Boss1AltFlip,spd,0,false)}
 			
-			path_scale = global.scale;
+			 
 
         }
 
@@ -302,19 +302,19 @@ if enter = 1{
 
     if global.pattern = 0 or 1{
 
-        if y < 272-16 and direction = 90{if rogue = 0{
+        if y < (272-16)*global.scale and direction = 90{if rogue = 0{
 
             if goto = 0{
 
                 path_end(); 
 
-                if numb = 9{xstart = 176; ystart = 80; if global.fighterstore = 1{carrying = 1}}
+                if numb = 9{xstart = 176*global.scale; ystart = 80*global.scale; if global.fighterstore = 1{carrying = 1}}
 
-                if numb = 11{xstart = 176+32; ystart = 80; if global.fighterstore = 2{carrying = 1}}
+                if numb = 11{xstart = (176+32)*global.scale; ystart = 80*global.scale; if global.fighterstore = 2{carrying = 1}}
 
-                if numb = 13{xstart = 176+64; ystart = 80; if global.fighterstore = 3{carrying = 1}}
+                if numb = 13{xstart = (176+64)*global.scale; ystart = 80*global.scale; if global.fighterstore = 3{carrying = 1}}
 
-                if numb = 15{xstart = 176+96; ystart = 80; if global.fighterstore = 4{carrying = 1}}
+                if numb = 15{xstart = (176+96)*global.scale; ystart = 80*global.scale; if global.fighterstore = 4{carrying = 1}}
 
                            
 

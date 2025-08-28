@@ -64,7 +64,7 @@ if dive = 0 and enter = 0{ ///convoy
             if xstart > 224{path_start(Butterfly1,spd,0,false)}
 
             else{path_start(Butterfly1Flip,spd,0,false)}
-			path_scale = global.scale;
+			 
         }
 
     }
@@ -148,7 +148,7 @@ if dive = 1 and escort = 0 and enter = 0{ ///charger, no escort
             if xstart > 224{path_start(Butterfly2,spd,0,false)}
 
             else{path_start(Butterfly2Flip,spd,0,false)}
-
+ 
             }
 
             else{
@@ -164,12 +164,12 @@ if dive = 1 and escort = 0 and enter = 0{ ///charger, no escort
                     if xstart > 224{path_start(Butterfly1Alt,spd,0,false)}
 
                     else{path_start(Butterfly1AltFlip,spd,0,false)}
-
+ 
                 }
 
             }
 
-			path_scale = global.scale;
+			 
         }
 
     }
@@ -226,7 +226,7 @@ if dive = 1 and escort = 1 and enter = 0{ ///charger, escort
 
             if dir = -1{path_start(Boss1AltFlip,spd,0,false)};
 
-			path_scale = global.scale;
+			 
         }
 
     }
@@ -265,7 +265,7 @@ if dive = 1 and enter = 0{ ///charger
 
                 else{path_start(BeeLoopFlip,spd,0,false); loop = 2}
 
-				path_scale = global.scale;
+				 
             ///}
 
             }
@@ -319,7 +319,7 @@ if dive = 1 and enter = 0{ ///charger
                 if xstart > 224{path_start(Bee1Alt,spd,0,false)}
 
                 else{path_start(Bee1AltFlip,spd,0,false)}
-
+ 
             }
 
         }
@@ -339,45 +339,45 @@ if enter = 1{
 
     if global.pattern = 0 or 1{
 
-        if y < 272-16{if rogue = 0{
+        if y < (272-16)*global.scale{if rogue = 0{
 
             if ((global.wave = 0 and direction < 180) or (global.wave > 0 and direction = 90)) and (global.pattern = 0 or global.pattern = 2 or (global.wave = 0 or timey = 0)) and goto = 0{
 
                 path_end(); 
 
-                if numb = 2{xstart = 208; ystart = 176-64;}
+                if numb = 2{xstart = 208*global.scale; ystart = (176-64)*global.scale;}
 
-                if numb = 4{xstart = 240; ystart = 176-64;}
+                if numb = 4{xstart = 240*global.scale; ystart = (176-64)*global.scale;}
 
-                if numb = 6{xstart = 208; ystart = 208-64;}
+                if numb = 6{xstart = 208*global.scale; ystart = (208-64)*global.scale;}
 
-                if numb = 8{xstart = 240; ystart = 208-64;}
+                if numb = 8{xstart = 240*global.scale; ystart = (208-64)*global.scale;}
 
-                if numb = 10{xstart = 176; ystart = 112;}
+                if numb = 10{xstart = 176*global.scale; ystart = 112*global.scale;}
 
-                if numb = 12{xstart = 272; ystart = 112;}
+                if numb = 12{xstart = 272*global.scale; ystart = 112*global.scale;}
 
-                if numb = 14{xstart = 176; ystart = 112+32;}
+                if numb = 14{xstart = 176*global.scale; ystart = (112+32)*global.scale;}
 
-                if numb = 16{xstart = 272; ystart = 112+32;}
+                if numb = 16{xstart = 272*global.scale; ystart = (112+32)*global.scale;}
 
                 
 
-                if numb = 17{xstart = 304; ystart = 112;}
+                if numb = 17{xstart = 304*global.scale; ystart = 112*global.scale;}
 
-                if numb = 18{xstart = 304+32; ystart = 112;}
+                if numb = 18{xstart = (304+32)*global.scale; ystart = 112*global.scale;}
 
-                if numb = 19{xstart = 304; ystart = 112+32;}
+                if numb = 19{xstart = 304*global.scale; ystart = (112+32)*global.scale;}
 
-                if numb = 20{xstart = 304+32; ystart = 112+32;}
+                if numb = 20{xstart = (304+32)*global.scale; ystart = (112+32)*global.scale;}
 
-                if numb = 21{xstart = 112; ystart = 112;}
+                if numb = 21{xstart = 112*global.scale; ystart = 112*global.scale;}
 
-                if numb = 22{xstart = 112+32; ystart = 112;}
+                if numb = 22{xstart = (112+32)*global.scale; ystart = 112*global.scale;}
 
-                if numb = 23{xstart = 112; ystart = 112+32;}
+                if numb = 23{xstart = 112*global.scale; ystart = (112+32)*global.scale;}
 
-                if numb = 24{xstart = 112+32; ystart = 112+32;}
+                if numb = 24{xstart = (112+32)*global.scale; ystart = (112+32)*global.scale;}
 
                                 
 

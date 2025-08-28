@@ -11,7 +11,7 @@ if global.transnum = 1{
 if global.transside = 1{path_start(Transform1,spd,0,false)}
 
 else{path_start(Transform1Flip,spd,0,false)}
-
+ 
 }
 
 if global.transnum = 2{

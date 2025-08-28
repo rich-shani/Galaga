@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Transform3Flip",
   "parent":{
-    "name":"Paths",
-    "path":"folders/Paths.yy",
+    "name":"original",
+    "path":"folders/Paths/original.yy",
   },
   "points":[
     {"speed":100.0,"x":84.0,"y":144.0,},

@@ -17,7 +17,7 @@ if global.transnum < 3{
                 if global.transside = 1{path_start(Transform2,spd,0,false)}
 
                 else{path_start(Transform2Flip,spd,0,false)}
-
+ 
             }
 
         }
@@ -32,5 +32,5 @@ if y > 592+32+32{
 
 }
 
-path_scale = global.scale;
+ 
 

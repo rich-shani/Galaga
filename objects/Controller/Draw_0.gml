@@ -2,7 +2,7 @@
 
 // load retro Atari font
 if (global.roomname == "starwars") {
-	draw_set_font(fAtari32);	
+	draw_set_font(fAtari24);	
 }
 else draw_set_font(fAtari12);
 
@@ -11,7 +11,7 @@ Draw_Scores();
 	
 // is the Game Paused?
 if (global.isGamePaused) { 
-	draw_set_font(fAtari32);
+	draw_set_font(fAtari24);
 	draw_set_color(c_green);
 	
 	draw_text(50,265, "GAME PAUSED");
@@ -50,15 +50,15 @@ else { // Draw screen based on Game Mode
 	else if (instance_number(Ship) > 0) {
 		
 	if global.gameMode == GameMode.GAME_PLAYER_MESSAGE { 
-		draw_text(176, 288, string_hash_to_newline("PLAYER 1"));
+		draw_text(176*global.scale, 288*global.scale, string_hash_to_newline("PLAYER 1"));
 	}
 	else if global.gameMode == GameMode.GAME_STAGE_MESSAGE { 
 		//draw_text(176, 288, string_hash_to_newline("PLAYER 1"));
-		draw_text(160, 288, string_hash_to_newline("STAGE 1"));
+		draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE 1"));
 	}
 	else if (global.gameMode == GameMode.GAME_READY) {
-		draw_text(160, 256, string_hash_to_newline("PLAYER 1"));
-		draw_text(160, 288, string_hash_to_newline("STAGE 1"));
+		draw_text(160*global.scale, 256*global.scale, string_hash_to_newline("PLAYER 1"));
+		draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE 1"));
 	}
 	else if (global.gameMode == GameMode.GAME_ACTIVE) {
 
@@ -69,11 +69,11 @@ else { // Draw screen based on Game Mode
 	          if global
 	            .challcount = 0
 	            {
-	              draw_text(96, 288, string_hash_to_newline("CHALLENGING STAGE"))
+	              draw_text(96*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"))
 	            }
 	          else {
-	            draw_text(160, 288, string_hash_to_newline("STAGE"));
-	            draw_text(160 + (6 * 16), 288, string_hash_to_newline(global.lvl))
+	            draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
+	            draw_text(160 + (6 * 16), 288*global.scale, string_hash_to_newline(global.lvl))
 	          };
 	        }
 
@@ -84,7 +84,7 @@ else { // Draw screen based on Game Mode
 	          if global
 	            .p1lives > 0
 	            {
-	              draw_text(160, 288, string_hash_to_newline("READY"))
+	              draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("READY"))
 	            }
 	        }
 

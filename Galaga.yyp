@@ -16,6 +16,7 @@
     {"$GMFolder":"","%Name":"Objects","folderPath":"folders/Objects.yy","name":"Objects","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Enemies","folderPath":"folders/Objects/Enemies.yy","name":"Enemies","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Paths","folderPath":"folders/Paths.yy","name":"Paths","resourceType":"GMFolder","resourceVersion":"2.0",},
+    {"$GMFolder":"","%Name":"original","folderPath":"folders/Paths/original.yy","name":"original","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Rooms","folderPath":"folders/Rooms.yy","name":"Rooms","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"Scripts","folderPath":"folders/Scripts.yy","name":"Scripts","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"compatibility","folderPath":"folders/Scripts/compatibility.yy","name":"compatibility","resourceType":"GMFolder","resourceVersion":"2.0",},
@@ -50,7 +51,7 @@
   "name":"Galaga",
   "resources":[
     {"id":{"name":"fAtari12","path":"fonts/fAtari12/fAtari12.yy",},},
-    {"id":{"name":"fAtari32","path":"fonts/fAtari32/fAtari32.yy",},},
+    {"id":{"name":"fAtari24","path":"fonts/fAtari24/fAtari24.yy",},},
     {"id":{"name":"compatibility_report_010725_150021021","path":"notes/compatibility_report_010725_150021021/compatibility_report_010725_150021021.yy",},},
     {"id":{"name":"notes","path":"notes/notes/notes.yy",},},
     {"id":{"name":"Bee","path":"objects/Bee/Bee.yy",},},
@@ -276,8 +277,8 @@
   "resourceType":"GMProject",
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
-    {"roomId":{"name":"Galaga2","path":"rooms/Galaga2/Galaga2.yy",},},
     {"roomId":{"name":"starwars","path":"rooms/starwars/starwars.yy",},},
+    {"roomId":{"name":"Galaga2","path":"rooms/Galaga2/Galaga2.yy",},},
     {"roomId":{"name":"Galaga","path":"rooms/Galaga/Galaga.yy",},},
   ],
   "templateType":null,

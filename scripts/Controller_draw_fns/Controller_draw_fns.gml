@@ -156,29 +156,50 @@ function Draw_Attract_Mode() {
 					draw_text((176 - 40)*global.scale, 128*global.scale, string_hash_to_newline("-        -"));
 
 					if att > 2 {
-						draw_text((176 - 48)*global.scale, 176*global.scale,
-						string_hash_to_newline("    50    100"));
-						draw_sprite(spr_ship, 10 + floor(global.flip / 30), 128*global.scale, (168 + 16)*global.scale);
-
+						draw_text((176 - 48)*global.scale, 176*global.scale, string_hash_to_newline("    50    100"));
+						if (global.roomname == "starwars") {
+							
+							draw_sprite(sTieFighter, global.animationIndex/4, 104*global.scale, 168*global.scale);
+						}
+						else {
+							draw_sprite(spr_ship, 10 + floor(global.flip / 30), 128*global.scale, (168 + 16)*global.scale);
+						}
+						
 							if att
 								>
 								3 {
 									draw_text((176 - 48)*global.scale, 224*global.scale,
 										string_hash_to_newline("    80    160"));
-									draw_sprite(spr_ship, 6 + floor(global.flip / 30), 128*global.scale,
-										(168 + 48 + 16)*global.scale);
+										
+									if (global.roomname == "starwars") {
+										draw_sprite(sImperialShuttle, global.animationIndex/4, 104*global.scale, (168+48)*global.scale);
+									}
+									else {
+										draw_sprite(spr_ship, 6 + floor(global.flip / 30), 128*global.scale, (168 + 48 + 16)*global.scale);
+									}
+						
+									
 
 									if att
 										>
 										4 {
-											draw_sprite(spr_ship, 2 + floor(global.flip / 30),
-												224*global.scale, (168 + 48 + 48 + 24)*global.scale);
+											
+												if (global.roomname == "starwars") {
+							
+													draw_sprite(sTieIntercepter, 0, 224*global.scale, (168 + 48 + 48 + 24)*global.scale);
+												}
+												else {
+													// draw Boss image
+													draw_sprite(spr_ship, 2 + floor(global.flip / 30), 224*global.scale, (168 + 48 + 48 + 24)*global.scale);
+												}
+											
 										}
 								}
 						}
 				}
 		}
 
+		// animation sequence for the attract page ... ie dive, shoot and points
 		if att
 			>
 			5 and att < 21 {
@@ -442,8 +463,13 @@ function Draw_Lives() {
 	lifecount = global.p1lives - 1;
 	repeat(lifecount)
 	{
-	//	draw_sprite(spr_ship, 0, 16 + (32 * (lifecount - 1)), 560);
-		draw_sprite_ext(sXWing, 1, (20 + 40 * (lifecount - 1))*global.scale, 555*global.scale, 0.32, 0.32, 0, c_white, 1);
+		if (global.roomname = "starwars") {
+			draw_sprite_ext(sXWing, 0, (20 + 32 * (lifecount - 1))*global.scale, 560*global.scale, 0.5, 0.5, 0, c_white, 1);
+		}
+		else {
+			draw_sprite(spr_ship, 0, 16 + (32 * (lifecount - 1)), 560);
+		}
+
 		lifecount = lifecount - 1
 	};
 	

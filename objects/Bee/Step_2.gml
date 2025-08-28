@@ -1,7 +1,7 @@
 // Inherit the parent event
 event_inherited();
 
-if rogue = 1 and (y > 592 or x < -16 or x > 464){instance_destroy()};
+if rogue = 1 and (y > 592*global.scale or x < -16*global.scale or x > 464*global.scale){instance_destroy()};
 
 if instance_number(EnemyShot) < 8{
 
@@ -67,7 +67,7 @@ if dive = 0 and enter = 0{ ///convoy
 
         }
 
-		path_scale = global.scale;
+		 
     }
 
 }
@@ -84,7 +84,7 @@ if dive = 1 and enter = 0{ ///charger
 
         if loop = 0{
 
-            if y < 480{path_end(); if direction < 270{direction = direction + 1}; if direction > 270{direction = direction - 1}; speed = spd}
+            if y < 480*global.scale{path_end(); if direction < 270{direction = direction + 1}; if direction > 270{direction = direction - 1}; speed = spd}
 
             else{loop = 1;
 
@@ -160,7 +160,7 @@ if dive = 1 and enter = 0{ ///charger
 
         }
 
-		path_scale = global.scale;
+		 
    }
 
 }
@@ -174,55 +174,57 @@ if enter = 1{
 
     if global.pattern = 0 or 1{
 
-        if y < 272-16{if rogue = 0{
+		// have we reached the end of the path?
+        if (y < (272-16)*global.scale) {
+			if rogue == 0 {
 
             if ((global.wave < 4 and direction < 90) or direction < 180) and goto = 0{
 
                 path_end();
 
-                if numb = 1{xstart = 208; ystart = 176;}
+                if numb = 1{xstart = 208*global.scale; ystart = 176*global.scale;}
 
-                if numb = 3{xstart = 240; ystart = 176;}
+                if numb = 3{xstart = 240*global.scale; ystart = 176*global.scale;}
 
-                if numb = 5{xstart = 208; ystart = 208;}
+                if numb = 5{xstart = 208*global.scale; ystart = 208*global.scale;}
 
-                if numb = 7{xstart = 240; ystart = 208;}
-
-                
-
-                if numb = 25{xstart = 272; ystart = 176;}
-
-                if numb = 26{xstart = 272+32; ystart = 176;}
-
-                if numb = 27{xstart = 272; ystart = 208;}
-
-                if numb = 28{xstart = 272+32; ystart = 208;}
-
-                if numb = 29{xstart = 144; ystart = 176;}
-
-                if numb = 30{xstart = 144+32; ystart = 176;}
-
-                if numb = 31{xstart = 144; ystart = 208;}
-
-                if numb = 32{xstart = 144+32; ystart = 208;}
+                if numb = 7{xstart = 240*global.scale; ystart = 208*global.scale;}
 
                 
 
-                if numb = 33{xstart = 80; ystart = 176;}
+                if numb = 25{xstart = 272*global.scale; ystart = 176*global.scale;}
 
-                if numb = 34{xstart = 80+32; ystart = 176;}
+                if numb = 26{xstart = (272+32)*global.scale; ystart = 176*global.scale;}
 
-                if numb = 35{xstart = 80; ystart = 208;}
+                if numb = 27{xstart = 272*global.scale; ystart = 208*global.scale;}
 
-                if numb = 36{xstart = 80+32; ystart = 208;}
+                if numb = 28{xstart = (272+32)*global.scale; ystart = 208*global.scale;}
 
-                if numb = 37{xstart = 336; ystart = 176;}
+                if numb = 29{xstart = 144*global.scale; ystart = 176*global.scale;}
 
-                if numb = 38{xstart = 336+32; ystart = 176;}
+                if numb = 30{xstart = (144+32)*global.scale; ystart = 176*global.scale;}
 
-                if numb = 39{xstart = 336; ystart = 208;}
+                if numb = 31{xstart = 144*global.scale; ystart = 208*global.scale;}
 
-                if numb = 40{xstart = 336+32; ystart = 208;}
+                if numb = 32{xstart = (144+32)*global.scale; ystart = 208*global.scale;}
+
+                
+
+                if numb = 33{xstart = 80*global.scale; ystart = 176*global.scale;}
+
+                if numb = 34{xstart = (80+32)*global.scale; ystart = 176*global.scale;}
+
+                if numb = 35{xstart = 80*global.scale; ystart = 208*global.scale;}
+
+                if numb = 36{xstart = 80+32; ystart = 208*global.scale;}
+
+                if numb = 37{xstart = 336*global.scale; ystart = 176*global.scale;}
+
+                if numb = 38{xstart = (336+32)*global.scale; ystart = 176*global.scale;}
+
+                if numb = 39{xstart = 336*global.scale; ystart = 208*global.scale;}
+
+                if numb = 40{xstart = (336+32)*global.scale; ystart = 208*global.scale;}
 
                 
 
