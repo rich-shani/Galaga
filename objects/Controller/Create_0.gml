@@ -25,31 +25,6 @@ loop = 0;
 // Possibly used for cycling through animations, patterns, or UI effects.
 cyc = 0;
 
-// Blip counter, initialized to 0.
-// Likely used for short visual or audio effects, such as UI blinking or sound triggers.
-blip = 0;
-
-/// @section Attract Mode
-// Pause flag for attract mode, initialized to 0.
-// When non-zero, likely pauses attract mode animations or transitions.
-attpause = 0;
-
-// Flag to indicate if a shot is active in attract mode (0 = no shot, 1 = shot active).
-attshot = 0;
-
-// Y-coordinate of the attract mode shot, initialized to 0.
-// Used to position a demo shot during attract mode rendering.
-attshoty = 0;
-
-// X-coordinate of the attract mode shot, initialized to 0.
-// Used alongside attshoty for rendering a shot in attract mode.
-attshotx = 0;
-
-
-// Attract mode state or timer, initialized to 0.
-// Likely incremented to control the sequence of events in attract mode (e.g., demo ship movement).
-att = 0;
-
 //// Current stage or level, initialized to 0.
 //// May track sub-levels within a wave or specific game phases.
 //stage = 0;
@@ -67,16 +42,6 @@ results = 0;
 // Set to 1 when conditions are met to advance to the next wave or stage.
 nextlevel = 0;
 
-/// @section Timers
-// Alarm 3 set to 60 steps (typically 1 second at 60 FPS).
-// Likely used for timing boss beam mechanics or other timed events.
-alarm[3] = 60;
-
-/// @section Movement
-// Initial direction of the controller or related object, set to 90 degrees (upward).
-// Possibly used for enemy or shot movement in attract mode or specific mechanics.
-direction = 90;
-
 /// @section Miscellaneous
 // Exhale flag, initialized to 0.
 // Purpose unclear; possibly related to a visual or sound effect (e.g., boss animation).
@@ -85,10 +50,6 @@ exhale = 0;
 // Skip flag, initialized to 0.
 // Likely used to manage timing or skip certain actions (e.g., shot firing in double mode).
 skip = 0;
-
-//// Stops all currently playing sounds to ensure a clean audio state at initialization.
-//// Prevents audio overlap from previous game states or sessions.
-//sound_stop_all();
 
 /// @section Scoring and Hits
 // Tracks the number of shots fired by the player, initialized to 0.

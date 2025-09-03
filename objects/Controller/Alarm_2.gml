@@ -1,3 +1,4 @@
+/// @description Challenge Stage RESULT
 if global.challcount = 0 and global.wave = 5 {
 
     results += 1;

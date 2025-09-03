@@ -1,2 +1,4 @@
-if alarm[1] = -1{draw_sprite(spr_Galagapoints,5,x,y)}
+if alarm[1] = -1{
+	draw_sprite_ext(spr_Galagapoints,5,x,y,global.scale,global.scale,0,c_white,1);
+}
 

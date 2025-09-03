@@ -1,3 +1,4 @@
+/// @description Save High Scores
 ini_open("highscores.ini");
 
 ini_write_real("highscores","galaga1",global.galaga1);ini_write_string("highscores","init1",global.init1);

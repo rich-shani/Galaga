@@ -1,7 +1,7 @@
 if (global.gameMode != GameMode.GAME_PAUSED) {
 	// the player ship is 3 sprites; ship and two thrusters
 	if (global.ArcadeSprites) {
-		draw_sprite_ext(sXWing,0,x,y,1,1,0,c_white,1);
+		draw_sprite_ext(sXWing,0,x,y,0.8,0.8,0,c_white,1);
 		//draw_sprite(sXWing,1,x,y);
 	}
 	else {

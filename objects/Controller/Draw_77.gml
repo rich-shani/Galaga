@@ -1,3 +1,5 @@
+/// @description Draw Decal (fullscreen)
+
 /// POST DRAW Event
 
 var inst = instance_find(crt_preset_PVM, 0);

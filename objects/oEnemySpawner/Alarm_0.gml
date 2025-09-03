@@ -1,6 +1,5 @@
 // only spwan enemies when we're in the spawn-enemy game state
-if (global.gamestate == GameState.SPAWN_ENEMY_WAVES) {
-
+if (global.gameMode == GameMode.SPAWN_ENEMY_WAVES) {
 
 	switch (waveSpawnCounter) {
 		
@@ -103,7 +102,7 @@ if (global.gamestate == GameState.SPAWN_ENEMY_WAVES) {
 			if (waveSpawnCounter == nWavesToSpawn) {
 				
 				// switch game mode
-				global.gamestate = GameState.PLAY_GAME;
+				global.gameMode = GameMode.GAME_ACTIVE;
 				
 				// wait 4 seconds until we close out the enemy spawner
 				alarm[1]=4*60;

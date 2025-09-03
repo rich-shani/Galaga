@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"AtractMode",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"AtractMode",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

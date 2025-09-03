@@ -1,3 +1,5 @@
+/// @description Draw TEXT messages
+
 // 1UP & HIGH SCORE (red text)
 
 // load retro Atari font
@@ -19,9 +21,6 @@ if (global.isGamePaused) {
 else { // Draw screen based on Game Mode
 	
 	switch (global.gameMode) {
-		case GameMode.ATTRACT_MODE:
-			Draw_Attract_Mode();
-			break;
 		case GameMode.INSTRUCTIONS:
 			Draw_Instructions();
 			break

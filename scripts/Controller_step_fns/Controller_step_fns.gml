@@ -218,10 +218,12 @@ function Game_Loop(){
     }
 
 	
-  // === CHALLENGE MODE PATTERN HANDLING ===
+  // === PATTERN HANDLING ===
   if global.challcount > 0 {
     if global.open == 1 {
 
+		// ENEMY SPAWN (start of level)
+		
         // === PATTERN 0: Classic top-bottom spawning ===
         if global.pattern == 0 {
 
@@ -769,6 +771,8 @@ function Game_Loop(){
     // This logic triggers if no challenge pattern is active, handling standard enemy waves.
   
 else {
+	// CHALLENGE STAGE LOGIC 
+	
     // Only proceed if we're within valid wave range, alarm is inactive, and not transitioning to next level
     if global.wave < 5 && alarm[2] == -1 && nextlevel == 0 {
 
@@ -860,100 +864,21 @@ else {
 }
 }
 
-function Attract_Mode() {
-	// Countdown timer to slow down or pause gameMode activity temporarily
-    if attpause > 0 {
-        attpause -= 1;
-    }
-	
-	// Ship movement
-	if (att > 5 && attpause == 0) {
-	    if (att == 8 || att == 11 || att == 14) {
-	        // Move ship to controller's position
-	        if (Ship.x < Controller.x + attpos - Ship.SHIP_MOVE_INCREMENT) { Ship.x += Ship.SHIP_MOVE_INCREMENT; }
-	        else {
-	            if (Ship.x > Controller.x + attpos + Ship.SHIP_MOVE_INCREMENT) { Ship.x -= Ship.SHIP_MOVE_INCREMENT; }
-	            else { Ship.x = Controller.x + attpos; } // Snap to position
-	        }
-	    } else {
-	        // Move ship to attract mode position
-	        if (Ship.x < attpos - Ship.SHIP_MOVE_INCREMENT + 16) { Ship.x += Ship.SHIP_MOVE_INCREMENT; }
-	        else {
-	            if (Ship.x > attpos + Ship.SHIP_MOVE_INCREMENT + 16) { Ship.x -= Ship.SHIP_MOVE_INCREMENT; }
-	            else { Ship.x = attpos + 16; } // Snap to position
-	        }
-	    }
-	}
+function Attact_Mode() {
 
-    // Between att values 8 to 14, the ship will simulate shooting
-    if att > 7 and att < 15 {
-
-        // If att > 12, shoot when alarm[3] reaches 20
-        if att > 12 {
-            if alarm[3] == 20 {
-                attshot = 1;                  // Flag to trigger gameMode shot
-                attshotx = Ship.x;            // Save current X position of ship for shot
-                attshoty = Ship.y;            // Save current Y position of ship for shot
-            }
-        }
-        // Else (att between 8 and 12), shoot when alarm[3] hits 30
-        else {
-            if alarm[3] == 30 {
-                attshot = 1;
-                attshotx = Ship.x;
-                attshoty = Ship.y;
-            }
-        }
-
-        // Also shoot if alarm[3] equals 10 regardless of att value
-        if alarm[3] == 10 {
-            attshot = 1;
-            attshotx = Ship.x;
-            attshoty = Ship.y;
-        }
-    }
-
-    // If att == 16, shoot when alarm[3] is either 27 or 12
-    if att == 16 {
-        if alarm[3] == 27 || alarm[3] == 12 {
-            attshot = 1;
-            attshotx = Ship.x;
-            attshoty = Ship.y;
-        }
-    }
-
-    // === gameMode SHOT MOVEMENT ===
-    // If gameMode shot has reached the enemy row (relative to player ship's y position)
-    if attshot == 1 && attshoty <= 336 + y - 8 {
-        attshot = 0;  // Reset gameMode shot flag
-        blip = 1;     // Trigger sound or visual effect
-    } else {
-        attshoty -= 16;  // Move the shot upward by 16 pixels
-    }
-
-    // === ADVANCE TO gameMode MODE SCREEN 2 ===
- //   if keyboard_check_pressed(vk_space) == true {
 	if (global.credits == 1) {
 
         sound_play(GCredit);     // Play credit sound
         global.gameMode = GameMode.INSTRUCTIONS;             // Move to gameMode screen 2 (instructions or title)
 
-        path_end();              // Stop any path-following movement
-        x = xstart;              // Reset object to original x
-        y = ystart;              // Reset object to original y
+        //path_end();              // Stop any path-following movement
+		x = xstart;              // Reset object to original x
+		y = ystart;              // Reset object to original y
 
-        // Reset player ship position
-        Ship.x = Ship.xstart;
-        Ship.y = Ship.ystart;
-
-        // Reset gameMode mode animation variables
-        att      = 0;
-        blip     = 0;
-        attpause = 0;
-        attshot  = 0;
-        attshotx = 0;
-        attshoty = 0;
-    }
+		// Reset player ship position
+		Ship.x = Ship.xstart;
+		Ship.y = Ship.ystart;
+    }	
 }
 
 function Show_Instructions() {

@@ -1,3 +1,12 @@
+// room name
+global.roomname = room_get_name(room);
+
+// scale the system based on the mode ...
+global.scale = 1;
+if (global.roomname == "starwars") {
+	global.scale = 2;
+}
+
 /// @section High Scores
 // Global variables to store the top 5 high scores, initialized to 0.
 // These are likely used to track and display the highest scores achieved by players.
@@ -52,6 +61,7 @@ enum GameMode {
     INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
 	GAME_PLAYER_MESSAGE,
 	GAME_STAGE_MESSAGE,
+	SPAWN_ENEMY_WAVES,
 	GAME_READY,
     GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
 	SHOW_RESULTS,
@@ -75,24 +85,20 @@ global.gameMode = GameMode.INITIALIZE;
 // Set when the player's lives reach 0 and no regain is possible.
 global.gameover = false;
 
+// Initial position (off-screen to the right)
+global.screen_width = view_get_wport(view_current);
+global.screen_height = view_get_hport(view_current);
+
 // grab a handle to the pause/unpause screen effect
 // set the FX filter to a random color
 layer_pause_fx = layer_get_fx("PauseEffect");
+attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.scale, "GameSprites", oAttractMode);
 
 // is the Game Paused?
 global.isGamePaused = false;
 
 //window_set_fullscreen(false);
 fullScreen = window_get_fullscreen();
-
-// room name
-global.roomname = room_get_name(room);
-
-// scale the system based on the mode ...
-global.scale = 1;
-if (global.roomname == "starwars") {
-	global.scale = 2;
-}
 
 // for each path, rescale using the global.scale factor
 var _pathIds = asset_get_ids(asset_path);

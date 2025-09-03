@@ -1,3 +1,4 @@
+/// @description Load High Scores
 ini_open("highscores.ini");
 
 global.galaga1 = ini_read_real("highscores", "galaga1", 0); global.init1 = ini_read_string("highscores", "init1", 0);

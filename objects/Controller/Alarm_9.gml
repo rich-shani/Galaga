@@ -1,3 +1,4 @@
+/// @description High Score Initials
 if global.p1score > global.galaga5{
 
 	global.gameMode = GameMode.ENTER_INITIALS;

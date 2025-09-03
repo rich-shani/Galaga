@@ -1,21 +1,19 @@
 /// @description Handles drawing the player ship, its shots, and related visual effects (e.g., explosions, capture, regain).
 /// This script is executed in the Draw event of the player ship object.
-/// It assumes the existence of sprites (spr_shot, spr_ship, spr_explode), a Controller object with gameMode, start, att, and attshot properties, and variables/macros from the initialization code.
+/// It assumes the existence of sprites (spr_shot, spr_ship, spr_explode), a Controller object with gameMode, start, sequence, and attshot properties, and variables/macros from the initialization code.
 /// The rendering accounts for game mode, attract mode, double ship mode, death animations, and capture/regain states.
 
-/// @section Attract Mode Shot
-// Draw a shot in attract mode (demo mode) if Controller.attshot is 1.
-// Controller.attshotx and Controller.attshoty define the shot's position in attract mode.
-// Uses spr_shot with default scale (1,1), rotation (shot1dir), white color, and full opacity (1).
-if (Controller.attshot == 1) {
-    draw_sprite_ext(spr_shot, 0, Controller.attshotx, Controller.attshoty, 1, 1, shot1dir, c_white, 1);
-}
+///// @section Attract Mode Shot
+//// Draw a shot in attract mode (demo mode) if Controller.attshot is 1.
+//// Controller.attshotx and Controller.attshoty define the shot's position in attract mode.
+//// Uses spr_shot with default scale (1,1), rotation (shot1dir), white color, and full opacity (1).
+//if (Controller.attshot == 1) {
+//    draw_sprite_ext(spr_shot, 0, Controller.attshotx, Controller.attshoty, 1, 1, shot1dir, c_white, 1);
+//}
 
-/// @section Main Gameplay and Attract Mode Rendering
+/// @section Main Gameplay
 // Render game elements when in gameplay mode (Controller.gameMode == GameMode.GAME_ACTIVE)
-// or in specific attract mode states (Controller.att between 6 and 17, inclusive).
-// Controller.att likely represents the attract mode state or timer.
-if (global.gameMode == GameMode.GAME_ACTIVE || (Controller.att > 5 && Controller.att < 18)) {
+if (global.gameMode == GameMode.GAME_ACTIVE) {
 
         /// @subsubsection Shots
         // Draw the first shot if it is active (shot1x, shot1y are not off-screen).

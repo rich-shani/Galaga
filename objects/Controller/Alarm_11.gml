@@ -1,3 +1,4 @@
+/// @description PLAYER, STAGE, READY
 switch(global.gameMode) {
 	case GameMode.GAME_PLAYER_MESSAGE: 
 	{

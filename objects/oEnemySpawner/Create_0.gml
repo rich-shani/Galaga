@@ -10,10 +10,10 @@ nEnemiesToSpawn = [4,8,8,8,8];
 pattern = 0;
 
 // reference positions for Guardian, Bee and Butterfly Enemies
-var guardianPositions; 
-var butterflyPositions; 
-
 nGuardiansSpawned = 0;
+dx = 0;
+dy = 0;
+
 guardian_XPositions = [396,450,342,504];
 guardian_YPositions = [120,120,120,120];
 
@@ -24,6 +24,9 @@ butterfly_YPositions = [170,170,220,220,170,170,220,220,170,170,170,170,220,220,
 nBeesSpawned = 0;
 bee_XPositions = [396,450,396,450,504,342,504,342,558,288,612,234,558,288,612,234,666,180,666,180];
 bee_YPositions = [270,270,320,320,270,270,320,320,270,270,270,270,320,320,320,320,270,270,320,320];
+
+// wake up alarm to spawn an enemy
+alarm[0]=20;
 
 
 /*	
@@ -83,8 +86,4 @@ WAVE 5
 [666, 320], [180, 320]
 
 */
-
-
-// wake up alarm to spawn an enemy
-alarm[0]=20;
 
