@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"Controller_step_fns",
+  "%Name":"highscores",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"Controller_step_fns",
+  "name":"highscores",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

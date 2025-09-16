@@ -37,6 +37,17 @@ global.disp = 0;
 // number of game credits (coins entered)
 global.credits = 0;
 
+global.shotcount = 0;
+global.shottotal = 0;
+
+// Flag to indicate progression to the next level, initialized to 0.
+// Set to 1 when conditions are met to advance to the next wave or stage.
+global.nextlevel = 0;
+
+// Results flag, initialized to 0.
+// Probably used to trigger the display of end-of-level or game-over global.results.
+global.results = 0;
+
 /// @section High Score Initials
 // Initials for the top 5 high scores, defaulting to two-letter placeholders.
 // Used to display player initials alongside high scores in the high-score table.
@@ -50,6 +61,11 @@ global.init5 = "EE"; // Initials for fifth place;
 // Current wave or level of the game, initialized to 0.
 // Incremented as the player progresses through enemy waves or stages.
 global.wave = 0;
+
+/// @section UI and Visual Effects
+// Blink counter, initialized to 0.
+// used for blinking UI elements, such as score or lives display.
+blink = 1;
 
 /// @section Game Mode Enum
 // Enum defining the possible game modes for state management.

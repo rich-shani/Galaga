@@ -50,11 +50,11 @@ function Enter_Initials(){
             global.init5 = string_insert(string_char_at(cycle, cyc), global.init5, char + 1);
         }
 
-        results += 1; // Move to the next character position or scorer
+        global.results += 1; // Move to the next character position or scorer
         cyc = 1;      // Reset cycle index to first character
 
         // === FINALIZE NAME ENTRY ===
-        if results == 5 {
+        if global.results == 5 {
             // Adjust timer to move to next screen or scorer
             if loop == 1 {
                 alarm[7] -= 2;
@@ -71,7 +71,7 @@ function Enter_Initials(){
     }
 
     // Track which character in the name is currently being edited
-    char = results - 2;
+    char = global.results - 2;
 }
 
 function Game_Loop(){
@@ -97,12 +97,12 @@ function Game_Loop(){
 	    instance_number(Boss) == 0 &&
 	    instance_number(Fighter) == 0 &&
 	    instance_number(Transform) == 0 &&
-	    nextlevel == 0 &&
+	    global.nextlevel == 0 &&
 	    global.open == 0 &&
 	    Ship.shipStatus == ShipState.ACTIVE &&
 		global.gameMode == GameMode.GAME_ACTIVE {
 			
-		nextlevel = 1;       // Flag to begin next level
+		global.nextlevel = 1;       // Flag to begin next level
 		alarm[10] = 90;      // Delay for level transition effects
 	}
 
@@ -774,7 +774,7 @@ else {
 	// CHALLENGE STAGE LOGIC 
 	
     // Only proceed if we're within valid wave range, alarm is inactive, and not transitioning to next level
-    if global.wave < 5 && alarm[2] == -1 && nextlevel == 0 {
+    if global.wave < 5 && alarm[2] == -1 && global.nextlevel == 0 {
 
         if count < 8 {  // Only spawn if current wave hasn't reached full enemy count (e.g., 8 max)
 
@@ -855,8 +855,8 @@ else {
                 alarm[2] = 45;  // Delay before next wave starts
                 global.wave += 1;
                 count = 0;
-                shottotal += shotcount;
-                shotcount = 0;
+                global.shottotal += global.shotcount;
+                global.shotcount = 0;
             }
         }
     

@@ -10,7 +10,7 @@ if global.challcount > 0 or global.chall = 1{global.p1score += 100} else{global.
 
 else{global.p1score += 50};
 
-if global.challcount = 0{Controller.shotcount += 1; if Controller.shotcount = 8{instance_create(round(x),round(y),TransPoints)}}
+if global.challcount = 0{global.shotcount += 1; if global.shotcount = 8{instance_create(round(x),round(y),TransPoints)}}
 
 	if (irandom(1)) {
 		instance_create(round(x), round(y), oExplosion);

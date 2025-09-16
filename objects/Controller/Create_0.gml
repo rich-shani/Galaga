@@ -25,23 +25,6 @@ loop = 0;
 // Possibly used for cycling through animations, patterns, or UI effects.
 cyc = 0;
 
-//// Current stage or level, initialized to 0.
-//// May track sub-levels within a wave or specific game phases.
-//stage = 0;
-
-/// @section UI and Visual Effects
-// Blink counter, initialized to 0.
-// Likely used for blinking UI elements, such as score or lives display.
-blink = 1;
-
-// Results flag, initialized to 0.
-// Probably used to trigger the display of end-of-level or game-over results.
-results = 0;
-
-// Flag to indicate progression to the next level, initialized to 0.
-// Set to 1 when conditions are met to advance to the next wave or stage.
-nextlevel = 0;
-
 /// @section Miscellaneous
 // Exhale flag, initialized to 0.
 // Purpose unclear; possibly related to a visual or sound effect (e.g., boss animation).

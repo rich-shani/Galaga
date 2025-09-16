@@ -3,7 +3,7 @@ if global.p1score > global.galaga5{
 
 	global.gameMode = GameMode.ENTER_INITIALS;
 	
-    results = 2; sound_stop_all(); cyc = 1;
+    global.results = 2; sound_stop_all(); cyc = 1;
 
     global.galaga5 = global.p1score;
 

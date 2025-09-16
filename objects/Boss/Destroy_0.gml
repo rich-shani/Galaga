@@ -19,9 +19,9 @@ if dive = 1{
 
 if global.challcount = 0{
 
-    Controller.shotcount += 1; 
+    global.shotcount += 1; 
 
-    if Controller.shotcount = 8{
+    if global.shotcount = 8{
 
         instance_create(round(x),round(y),TransPoints); 
 
