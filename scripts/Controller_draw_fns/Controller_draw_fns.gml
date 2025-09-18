@@ -129,7 +129,7 @@ function Draw_Enter_Initials() {
 	draw_set_color(c_aqua);
 	if scored = 5 { draw_text(304, 176, string_hash_to_newline(global.init5)) }
 
-	if results < 5 {
+	if global.results < 5 {
 		draw_set_color(c_aqua);
 		draw_text(304 + (16 * char), 176,
 		string_hash_to_newline(string_char_at(cycle, cyc)));
