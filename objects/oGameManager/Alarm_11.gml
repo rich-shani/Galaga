@@ -3,7 +3,8 @@ switch(global.gameMode) {
 	case GameMode.GAME_PLAYER_MESSAGE: 
 	{
 		alarm[11] = 90; 
-		//alarm[10] = 1; nextlevel = 1; 
+		alarm[10] = 1; 
+		nextlevel = 1; 
 		
 		global.gameMode = GameMode.GAME_STAGE_MESSAGE; 
 		break;
@@ -16,7 +17,8 @@ switch(global.gameMode) {
 		break;
 	}
 	case GameMode.GAME_READY:
-		// alarm[10] = 1; nextlevel = 2;
+		alarm[10] = 1; 
+		nextlevel = 2;
 		
 		global.gameMode = GameMode.GAME_ACTIVE;
 		break;

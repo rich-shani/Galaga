@@ -1,12 +1,12 @@
 /// @description Handles level progression and wave initialization in the space shooter game.
 /// This script is executed in a Step event of a controller object to manage transitions to the next level or wave.
 /// It assumes the existence of a Ship object, global variables (e.g., global.lvl, global.wave), scripts (newlevel, waverogue),
-/// and controller variables (e.g., global.nextlevel, stage, rank). The code updates the level, calculates rank digits, and resets
+/// and controller variables (e.g., nextlevel, stage, rank). The code updates the level, calculates rank digits, and resets
 /// game state for new waves, with specific handling for challenge modes and path adjustments.
 
-/// @section Level Transition (global.nextlevel == 1)
-/// Triggered when global.nextlevel is 1, indicating the game is ready to advance to the next level.
-if (global.nextlevel == 1) {
+/// @section Level Transition (nextlevel == 1)
+/// Triggered when nextlevel is 1, indicating the game is ready to advance to the next level.
+if (nextlevel == 1) {
     /// @subsection Check for Ship Regain or Active Enemies
     /// If the ship is in the regain state (Ship.regain == 1), delay the transition by setting alarm[10] to 1 step.
     /// This ensures the regain animation completes before proceeding.
@@ -101,9 +101,9 @@ if (global.nextlevel == 1) {
     }
 }
 
-/// @section Wave Reset (global.nextlevel == 2)
-/// Triggered when global.nextlevel is 2, indicating the completion of the level transition and the start of a new wave.
-if (global.nextlevel == 2) {
+/// @section Wave Reset (nextlevel == 2)
+/// Triggered when nextlevel is 2, indicating the completion of the level transition and the start of a new wave.
+if (nextlevel == 2) {
     /// @subsection Reset Stage and Counters
     /// Reset stage to 0, indicating the start of a new wave or level phase.
     global.stage = 0;
@@ -154,8 +154,8 @@ if (global.nextlevel == 2) {
     /// Reset global.escortcount to 0, likely tracking escort enemy behaviors or counts.
     global.escortcount = 0;
     
-    /// Reset global.nextlevel to 0 to indicate the level transition is complete.
-    global.nextlevel = 0;
+    /// Reset nextlevel to 0 to indicate the level transition is complete.
+    nextlevel = 0;
 
     /// @subsection Challenge Mode and Game Start   
 	global.open = 1;

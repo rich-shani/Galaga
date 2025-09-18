@@ -1,6 +1,6 @@
 /// @description Handles the rendering of a ranking display using tiles for a high-score or level ranking system.
 /// This script is executed in a Step or Draw event of a controller object to display the player's rank (e.g., in a high-score table).
-/// It assumes the existence of a tile set (bkgd_Rank) with digit sprites, global variables (e.g., global.lvl, global.challcount), and controller variables (e.g., rank, start, global.nextlevel).
+/// It assumes the existence of a tile set (bkgd_Rank) with digit sprites, global variables (e.g., global.lvl, global.challcount), and controller variables (e.g., rank, start, nextlevel).
 /// The display shows ones, tens, and hundreds digits at specific positions, with sound effects and level progression logic.
 
 /// @section Rank Display Logic
@@ -107,9 +107,9 @@ if (global.lvl > 0 && rank > 0) {
 
 /// @section Level Progression
 // When rank reaches 0, trigger the transition to the next level.
-// Sets global.nextlevel to 2 to indicate the level transition state and sets alarm 10 to 50 steps (approximately 0.833 seconds).
+// Sets nextlevel to 2 to indicate the level transition state and sets alarm 10 to 50 steps (approximately 0.833 seconds).
 // Likely used to pause briefly before advancing to the next wave or stage.
 if (rank == 0) {
-    global.nextlevel = 2;
+    nextlevel = 2;
     alarm[10] = 50;
 }

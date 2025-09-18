@@ -97,12 +97,12 @@ function Game_Loop(){
 	    instance_number(Boss) == 0 &&
 	    instance_number(Fighter) == 0 &&
 	    instance_number(Transform) == 0 &&
-	    global.nextlevel == 0 &&
+	    nextlevel == 0 &&
 	    global.open == 0 &&
 	    Ship.shipStatus == ShipState.ACTIVE &&
 		global.gameMode == GameMode.GAME_ACTIVE {
 			
-		global.nextlevel = 1;       // Flag to begin next level
+		nextlevel = 1;       // Flag to begin next level
 		alarm[10] = 90;      // Delay for level transition effects
 	}
 
@@ -774,7 +774,7 @@ else {
 	// CHALLENGE STAGE LOGIC 
 	
     // Only proceed if we're within valid wave range, alarm is inactive, and not transitioning to next level
-    if global.wave < 5 && alarm[2] == -1 && global.nextlevel == 0 {
+    if global.wave < 5 && alarm[2] == -1 && nextlevel == 0 {
 
         if count < 8 {  // Only spawn if current wave hasn't reached full enemy count (e.g., 8 max)
 
