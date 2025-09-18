@@ -42,7 +42,7 @@ targy = 0;
 
 if global.challcount > 0{
 
-if Controller.rogueyes = 0{
+if oGameManager.rogueyes = 0{
 
 if global.pattern = 0{
 
@@ -88,7 +88,7 @@ if global.pattern = 2{
  
 ///
 
-if Controller.rogueyes = 1{rogue = 1; Controller.rogueyes = 0};
+if oGameManager.rogueyes = 1{rogue = 1; oGameManager.rogueyes = 0};
 
 if rogue = 0{if global.wave = 1 or global.wave = 2{alarm[5] = 75; if global.fastenter = 1{alarm[5] = 63}} else{alarm[5] = 10};}
 
@@ -96,21 +96,21 @@ if rogue = 0{if global.wave = 1 or global.wave = 2{alarm[5] = 75; if global.fast
 
             if rogue = 0{
 
-            Controller.count1 = Controller.count1 - 1; 
+            oGameManager.count1 = oGameManager.count1 - 1; 
 
-            if Controller.count1 = 3{numb = 9};
+            if oGameManager.count1 = 3{numb = 9};
 
-            if Controller.count1 = 2{numb = 11};
+            if oGameManager.count1 = 2{numb = 11};
 
-            if Controller.count1 = 1{numb = 13};
+            if oGameManager.count1 = 1{numb = 13};
 
-            if Controller.count1 = 0{numb = 15};
+            if oGameManager.count1 = 0{numb = 15};
 
             }
 
             else{
 
-            Controller.rogue1 = Controller.rogue1 - 1
+            oGameManager.rogue1 = oGameManager.rogue1 - 1
 
             }
 
@@ -124,15 +124,15 @@ if global.fastenter = 1{fasty = 50};
 
 else{
 
-    Controller.count += 1
+    oGameManager.count += 1
 
-    if x = path_get_x(Controller.path1,0) and y = path_get_y(Controller.path1,0){path_start(Controller.path1,6,0,0)}
+    if x = path_get_x(oGameManager.path1,0) and y = path_get_y(oGameManager.path1,0){path_start(oGameManager.path1,6,0,0)}
 
-    if x = path_get_x(Controller.path1flip,0) and y = path_get_y(Controller.path1flip,0){path_start(Controller.path1flip,6,0,0)}
+    if x = path_get_x(oGameManager.path1flip,0) and y = path_get_y(oGameManager.path1flip,0){path_start(oGameManager.path1flip,6,0,0)}
 
-    if x = path_get_x(Controller.path2,0) and y = path_get_y(Controller.path2,0){path_start(Controller.path2,6,0,0)}
+    if x = path_get_x(oGameManager.path2,0) and y = path_get_y(oGameManager.path2,0){path_start(oGameManager.path2,6,0,0)}
 
-    if x = path_get_x(Controller.path2flip,0) and y = path_get_y(Controller.path2flip,0){path_start(Controller.path2flip,6,0,0)}
+    if x = path_get_x(oGameManager.path2flip,0) and y = path_get_y(oGameManager.path2flip,0){path_start(oGameManager.path2flip,6,0,0)}
 
 }
 

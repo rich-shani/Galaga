@@ -855,8 +855,8 @@ else {
                 alarm[2] = 45;  // Delay before next wave starts
                 global.wave += 1;
                 count = 0;
-                shottotal += shotcount;
-                shotcount = 0;
+                global.shottotal += global.shotcount;
+                global.shotcount = 0;
             }
         }
     

@@ -8,7 +8,7 @@ function __global_object_depths() {
 	//global.__objectDepths[0] = 0; // Bee
 	//global.__objectDepths[1] = 0; // Butterfly
 	//global.__objectDepths[2] = 0; // Boss
-	//global.__objectDepths[3] = 0; // Controller
+	//global.__objectDepths[3] = 0; // oGameManager
 	//global.__objectDepths[4] = 0; // Ship
 	//global.__objectDepths[5] = 0; // Explosion
 	//global.__objectDepths[6] = 0; // EnemyShot
@@ -26,7 +26,7 @@ function __global_object_depths() {
 	//global.__objectNames[0] = "Bee";
 	//global.__objectNames[1] = "Butterfly";
 	//global.__objectNames[2] = "Boss";
-	//global.__objectNames[3] = "Controller";
+	//global.__objectNames[3] = "oGameManager";
 	//global.__objectNames[4] = "Ship";
 	//global.__objectNames[5] = "oExplosion3";
 	//global.__objectNames[6] = "EnemyShot";

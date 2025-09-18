@@ -22,7 +22,7 @@ if global.fighterstore = 0{}else{
 
     path_start(Ent1e1Flip,6,0,0); direction = 270
  
-    Controller.count1 = Controller.count1 - 1; enter = 1; dive = 1; goto = 0;
+    oGameManager.count1 = oGameManager.count1 - 1; enter = 1; dive = 1; goto = 0;
 
 timey = 90; ///time attempt fix
 

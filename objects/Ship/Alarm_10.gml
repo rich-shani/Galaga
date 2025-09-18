@@ -12,7 +12,7 @@ if global.gameover {
 
     with Fighter{instance_destroy()}
 
-    with Controller{global.gameMode = GameMode.SHOW_RESULTS; results = 1; alarm[9] = 450};
+    with oGameManager{global.gameMode = GameMode.SHOW_RESULTS; results = 1; alarm[9] = 450};
 
 	// reset the game over flag
 	global.gameover = false;

@@ -16,7 +16,7 @@ function handle_shot_collision(shot_index, enemy_x, enemy_y, enemy_instance) {
             shot2x = -32;
             shot2y = -32;
         }
-        Controller.hits += 1;
+        oGameManager.hits += 1;
         with (enemy_instance) {
             if (object_index == obj_Boss) {
                 if (hit == 0) {
@@ -138,7 +138,7 @@ function scr_handle_shot_collision(obj, shot_index, is_boss, boss_hit_state) {
 	            Ship.shot2x = Ship.SHOT_OFFSCREEN;
 	            Ship.shot2y = Ship.SHOT_OFFSCREEN;
 	        }
-	        Controller.hits += 1; // Increment hit counter
+	        oGameManager.hits += 1; // Increment hit counter
         
 	        if (is_boss) {
 	            if (boss_hit_state == 0) {
@@ -201,7 +201,7 @@ function scr_handle_enemy_collisions(id) {
         script_execute(shot1for2, 2); // Execute hit effect for shot1
         Ship.shot1x = Ship.SHOT_OFFSCREEN; // Move shot1 off-screen
         Ship.shot1y = Ship.SHOT_OFFSCREEN;
-        Controller.hits += 1; // Increment hit counter
+        oGameManager.hits += 1; // Increment hit counter
         if (id == Fighter) {
             global.fighterstore = 0; // Reset fighter store for Fighter
         }
@@ -213,7 +213,7 @@ function scr_handle_enemy_collisions(id) {
         script_execute(shot1for2, 3); // Execute hit effect for shot2
         Ship.shot2x = Ship.SHOT_OFFSCREEN; // Move shot2 off-screen
         Ship.shot2y = Ship.SHOT_OFFSCREEN;
-        Controller.hits += 1; // Increment hit counter
+        oGameManager.hits += 1; // Increment hit counter
         if (id == Fighter) {
             global.fighterstore = 0; // Reset fighter store for Fighter
         }
@@ -234,7 +234,7 @@ function scr_handle_boss_collisions(id) {
         script_execute(shot1for2, 2); // Execute hit effect for shot1
         Ship.shot1x = Ship.SHOT_OFFSCREEN; // Move shot1 off-screen
         Ship.shot1y = Ship.SHOT_OFFSCREEN;
-        Controller.hits += 1; // Increment hit counter
+        oGameManager.hits += 1; // Increment hit counter
         
         if (hit == 0) {
             hit = 1; // Mark boss as hit
@@ -257,7 +257,7 @@ function scr_handle_boss_collisions(id) {
         script_execute(shot1for2, 3); // Execute hit effect for shot2
         Ship.shot2x = Ship.SHOT_OFFSCREEN; // Move shot2 off-screen
         Ship.shot2y = Ship.SHOT_OFFSCREEN;
-        Controller.hits += 1; // Increment hit counter
+        oGameManager.hits += 1; // Increment hit counter
         
         if (hit == 0) {
             hit = 1; // Mark boss as hit

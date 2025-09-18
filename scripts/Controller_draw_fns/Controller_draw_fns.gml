@@ -3,7 +3,7 @@ function Draw_Scores() {
 	draw_set_halign(fa_right);
 
 	draw_set_color(c_red);
-	if (blink) { draw_text(80*global.scale, 10*global.scale, string_hash_to_newline("1UP")) };
+	if (oGameManager.blink) { draw_text(80*global.scale, 10*global.scale, string_hash_to_newline("1UP")) };
 	draw_text(304*global.scale, 10*global.scale, string_hash_to_newline("HIGH SCORE"));
 
 	draw_set_color(c_white);
@@ -134,7 +134,7 @@ function Draw_Enter_Initials() {
 		draw_text(304 + (16 * char), 176,
 		string_hash_to_newline(string_char_at(cycle, cyc)));
 
-		if blink {
+		if oGameManager.blink {
 			draw_set_color(c_yellow);
 			draw_text(304 + (16 * char), 176,
 			string_hash_to_newline(string_char_at(cycle, cyc)))

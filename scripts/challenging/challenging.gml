@@ -1,5 +1,5 @@
 function challenging() {
-	Controller.list = ds_list_create()
+	oGameManager.list = ds_list_create()
 	switch global.chall{
 	    case 1:
 	        path1 = Chall11; path2 = Chall12; path1flip = Chall11Flip; path2flip = Chall12Flip

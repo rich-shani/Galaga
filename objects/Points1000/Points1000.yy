@@ -11,8 +11,8 @@
   "name":"Points1000",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"Points",
+    "path":"folders/Objects/Points.yy",
   },
   "parentObjectId":null,
   "persistent":false,

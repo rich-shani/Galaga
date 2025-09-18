@@ -25,7 +25,7 @@ else{spd = 3;}
 
 
 
-breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + Controller.x - 16;
+breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
 breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));
 
@@ -63,7 +63,7 @@ if dive = 0 and enter = 0{ ///convoy
 
             instance_number(Fighter) = 0 and Ship.shotMode == ShotMode.SINGLE{beam = 1; alarm[2] = 23} else{beam = 0}; global.beamcheck = 0;
 
-            global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
+            global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
 
             if carrying = 1{Fighter.x = x};
 
@@ -73,7 +73,7 @@ if dive = 0 and enter = 0{ ///convoy
 
                     dive = 1; direction = 90;
 
-                    global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; add = Boss.breathey - breathey - 32;
+                    global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; add = Boss.breathey - breathey - 32;
 
                     path_start(Boss1,spd,0,false);
 
@@ -87,7 +87,7 @@ if dive = 0 and enter = 0{ ///convoy
 
                     dive = 1; direction = 90;
 
-                    global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; add = Boss.breathey - breathey - 32;
+                    global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; add = Boss.breathey - breathey - 32;
 
                     path_start(Boss1Flip,spd,0,false);
 
@@ -148,7 +148,7 @@ if dive = 0 and enter = 0{ ///convoy
 
                         dive = 1; direction = 90; if bosses[i].path_index = Boss1{dir = 1} else{dir = -1}; global.escortcount = global.escortcount + 1
 
-                        global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; add = breathey - Boss.breathey - 32;
+                        global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; add = breathey - Boss.breathey - 32;
 
                         path_start(bosses[i].path_index,spd,0,false) i = 4;
 						 
@@ -318,7 +318,7 @@ if enter = 1{
 
                            
 
-                breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + Controller.x - 16;
+                breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
                 breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));
 

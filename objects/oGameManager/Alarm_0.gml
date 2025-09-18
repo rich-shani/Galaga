@@ -1,0 +1,1 @@
+global.prohib = 0;

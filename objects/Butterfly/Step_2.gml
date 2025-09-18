@@ -15,7 +15,7 @@ if global.shotnumber > 2 and alarm[1] = 15+5{instance_create(x,y,EnemyShot);}
 
 
 
-breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + Controller.x - 16;
+breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
 breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));
 
@@ -59,7 +59,7 @@ if dive = 0 and enter = 0{ ///convoy
 
         if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and escort = 0 and alarm[2] = -1 and Ship.shipStatus == ShipState.ACTIVE and Ship.regain = 0{
 
-            dive = 1; direction = 90; global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
+            dive = 1; direction = 90; global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
 
             if xstart > 224{path_start(Butterfly1,spd,0,false)}
 
@@ -381,7 +381,7 @@ if enter = 1{
 
                                 
 
-                breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + Controller.x - 16;
+                breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
                 breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));
 

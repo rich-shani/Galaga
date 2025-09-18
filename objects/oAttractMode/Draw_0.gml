@@ -86,7 +86,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 					var d = (direction+90)%360;
 					var i = round(d/15);
 					
-					var color = (hitFlag ? c_purple : c_white);
+					var color = (hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, i, 384*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
 					
 					// IMPERIAL SHUTTLE 1
@@ -137,7 +137,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 					var d = (direction+90)%360;
 					var i = round(d/15);
 				
-					var color = (hitFlag ? c_purple : c_white);
+					var color = (hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, i, 288*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
 					
 					// IMPERIAL SHUTTLE 1
@@ -171,7 +171,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 					var d = (direction+90)%360;
 					var i = round(d/15);
 					
-					var color = (hitFlag ? c_purple : c_white);
+					var color = (hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, i, 192*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
 				}
 				else {
@@ -184,8 +184,8 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			// DRAW ship & final BOSS
 			if sequence < 17 {
 				if (global.roomname == "starwars") {
-					// note - ignore the hit flag until we get to sequence 17
-					var color = (floor(sequence / 16) * hitFlag ? c_purple : c_white);
+					// note - ignore the hit flag until we get to sequence 16
+					var color = (floor(sequence / 16) * hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, 0, 96*global.scale, 336*global.scale, 1, 1, 0, color, 1);
 				}
 				else {

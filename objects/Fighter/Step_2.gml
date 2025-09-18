@@ -20,7 +20,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 
 
-	breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + Controller.x - 16;
+	breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
 	breathey = ystart;
 
@@ -68,7 +68,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	            dive = 1; direction = 90;
 
-	            global.prohib = 1; Controller.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
+	            global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
 
 	            if xstart > 224{path_start(Boss1,spd,0,false)}
 
@@ -175,7 +175,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
                 
 
-	                breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + Controller.x - 16;
+	                breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
 	                breathey = ystart;
 
@@ -187,7 +187,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	        if goto = 1{
 
-	            breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + Controller.x - 16;
+	            breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
 	            breathey = ystart;
 

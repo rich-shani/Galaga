@@ -5,8 +5,9 @@ if (global.gameMode == GameMode.INITIALIZE) {
 	// Prevents audio overlap from previous game states or sessions.
 	sound_stop_all();
 
+	load_highscores();
+	
 	global.gameMode = GameMode.ATTRACT_MODE;
-
 	
 	audio_play_sound(Galaga_Theme_Remix,1,false);
 }

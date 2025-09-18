@@ -9,8 +9,8 @@
   "name":"oExplosion2",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"Explosions",
+    "path":"folders/Objects/Explosions.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -1,6 +1,6 @@
 /// @description Initializes the player ship's variables and state for the space shooter game.
 /// This script sets up initial values for movement, shooting, collision detection, and state management.
-/// It assumes the existence of a Controller object with gameMode and start properties, and a GameMode enum.
+/// It assumes the existence of a oGameManager object with gameMode and start properties, and a GameMode enum.
 
 /// @section Shooting Initialization
 // Number of shots the ship can fire (2 for single or double ship mode).

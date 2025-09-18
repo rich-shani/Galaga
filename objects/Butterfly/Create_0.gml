@@ -4,7 +4,7 @@ event_inherited();
 /// @description Initializes an enemy object and controls its movement behavior in a space shooter game.
 /// This script is executed in the Create or Step event of an enemy object (e.g., Bee, Butterfly).
 /// It sets up initial variables, assigns movement paths based on wave and pattern, and manages rogue enemy behavior.
-/// The code assumes the existence of a Controller object with variables (e.g., rogueyes, count1, count2, alt),
+/// The code assumes the existence of a oGameManager object with variables (e.g., rogueyes, count1, count2, alt),
 /// global variables (e.g., global.wave, global.pattern), and predefined paths (e.g., Ent1e1Flip, Rogue1e1).
 
 /// @section Enemy Behavior Variables
@@ -79,8 +79,8 @@ targy = 0;
 /// @section Path Assignment Based on Wave and Pattern
 /// Assigns movement paths to the enemy based on global.pattern, global.wave, and rogue status.
 /// Paths define how enemies enter or move (e.g., swooping, diving) with a speed of 6 pixels per step.
-/// Controller.rogueyes determines whether to use standard (Ent*) or rogue (Rogue*) paths.
-if (Controller.rogueyes == 0) {
+/// oGameManager.rogueyes determines whether to use standard (Ent*) or rogue (Rogue*) paths.
+if (oGameManager.rogueyes == 0) {
     /// @subsection Pattern 0
     /// Standard enemy paths for pattern 0, typically a specific formation or entry sequence.
     if (global.pattern == 0) {
@@ -99,10 +99,10 @@ if (Controller.rogueyes == 0) {
         if (global.wave == 0) { path_start(Ent1e1, 6, 0, 0); }
         // Wave 1: Start on the Ent2e2In path (second entry path with inward movement).
         if (global.wave == 1) { path_start(Ent2e2In, 6, 0, 0); }
-        // Wave 2: Choose between Ent2e2Flip (flipped) or Ent2e2InFlip based on Controller.alt.
-        // Controller.alt toggles alternate behavior (0 = normal, 1 = alternate).
+        // Wave 2: Choose between Ent2e2Flip (flipped) or Ent2e2InFlip based on oGameManager.alt.
+        // oGameManager.alt toggles alternate behavior (0 = normal, 1 = alternate).
         if (global.wave == 2) {
-            if (Controller.alt == 0) { path_start(Ent2e2Flip, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Ent2e2Flip, 6, 0, 0); }
             else { path_start(Ent2e2InFlip, 6, 0, 0); }
         }
     }
@@ -114,16 +114,16 @@ if (Controller.rogueyes == 0) {
         if (global.wave == 0) { path_start(Ent1e1Flip, 6, 0, 0); }
         // Wave 1: Start on the Ent1e2Flip path.
         if (global.wave == 1) { path_start(Ent1e2Flip, 6, 0, 0); }
-        // Wave 2: Choose between Ent1e2 or Ent1e2Flip based on Controller.alt.
+        // Wave 2: Choose between Ent1e2 or Ent1e2Flip based on oGameManager.alt.
         if (global.wave == 2) {
-            if (Controller.alt == 0) { path_start(Ent1e2, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Ent1e2, 6, 0, 0); }
             else { path_start(Ent1e2Flip, 6, 0, 0); }
         }
 		 
     }
 } else {
     /// @subsection Rogue Paths
-    /// Rogue enemy paths, used when Controller.rogueyes == 1 for unique or aggressive behaviors.
+    /// Rogue enemy paths, used when oGameManager.rogueyes == 1 for unique or aggressive behaviors.
     if (global.pattern == 0) {
         // Wave 0: Start on the Rogue1e1Flip path.
         if (global.wave == 0) { path_start(Rogue1e1Flip, 6, 0, 0); }
@@ -138,9 +138,9 @@ if (Controller.rogueyes == 0) {
         if (global.wave == 0) { path_start(Rogue1e1, 6, 0, 0); }
         // Wave 1: Start on the Rogue2e2In path.
         if (global.wave == 1) { path_start(Rogue2e2In, 6, 0, 0); }
-        // Wave 2: Choose between Rogue2e2Flip or Rogue2e2InFlip based on Controller.alt.
+        // Wave 2: Choose between Rogue2e2Flip or Rogue2e2InFlip based on oGameManager.alt.
         if (global.wave == 2) {
-            if (Controller.alt == 0) { path_start(Rogue2e2Flip, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Rogue2e2Flip, 6, 0, 0); }
             else { path_start(Rogue2e2InFlip, 6, 0, 0); }
         }
     }
@@ -150,9 +150,9 @@ if (Controller.rogueyes == 0) {
         if (global.wave == 0) { path_start(Rogue1e1Flip, 6, 0, 0); }
         // Wave 1: Start on the Rogue1e2Flip path.
         if (global.wave == 1) { path_start(Rogue1e2Flip, 6, 0, 0); }
-        // Wave 2: Choose between Rogue1e2 or Rogue1e2Flip based on Controller.alt.
+        // Wave 2: Choose between Rogue1e2 or Rogue1e2Flip based on oGameManager.alt.
         if (global.wave == 2) {
-            if (Controller.alt == 0) { path_start(Rogue1e2, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Rogue1e2, 6, 0, 0); }
             else { path_start(Rogue1e2Flip, 6, 0, 0); }
         }
     }
@@ -166,11 +166,11 @@ if (Controller.rogueyes == 0) {
 timey = 90;
 
 /// @section Rogue Behavior Activation
-// If Controller.rogueyes == 1, mark this enemy as rogue and reset Controller.rogueyes to 0.
+// If oGameManager.rogueyes == 1, mark this enemy as rogue and reset oGameManager.rogueyes to 0.
 // Ensures only one enemy processes the rogue state activation.
-if (Controller.rogueyes == 1) {
+if (oGameManager.rogueyes == 1) {
     rogue = 1;
-    Controller.rogueyes = 0;
+    oGameManager.rogueyes = 0;
 }
 
 /// @section Dive Alarm Setup
@@ -191,60 +191,60 @@ if (rogue == 0) {
 // numb likely determines the enemy's position or role in the formation.
 if (global.wave == 0) {
     if (rogue == 0) {
-        // Decrease Controller.count2 to track the number of enemies in the wave.
-        Controller.count2 -= 1;
-        // Assign numb based on Controller.count2 to define the enemy's position.
-        if (Controller.count2 == 3) { numb = 2; }
-        if (Controller.count2 == 2) { numb = 4; }
-        if (Controller.count2 == 1) { numb = 6; }
-        if (Controller.count2 == 0) { numb = 8; }
+        // Decrease oGameManager.count2 to track the number of enemies in the wave.
+        oGameManager.count2 -= 1;
+        // Assign numb based on oGameManager.count2 to define the enemy's position.
+        if (oGameManager.count2 == 3) { numb = 2; }
+        if (oGameManager.count2 == 2) { numb = 4; }
+        if (oGameManager.count2 == 1) { numb = 6; }
+        if (oGameManager.count2 == 0) { numb = 8; }
     } else {
-        // For rogue enemies, decrease Controller.rogue2 to track rogue enemy counts.
-        Controller.rogue2 -= 1;
+        // For rogue enemies, decrease oGameManager.rogue2 to track rogue enemy counts.
+        oGameManager.rogue2 -= 1;
     }
 }
 
 if (global.wave == 1) {
     if (rogue == 0) {
-        // Decrease Controller.count2 for non-rogue enemies.
-        Controller.count2 -= 1;
+        // Decrease oGameManager.count2 for non-rogue enemies.
+        oGameManager.count2 -= 1;
         // Assign higher numb values for wave 1 to position enemies differently.
-        if (Controller.count2 == 3) { numb = 10; }
-        if (Controller.count2 == 2) { numb = 12; }
-        if (Controller.count2 == 1) { numb = 14; }
-        if (Controller.count2 == 0) { numb = 16; }
+        if (oGameManager.count2 == 3) { numb = 10; }
+        if (oGameManager.count2 == 2) { numb = 12; }
+        if (oGameManager.count2 == 1) { numb = 14; }
+        if (oGameManager.count2 == 0) { numb = 16; }
     } else {
-        // Decrease Controller.rogue2 for rogue enemies.
-        Controller.rogue2 -= 1;
+        // Decrease oGameManager.rogue2 for rogue enemies.
+        oGameManager.rogue2 -= 1;
     }
 }
 
 if (global.wave == 2) {
-    if (Controller.alt == 0) {
+    if (oGameManager.alt == 0) {
         if (rogue == 0) {
-            // Decrease Controller.count1 for non-rogue enemies when Controller.alt is 0.
-            Controller.count1 -= 1;
+            // Decrease oGameManager.count1 for non-rogue enemies when oGameManager.alt is 0.
+            oGameManager.count1 -= 1;
             // Assign numb values for wave 2, starting at 17.
-            if (Controller.count1 == 3) { numb = 17; }
-            if (Controller.count1 == 2) { numb = 19; }
-            if (Controller.count1 == 1) { numb = 21; }
-            if (Controller.count1 == 0) { numb = 23; }
+            if (oGameManager.count1 == 3) { numb = 17; }
+            if (oGameManager.count1 == 2) { numb = 19; }
+            if (oGameManager.count1 == 1) { numb = 21; }
+            if (oGameManager.count1 == 0) { numb = 23; }
         } else {
-            // Decrease Controller.rogue1 for rogue enemies.
-            Controller.rogue1 -= 1;
+            // Decrease oGameManager.rogue1 for rogue enemies.
+            oGameManager.rogue1 -= 1;
         }
     } else {
         if (rogue == 0) {
-            // Decrease Controller.count2 for non-rogue enemies when Controller.alt is 1.
-            Controller.count2 -= 1;
+            // Decrease oGameManager.count2 for non-rogue enemies when oGameManager.alt is 1.
+            oGameManager.count2 -= 1;
             // Assign different numb values for alternate wave 2 behavior.
-            if (Controller.count2 == 3) { numb = 18; }
-            if (Controller.count2 == 2) { numb = 20; }
-            if (Controller.count2 == 1) { numb = 22; }
-            if (Controller.count2 == 0) { numb = 24; }
+            if (oGameManager.count2 == 3) { numb = 18; }
+            if (oGameManager.count2 == 2) { numb = 20; }
+            if (oGameManager.count2 == 1) { numb = 22; }
+            if (oGameManager.count2 == 0) { numb = 24; }
         } else {
-            // Decrease Controller.rogue2 for rogue enemies.
-            Controller.rogue2 -= 1;
+            // Decrease oGameManager.rogue2 for rogue enemies.
+            oGameManager.rogue2 -= 1;
         }
     }
 }

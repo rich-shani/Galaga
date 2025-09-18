@@ -8,7 +8,6 @@
   "instanceCreationOrder":[
     {"name":"inst_18595E2F","path":"rooms/Galaga2/Galaga2.yy",},
     {"name":"inst_3903957C","path":"rooms/Galaga2/Galaga2.yy",},
-    {"name":"inst_7AC6568E","path":"rooms/Galaga2/Galaga2.yy",},
     {"name":"inst_961B381","path":"rooms/Galaga2/Galaga2.yy",},
     {"name":"inst_31815884","path":"rooms/Galaga2/Galaga2.yy",},
     {"name":"inst_47BE4885","path":"rooms/Galaga2/Galaga2.yy",},
@@ -28,7 +27,6 @@
       ],"layers":[],"name":"GameSprites","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"GameManager","depth":300,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v2","%Name":"inst_3903957C","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_3903957C","objectId":{"name":"oGameManager","path":"objects/oGameManager/oGameManager.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":64.0,"y":160.0,},
-        {"$GMRInstance":"v2","%Name":"inst_7AC6568E","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_7AC6568E","objectId":{"name":"Controller","path":"objects/Controller/Controller.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":128.0,"y":160.0,},
       ],"layers":[],"name":"GameManager","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"Starfield","depth":400,"effectEnabled":true,"effectType":null,"gridX":32,"gridY":32,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v2","%Name":"inst_18595E2F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_18595E2F","objectId":{"name":"oStarfieldGenerator","path":"objects/oStarfieldGenerator/oStarfieldGenerator.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":224.0,"y":352.0,},

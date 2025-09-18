@@ -116,9 +116,9 @@ if (nextlevel == 2) {
     count2 = 0;
     count = 0;
     
-    /// Reset shot counters (shotcount, shottotal) to 0, likely tracking shots fired or hit accuracy.
-    shotcount = 0;
-    shottotal = 0;
+    /// Reset shot counters (shotcount, global.shottotal) to 0, likely tracking shots fired or hit accuracy.
+    global.shotcount = 0;
+    global.shottotal = 0;
     
     /// Reset rogue enemy flags (rogue1, rogue2) to 0, indicating no active rogue behaviors.
     rogue1 = 0;

@@ -1,6 +1,6 @@
 Font has no texture in GameMaker Studio 1 project, forced to regenerate
 Font texture has been regenerated - inconsistencies may occur
-Converting GML script: F:\Old_Gamemaker1.4\Projects\Galaga.gmx\mvc\objects\Controller\Draw_0.gml
+Converting GML script: F:\Old_Gamemaker1.4\Projects\Galaga.gmx\mvc\objects\oGameManager\Draw_0.gml
 Converted description /// @description draw_sprite(sprite3,0,x,y);/// @param sprite3
 /// @param 0
 /// @param x

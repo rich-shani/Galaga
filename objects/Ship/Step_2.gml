@@ -42,7 +42,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 		            sound_stop(GShot);
 		            sound_play(GShot);
                 
-		            Controller.fire += 1; // Increment fire counter
+		            oGameManager.fire += 1; // Increment fire counter
 		            Ship.skip = 1; // Set skip flag to manage double shot timing
 		        }
             
@@ -65,7 +65,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 		                sound_stop(GShot);
 		                sound_play(GShot);
                     
-		                Controller.fire += 1; // Increment fire counter
+		                oGameManager.fire += 1; // Increment fire counter
 		            }
 		        }
             
