@@ -157,7 +157,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	}
 
 
-	if global.fastenter = 1 and global.open = 1{if fasty > 0{fasty = fasty - 1}else{path_speed = 12; speed = 12}};
+	if global.fastenter = 1 and global.open = 1{if fasty > 0{fasty = fasty - 1}else{path_speed = 12*global.scale; speed = 12*global.scale}};
 
 	if enter = 1{
 

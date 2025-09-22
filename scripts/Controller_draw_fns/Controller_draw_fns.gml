@@ -23,30 +23,30 @@ function Draw_Results() {
 
 	draw_set_color(c_red);
 
-	draw_text(144, 272, string_hash_to_newline("-RESULTS-"));
+	draw_text(144*global.scale, 272*global.scale, string_hash_to_newline("-RESULTS-"));
 
 	draw_set_color(c_yellow);
 
-	draw_text(64, 272 + 48, string_hash_to_newline("SHOTS FIRED"));
-	draw_text(320, 272 + 48, string_hash_to_newline(fire))
+	draw_text(64*global.scale, (272 + 48)*global.scale, string_hash_to_newline("SHOTS FIRED"));
+	draw_text(320*global.scale, (272 + 48)*global.scale, string_hash_to_newline(fire))
 
-	draw_text(64, 272 + 48 + 48, string_hash_to_newline("NUMBER OF HITS"));
-	draw_text(320, 272 + 48 + 48, string_hash_to_newline(hits))
+	draw_text(64*global.scale, (272 + 48 + 48)*global.scale, string_hash_to_newline("NUMBER OF HITS"));
+	draw_text(320*global.scale, (272 + 48 + 48)*global.scale, string_hash_to_newline(hits))
 
 	draw_set_color(c_white);
 
-	draw_text(64, 272 + 48 + 48 + 48, string_hash_to_newline("HIT-MISS RATIO"));
+	draw_text(64*global.scale, (272 + 48 + 48 + 48)*global.scale, string_hash_to_newline("HIT-MISS RATIO"));
 
 	if (fire = 0 or hits = 0) {
-		draw_text(290, 272 + 48 + 48 + 48, string_hash_to_newline("0.0"))
+		draw_text(290*global.scale, (272 + 48 + 48 + 48)*global.scale, string_hash_to_newline("0.0"))
 	} 
 	else {
 
-		draw_text(290, 272 + 48 + 48 + 48,
+		draw_text(290*global.scale, (272 + 48 + 48 + 48)*global.scale,
 		string_hash_to_newline(string_format(100 * (hits / fire), 4, 1)))
 	};
 
-	draw_text(290, 272 + 48 + 48 + 48, string_hash_to_newline("      %"));
+	draw_text(290*global.scale, (272 + 48 + 48 + 48)*global.scale, string_hash_to_newline("      %"));
 
 	return;
 }
@@ -156,14 +156,13 @@ function Draw_Instructions() {
 
 	draw_text(64*global.scale, (208 + 64 + 48)*global.scale, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
 
-	draw_text(64*global.scale, (208 + 64 + 48 + 48)*global.scale,
-	string_hash_to_newline("AND FOR EVERY 70000 PTS"));
+	draw_text(64*global.scale, (208 + 64 + 48 + 48)*global.scale, string_hash_to_newline("AND FOR EVERY 70000 PTS"));
 
 	// which ship to draw ... 
-	if (global.roomname == "starwars") {
-		draw_sprite_ext(sXWing,0,32*global.scale, (8 + 208 + 64)*global.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(sXWing,0,32*global.scale, (8 + 208 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(sXWing,0,32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
+	if (global.roomname == "GalagaWars") {
+		draw_sprite_ext(xwing_sprite_sheet,0,32*global.scale, (8 + 208 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,0,32*global.scale, (8 + 208 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,0,32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
 	}
 	else {
 		draw_sprite(spr_ship, 0, 32*global.scale, (8 + 208 + 64)*global.scale);
@@ -191,7 +190,7 @@ function Draw_Lives() {
 	lifecount = global.p1lives - 1;
 	repeat(lifecount)
 	{
-		if (global.roomname = "starwars") {
+		if (global.roomname = "GalagaWars") {
 			draw_sprite_ext(sXWing, 0, (20 + 34 * (lifecount - 1))*global.scale, 560*global.scale, 0.6, 0.6, 0, c_white, 1);
 		}
 		else {

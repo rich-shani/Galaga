@@ -929,6 +929,8 @@ function Show_Instructions() {
         firstlife   = 20000;  // Score threshold for first extra life
         additional  = 70000;  // Score threshold for each subsequent extra life
 
+		instance_create_layer(0, 0, "GameSprites", oStarDestoyer);
+		
 		global.gameMode = GameMode.GAME_PLAYER_MESSAGE;
 
         sound_play(GStart);  // Play game start sound

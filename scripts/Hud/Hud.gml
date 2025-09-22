@@ -2,7 +2,7 @@ function Draw_Hud(){
 	// 1UP & HIGH SCORE (red text)
 
 	// load retro Atari font
-	if (global.roomname == "starwars") {
+	if (global.roomname == "GalagaWars") {
 		draw_set_font(fAtari24);	
 	}
 	else draw_set_font(fAtari12);
@@ -15,7 +15,7 @@ function Draw_Hud(){
 		draw_set_font(fAtari24);
 		draw_set_color(c_green);
 	
-		draw_text(50,265, "GAME PAUSED");
+		draw_text(50*global.scale,265*global.scale, "GAME PAUSED");
 	}
 	else { 
 		// Draw screen based on Game Mode
@@ -43,11 +43,11 @@ function Draw_Hud(){
 
 		if global.gameover
 		{
-			draw_text(160, 288, string_hash_to_newline("GAME OVER"));
+			draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("GAME OVER"));
 		}
 		else if (instance_number(Ship) > 0) {
 	
-			if global.gameMode == GameMode.GAME_PLAYER_MESSAGE { 
+			if global.gameMode == GameMode.GAME_PLAYER_MESSAGE { 		
 				draw_text(176*global.scale, 288*global.scale, string_hash_to_newline("PLAYER 1"));
 			}
 			else if global.gameMode == GameMode.GAME_STAGE_MESSAGE { 

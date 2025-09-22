@@ -14,30 +14,36 @@ if hit = 0{
 
 
 
-if dive = 0 and (alarm[0] = -1 or (direction > 80 and direction < 100)){
+if dive = 0 and (alarm[0] = -1 or (direction > 80 and direction < 100)) {
 
-// counter used to flip the sprite (ie animate the sprites)
-// this helps to makes them all in sync - global.flip rotates from 0 to 60
-if global.flip > 29{  //odd
+	if (global.roomname == "GalagaWars") {
+		draw_sprite_ext(sTieIntercepter,0,x,y,1,1,0,c_white,1);
+	}
+	else if global.flip > 29 {  //odd
 
-draw_sprite_ext(spr_ship,2,x,y,1,1,0,c_white,1);}
+		draw_sprite_ext(spr_ship,2,x,y,1,1,0,c_white,1);
+	}
+	else {  //even
 
-else{  //even
-
-draw_sprite_ext(spr_ship,3,x,y,1,1,0,c_white,1);}
+		draw_sprite_ext(spr_ship,3,x,y,1,1,0,c_white,1);
+	}
 
 }
+else {
+	if (global.roomname == "GalagaWars") {
+			var d = (direction+90)%360;
+			var i = round(d/15);
+					
+			draw_sprite_ext(sTieIntercepter,i,x,y,1,1,0,c_white,1);
+	}
+	else if round(direction/15) & 1 = 0 {  //odd
 
-else{
+		draw_sprite_ext(spr_ship,2,x,y,1,1,direction-90,c_white,1);
+	}
+	else {  //even
 
-if round(direction/15) & 1 = 0{  //odd
-
-draw_sprite_ext(spr_ship,2,x,y,1,1,direction-90,c_white,1);}
-
-else{  //even
-
-draw_sprite_ext(spr_ship,3,x,y,1,1,direction-90,c_white,1);}
-
+		draw_sprite_ext(spr_ship,3,x,y,1,1,direction-90,c_white,1);
+	}
 }
 
 

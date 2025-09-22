@@ -1,1 +1,1 @@
-draw_sprite_ext(sDestroyer, 0, 0, yoffset, scale, scale, 0, c_white, 1);
+draw_sprite_ext(death_star, 0, 0, yoffset, scale, scale, 0, c_white, 1);

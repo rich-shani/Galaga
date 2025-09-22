@@ -9,12 +9,12 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			/// @section Movement
 	        if (keyboard_check(vk_left) && x > Ship.SHIP_MIN_X) {
 	            x -= SHIP_MOVE_INCREMENT; // Move ship left by 3 pixels
-				shipDirection = 0;
+				shipDirection = 11;
 	        } else {
 	            // Check for right arrow key press and ensure ship stays within right boundary
 	            if (keyboard_check(vk_right) && x < Ship.SHIP_MAX_X - (shotMode * Ship.SHIP_SPACE)) {
 	                x += SHIP_MOVE_INCREMENT; // Move ship right by 3 pixels
-					shipDirection = 0;
+					shipDirection = 1;
 	            }
 				else {
 					shipDirection = 0;
@@ -408,8 +408,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
             
 	            if (global.p1lives > 0) {
 	                Ship.shipStatus = ShipState.RESPAWN; // Set to respawn state
-	                Ship.x = 224; // Reset position
-	                Ship.y = 528;
+	                Ship.x = 224*global.scale; // Reset position
+	                Ship.y = 528*global.scale;
 	                Ship.alarm[1] = 90; // Set respawn timer
 	            }
 				else {

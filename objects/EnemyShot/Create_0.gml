@@ -1,4 +1,4 @@
-action_move_point(Ship.x + (14*(Ship.shotMode)), Ship.y, 5);
+action_move_point(Ship.x + (14*(Ship.shotMode)), Ship.y, 5*global.scale);
 if direction > 300{direction = 300};
 
 if direction < 240{direction = 240};

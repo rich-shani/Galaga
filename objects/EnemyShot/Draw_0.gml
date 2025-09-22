@@ -1,0 +1,1 @@
+draw_sprite_ext(spr_shot, 0, x, y, global.scale, global.scale, 180, c_white, 1);

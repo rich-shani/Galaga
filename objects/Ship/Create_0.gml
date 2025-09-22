@@ -50,8 +50,8 @@ enum ShipState {
 // Indicates the ship's life state (0 = alive, 1 = dead, 2 = respawning).
 // Used to control movement, shooting, and collision behavior.
 shipStatus = ShipState.ACTIVE;
-// 0 is left, 1 is level, 2 is right
-shipDirection = 1;
+// 0 is level, 1 is left, 11 is right
+shipDirection = 0;
 
 // Spin animation angle in degrees, set to 360 for default upright position.
 // Modified during caught or regain states to rotate the ship visually.
@@ -72,7 +72,7 @@ SHIP_SPACE = 28;
 	
 SHIP_MOVE_INCREMENT = 3;
 	
-if (global.roomname == "starwars") {
+if (global.roomname == "GalagaWars") {
 	SHIP_MIN_X = 64;
 	// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
 	// 432 is derived from the room width minus the ship's sprite width.

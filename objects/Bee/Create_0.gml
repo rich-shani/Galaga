@@ -30,23 +30,23 @@ if oGameManager.rogueyes = 0{
 
 if global.pattern = 0{
 
-    if global.wave < 4{path_start(Ent1e1,6,0,0)} else{path_start(Ent1e1Flip,6,0,0)}};
+    if global.wave < 4{path_start(Ent1e1,6*global.scale,0,0)} else{path_start(Ent1e1Flip,6*global.scale,0,0)}};
 
 if global.pattern = 1{
 
-    if global.wave = 0{path_start(Ent1e1Flip,6,0,0)}; 
+    if global.wave = 0{path_start(Ent1e1Flip,6*global.scale,0,0)}; 
 
-    if global.wave = 3{if oGameManager.alt = 0{path_start(Ent1e1,6,0,0)} else{path_start(Ent2e1,6,0,0)}}
+    if global.wave = 3{if oGameManager.alt = 0{path_start(Ent1e1,6*global.scale,0,0)} else{path_start(Ent2e1,6*global.scale,0,0)}}
 
-    if global.wave = 4{if oGameManager.alt = 0{path_start(Ent1e1Flip,6,0,0)} else{path_start(Ent2e1Flip,6,0,0)}}
+    if global.wave = 4{if oGameManager.alt = 0{path_start(Ent1e1Flip,6*global.scale,0,0)} else{path_start(Ent2e1Flip,6*global.scale,0,0)}}
 
 }
 
 if global.pattern = 2{
 
-    if global.wave = 0{path_start(Ent1e1,6,0,0)} else{
+    if global.wave = 0{path_start(Ent1e1,6*global.scale,0,0)} else{
 
-    if oGameManager.alt = 0{path_start(Ent1e1,6,0,0)}else{path_start(Ent1e1Flip,6,0,0)}}
+    if oGameManager.alt = 0{path_start(Ent1e1,6*global.scale,0,0)}else{path_start(Ent1e1Flip,6*global.scale,0,0)}}
 
 }
 
@@ -56,23 +56,23 @@ else{
 
 if global.pattern = 0{
 
-    if global.wave < 4{path_start(Rogue1e1,6,0,0)} else{path_start(Rogue1e1Flip,6,0,0)}};
+    if global.wave < 4{path_start(Rogue1e1,6*global.scale,0,0)} else{path_start(Rogue1e1Flip,6*global.scale,0,0)}};
 
 if global.pattern = 1{
 
-    if global.wave = 0{path_start(Rogue1e1Flip,6,0,0)}; 
+    if global.wave = 0{path_start(Rogue1e1Flip,6*global.scale,0,0)}; 
 
-    if global.wave = 3{if oGameManager.alt = 0{path_start(Rogue1e1,6,0,0)} else{path_start(Rogue2e1,6,0,0)}}
+    if global.wave = 3{if oGameManager.alt = 0{path_start(Rogue1e1,6*global.scale,0,0)} else{path_start(Rogue2e1,6*global.scale,0,0)}}
 
-    if global.wave = 4{if oGameManager.alt = 0{path_start(Rogue1e1Flip,6,0,0)} else{path_start(Rogue2e1Flip,6,0,0)}}
+    if global.wave = 4{if oGameManager.alt = 0{path_start(Rogue1e1Flip,6*global.scale,0,0)} else{path_start(Rogue2e1Flip,6*global.scale,0,0)}}
 
 }
 
 if global.pattern = 2{
 
-    if global.wave = 0{path_start(Rogue1e1,6,0,0)}else{
+    if global.wave = 0{path_start(Rogue1e1,6*global.scale,0,0)}else{
 
-    if oGameManager.alt = 0{path_start(Rogue1e1,6,0,0)}else{path_start(Rogue1e1Flip,6,0,0)}}
+    if oGameManager.alt = 0{path_start(Rogue1e1,6*global.scale,0,0)}else{path_start(Rogue1e1Flip,6*global.scale,0,0)}}
 
 }
 
@@ -222,13 +222,13 @@ else{
 
     oGameManager.count += 1
 
-    if x = path_get_x(oGameManager.path1,0) and y = path_get_y(oGameManager.path1,0){path_start(oGameManager.path1,6,0,0)}
+    if x = path_get_x(oGameManager.path1,0) and y = path_get_y(oGameManager.path1,0){path_start(oGameManager.path1,6*global.scale,0,0)}
 
-    if x = path_get_x(oGameManager.path1flip,0) and y = path_get_y(oGameManager.path1flip,0){path_start(oGameManager.path1flip,6,0,0)}
+    if x = path_get_x(oGameManager.path1flip,0) and y = path_get_y(oGameManager.path1flip,0){path_start(oGameManager.path1flip,6*global.scale,0,0)}
 
-    if x = path_get_x(oGameManager.path2,0) and y = path_get_y(oGameManager.path2,0){path_start(oGameManager.path2,6,0,0)}
+    if x = path_get_x(oGameManager.path2,0) and y = path_get_y(oGameManager.path2,0){path_start(oGameManager.path2,6*global.scale,0,0)}
 
-    if x = path_get_x(oGameManager.path2flip,0) and y = path_get_y(oGameManager.path2flip,0){path_start(oGameManager.path2flip,6,0,0)}
+    if x = path_get_x(oGameManager.path2flip,0) and y = path_get_y(oGameManager.path2flip,0){path_start(oGameManager.path2flip,6*global.scale,0,0)}
 
     if global.chall = 3{
 
@@ -236,9 +236,9 @@ else{
 
         case 2:case 4:case 6:case 8:
 
-        if global.wave = 4{path_end(); path_start(oGameManager.path1,6,0,0)};
+        if global.wave = 4{path_end(); path_start(oGameManager.path1,6*global.scale,0,0)};
 
-        if global.wave = 0 or global.wave = 3{path_end(); path_start(oGameManager.path1flip,6,0,0)}; break;
+        if global.wave = 0 or global.wave = 3{path_end(); path_start(oGameManager.path1flip,6*global.scale,0,0)}; break;
 
         }   
 

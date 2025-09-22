@@ -1,6 +1,6 @@
 
 
-if (yoffset > -500) {
+if (yoffset > -400) {
 	yoffset -= 1;
 	//instance_destroy(id);	
 }

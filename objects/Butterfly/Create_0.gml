@@ -85,25 +85,25 @@ if (oGameManager.rogueyes == 0) {
     /// Standard enemy paths for pattern 0, typically a specific formation or entry sequence.
     if (global.pattern == 0) {
         // Wave 0: Start the enemy on the Ent1e1Flip path (flipped entry path 1).
-        if (global.wave == 0) { path_start(Ent1e1Flip, 6, 0, 0); }
+        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Ent1e2 path (second entry path).
-        if (global.wave == 1) { path_start(Ent1e2, 6, 0, 0); }
+        if (global.wave == 1) { path_start(Ent1e2, 6*global.scale, 0, 0); }
         // Wave 2: Start on the Ent1e2Flip path (flipped second entry path).
-        if (global.wave == 2) { path_start(Ent1e2Flip, 6, 0, 0); }
+        if (global.wave == 2) { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
     }
  
     /// @subsection Pattern 1
     /// Standard enemy paths for pattern 1, possibly a different formation or behavior.
     if (global.pattern == 1) {
         // Wave 0: Start on the Ent1e1 path (first entry path).
-        if (global.wave == 0) { path_start(Ent1e1, 6, 0, 0); }
+        if (global.wave == 0) { path_start(Ent1e1, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Ent2e2In path (second entry path with inward movement).
-        if (global.wave == 1) { path_start(Ent2e2In, 6, 0, 0); }
+        if (global.wave == 1) { path_start(Ent2e2In, 6*global.scale, 0, 0); }
         // Wave 2: Choose between Ent2e2Flip (flipped) or Ent2e2InFlip based on oGameManager.alt.
         // oGameManager.alt toggles alternate behavior (0 = normal, 1 = alternate).
         if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Ent2e2Flip, 6, 0, 0); }
-            else { path_start(Ent2e2InFlip, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Ent2e2Flip, 6*global.scale, 0, 0); }
+            else { path_start(Ent2e2InFlip, 6*global.scale, 0, 0); }
         }
     }
  
@@ -111,13 +111,13 @@ if (oGameManager.rogueyes == 0) {
     /// Standard enemy paths for pattern 2, likely another distinct formation or sequence.
     if (global.pattern == 2) {
         // Wave 0: Start on the Ent1e1Flip path.
-        if (global.wave == 0) { path_start(Ent1e1Flip, 6, 0, 0); }
+        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Ent1e2Flip path.
-        if (global.wave == 1) { path_start(Ent1e2Flip, 6, 0, 0); }
+        if (global.wave == 1) { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
         // Wave 2: Choose between Ent1e2 or Ent1e2Flip based on oGameManager.alt.
         if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Ent1e2, 6, 0, 0); }
-            else { path_start(Ent1e2Flip, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Ent1e2, 6*global.scale, 0, 0); }
+            else { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
         }
 		 
     }
@@ -126,34 +126,34 @@ if (oGameManager.rogueyes == 0) {
     /// Rogue enemy paths, used when oGameManager.rogueyes == 1 for unique or aggressive behaviors.
     if (global.pattern == 0) {
         // Wave 0: Start on the Rogue1e1Flip path.
-        if (global.wave == 0) { path_start(Rogue1e1Flip, 6, 0, 0); }
+        if (global.wave == 0) { path_start(Rogue1e1Flip, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Rogue1e2 path.
-        if (global.wave == 1) { path_start(Rogue1e2, 6, 0, 0); }
+        if (global.wave == 1) { path_start(Rogue1e2, 6*global.scale, 0, 0); }
         // Wave 2: Start on the Rogue1e2Flip path.
-        if (global.wave == 2) { path_start(Rogue1e2Flip, 6, 0, 0); }
+        if (global.wave == 2) { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
     }
 
     if (global.pattern == 1) {
         // Wave 0: Start on the Rogue1e1 path.
-        if (global.wave == 0) { path_start(Rogue1e1, 6, 0, 0); }
+        if (global.wave == 0) { path_start(Rogue1e1, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Rogue2e2In path.
-        if (global.wave == 1) { path_start(Rogue2e2In, 6, 0, 0); }
+        if (global.wave == 1) { path_start(Rogue2e2In, 6*global.scale, 0, 0); }
         // Wave 2: Choose between Rogue2e2Flip or Rogue2e2InFlip based on oGameManager.alt.
         if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Rogue2e2Flip, 6, 0, 0); }
-            else { path_start(Rogue2e2InFlip, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Rogue2e2Flip, 6*global.scale, 0, 0); }
+            else { path_start(Rogue2e2InFlip, 6*global.scale, 0, 0); }
         }
     }
 
     if (global.pattern == 2) {
         // Wave 0: Start on the Rogue1e1Flip path.
-        if (global.wave == 0) { path_start(Rogue1e1Flip, 6, 0, 0); }
+        if (global.wave == 0) { path_start(Rogue1e1Flip, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Rogue1e2Flip path.
-        if (global.wave == 1) { path_start(Rogue1e2Flip, 6, 0, 0); }
+        if (global.wave == 1) { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
         // Wave 2: Choose between Rogue1e2 or Rogue1e2Flip based on oGameManager.alt.
         if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Rogue1e2, 6, 0, 0); }
-            else { path_start(Rogue1e2Flip, 6, 0, 0); }
+            if (oGameManager.alt == 0) { path_start(Rogue1e2, 6*global.scale, 0, 0); }
+            else { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
         }
     }
 	

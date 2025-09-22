@@ -8,15 +8,20 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 		// GALAGA, SCORE, INTRO
 		if sequence > 0 {
 			draw_set_color(c_aqua);
-			draw_text(170*global.scale, 80*global.scale, string_hash_to_newline("GALAGA"));
-
+			if (global.roomname == "GalagaWars") {
+				draw_text(130*global.scale, 80*global.scale, string_hash_to_newline("GALAGA WARS"));
+			}
+			else {
+				draw_text(170*global.scale, 80*global.scale, string_hash_to_newline("GALAGA"));					
+			}
+			
 			if sequence > 1 {
 				draw_text((176 - 48)*global.scale, 128*global.scale, string_hash_to_newline("-- SCORE --"));
 				draw_text((176 - 40)*global.scale, 128*global.scale, string_hash_to_newline("-        -"));
 
 				if sequence > 2 {
 					draw_text((176 - 48)*global.scale, 176*global.scale, string_hash_to_newline("    50    100"));
-					if (global.roomname == "starwars") {
+					if (global.roomname == "GalagaWars") {
 							
 						draw_sprite_ext(sTieFighter, global.animationIndex/4, 104*global.scale, (168+16)*global.scale, 1, 1, 0, c_white, 1);
 					}
@@ -28,7 +33,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 						draw_text((176 - 48)*global.scale, 224*global.scale,
 						string_hash_to_newline("    80    160"));
 										
-						if (global.roomname == "starwars") {
+						if (global.roomname == "GalagaWars") {
 							draw_sprite_ext(sImperialShuttle, global.animationIndex/4, 104*global.scale, (168+48+16)*global.scale, 1, 1, 0, c_white, 1);
 						}
 						else {
@@ -36,7 +41,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 						}
 						
 						if sequence > 4 {											
-							if (global.roomname == "starwars") {
+							if (global.roomname == "GalagaWars") {
 								draw_sprite_ext(sTieIntercepter, 0, 224*global.scale, (168 + 48 + 48 + 24)*global.scale, 1, 1, 0, c_white, 1);
 							}
 							else {
@@ -57,7 +62,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			if (sequence < 8) {
 				
 				// BOSS
-				if (global.roomname == "starwars") {
+				if (global.roomname == "GalagaWars") {
 					// INTERCEPTER
 					draw_sprite_ext(sTieIntercepter, 0, 384*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
 					
@@ -82,7 +87,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			// Animate enemy block #1
 			if (sequence = 8) {
 				// BOSS
-				if (global.roomname == "starwars") {
+				if (global.roomname == "GalagaWars") {
 					var d = (direction+90)%360;
 					var i = round(d/15);
 					
@@ -111,7 +116,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			// Draw initial enemy postiion for block #2
 			if sequence < 11 {
 				// BOSS
-				if (global.roomname == "starwars") {
+				if (global.roomname == "GalagaWars") {
 					
 					draw_sprite_ext(sTieIntercepter, 0, 288*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
 					
@@ -133,7 +138,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			if sequence == 11 {
 
 					
-				if (global.roomname == "starwars") {
+				if (global.roomname == "GalagaWars") {
 					var d = (direction+90)%360;
 					var i = round(d/15);
 				
@@ -155,7 +160,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			
 			// Draw initial enemy postiion for block #3
 			if sequence < 14 {
-				if (global.roomname == "starwars") {
+				if (global.roomname == "GalagaWars") {
 					// BOSS
 					draw_sprite_ext(sTieIntercepter, 0, 192*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
 				}
@@ -167,7 +172,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 
 			// Animate enemy block #3
 			if sequence == 14 {
-				if (global.roomname == "starwars") {
+				if (global.roomname == "GalagaWars") {
 					var d = (direction+90)%360;
 					var i = round(d/15);
 					
@@ -183,7 +188,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 
 			// DRAW ship & final BOSS
 			if sequence < 17 {
-				if (global.roomname == "starwars") {
+				if (global.roomname == "GalagaWars") {
 					// note - ignore the hit flag until we get to sequence 16
 					var color = (floor(sequence / 16) * hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, 0, 96*global.scale, 336*global.scale, 1, 1, 0, color, 1);
@@ -196,8 +201,8 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 				}
 				
 				// SHIP
-				if (global.roomname == "starwars") {
-					draw_sprite_ext(sXWing,0,Ship.x,Ship.y,0.8,0.8,0,c_white,1);
+				if (global.roomname == "GalagaWars") {
+					draw_sprite_ext(xwing_sprite_sheet,0,Ship.x,Ship.y,0.8,0.8,0,c_white,1);
 				}
 				else {
 					draw_sprite(spr_ship, 0, Ship.x, Ship.y);

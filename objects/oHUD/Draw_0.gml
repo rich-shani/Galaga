@@ -3,7 +3,7 @@
 // 1UP & HIGH SCORE (red text)
 
 // load retro Atari font
-if (global.roomname == "starwars") {
+if (global.roomname == "GalagaWars") {
 	draw_set_font(fAtari24);	
 }
 else draw_set_font(fAtari12);
@@ -49,15 +49,19 @@ else {
 	else if (instance_number(Ship) > 0) {
 	
 		if global.gameMode == GameMode.GAME_PLAYER_MESSAGE { 
+			// launch the death star animation ...
+			instance_create_layer(0, 0, "GameSprites", oStarDestoyer);
+			
 			draw_text(176*global.scale, 288*global.scale, string_hash_to_newline("PLAYER 1"));
 		}
 		else if global.gameMode == GameMode.GAME_STAGE_MESSAGE { 
-			//draw_text(176, 288, string_hash_to_newline("PLAYER 1"));
-			draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE 1"));
+	        draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
+	        draw_text(160 + (6 * 16), 288*global.scale, string_hash_to_newline(global.lvl));
 		}
 		else if (global.gameMode == GameMode.GAME_READY) {
 			draw_text(160*global.scale, 256*global.scale, string_hash_to_newline("PLAYER 1"));
-			draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE 1"));
+	        draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
+	        draw_text(160 + (6 * 16), 288*global.scale, string_hash_to_newline(global.lvl));
 		}
 		else if (global.gameMode == GameMode.GAME_ACTIVE) {
 

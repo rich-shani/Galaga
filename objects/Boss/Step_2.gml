@@ -24,12 +24,16 @@ if global.fast = 1 and dive2 = 1{spd = 6;}
 else{spd = 3;}
 
 
+if (global.roomname == "GalagaWars") {
+	breathex = xstart + ((global.breathe/120)*(48*((xstart - 448)/368))) + floor(oGameManager.x); // - 16;
 
-breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
+	 breathey = ystart + ((global.breathe/120)*(48*((ystart - 128)/288)));
+}
+else {
+	breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + floor(oGameManager.x); // - 16;
 
-breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));
-
-
+	breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));			
+}
 
 if dive = 0 and enter = 0{ ///convoy
 
@@ -67,7 +71,7 @@ if dive = 0 and enter = 0{ ///convoy
 
             if carrying = 1{Fighter.x = x};
 
-            if xstart > 224{path_start(Boss1,spd,0,false);
+            if xstart > 224{path_start(Boss1,spd*global.scale,0,false);
 
                 if carrying = 1{with Fighter{
 
@@ -75,13 +79,13 @@ if dive = 0 and enter = 0{ ///convoy
 
                     global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; add = Boss.breathey - breathey - 32;
 
-                    path_start(Boss1,spd,0,false);
+                    path_start(Boss1,spd*global.scale,0,false);
 
                 }}
  
             }
 
-            else{path_start(Boss1Flip,spd,0,false)
+            else{path_start(Boss1Flip,spd*global.scale,0,false)
 
                 if carrying = 1{with Fighter{
 
@@ -89,7 +93,7 @@ if dive = 0 and enter = 0{ ///convoy
 
                     global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; add = Boss.breathey - breathey - 32;
 
-                    path_start(Boss1Flip,spd,0,false);
+                    path_start(Boss1Flip,spd*global.scale,0,false);
 
                 }}
  
@@ -150,7 +154,7 @@ if dive = 0 and enter = 0{ ///convoy
 
                         global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; add = breathey - Boss.breathey - 32;
 
-                        path_start(bosses[i].path_index,spd,0,false) i = 4;
+                        path_start(bosses[i].path_index,spd*global.scale,0,false) i = 4;
 						 
 
                     }
@@ -201,7 +205,14 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
     if loop < 1{
 
-        if y > 592 + 32{path_end(); x = breathex; y = -48; direction = 270; hspeed = 0; vspeed = 0; loop = 1; beam = 0; beamsignal = 0;}
+        if (y > (592 + 32)*global.scale) { 
+			path_end(); 
+			x = breathex; 
+			y = -48*global.scale; 
+			direction = 270; 
+			hspeed = 0; vspeed = 0; 
+			loop = 1; beam = 0; beamsignal = 0;
+		}
 
     }  
 
@@ -235,9 +246,9 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
             sound_stop(GDive); sound_play(GDive);
 
-            if xstart > 224{path_start(Boss1Alt,spd,0,false)}
+            if xstart > 224{path_start(Boss1Alt,spd*global.scale,0,false)}
 
-            else{path_start(Boss1AltFlip,spd,0,false)}
+            else{path_start(Boss1AltFlip,spd*global.scale,0,false)}
 			
 			 
 
@@ -249,9 +260,9 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
 if dive = 1 and ret = 1 and enter = 0{ ///return
 
-    if loop = 0 and y < 368{
+    if loop = 0 and y < 368*global.scale {
 
-        path_end(); speed = 3; follow = 1; loop = 1;
+        path_end(); speed = 3*global.scale; follow = 1; loop = 1;
 
     }
 
@@ -296,7 +307,7 @@ follow = 0;
 
 if global.challcount > 0{
 
-if global.fastenter = 1 and global.open = 1{if fasty > 0{fasty = fasty - 1}else{path_speed = 12; speed = 12}};
+if global.fastenter = 1 and global.open = 1{if fasty > 0{fasty = fasty - 1}else{path_speed = 12*global.scale; speed = 12*global.scale}};
 
 if enter = 1{
 
@@ -308,23 +319,30 @@ if enter = 1{
 
                 path_end(); 
 
-                if numb = 9{xstart = 176*global.scale; ystart = 80*global.scale; if global.fighterstore = 1{carrying = 1}}
+				if (global.roomname == "GalagaWars") {
+					if numb = 9{xstart = 320; ystart = 160; if global.fighterstore = 1{carrying = 1}}
 
-                if numb = 11{xstart = (176+32)*global.scale; ystart = 80*global.scale; if global.fighterstore = 2{carrying = 1}}
+					if numb = 11{xstart = (320+80); ystart = 160; if global.fighterstore = 2{carrying = 1}}
 
-                if numb = 13{xstart = (176+64)*global.scale; ystart = 80*global.scale; if global.fighterstore = 3{carrying = 1}}
+					if numb = 13{xstart = (320+160); ystart = 160; if global.fighterstore = 3{carrying = 1}}
 
-                if numb = 15{xstart = (176+96)*global.scale; ystart = 80*global.scale; if global.fighterstore = 4{carrying = 1}}
+					if numb = 15{xstart = (320+240); ystart = 160; if global.fighterstore = 4{carrying = 1}}	
+				}
+				else {
+					if numb = 9{xstart = 176*global.scale; ystart = 80*global.scale; if global.fighterstore = 1{carrying = 1}}
 
-                           
+					if numb = 11{xstart = (176+32)*global.scale; ystart = 80*global.scale; if global.fighterstore = 2{carrying = 1}}
 
-                breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
+					if numb = 13{xstart = (176+64)*global.scale; ystart = 80*global.scale; if global.fighterstore = 3{carrying = 1}}
 
-                breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));
+					if numb = 15{xstart = (176+96)*global.scale; ystart = 80*global.scale; if global.fighterstore = 4{carrying = 1}}
 
+					//        breathex = xstart + ((global.breathe/120)*(48*((xstart - 224)/144))) + oGameManager.x - 16;
 
+					//        breathey = ystart + ((global.breathe/120)*(48*((ystart - 64)/144)));
+				}
 
-                if global.fastenter = 1{speed = 12}else{speed = 6};
+                if global.fastenter = 1{speed = 12*global.scale}else{speed = 6*global.scale};
 
                 goto = 1; move_towards_point(breathex,breathey,speed); exit;
 

@@ -1,2 +1,3 @@
-if y > 576{instance_destroy()}
+if y > 576*global.scale{instance_destroy()}
+
 
