@@ -1,6 +1,6 @@
 {
   "$GMFont":"",
-  "%Name":"fAtari24",
+  "%Name":"fAtari36",
   "AntiAlias":1,
   "applyKerning":0,
   "ascender":37,
@@ -145,7 +145,7 @@
   "last":0,
   "lineHeight":41,
   "maintainGms1Font":false,
-  "name":"fAtari24",
+  "name":"fAtari36",
   "parent":{
     "name":"Fonts",
     "path":"folders/Fonts.yy",

@@ -885,7 +885,7 @@ function Show_Instructions() {
 	// if player presses space, start the actual game
     if keyboard_check_pressed(vk_space) == true {
 		// 'use' credit to enter game mode
-		global.credits = 0;
+		global.credits--;
 		
 		if (audio_is_playing(Galaga_Theme_Remix)) {
 			audio_stop_sound(Galaga_Theme_Remix);
@@ -929,6 +929,9 @@ function Show_Instructions() {
         firstlife   = 20000;  // Score threshold for first extra life
         additional  = 70000;  // Score threshold for each subsequent extra life
 
+		// make the nebula visible
+		layer_set_visible(scrolling_nebula_bg, true);
+		
 		instance_create_layer(0, 0, "GameSprites", oStarDestoyer);
 		
 		global.gameMode = GameMode.GAME_PLAYER_MESSAGE;

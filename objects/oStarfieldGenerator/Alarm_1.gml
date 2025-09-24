@@ -1,0 +1,2 @@
+/// @description SET COLOR MODE
+part_type_color_rgb(pt,0,255,0,255,0,255);

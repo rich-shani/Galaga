@@ -25,6 +25,11 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 				fx_set_parameter(layer_pause_fx, "g_Intensity", 1.0);
 			}		
 		}
+		
+		if (scrolling_nebula_bg != -1)
+		{
+			layer_set_visible(scrolling_nebula_bg, false);
+		}
 	}
 	else {
 			
@@ -37,6 +42,11 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			{            
 				fx_set_parameter(layer_pause_fx, "g_Intensity", 0.0);
 			}		
+		}
+		
+		if (scrolling_nebula_bg != -1)
+		{
+			layer_set_visible(scrolling_nebula_bg, true);
 		}
 	}
 }

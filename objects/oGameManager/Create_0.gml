@@ -222,6 +222,9 @@ global.screen_height = view_get_hport(view_current);
 // grab a handle to the pause/unpause screen effect
 // set the FX filter to a random color
 layer_pause_fx = layer_get_fx("PauseEffect");
+scrolling_nebula_bg = layer_get_id("ScrollingNebula");
+//layer_set_visible(scrolling_nebula_bg, true);
+
 attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.scale, "GameSprites", oAttractMode);
 
 // is the Game Paused?

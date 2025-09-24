@@ -9,13 +9,24 @@ function Draw_Hud(){
 
 	// draw the scores (top of screen)
 	Draw_Scores();
-	
+		
+	// show CREDITS if we're not in an active game
+	if (global.gameMode < GameMode.GAME_STAGE_MESSAGE) {
+		Draw_Credits();
+	}
+	else {
+		Draw_Lives();
+	}
+		
 	// is the Game Paused?
 	if (global.isGamePaused) { 
-		draw_set_font(fAtari24);
+		draw_set_font(fAtari36);
 		draw_set_color(c_green);
 	
-		draw_text(50*global.scale,265*global.scale, "GAME PAUSED");
+		draw_text(100*global.scale,265*global.scale, "GAME PAUSED");
+		
+		draw_set_color(c_green);		
+		draw_set_font(fAtari24);
 	}
 	else { 
 		// Draw screen based on Game Mode
@@ -29,14 +40,6 @@ function Draw_Hud(){
 			case GameMode.ENTER_INITIALS:
 				Draw_Enter_Initials();
 				break;
-		}
-	
-		// show CREDITS if we're not in an active game
-		if (global.gameMode < GameMode.GAME_STAGE_MESSAGE) {
-			Draw_Credits();
-		}
-		else {
-			Draw_Lives();
 		}
 
 		draw_set_color(c_aqua);

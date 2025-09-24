@@ -49,7 +49,9 @@
     {"$GMIncludedFile":"","%Name":"atari.ttf","CopyToMask":-1,"filePath":"datafiles","name":"atari.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
-  "LibraryEmitters":[],
+  "LibraryEmitters":[
+    {"name":"StarFieldEmitter","path":"particlelib/StarFieldEmitter/StarFieldEmitter.yy",},
+  ],
   "MetaData":{
     "IDEVersion":"2024.13.1.193",
   },
@@ -57,6 +59,7 @@
   "resources":[
     {"id":{"name":"fAtari12","path":"fonts/fAtari12/fAtari12.yy",},},
     {"id":{"name":"fAtari24","path":"fonts/fAtari24/fAtari24.yy",},},
+    {"id":{"name":"fAtari36","path":"fonts/fAtari36/fAtari36.yy",},},
     {"id":{"name":"compatibility_report_010725_150021021","path":"notes/compatibility_report_010725_150021021/compatibility_report_010725_150021021.yy",},},
     {"id":{"name":"notes","path":"notes/notes/notes.yy",},},
     {"id":{"name":"Bee","path":"objects/Bee/Bee.yy",},},
@@ -102,6 +105,7 @@
     {"id":{"name":"Ship","path":"objects/Ship/Ship.yy",},},
     {"id":{"name":"Transform","path":"objects/Transform/Transform.yy",},},
     {"id":{"name":"TransPoints","path":"objects/TransPoints/TransPoints.yy",},},
+    {"id":{"name":"ParticleSystem1","path":"particles/ParticleSystem1/ParticleSystem1.yy",},},
     {"id":{"name":"Attract","path":"paths/Attract/Attract.yy",},},
     {"id":{"name":"AttractFlip","path":"paths/AttractFlip/AttractFlip.yy",},},
     {"id":{"name":"Bee1","path":"paths/Bee1/Bee1.yy",},},
