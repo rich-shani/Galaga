@@ -1,3 +1,4 @@
+
 // room name
 global.roomname = room_get_name(room);
 
@@ -6,6 +7,10 @@ global.scale = 1;
 if (global.roomname == "GalagaWars") {
 	global.scale = 2;
 }
+
+// global variable to determine if we have applied the path scaler already
+// ie on a game restart, we don't want to re-scale again all the path data
+global.scalePath = false;
 
 /// @section High Scores
 // Global variables to store the top 5 high scores, initialized to 0.
@@ -53,6 +58,35 @@ global.init5 = "EE"; // Initials for fifth place;
 // Current wave or level of the game, initialized to 0.
 // Incremented as the player progresses through enemy waves or stages.
 global.wave = 0;
+
+/// @section Game State Flags
+// Open flag, initialized to 0.
+// Purpose unclear; possibly controls access to a menu, level, or mechanic.
+global.open = 0;
+
+global.ArcadeSprites = true;
+global.ArcadeSpritesPrefix = "OG_";
+global.enemy_animation_speed = 0;
+
+// Current stage or level, initialized to 0.
+// May track sub-levels within a wave or specific game phases.
+global.stage = 0;
+
+// Initial game mode, set to attract mode (demo mode).
+// Controls whether the game is in gameplay, instructions, or demo state.
+global.gameMode = GameMode.INITIALIZE;
+
+/// @section Game Over
+// Flag indicating game over state (0 = game active, 1 = game over).
+// Set when the player's lives reach 0 and no regain is possible.
+global.gameover = false;
+
+// Initial position (off-screen to the right)
+global.screen_width = view_get_wport(view_current);
+global.screen_height = view_get_hport(view_current);
+
+// is the Game Paused?
+global.isGamePaused = false;
 
 /// @description Initializes global variables, enums, and controller state for the space shooter game.
 /// This script sets up the core game state, including scoring, lives, high scores, game modes, and other mechanics.
@@ -126,11 +160,6 @@ cycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZ .";
 // Negative depth values in GameMaker indicate higher rendering priority.
 depth = -500;
 
-/// @section Game State Flags
-// Open flag, initialized to 0.
-// Purpose unclear; possibly controls access to a menu, level, or mechanic.
-global.open = 0;
-
 /// @section Additional Counters
 // Alternate counter, initialized to 0.
 // Could be used for toggling states, animations, or alternate behaviors.
@@ -198,27 +227,6 @@ enum GameMode {
 	ENTER_INITIALS
 }
 
-global.ArcadeSprites = true;
-global.ArcadeSpritesPrefix = "OG_";
-global.enemy_animation_speed = 0;
-
-// Current stage or level, initialized to 0.
-// May track sub-levels within a wave or specific game phases.
-global.stage = 0;
-
-// Initial game mode, set to attract mode (demo mode).
-// Controls whether the game is in gameplay, instructions, or demo state.
-global.gameMode = GameMode.INITIALIZE;
-
-/// @section Game Over
-// Flag indicating game over state (0 = game active, 1 = game over).
-// Set when the player's lives reach 0 and no regain is possible.
-global.gameover = false;
-
-// Initial position (off-screen to the right)
-global.screen_width = view_get_wport(view_current);
-global.screen_height = view_get_hport(view_current);
-
 // grab a handle to the pause/unpause screen effect
 // set the FX filter to a random color
 layer_pause_fx = layer_get_fx("PauseEffect");
@@ -228,15 +236,20 @@ scrolling_nebula_bg = layer_get_id("ScrollingNebula");
 attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.scale, "GameSprites", oAttractMode);
 
 // is the Game Paused?
-global.isGamePaused = false;
+//global.isGamePaused = false;
 
 //window_set_fullscreen(false);
 fullScreen = window_get_fullscreen();
 
-// for each path, rescale using the global.scale factor
-var _pathIds = asset_get_ids(asset_path);
+// do we need to scale the path data (once ONLY)
+if (!global.scalePath) {
+	// for each path, rescale using the global.scale factor
+	var _pathIds = asset_get_ids(asset_path);
 
-// Loop through the array and scale each path
-for (var i = 0; i < array_length(_pathIds); i++) {
-    path_rescale(_pathIds[i], global.scale, global.scale);
+	// Loop through the array and scale each path
+	for (var i = 0; i < array_length(_pathIds); i++) {
+	    path_rescale(_pathIds[i], global.scale, global.scale);
+	}
+	// we have scaled the path
+	global.scalePath = true;
 }
