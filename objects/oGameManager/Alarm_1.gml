@@ -109,7 +109,7 @@ if (global.lvl > 0 && rank > 0) {
 // When rank reaches 0, trigger the transition to the next level.
 // Sets nextlevel to 2 to indicate the level transition state and sets alarm 10 to 50 steps (approximately 0.833 seconds).
 // Likely used to pause briefly before advancing to the next wave or stage.
-if (rank == 0) {
-    nextlevel = 2;
-    alarm[10] = 50;
-}
+//if (rank == 0) {
+//    nextlevel = 2;
+//    alarm[10] = 50;
+//}

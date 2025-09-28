@@ -17,12 +17,12 @@
   "name":"Boss",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Enemies.yy",
+    "name":"NEW",
+    "path":"folders/Objects/Enemies/NEW.yy",
   },
   "parentObjectId":{
-    "name":"oBaseEnemy",
-    "path":"objects/oBaseEnemy/oBaseEnemy.yy",
+    "name":"oEnemyBase",
+    "path":"objects/oEnemyBase/oEnemyBase.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

@@ -1,16 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"oBaseEnemy",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"oEnemyBase",
+  "eventList":[],
   "managed":true,
-  "name":"oBaseEnemy",
+  "name":"oEnemyBase",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Enemies.yy",
+    "name":"NEW",
+    "path":"folders/Objects/Enemies/NEW.yy",
   },
   "parentObjectId":null,
   "persistent":false,
