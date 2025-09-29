@@ -34,3 +34,7 @@ alarm[3] = 60;
 // Initial direction of the controller or related object, set to 90 degrees (upward).
 // Possibly used for enemy or shot movement in attract mode or specific mechanics.
 direction = 90;
+
+// pre-fetch sprite sheets (to avoid game glitches)
+var _sprites_to_load = [sTieFighter, sTieIntercepter, sImperialShuttle, xwing_sprite_sheet];
+sprite_prefetch_multi(_sprites_to_load);

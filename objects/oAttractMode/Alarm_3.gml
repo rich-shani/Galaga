@@ -18,35 +18,35 @@ if global.gameMode == GameMode.ATTRACT_MODE{
 	}
 
 	if sequence == 6 {
-		shipXPosTarget = 402*global.scale;
+		shipXPosTarget = 380*global.scale;
 	}
 
 	if sequence == 9{
-		shipXPosTarget = 302*global.scale; 
+		shipXPosTarget = 280*global.scale; 
 		attpause = 30; 
 		
-		instance_create(384*global.scale+x,336*global.scale+y,oExplosion); 
-		instance_create(384*global.scale+x,336*global.scale+y,Points1600);
+		instance_create(360*global.scale+x,336*global.scale+y,oExplosion); 
+		instance_create(360*global.scale+x,336*global.scale+y,Points1600);
 	}
 
 	if (sequence == 12) {
-		shipXPosTarget = 178*global.scale; 
+		shipXPosTarget = 160*global.scale; 
 		
 		// need to add offset of the moving enemy sprite from the original coords
-		instance_create(288*global.scale+x,336*global.scale+y,oExplosion); 
-		instance_create(288*global.scale+x,336*global.scale+y,Points800);
+		instance_create(260*global.scale+x,336*global.scale+y,oExplosion); 
+		instance_create(260*global.scale+x,336*global.scale+y,Points800);
 	}
 
 	if sequence == 15 {
-		shipXPosTarget = 90*global.scale; 
+		shipXPosTarget = 80*global.scale; 
 		
-		instance_create(192*global.scale+x,336*global.scale+y,oExplosion); 
-		instance_create(192*global.scale+x,336*global.scale+y,Points400);
+		instance_create(180*global.scale+x,336*global.scale+y,oExplosion); 
+		instance_create(180*global.scale+x,336*global.scale+y,Points400);
 	}
 
 	if sequence == 17{
-		instance_create(96*global.scale,336*global.scale,oExplosion); 
-		instance_create(96*global.scale,336*global.scale,Points150); 
+		instance_create(80*global.scale,336*global.scale,oExplosion); 
+		instance_create(80*global.scale,336*global.scale,Points150); 
 		alarm[3] = 70;
 	}
 
