@@ -6,10 +6,13 @@
   "name":"oTieIntercepter",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Enemies.yy",
+    "name":"STARWARS",
+    "path":"folders/Objects/Enemies/STARWARS.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oEnemyBase",
+    "path":"objects/oEnemyBase/oEnemyBase.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

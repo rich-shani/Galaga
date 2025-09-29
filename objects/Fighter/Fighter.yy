@@ -13,8 +13,8 @@
   "name":"Fighter",
   "overriddenProperties":[],
   "parent":{
-    "name":"Enemies",
-    "path":"folders/Objects/Enemies.yy",
+    "name":"NEW",
+    "path":"folders/Objects/Enemies/NEW.yy",
   },
   "parentObjectId":null,
   "persistent":false,

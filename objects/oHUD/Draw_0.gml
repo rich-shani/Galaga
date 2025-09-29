@@ -50,7 +50,7 @@ else {
 	
 		if global.gameMode == GameMode.GAME_PLAYER_MESSAGE { 
 			// launch the death star animation ...
-			instance_create_layer(0, 0, "GameSprites", oStarDestoyer);
+			instance_create_layer(0, 0, "GameSprites", oDeathStar);
 			
 			draw_text(176*global.scale, 288*global.scale, string_hash_to_newline("PLAYER 1"));
 		}

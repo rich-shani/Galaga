@@ -1,1 +1,0 @@
-prev_path_speed = 0;

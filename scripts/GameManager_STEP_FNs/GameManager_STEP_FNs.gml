@@ -932,7 +932,7 @@ function Show_Instructions() {
 		// make the nebula visible
 		layer_set_visible(scrolling_nebula_bg, true);
 		
-		instance_create_layer(0, 0, "GameSprites", oStarDestoyer);
+		instance_create_layer(0, 0, "GameSprites", oDeathStar);
 		
 		global.gameMode = GameMode.GAME_PLAYER_MESSAGE;
 

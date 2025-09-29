@@ -1,17 +1,17 @@
 {
   "$GMObject":"",
-  "%Name":"oPlayer",
+  "%Name":"oDeathStar",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oPlayer",
+  "name":"oDeathStar",
   "overriddenProperties":[],
   "parent":{
-    "name":"Ship",
-    "path":"folders/Objects/Ship.yy",
+    "name":"STARWARS",
+    "path":"folders/Objects/Enemies/STARWARS.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sXWing",
-    "path":"sprites/sXWing/sXWing.yy",
+    "name":"death_star",
+    "path":"sprites/death_star/death_star.yy",
   },
   "spriteMaskId":null,
   "visible":true,
