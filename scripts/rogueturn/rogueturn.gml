@@ -5,7 +5,7 @@ function rogueturn() {
 	    if targx = 0 and targy = 0{
 	        if path_position = 1{
 	            path_end(); speed = 6;
-	            shipx=Ship.x;
+	            shipx=oPlayer.x;
 	            if global.wave = 1 or global.wave = 2{if x<224{targx = 448}else{targx = 0};targy = y}
 	            else{
 	            targx = 224; targy = 528

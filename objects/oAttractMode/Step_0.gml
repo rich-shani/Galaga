@@ -7,10 +7,10 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 	// Ship movement towards xPos Target (set in Alarm[3])
 	if (sequence > 5 && attpause == 0) {
 	    // Move ship to controller's position
-	    if (Ship.x < shipXPosTarget - Ship.SHIP_MOVE_INCREMENT) { Ship.x += Ship.SHIP_MOVE_INCREMENT; }
+	    if (oPlayer.x < shipXPosTarget - oPlayer.SHIP_MOVE_INCREMENT) { oPlayer.x += oPlayer.SHIP_MOVE_INCREMENT; }
 	    else {
-	        if (Ship.x > shipXPosTarget + Ship.SHIP_MOVE_INCREMENT) { Ship.x -= Ship.SHIP_MOVE_INCREMENT; }
-	        else { Ship.x = shipXPosTarget; } // Snap to position
+	        if (oPlayer.x > shipXPosTarget + oPlayer.SHIP_MOVE_INCREMENT) { oPlayer.x -= oPlayer.SHIP_MOVE_INCREMENT; }
+	        else { oPlayer.x = shipXPosTarget; } // Snap to position
 	    }
 	}
 
@@ -21,8 +21,8 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 		if (sequence > 7 && sequence < 13) { 
             if alarm[3] == 30 {
                 attshot = 1;
-                attshotx = Ship.x;
-                attshoty = Ship.y-16*global.scale;
+                attshotx = oPlayer.x;
+                attshoty = oPlayer.y-16*global.scale;
             }
         }
 	   
@@ -30,16 +30,16 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 		if sequence == 16 {
 	        if alarm[3] == 27 || alarm[3] == 12 {
 	            attshot = 1;
-	            attshotx = Ship.x;
-	            attshoty = Ship.y-16*global.scale;
+	            attshotx = oPlayer.x;
+	            attshoty = oPlayer.y-16*global.scale;
 			}
 	    }
 		
 		// Also shoot if alarm[3] equals 10 regardless of sequence value
         if alarm[3] == 10 {
             attshot = 1;
-            attshotx = Ship.x;
-            attshoty = Ship.y-16*global.scale;
+            attshotx = oPlayer.x;
+            attshoty = oPlayer.y-16*global.scale;
         }
 	}
 	

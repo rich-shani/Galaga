@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":0.3417687,
   "name":"GButterfly",
   "parent":{
     "name":"Sounds",

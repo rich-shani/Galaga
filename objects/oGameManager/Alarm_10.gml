@@ -10,13 +10,13 @@ if (nextlevel == 1) {
     /// @subsection Check for Ship Regain or Active Enemies
     /// If the ship is in the regain state (Ship.regain == 1), delay the transition by setting alarm[10] to 1 step.
     /// This ensures the regain animation completes before proceeding.
-    if (Ship.regain == 1) {
+    if (oPlayer.regain == 1) {
         alarm[10] = 1;
     } else {
         /// @subsection Check for Active Enemy Shots or Ship Death
-        /// If there are active enemy shots (instance_number(EnemyShot) > 0) or the ship is shipStatus (Ship.shipStatus > 0),
+        /// If there are active enemy shots (instance_number(EnemyShot) > 0) 
         /// delay the transition by setting alarm[10] to 1 step to allow these states to resolve.
-        if (instance_number(EnemyShot) > 0 || Ship.shipStatus > 0) {
+        if (instance_number(EnemyShot) > 0) {
             alarm[10] = 1;
         } else {
             /// @subsubsection Initialize New Level

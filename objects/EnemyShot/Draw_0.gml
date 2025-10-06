@@ -1,1 +1,1 @@
-draw_sprite_ext(spr_shot, 0, x, y, global.scale, global.scale, 180, c_white, 1);
+draw_sprite_ext(sRedLazer, 0, x, y, 0.5, 0.5, 270, c_white, 1);

@@ -29,7 +29,7 @@ global.animationIndex = 0;
 
 // Number of lives for Player 1, initialized to 3.
 // Decremented when the player ship is destroyed; game over when it reaches 0.
-global.p1lives = 3;
+global.p1lives = 0;
 
 // Player 1's current score, initialized to 0.
 // Incremented based on enemy hits or other scoring events.

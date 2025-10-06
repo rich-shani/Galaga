@@ -1,7 +1,7 @@
 // Inherit the parent event
 event_inherited();
 
-if rogue = 1 and (y > 592 or x < -16 or x > 464){instance_destroy()};
+if rogue = 1 and (y > 592*global.scale or x < -16*global.scale or x > 464*global.scale){instance_destroy()};
 
 anim = anim + 1; if anim = 12{anim = 0};
 
@@ -49,9 +49,9 @@ if dive = 0 and enter = 0{ ///convoy
 
     y = breathey
 
-    if global.divecap > 0 and global.bosscap > 0 and global.open = 0 and Ship.alarm[4] = -1{
+    if global.divecap > 0 and global.bosscap > 0 and global.open = 0 and oPlayer.alarm[4] = -1{
 
-        if irandom(1) = 0 and global.prohib = 0 and uprohib = 0 and Ship.shipStatus == ShipState.ACTIVE and Ship.regain = 0{
+        if irandom(1) = 0 and global.prohib = 0 and uprohib = 0 and oPlayer.shipStatus == _ShipState.ACTIVE and oPlayer.regain = 0{
 
             dive = 1; direction = 90;
 
@@ -65,13 +65,13 @@ if dive = 0 and enter = 0{ ///convoy
 
         if global.bosscount = 1 and global.beamcheck = 0 and global.fighterstore = 0 and
 
-            instance_number(Fighter) = 0 and Ship.shotMode == ShotMode.SINGLE{beam = 1; alarm[2] = 23} else{beam = 0}; global.beamcheck = 0;
+            instance_number(Fighter) = 0 and oPlayer.shotMode == _ShotMode.SINGLE{beam = 1; alarm[2] = 23} else{beam = 0}; global.beamcheck = 0;
 
             global.prohib = 1; oGameManager.alarm[0] = 15; alarm[1] = 90; sound_stop(GDive); sound_play(GDive);
 
             if carrying = 1{Fighter.x = x};
 
-            if xstart > 224{path_start(Boss1,spd*global.scale,0,false);
+            if xstart > 224*global.scale{path_start(Boss1,spd*global.scale,0,false);
 
                 if carrying = 1{with Fighter{
 
@@ -108,7 +108,7 @@ if dive = 0 and enter = 0{ ///convoy
 
                     butts[i] = instance_find(Butterfly,i)
 
-                    if butts[i].ystart = 112{
+                    if butts[i].ystart = 112*global.scale{
 
                     if (butts[i].xstart = xstart){check = check + 1} //center
 
@@ -136,7 +136,7 @@ if dive = 0 and enter = 0{ ///convoy
 
             global.escortcount = 0;
 
-            with Butterfly{if dive = 0 and ystart = 112 and uprohib = 0 and alarm[2] = -1{
+            with Butterfly{if dive = 0 and ystart = 112*global.scale and uprohib = 0 and alarm[2] = -1{
 
                 for (i = 0; i<instance_number(Boss); i+=1){
 
@@ -191,13 +191,15 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
     if beam = 1{
 
-        if y > 368{
+        if y > 368*global.scale {
 
-        if loop = 0{speed = 0; direction = 270; alarm[3] = global.beamtime; loop = -1; sound_stop(GBeam); sound_loop(GBeam);}
+			// At BEAM activation position, STOP here, ie speed == 0
+	        if loop = 0{speed = 0; direction = 270; alarm[3] = global.beamtime; loop = -1; sound_stop(GBeam); sound_loop(GBeam);}
 
-        if loop < 0 and alarm[3] = -1{y = y + 4; loop = -2;}
+			// BEAM complete, dive away
+	        if loop < 0 and alarm[3] = -1{y = y + 4*global.scale; loop = -2;}
 
-    }
+		}
 
     }
 
@@ -218,7 +220,8 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
     if loop = 1{
 
-        if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -48 or (Ship.shipStatus == ShipState.DEAD or Ship.regain = 1){
+        if instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -48 or 
+							(oPlayer.shipStatus == _ShipState.DEAD or oPlayer.regain = 1){
 
             if y < breathey{y = y + 3;
 
@@ -246,7 +249,7 @@ if dive = 1 and ret = 0 and enter = 0{ ///charger
 
             sound_stop(GDive); sound_play(GDive);
 
-            if xstart > 224{path_start(Boss1Alt,spd*global.scale,0,false)}
+            if xstart > 224*global.scale{path_start(Boss1Alt,spd*global.scale,0,false)}
 
             else{path_start(Boss1AltFlip,spd*global.scale,0,false)}
 			
@@ -286,7 +289,7 @@ if dive = 1 and ret = 1 and enter = 0{ ///return
 
             loop = 0; beam = 0; beamsignal = 0; ret = 0;
 
-            dive = 0; dive2 = 0; intesc = 0; Ship.shipStatus = ShipState.DEAD; Ship.alarm[0] = 120;
+            dive = 0; dive2 = 0; intesc = 0; oPlayer.shipStatus = _ShipState.DEAD; oPlayer.alarm[0] = 120;
 
             carrying = 1;
 

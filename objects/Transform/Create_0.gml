@@ -28,9 +28,9 @@ if instance_number(Transform) = 1{count = 1;}
 
 if instance_number(Transform) = 2{count = 2;}
 
-if ((global.transside = 1 and (Ship.x - x) > 0) or (global.transside = 0 and (Ship.x - x) < 0)){move_towards_point(x + irandom(64) - 32,480,6)}
+if ((global.transside = 1 and (oPlayer.x - x) > 0) or (global.transside = 0 and (oPlayer.x - x) < 0)){move_towards_point(x + irandom(64) - 32,480,6)}
 
-    else{move_towards_point(Ship.x + irandom(64) - 32,480,6)}
+    else{move_towards_point(oPlayer.x + irandom(64) - 32,480,6)}
 
 }
 

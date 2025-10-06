@@ -32,8 +32,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_shot",
-    "path":"sprites/spr_shot/spr_shot.yy",
+    "name":"sRedLazer",
+    "path":"sprites/sRedLazer/sRedLazer.yy",
   },
   "spriteMaskId":null,
   "visible":true,

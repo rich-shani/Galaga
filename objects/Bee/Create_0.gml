@@ -1,28 +1,28 @@
-// Inherit the parent event
+//// Inherit the parent event
 event_inherited();
 
-uprohib = 0;
+//uprohib = 0;
 
-dive2 = 0;
+//dive2 = 0;
 
-spd = 3;
+//spd = 3;
 
-trans = 0;
+//trans = 0;
 
-sprit = 0;
-spit = 0;
-add = 0;
-satx = 0;
-saty = 0;
-rogue = 0;
-goto = 0;
+//sprit = 0;
+//spit = 0;
+//add = 0;
+//satx = 0;
+//saty = 0;
+//rogue = 0;
+//goto = 0;
 
-enter = 1;
+//enter = 1;
 
-dive = 1;
+//dive = 1;
 
-targx = 0;
-targy = 0;
+//targx = 0;
+//targy = 0;
 
 if global.challcount > 0{
 

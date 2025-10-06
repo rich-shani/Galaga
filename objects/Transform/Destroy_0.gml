@@ -11,7 +11,7 @@ if !global.gameover {
 
 		global.p1score += 160;
 
-		if dive = 1{Ship.alarm[4] = global.hold + irandom(global.hold);}
+		if dive = 1{oPlayer.alarm[4] = global.hold + irandom(global.hold);}
 
 		global.transcount = global.transcount + 1; if global.transcount = 3{instance_create(round(x),round(y),TransPoints);}
 

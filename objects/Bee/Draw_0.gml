@@ -142,7 +142,7 @@ else {
 		
         satx = 0; saty = 0;
 		if (global.roomname == "GalagaWars") {
-			var d = (direction+90)%360;
+			var d = (direction)%360;
 			var i = round(d/15);
 					
 			draw_sprite_ext(sTieFighter,i,x,y,1,1,0,c_white,1);

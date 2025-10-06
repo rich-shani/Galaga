@@ -96,7 +96,7 @@ else {
 	          with Boss
 	      {
 
-	        if Ship.shipStatus == ShipState.CAPTURED and Ship.alarm[2] = -1 and Ship.spinanim = 0 and beam
+	        if oPlayer.shipStatus == _ShipState.CAPTURED and oPlayer.alarm[2] = -1 and oPlayer.spinanim = 0 and beam
 	              = 1 and direction = 270
 	          {
 

@@ -92,14 +92,14 @@ function Game_Loop(){
 	//// === LEVEL TRANSITION CHECK ===
 	//// If no enemies are present and all game conditions are met,
 	//// initiate transition to the next level.
-	if instance_number(Bee) == 0 &&
+	if instance_number(Bee) == 0 && instance_number(oTieFighter) == 0 &&
 	    instance_number(Butterfly) == 0 &&
 	    instance_number(Boss) == 0 &&
 	    instance_number(Fighter) == 0 &&
 	    instance_number(Transform) == 0 &&
 	    nextlevel == 0 &&
 	    global.open == 0 &&
-	    Ship.shipStatus == ShipState.ACTIVE &&
+	    oPlayer.shipStatus == _ShipState.ACTIVE &&
 		global.gameMode == GameMode.GAME_ACTIVE {
 			
 		nextlevel = 1;       // Flag to begin next level
@@ -119,6 +119,12 @@ function Game_Loop(){
         }
     }
 
+    with oTieFighter {
+        if dive == 1 or alarm[2] > -1 {
+            global.divecap -= 1; // Bees actively diving or about to dive
+        }
+    }
+	
     with Butterfly {
         if dive == 1 or alarm[2] > -1 {
             global.divecap -= 1; // Butterflies actively diving or about to dive
@@ -209,7 +215,7 @@ function Game_Loop(){
         && !sound_isplaying(GCaptured)
         && !sound_isplaying(GFighterCaptured)
         && !sound_isplaying(GRescue)
-        && (instance_number(Bee) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack)
+        && (instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack)
         {
             sound_volume(GBreathe, 1); // Play breathing sound at full volume
         } else {
@@ -237,8 +243,13 @@ function Game_Loop(){
 	                    rogueyes = 1;
 	                    }
 	                }
-	                instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
-
+	                if (global.roomname == "GalagaWars") {
+						instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
+					}
+					else {
+						instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
+					}
+					
 	                // Random chance to spawn a rogue Butterfly
 	                if count2 > 0 || rogue2 > 0 {
 	                    if random(1) < (rogue2 / (rogue2 + count2)) {
@@ -250,7 +261,7 @@ function Game_Loop(){
                 }
 
                 // Advance to next wave if all counts are zero
-                if Ship.shipStatus == ShipState.ACTIVE &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 &&
                     rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
@@ -289,7 +300,7 @@ function Game_Loop(){
                 }
 
                 // Advance to next wave
-                if Ship.shipStatus == ShipState.ACTIVE &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                 global.wave = 2;
@@ -325,7 +336,7 @@ function Game_Loop(){
                 }
 
                 // Transition to next wave
-                if Ship.shipStatus == ShipState.ACTIVE &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 3;
@@ -351,13 +362,19 @@ function Game_Loop(){
                     }
                     }
 
-                    instance_create(256*global.scale, -16*global.scale, Bee); // Bee from top
+	                if (global.roomname == "GalagaWars") {
+						instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
+					}
+					else {
+						instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
+					}
+
                     alt += 1;
                     if alt == 2 { alt = 0; }
                     alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ACTIVE &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 4;
@@ -382,8 +399,14 @@ function Game_Loop(){
                         }
                     }
                     }
+					
+	                if (global.roomname == "GalagaWars") {
+						instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
+					}
+					else {
+						instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
+					}
 
-                    instance_create(192*global.scale, -16*global.scale, Bee); // Bee appears from left-top
                     alt += 1;
                     if alt == 2 { alt = 0; }
                     alarm[2] = 6;
@@ -440,7 +463,7 @@ function Game_Loop(){
                 }
 
                 // Advance wave if all enemies cleared and ship is alive
-                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+                if oPLayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 1;
                 script_execute(waverogue);
@@ -470,7 +493,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ACTIVE &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE &&
                 count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                 global.divecap == global.divecapstart {
                 global.wave = 2;
@@ -502,7 +525,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ACTIVE &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE &&
                 count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                 global.divecap == global.divecapstart {
                 global.wave = 3;
@@ -535,7 +558,7 @@ function Game_Loop(){
                 }
 
                 // Advance wave once enemies are cleared
-                if Ship.shipStatus == ShipState.ACTIVE &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE &&
                     count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
                     global.divecap == global.divecapstart {
                     global.wave = 4;
@@ -619,7 +642,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 1;
                 script_execute(waverogue);
@@ -649,7 +672,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 2;
                 script_execute(waverogue);
@@ -681,7 +704,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 3;
                 script_execute(waverogue);
@@ -713,7 +736,7 @@ function Game_Loop(){
                 alarm[2] = 6;
                 }
 
-                if Ship.shipStatus == ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
                 rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
                 global.wave = 4;
                 script_execute(waverogue);
@@ -864,22 +887,22 @@ else {
 }
 }
 
-function Attact_Mode() {
+//function Attact_Mode() {
 
-	if (global.credits == 1) {
+//	if (global.credits == 1) {
 
-        sound_play(GCredit);     // Play credit sound
-        global.gameMode = GameMode.INSTRUCTIONS;             // Move to gameMode screen 2 (instructions or title)
+//        sound_play(GCredit);     // Play credit sound
+//        global.gameMode = GameMode.INSTRUCTIONS;             // Move to gameMode screen 2 (instructions or title)
 
-        //path_end();              // Stop any path-following movement
-		x = xstart;              // Reset object to original x
-		y = ystart;              // Reset object to original y
+//        //path_end();              // Stop any path-following movement
+//		x = xstart;              // Reset object to original x
+//		y = ystart;              // Reset object to original y
 
-		// Reset player ship position
-		Ship.x = Ship.xstart;
-		Ship.y = Ship.ystart;
-    }	
-}
+//		// Reset player ship position
+//		Ship.x = Ship.xstart;
+//		Ship.y = Ship.ystart;
+//    }	
+//}
 
 function Show_Instructions() {
 	// if player presses space, start the actual game
@@ -931,8 +954,8 @@ function Show_Instructions() {
 
 		// make the nebula visible
 		layer_set_visible(scrolling_nebula_bg, true);
-		
-		instance_create_layer(0, 0, "GameSprites", oDeathStar);
+		// create the death star on the DeathStar layer (ie behind the game sprites)
+		instance_create_layer(0, 0, "DeathStar", oDeathStar);
 		
 		global.gameMode = GameMode.GAME_PLAYER_MESSAGE;
 

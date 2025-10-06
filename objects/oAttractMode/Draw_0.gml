@@ -88,8 +88,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			if (sequence = 8) {
 				// BOSS
 				if (global.roomname == "GalagaWars") {
-					var d = (direction+90)%360;
-					var i = round(d/15);
+					var i = round(direction/15);
 					
 					var color = (hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, i, 364*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
@@ -139,8 +138,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 
 					
 				if (global.roomname == "GalagaWars") {
-					var d = (direction+90)%360;
-					var i = round(d/15);
+					var i = round(direction/15);
 				
 					var color = (hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, i, 268*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
@@ -173,8 +171,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			// Animate enemy block #3
 			if sequence == 14 {
 				if (global.roomname == "GalagaWars") {
-					var d = (direction+90)%360;
-					var i = round(d/15);
+					var i = round(direction/15);
 					
 					var color = (hitFlag ? c_maroon : c_white);
 					draw_sprite_ext(sTieIntercepter, i, 172*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
@@ -202,15 +199,20 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 				
 				// SHIP
 				if (global.roomname == "GalagaWars") {
-					draw_sprite_ext(xwing_sprite_sheet,0,Ship.x,Ship.y,0.8,0.8,0,c_white,1);
+					draw_sprite_ext(xwing_sprite_sheet,2,oPlayer.x,oPlayer.y,0.8,0.8,0,c_white,1);
+					
+					// MISSLE
+					if (attshot) {
+					    draw_sprite_ext(sBlueLazer, 0, attshotx, attshoty, 0.5, 0.5, 90, c_white, 1);
+					}
 				}
 				else {
-					draw_sprite(spr_ship, 0, Ship.x, Ship.y);
-				}
-				
-				// MISSLE
-				if (attshot) {
-				    draw_sprite_ext(spr_shot, 0, attshotx, attshoty, 1*global.scale, 1*global.scale, Ship.shot1dir, c_white, 1);
+					draw_sprite(spr_ship, 0, oPlayer.x, oPlayer.y);
+										
+					// MISSLE
+					if (attshot) {
+					    draw_sprite_ext(spr_shot, 0, attshotx, attshoty, 1, 1, 0, c_white, 1);
+					}
 				}
 			} // sequence < 17
 

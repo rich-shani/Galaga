@@ -1,7 +1,7 @@
 /// @description Attract Mode Timer
 
 // gameMode mode ... 30 steps, one per second, unless we're at step 15
-if global.gameMode == GameMode.ATTRACT_MODE{
+if (global.gameMode == GameMode.ATTRACT_MODE) {
 
 	hitFlag = 0;
 	
@@ -73,8 +73,8 @@ if global.gameMode == GameMode.ATTRACT_MODE{
 	if (sequence == 30) {
 
 		// reset vars
-	    Ship.x = Ship.xstart; 
-		Ship.y = Ship.ystart;
+	    oPlayer.x = oPlayer.xstart; 
+		oPlayer.y = oPlayer.ystart;
 
 	    sequence = 0; hitFlag = 0; attpause = 0; attshot = 0; attshotx = 0; attshoty = 0; shipXPosTarget = 0;
 	}

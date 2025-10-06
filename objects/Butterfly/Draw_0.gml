@@ -69,7 +69,8 @@ else{
 if dive = 0 and (alarm[0] = -1 or (direction > 80 and direction < 100)) {
 	
 	if (global.roomname == "GalagaWars") {
-		draw_sprite_ext(sImperialShuttle,0,x,y,1,1,0,c_white,1);
+		var i = round(direction/15);
+		draw_sprite_ext(sImperialShuttle,i,x,y,1,1,0,c_white,1);
 	}
 	else if global.flip > 29 {  //odd
 
@@ -85,8 +86,7 @@ if dive = 0 and (alarm[0] = -1 or (direction > 80 and direction < 100)) {
 	else{
 
 		if (global.roomname == "GalagaWars") {
-			var d = (direction+90)%360;
-			var i = round(d/15);
+			var i = round(direction/15);
 					
 			draw_sprite_ext(sImperialShuttle,i,x,y,1,1,0,c_white,1);
 		}

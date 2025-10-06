@@ -160,9 +160,9 @@ function Draw_Instructions() {
 
 	// which ship to draw ... 
 	if (global.roomname == "GalagaWars") {
-		draw_sprite_ext(xwing_sprite_sheet,0,32*global.scale, (8 + 208 + 64)*global.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(xwing_sprite_sheet,0,32*global.scale, (8 + 208 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(xwing_sprite_sheet,0,32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
 	}
 	else {
 		draw_sprite(spr_ship, 0, 32*global.scale, (8 + 208 + 64)*global.scale);
