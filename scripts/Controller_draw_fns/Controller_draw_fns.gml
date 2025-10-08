@@ -3,6 +3,8 @@ function Draw_Scores() {
 	draw_set_halign(fa_right);
 
 	draw_set_color(c_red);
+	draw_set_alpha(0.6);
+	
 	if (oGameManager.blink) { draw_text(80*global.scale, 10*global.scale, string_hash_to_newline("1UP")) };
 	draw_text(304*global.scale, 10*global.scale, string_hash_to_newline("HIGH SCORE"));
 
@@ -15,6 +17,7 @@ function Draw_Scores() {
 	draw_text(272*global.scale, 26*global.scale, string_hash_to_newline(global.disp))
 
 	draw_set_halign(fa_left);
+	draw_set_alpha(1);
 	
 	return;
 }

@@ -68,4 +68,4 @@ targx = 0;
 // Complements targx for navigation or attack patterns.
 targy = 0;
 
-formation_positions = load_formation_position("Patterns/formation_coordinates.json");
+formation = load_formation_position("Patterns/formation_coordinates.json");

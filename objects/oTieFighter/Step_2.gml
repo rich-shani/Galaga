@@ -215,8 +215,8 @@ if (global.challcount > 0) {
 						// Assign formation positions based on pattern and room
 
 						// look-up formation position based on INDEX
-						xstart = formation_positions.POSITION[INDEX]._x;
-						ystart = formation_positions.POSITION[INDEX]._y;
+						xstart = formation.POSITION[INDEX]._x;
+						ystart = formation.POSITION[INDEX]._y;
 						
 						//// Galaga Wars formation positions
 						//if (numb == 1) { xstart = 400; ystart = 176 * global.scale; }
