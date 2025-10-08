@@ -4,155 +4,179 @@
 /// The code assumes the existence of a oGameManager object with variables (e.g., rogueyes, count1, count2, alt),
 /// global variables (e.g., global.wave, global.pattern), and predefined paths (e.g., Ent1e1Flip, Rogue1e1).
 
-/// @section Enemy Behavior Variables
-// Flag to prohibit upward movement, initialized to 0 (0 = allowed, 1 = prohibited).
-// Likely used to restrict enemy movement in specific scenarios.
-uprohib = 0;
-
-// Flag indicating if the enemy is an escort, initialized to 0 (0 = not escort, 1 = escort).
-// Escorts may have special behaviors, such as accompanying a boss or following unique paths.
-escort = 0;
-
-// Direction of the enemy in degrees, initialized to 0.
-// Used for movement or orientation, possibly updated during path following or diving.
-dir = 0;
-
-// Flag for a second dive behavior, initialized to 0 (0 = inactive, 1 = active).
-// Likely used for specific enemy attack patterns, such as a secondary dive toward the player.
-dive2 = 0;
-
-// Speed of the enemy, set to 3 pixels per step.
-// Controls the movement speed along paths or during free movement.
-spd = 3;
-
-// Flag for transformation state, initialized to 0 (0 = normal, 1 = transformed).
-// Likely used for enemies that change form or behavior (e.g., Butterfly transforming).
-trans = 0;
-
-// Flag for shooting or "spitting" behavior, initialized to 0 (0 = not shooting, 1 = shooting).
-// Indicates whether the enemy fires projectiles at the player.
-spit = 0;
-
-// Additional flag, initialized to 0.
-// Purpose unclear; possibly a placeholder or used for specific enemy mechanics.
-add = 0;
-
-// Flag indicating the enemy is entering the screen, initialized to 1 (1 = entering, 0 = positioned).
-// Likely controls whether the enemy is in its initial entry phase.
-enter = 1;
-
-// Flag for primary dive behavior, initialized to 1 (1 = diving, 0 = not diving).
-// Indicates whether the enemy is performing a dive attack toward the player.
-dive = 1;
-
-// Flag indicating if the enemy is a rogue, initialized to 0 (0 = normal, 1 = rogue).
-// Rogue enemies may follow unique paths or behaviors compared to standard enemies.
-rogue = 0;
-
-// Flag for directing the enemy to a specific target or position, initialized to 0.
-// Likely used for navigation or homing behavior.
-goto = 0;
-
-// Timer variable, initialized to 0.
-// Possibly used to control timing of enemy actions (e.g., shooting, diving).
-tim = 0;
-
-// X-coordinate offset for a breathing animation, initialized to 0.
-// Likely used for visual effects, such as pulsating or moving enemies (e.g., boss-related).
-breathex = 0;
-
-// Y-coordinate offset for a breathing animation, initialized to 0.
-// Complements breathex for enemy animation effects.
-breathey = 0;
-
-// Target X-coordinate for movement, initialized to 0.
-// Used to guide the enemy toward a specific point (e.g., during a dive or goto behavior).
-targx = 0;
-
-// Target Y-coordinate for movement, initialized to 0.
-// Complements targx for navigation or attack patterns.
-targy = 0;
+event_inherited();
 
 /// @section Path Assignment Based on Wave and Pattern
 /// Assigns movement paths to the enemy based on global.pattern, global.wave, and rogue status.
 /// Paths define how enemies enter or move (e.g., swooping, diving) with a speed of 6 pixels per step.
 /// oGameManager.rogueyes determines whether to use standard (Ent*) or rogue (Rogue*) paths.
 if (oGameManager.rogueyes == 0) {
-    /// @subsection Pattern 0
-    /// Standard enemy paths for pattern 0, typically a specific formation or entry sequence.
-    if (global.pattern == 0) {
-        // Wave 0: Start the enemy on the Ent1e1Flip path (flipped entry path 1).
-        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
-        // Wave 1: Start on the Ent1e2 path (second entry path).
-        if (global.wave == 1) { path_start(Ent1e2, 6*global.scale, 0, 0); }
-        // Wave 2: Start on the Ent1e2Flip path (flipped second entry path).
-        if (global.wave == 2) { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
-    }
- 
-    /// @subsection Pattern 1
-    /// Standard enemy paths for pattern 1, possibly a different formation or behavior.
-    if (global.pattern == 1) {
-        // Wave 0: Start on the Ent1e1 path (first entry path).
-        if (global.wave == 0) { path_start(Ent1e1, 6*global.scale, 0, 0); }
-        // Wave 1: Start on the Ent2e2In path (second entry path with inward movement).
-        if (global.wave == 1) { path_start(Ent2e2In, 6*global.scale, 0, 0); }
-        // Wave 2: Choose between Ent2e2Flip (flipped) or Ent2e2InFlip based on oGameManager.alt.
-        // oGameManager.alt toggles alternate behavior (0 = normal, 1 = alternate).
-        if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Ent2e2Flip, 6*global.scale, 0, 0); }
-            else { path_start(Ent2e2InFlip, 6*global.scale, 0, 0); }
-        }
-    }
- 
-    /// @subsection Pattern 2
-    /// Standard enemy paths for pattern 2, likely another distinct formation or sequence.
-    if (global.pattern == 2) {
-        // Wave 0: Start on the Ent1e1Flip path.
-        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
-        // Wave 1: Start on the Ent1e2Flip path.
-        if (global.wave == 1) { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
-        // Wave 2: Choose between Ent1e2 or Ent1e2Flip based on oGameManager.alt.
-        if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Ent1e2, 6*global.scale, 0, 0); }
-            else { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
-        }
-		 
-    }
-} else {
-    /// @subsection Rogue Paths
-    /// Rogue enemy paths, used when oGameManager.rogueyes == 1 for unique or aggressive behaviors.
-    if (global.pattern == 0) {
-        // Wave 0: Start on the Rogue1e1Flip path.
-        if (global.wave == 0) { path_start(Rogue1e1Flip, 6*global.scale, 0, 0); }
-        // Wave 1: Start on the Rogue1e2 path.
-        if (global.wave == 1) { path_start(Rogue1e2, 6*global.scale, 0, 0); }
-        // Wave 2: Start on the Rogue1e2Flip path.
-        if (global.wave == 2) { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
-    }
+	
+	/// @section Dive Alarm Setup
+	// Set alarm[5] to control the timing of dive behavior for non-rogue enemies.
+	// For waves 1 or 2, use 75 steps (1.25 seconds) or 63 steps if global.fastenter == 1 (faster entry).
+	// For wave 0, use a shorter 10-step delay (0.167 seconds).
+	if (rogue == 0) {
+	    if (global.wave == 1 || global.wave == 2) {
+	        alarm[5] = 75;
+	        if (global.fastenter == 1) { alarm[5] = 63; }
+	    } else {
+	        alarm[5] = 10;
+	    }
+	}
 
-    if (global.pattern == 1) {
-        // Wave 0: Start on the Rogue1e1 path.
-        if (global.wave == 0) { path_start(Rogue1e1, 6*global.scale, 0, 0); }
-        // Wave 1: Start on the Rogue2e2In path.
-        if (global.wave == 1) { path_start(Rogue2e2In, 6*global.scale, 0, 0); }
-        // Wave 2: Choose between Rogue2e2Flip or Rogue2e2InFlip based on oGameManager.alt.
-        if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Rogue2e2Flip, 6*global.scale, 0, 0); }
-            else { path_start(Rogue2e2InFlip, 6*global.scale, 0, 0); }
-        }
-    }
+	// input global.pattern, global.wave, and oGameManager.alt to determine path
+	// use data/oTieFighter.json for pattern reference
+	// assign_enemy_path("Patterns/oTieFighter.json", global.pattern, global.wave, oGameManager.alt);
 
-    if (global.pattern == 2) {
-        // Wave 0: Start on the Rogue1e1Flip path.
-        if (global.wave == 0) { path_start(Rogue1e1Flip, 6*global.scale, 0, 0); }
-        // Wave 1: Start on the Rogue1e2Flip path.
-        if (global.wave == 1) { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
-        // Wave 2: Choose between Rogue1e2 or Rogue1e2Flip based on oGameManager.alt.
-        if (global.wave == 2) {
-            if (oGameManager.alt == 0) { path_start(Rogue1e2, 6*global.scale, 0, 0); }
-            else { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
-        }
-    } 
+	if (PATH != noone) {
+		// NEW CODE
+		var path_id = asset_get_index(PATH);
+		if (path_id != -1) path_start(path_id, 6*global.scale, 0, 0);
+		
+		// just use INDEX and we can remove numb ...
+		numb = INDEX;
+	}
+	else {
+		
+	    /// @subsection Pattern 0
+	    /// Standard enemy paths for pattern 0, typically a specific formation or entry sequence.
+	    if (global.pattern == 0) {
+	        // Wave 0: Start the enemy on the Ent1e1Flip path (flipped entry path 1).
+	        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
+	        // Wave 1: Start on the Ent1e2 path (second entry path).
+	        if (global.wave == 1) { path_start(Ent1e2, 6*global.scale, 0, 0); }
+	        // Wave 2: Start on the Ent1e2Flip path (flipped second entry path).
+	        if (global.wave == 2) { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
+	    }
+ 
+	    /// @subsection Pattern 1
+	    /// Standard enemy paths for pattern 1, possibly a different formation or behavior.
+	    if (global.pattern == 1) {
+	        // Wave 0: Start on the Ent1e1 path (first entry path).
+	        if (global.wave == 0) { path_start(Ent1e1, 6*global.scale, 0, 0); }
+	        // Wave 1: Start on the Ent2e2In path (second entry path with inward movement).
+	        if (global.wave == 1) { path_start(Ent2e2In, 6*global.scale, 0, 0); }
+	        // Wave 2: Choose between Ent2e2Flip (flipped) or Ent2e2InFlip based on oGameManager.alt.
+	        // oGameManager.alt toggles alternate behavior (0 = normal, 1 = alternate).
+	        if (global.wave == 2) {
+	            if (oGameManager.alt == 0) { path_start(Ent2e2Flip, 6*global.scale, 0, 0); }
+	            else { path_start(Ent2e2InFlip, 6*global.scale, 0, 0); }
+	        }
+	    }
+ 
+	    /// @subsection Pattern 2
+	    /// Standard enemy paths for pattern 2, likely another distinct formation or sequence.
+	    if (global.pattern == 2) {
+	        // Wave 0: Start on the Ent1e1Flip path.
+	        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
+	        // Wave 1: Start on the Ent1e2Flip path.
+	        if (global.wave == 1) { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
+	        // Wave 2: Choose between Ent1e2 or Ent1e2Flip based on oGameManager.alt.
+	        if (global.wave == 2) {
+	            if (oGameManager.alt == 0) { path_start(Ent1e2, 6*global.scale, 0, 0); }
+	            else { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
+	        }
+		} else {
+		    /// @subsection Rogue Paths
+		    /// Rogue enemy paths, used when oGameManager.rogueyes == 1 for unique or aggressive behaviors.
+		    if (global.pattern == 0) {
+		        // Wave 0: Start on the Rogue1e1Flip path.
+		        if (global.wave == 0) { path_start(Rogue1e1Flip, 6*global.scale, 0, 0); }
+		        // Wave 1: Start on the Rogue1e2 path.
+		        if (global.wave == 1) { path_start(Rogue1e2, 6*global.scale, 0, 0); }
+		        // Wave 2: Start on the Rogue1e2Flip path.
+		        if (global.wave == 2) { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
+		    }
+
+		    if (global.pattern == 1) {
+		        // Wave 0: Start on the Rogue1e1 path.
+		        if (global.wave == 0) { path_start(Rogue1e1, 6*global.scale, 0, 0); }
+		        // Wave 1: Start on the Rogue2e2In path.
+		        if (global.wave == 1) { path_start(Rogue2e2In, 6*global.scale, 0, 0); }
+		        // Wave 2: Choose between Rogue2e2Flip or Rogue2e2InFlip based on oGameManager.alt.
+		        if (global.wave == 2) {
+		            if (oGameManager.alt == 0) { path_start(Rogue2e2Flip, 6*global.scale, 0, 0); }
+		            else { path_start(Rogue2e2InFlip, 6*global.scale, 0, 0); }
+		        }
+		    }
+
+		    if (global.pattern == 2) {
+		        // Wave 0: Start on the Rogue1e1Flip path.
+		        if (global.wave == 0) { path_start(Rogue1e1Flip, 6*global.scale, 0, 0); }
+		        // Wave 1: Start on the Rogue1e2Flip path.
+		        if (global.wave == 1) { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
+		        // Wave 2: Choose between Rogue1e2 or Rogue1e2Flip based on oGameManager.alt.
+		        if (global.wave == 2) {
+		            if (oGameManager.alt == 0) { path_start(Rogue1e2, 6*global.scale, 0, 0); }
+		            else { path_start(Rogue1e2Flip, 6*global.scale, 0, 0); }
+		        }
+		    } 
+		}
+		
+		/// @section Wave-Specific Counter Updates
+		// Update counters and assign numb values based on global.wave and rogue status.
+		// numb likely determines the enemy's position or role in the formation.
+		if (global.wave == 0) {
+		    if (rogue == 0) {
+		        // Decrease oGameManager.count2 to track the number of enemies in the wave.
+		        oGameManager.count2 -= 1;
+		        // Assign numb based on oGameManager.count2 to define the enemy's position.
+		        if (oGameManager.count2 == 3) { numb = 2; }
+		        if (oGameManager.count2 == 2) { numb = 4; }
+		        if (oGameManager.count2 == 1) { numb = 6; }
+		        if (oGameManager.count2 == 0) { numb = 8; }
+		    } else {
+		        // For rogue enemies, decrease oGameManager.rogue2 to track rogue enemy counts.
+		        oGameManager.rogue2 -= 1;
+		    }
+		}
+
+		if (global.wave == 1) {
+		    if (rogue == 0) {
+		        // Decrease oGameManager.count2 for non-rogue enemies.
+		        oGameManager.count2 -= 1;
+		        // Assign higher numb values for wave 1 to position enemies differently.
+		        if (oGameManager.count2 == 3) { numb = 10; }
+		        if (oGameManager.count2 == 2) { numb = 12; }
+		        if (oGameManager.count2 == 1) { numb = 14; }
+		        if (oGameManager.count2 == 0) { numb = 16; }
+		    } else {
+		        // Decrease oGameManager.rogue2 for rogue enemies.
+		        oGameManager.rogue2 -= 1;
+		    }
+		}
+
+		if (global.wave == 2) {
+		    if (oGameManager.alt == 0) {
+		        if (rogue == 0) {
+		            // Decrease oGameManager.count1 for non-rogue enemies when oGameManager.alt is 0.
+		            oGameManager.count1 -= 1;
+		            // Assign numb values for wave 2, starting at 17.
+		            if (oGameManager.count1 == 3) { numb = 17; }
+		            if (oGameManager.count1 == 2) { numb = 19; }
+		            if (oGameManager.count1 == 1) { numb = 21; }
+		            if (oGameManager.count1 == 0) { numb = 23; }
+		        } else {
+		            // Decrease oGameManager.rogue1 for rogue enemies.
+		            oGameManager.rogue1 -= 1;
+		        }
+		    } else {
+		        if (rogue == 0) {
+		            // Decrease oGameManager.count2 for non-rogue enemies when oGameManager.alt is 1.
+		            oGameManager.count2 -= 1;
+		            // Assign different numb values for alternate wave 2 behavior.
+		            if (oGameManager.count2 == 3) { numb = 18; }
+		            if (oGameManager.count2 == 2) { numb = 20; }
+		            if (oGameManager.count2 == 1) { numb = 22; }
+		            if (oGameManager.count2 == 0) { numb = 24; }
+		        } else {
+		            // Decrease oGameManager.rogue2 for rogue enemies.
+		            oGameManager.rogue2 -= 1;
+		        }
+		    }
+		}
+	}
 }
 
 /// @section Timing Fix
@@ -163,86 +187,11 @@ timey = 90;
 /// @section Rogue Behavior Activation
 // If oGameManager.rogueyes == 1, mark this enemy as rogue and reset oGameManager.rogueyes to 0.
 // Ensures only one enemy processes the rogue state activation.
-if (oGameManager.rogueyes == 1) {
-    rogue = 1;
-    oGameManager.rogueyes = 0;
-}
+//if (oGameManager.rogueyes == 1) {
+//    rogue = 1;
+//    oGameManager.rogueyes = 0;
+//}
 
-/// @section Dive Alarm Setup
-// Set alarm[5] to control the timing of dive behavior for non-rogue enemies.
-// For waves 1 or 2, use 75 steps (1.25 seconds) or 63 steps if global.fastenter == 1 (faster entry).
-// For wave 0, use a shorter 10-step delay (0.167 seconds).
-if (rogue == 0) {
-    if (global.wave == 1 || global.wave == 2) {
-        alarm[5] = 75;
-        if (global.fastenter == 1) { alarm[5] = 63; }
-    } else {
-        alarm[5] = 10;
-    }
-}
-
-/// @section Wave-Specific Counter Updates
-// Update counters and assign numb values based on global.wave and rogue status.
-// numb likely determines the enemy's position or role in the formation.
-if (global.wave == 0) {
-    if (rogue == 0) {
-        // Decrease oGameManager.count2 to track the number of enemies in the wave.
-        oGameManager.count2 -= 1;
-        // Assign numb based on oGameManager.count2 to define the enemy's position.
-        if (oGameManager.count2 == 3) { numb = 2; }
-        if (oGameManager.count2 == 2) { numb = 4; }
-        if (oGameManager.count2 == 1) { numb = 6; }
-        if (oGameManager.count2 == 0) { numb = 8; }
-    } else {
-        // For rogue enemies, decrease oGameManager.rogue2 to track rogue enemy counts.
-        oGameManager.rogue2 -= 1;
-    }
-}
-
-if (global.wave == 1) {
-    if (rogue == 0) {
-        // Decrease oGameManager.count2 for non-rogue enemies.
-        oGameManager.count2 -= 1;
-        // Assign higher numb values for wave 1 to position enemies differently.
-        if (oGameManager.count2 == 3) { numb = 10; }
-        if (oGameManager.count2 == 2) { numb = 12; }
-        if (oGameManager.count2 == 1) { numb = 14; }
-        if (oGameManager.count2 == 0) { numb = 16; }
-    } else {
-        // Decrease oGameManager.rogue2 for rogue enemies.
-        oGameManager.rogue2 -= 1;
-    }
-}
-
-if (global.wave == 2) {
-    if (oGameManager.alt == 0) {
-        if (rogue == 0) {
-            // Decrease oGameManager.count1 for non-rogue enemies when oGameManager.alt is 0.
-            oGameManager.count1 -= 1;
-            // Assign numb values for wave 2, starting at 17.
-            if (oGameManager.count1 == 3) { numb = 17; }
-            if (oGameManager.count1 == 2) { numb = 19; }
-            if (oGameManager.count1 == 1) { numb = 21; }
-            if (oGameManager.count1 == 0) { numb = 23; }
-        } else {
-            // Decrease oGameManager.rogue1 for rogue enemies.
-            oGameManager.rogue1 -= 1;
-        }
-    } else {
-        if (rogue == 0) {
-            // Decrease oGameManager.count2 for non-rogue enemies when oGameManager.alt is 1.
-            oGameManager.count2 -= 1;
-            // Assign different numb values for alternate wave 2 behavior.
-            if (oGameManager.count2 == 3) { numb = 18; }
-            if (oGameManager.count2 == 2) { numb = 20; }
-            if (oGameManager.count2 == 1) { numb = 22; }
-            if (oGameManager.count2 == 0) { numb = 24; }
-        } else {
-            // Decrease oGameManager.rogue2 for rogue enemies.
-            oGameManager.rogue2 -= 1;
-        }
-    }
-}
 
 /// @section Fast Entry Adjustment
 // If global.fastenter == 1, adjust timing variables for faster enemy entry.

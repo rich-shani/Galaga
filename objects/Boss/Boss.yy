@@ -20,10 +20,7 @@
     "name":"NEW",
     "path":"folders/Objects/Enemies/NEW.yy",
   },
-  "parentObjectId":{
-    "name":"oEnemyBase",
-    "path":"objects/oEnemyBase/oEnemyBase.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,

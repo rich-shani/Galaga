@@ -42,7 +42,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 						
 						if sequence > 4 {											
 							if (global.roomname == "GalagaWars") {
-								draw_sprite_ext(sTieIntercepter, 0, 224*global.scale, (168 + 48 + 48 + 24)*global.scale, 1, 1, 0, c_white, 1);
+								draw_sprite_ext(sTieIntercepter, 18, 224*global.scale, (168 + 48 + 48 + 24)*global.scale, 1, 1, 0, c_white, 1);
 							}
 							else {
 								// draw Boss image
@@ -64,12 +64,12 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 				// BOSS
 				if (global.roomname == "GalagaWars") {
 					// INTERCEPTER
-					draw_sprite_ext(sTieIntercepter, 0, 364*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
+					draw_sprite_ext(sTieIntercepter, 18, 364*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
 					
 					// IMPERIAL SHUTTLE 1
-					draw_sprite_ext(sImperialShuttle, 0, (364 + 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
+					draw_sprite_ext(sImperialShuttle, 18, (364 + 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
 					// IMPERIAL SHUTTLE 2
-					draw_sprite_ext(sImperialShuttle, 0, (364 - 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
+					draw_sprite_ext(sImperialShuttle, 18, (364 - 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
 				}
 				else {
 					// draw Boss image
@@ -117,10 +117,10 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 				// BOSS
 				if (global.roomname == "GalagaWars") {
 					
-					draw_sprite_ext(sTieIntercepter, 0, 268*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
+					draw_sprite_ext(sTieIntercepter, 18, 268*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
 					
 					// IMPERIAL SHUTTLE 1
-					draw_sprite_ext(sImperialShuttle, 0, (268 + 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
+					draw_sprite_ext(sImperialShuttle, 18, (268 + 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
 				}
 				else {
 					// BOSS
@@ -160,7 +160,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 			if sequence < 14 {
 				if (global.roomname == "GalagaWars") {
 					// BOSS
-					draw_sprite_ext(sTieIntercepter, 0, 172*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
+					draw_sprite_ext(sTieIntercepter, 18, 172*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
 				}
 				else {
 					draw_sprite_ext(spr_ship, 2 + floor(global.flip / 30), 172*global.scale,
@@ -188,7 +188,7 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 				if (global.roomname == "GalagaWars") {
 					// note - ignore the hit flag until we get to sequence 16
 					var color = (floor(sequence / 16) * hitFlag ? c_maroon : c_white);
-					draw_sprite_ext(sTieIntercepter, 0, 76*global.scale, 336*global.scale, 1, 1, 0, color, 1);
+					draw_sprite_ext(sTieIntercepter, 18, 76*global.scale, 336*global.scale, 1, 1, 0, color, 1);
 				}
 				else {
 					// BOSS

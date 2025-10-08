@@ -1,5 +1,3 @@
-// Inherit the parent event
-event_inherited();
 
 if rogue = 1 and (y > 592*global.scale or x < -16*global.scale or x > 464*global.scale){instance_destroy()};
 

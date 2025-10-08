@@ -2,38 +2,38 @@ function newlevel() {
 	sound_stop(GBreathe); global.transside = 0;
 	global.challcount = global.challcount + 1;
 	if global.challcount < 4{
-	///pattern
-	if global.lvl = 1{global.pattern = 0}; if global.lvl = 2{global.pattern = 1}; if global.lvl = 4{global.pattern = 2};
-	if global.lvl > 4{global.pattern = global.pattern - 1; if global.pattern = -1{global.pattern = 2}};
-	///rogue
-	if global.lvl > 3{global.rogue = 1}
-	if global.lvl > 7{global.rogue = 2}
-	if global.lvl > 11{global.rogue = 3}
-	if global.lvl > 15{global.rogue = 4}
-	if global.lvl = 10 or global.lvl = 18{global.rogue = 0};
-	///fastenter
-	if global.lvl > 7{global.fastenter = 1};
-	if global.lvl = 10{global.fastenter = 0};
-	///fast
-	if global.lvl > 11{global.fast = 1};
-	///shotnumber
-	if global.lvl > 11{global.shotnumber = 3};
-	if global.lvl > 19{global.shotnumber = 4};
-	///bosscap
-	if global.lvl > 11{global.bosscap = 3}
-	if global.lvl > 19{global.bosscap = 4}
+		///pattern
+		if global.lvl = 1{global.pattern = 0}; if global.lvl = 2{global.pattern = 1}; if global.lvl = 4{global.pattern = 2};
+		if global.lvl > 4{global.pattern = global.pattern - 1; if global.pattern = -1{global.pattern = 2}};
+		///rogue
+		if global.lvl > 3{global.rogue = 1}
+		if global.lvl > 7{global.rogue = 2}
+		if global.lvl > 11{global.rogue = 3}
+		if global.lvl > 15{global.rogue = 4}
+		if global.lvl = 10 or global.lvl = 18{global.rogue = 0};
+		///fastenter
+		if global.lvl > 7{global.fastenter = 1};
+		if global.lvl = 10{global.fastenter = 0};
+		///fast
+		if global.lvl > 11{global.fast = 1};
+		///shotnumber
+		if global.lvl > 11{global.shotnumber = 3};
+		if global.lvl > 19{global.shotnumber = 4};
+		///bosscap
+		if global.lvl > 11{global.bosscap = 3}
+		if global.lvl > 19{global.bosscap = 4}
 	}
 	else{
-	global.challcount = 0; sound_play(GChallenging);
-	global.chall += 1; if global.chall = 9{global.chall = 1}; script_execute(challenging);
-	///transnum
-	global.transnum = global.transnum + 1; if global.transnum = 4{global.transnum = 1};
-	///divecapstart
-	if global.divecapstart < 6{global.divecapstart = global.divecapstart + 1};
-	///last attack
-	if global.lastattack < 8{global.lastattack = global.lastattack + 1};
-	///beamtime
-	if global.beamtime > 150{global.beamtime = global.beamtime - 50};
+		global.challcount = 0; sound_play(GChallenging);
+		global.chall += 1; if global.chall = 9{global.chall = 1}; script_execute(challenging);
+		///transnum
+		global.transnum = global.transnum + 1; if global.transnum = 4{global.transnum = 1};
+		///divecapstart
+		if global.divecapstart < 6{global.divecapstart = global.divecapstart + 1};
+		///last attack
+		if global.lastattack < 8{global.lastattack = global.lastattack + 1};
+		///beamtime
+		if global.beamtime > 150{global.beamtime = global.beamtime - 50};
 	}
 	///hold
 	global.hold -= 3; if global.hold < 1{global.hold = 1};

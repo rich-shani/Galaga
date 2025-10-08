@@ -1,6 +1,6 @@
 if !global.gameover {
 
-if y < 592*global.scale and x > -16 and x < 464 and (y > -16 or global.challcount > 0) {
+if y < 592*global.scale and x > -16 and x < 464*global.scale and (y > -16 or global.challcount > 0) {
 
 	if dive = 1{oPlayer.alarm[4] = global.hold + irandom(global.hold);} else{global.p1score += 150};
 
