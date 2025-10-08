@@ -4,7 +4,9 @@ var i = round(direction/15);
 					
 draw_sprite_ext(sTieFighter,i,x,y,1,1,0,c_white,1);
 
-// draw collision mask
-draw_set_alpha(0.5);
-draw_rectangle_colour(bbox_left,bbox_top,bbox_right,bbox_bottom,c_red,c_red,c_red,c_red,false);
-draw_set_alpha(1);
+if (global.debug) {
+	// draw collision mask
+	draw_set_alpha(0.5);
+	draw_rectangle_colour(bbox_left,bbox_top,bbox_right,bbox_bottom,c_red,c_red,c_red,c_red,false);
+	draw_set_alpha(1);
+}

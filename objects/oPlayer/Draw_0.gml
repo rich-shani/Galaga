@@ -5,9 +5,12 @@ if (global.gameMode == GameMode.GAME_ACTIVE && shipStatus == _ShipState.ACTIVE) 
 		if (global.roomname == "GalagaWars") {
 			draw_sprite_ext(xwing_sprite_sheet,shipImage,x,y,0.8,0.8,0,c_white,1);
 			
-			draw_set_alpha(0.5);
-			draw_rectangle_colour(bbox_left,bbox_top,bbox_right,bbox_bottom,c_red,c_red,c_red,c_red,false);
-			draw_set_alpha(1);
+			if (global.debug) {
+				// draw collision mask
+				draw_set_alpha(0.5);
+				draw_rectangle_colour(bbox_left,bbox_top,bbox_right,bbox_bottom,c_red,c_red,c_red,c_red,false);
+				draw_set_alpha(1);
+			}
 		}
 		else {
 			draw_sprite(spr_ship, 0, x, y);
