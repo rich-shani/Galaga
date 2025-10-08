@@ -53,14 +53,14 @@
         },
         {
             "SPAWN": [
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 33, "PATH": "Ent1e1Flip" },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 34, "PATH": "Ent1e1Flip" },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 35, "PATH": "Ent1e1Flip" },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 36, "PATH": "Ent1e1Flip" },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 37, "PATH": "Ent1e1Flip" },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 38, "PATH": "Ent1e1Flip" },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 39, "PATH": "Ent1e1Flip" },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 40, "PATH": "Ent1e1Flip" } 
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 33, "PATH": "Ent1e1Flip" },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 34, "PATH": "Ent1e1Flip" },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 35, "PATH": "Ent1e1Flip" },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 36, "PATH": "Ent1e1Flip" },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 37, "PATH": "Ent1e1Flip" },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 38, "PATH": "Ent1e1Flip" },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 39, "PATH": "Ent1e1Flip" },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 384, "SPAWN_YPOS": -16, "INDEX": 40, "PATH": "Ent1e1Flip" } 
             ]
         }        
     ]
