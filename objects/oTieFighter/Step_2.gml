@@ -64,6 +64,8 @@ if (dive == 0 && enter == 0) {
 	// USE to align the sprite to face-down in formation 
 
 	if (alarm[0] == -1) {
+		// 270 degree is pointing down 
+		// as 0 is to the right, 90 is up, 180 left, 270 down
 		direction = 270;
 	} else if (abs(direction - 270) > 12) {
 		direction += 6;
