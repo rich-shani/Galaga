@@ -74,11 +74,13 @@ function Enter_Initials(){
     char = global.results - 2;
 }
 
-function Game_Loop(){
-	
-	if (global.isGamePaused) return;
-	
-	// === EXTRA LIVES ===
+function nOfEnemies() {
+	// return the total number of active enemies (all enemies)
+	return instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) +
+			instance_number(Butterfly) + instance_number(Boss) + instance_number(Fighter) + instance_number(Transform);
+}
+
+function checkForExtraLives() {
 	// Award extra lives based on score thresholds
 	if global.p1score > firstlife and global.p1score < 1000000 {
 	    if firstlife == 20000 {
@@ -88,15 +90,12 @@ function Game_Loop(){
 	    sound_play(GLife);       // Play life gained sound
 	    global.p1lives += 1;     // Add a life
 	}
-	
-	//// === LEVEL TRANSITION CHECK ===
+}
+
+function readyForNextLevel() {	
 	//// If no enemies are present and all game conditions are met,
 	//// initiate transition to the next level.
-	if instance_number(Bee) == 0 && instance_number(oTieFighter) == 0 &&
-	    instance_number(Butterfly) == 0 &&
-	    instance_number(Boss) == 0 &&
-	    instance_number(Fighter) == 0 &&
-	    instance_number(Transform) == 0 &&
+	if nOfEnemies() == 0 &&
 	    nextlevel == 0 &&
 	    global.open == 0 &&
 	    oPlayer.shipStatus == _ShipState.ACTIVE &&
@@ -105,9 +104,10 @@ function Game_Loop(){
 		nextlevel = 1;       // Flag to begin next level
 		alarm[10] = 90;      // Delay for level transition effects
 	}
+}
 
-    // === ENEMY DIVE CAPACITY HANDLING ===
-
+function checkDiveCapacity() {
+	
     // Reset dive cap to its starting value at the beginning of each frame
     global.divecap = global.divecapstart;
 
@@ -120,6 +120,12 @@ function Game_Loop(){
     }
 
     with oTieFighter {
+        if dive == 1 or alarm[2] > -1 {
+            global.divecap -= 1; // Bees actively diving or about to dive
+        }
+    }
+
+    with oImperialShuttle {
         if dive == 1 or alarm[2] > -1 {
             global.divecap -= 1; // Bees actively diving or about to dive
         }
@@ -154,9 +160,10 @@ function Game_Loop(){
             global.bosscap -= 1;
         }
     }
+}
 
-    // === BREATHING ANIMATION MECHANIC ===
-    // Controls breathing motion of a visual/background element and audio
+function controlEnemyFormation() {
+	// Controls breathing motion of a visual/background element and audio
 
     if global.breathing == 0 {
         // Not breathing yet; run animation to transition to breathing
@@ -215,580 +222,707 @@ function Game_Loop(){
         && !sound_isplaying(GCaptured)
         && !sound_isplaying(GFighterCaptured)
         && !sound_isplaying(GRescue)
-        && (instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack)
+        && (instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack)
         {
             sound_volume(GBreathe, 1); // Play breathing sound at full volume
         } else {
             sound_volume(GBreathe, 0); // Mute if any action sounds playing
         }
     }
+}
+
+function load_enemy_waves(_datafile) {
+	var _data = "";
+
+	// Check if the file exists to avoid errors
+	if (file_exists(_datafile)) {
+	    // Open the file for reading
+	    var _fileid = file_text_open_read(_datafile);
+    
+	    // Read the entire file line by line
+	    while (!file_text_eof(_fileid)) {
+	        _data += file_text_readln(_fileid);
+	    }
+    
+	    // Close the file
+	    file_text_close(_fileid);
+	
+		return json_parse(_data);
+	}	
+}
+
+function load_formation_position(_datafile) {
+	var _data = "";
+
+	// Check if the file exists to avoid errors
+	if (file_exists(_datafile)) {
+	    // Open the file for reading
+	    var _fileid = file_text_open_read(_datafile);
+    
+	    // Read the entire file line by line
+	    while (!file_text_eof(_fileid)) {
+	        _data += file_text_readln(_fileid);
+	    }
+    
+	    // Close the file
+	    file_text_close(_fileid);
+	
+		return json_parse(_data);
+	}	
+}
+
+function spawnEnemy() {
+	var enemy_data = spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN[global.spawnCounter];
+				
+	// enemy_data: eg
+	// ENEMY		"oTieFighter"
+	// PATH			"Ent1e1"
+	// SPAWN_XPOS	512
+	// SPAWN YPOS	-16
+	// INDEX		1
+				
+	var enemy_id = asset_get_index(enemy_data.ENEMY);
+	if (enemy_id != -1) {
+		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
+															{ INDEX: enemy_data.INDEX, PATH: enemy_data.PATH });
+	}
+	
+	// advance the enemy spawn counter
+	global.spawnCounter++;
+}
+
+function waveComplete() {
+
+	return (global.spawnCounter == array_length(spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN));
+}
+
+function patternComplete() {
+
+	return (global.wave == array_length(spawn_data.PATTERN[global.pattern].WAVE));
+}
+
+function Game_Loop(){
+	
+	if (global.isGamePaused) return;
+	
+	// === EXTRA LIVES ===
+	checkForExtraLives();
+	
+	//// === LEVEL TRANSITION CHECK ===
+	readyForNextLevel();
+
+    // === ENEMY DIVE CAPACITY HANDLING ===
+	checkDiveCapacity();
+
+    // === BREATHING ANIMATION MECHANIC ===
+	controlEnemyFormation();
 
 	
   // === PATTERN HANDLING ===
   if global.challcount > 0 {
-    if global.open == 1 {
+	  
+	// SPAWN all ENEMY WAVES within the PATTERN
+    if (!patternComplete()) {
 
 		// ENEMY SPAWN (start of level)
-		
-        // === PATTERN 0: Classic top-bottom spawning ===
-        if global.pattern == 0 {
+		if (alarm[2] == -1) {
+			if (!waveComplete()) {
+				// SPAWN ENEMY
+				spawnEnemy();
+			}
+			
+			// check if we've completed the wave, as we just spawned more enemies
+			// note: divecap is active is the wave is still moving into formation
+			if (waveComplete() && (global.divecap == global.divecapstart)) {	
+			    // Advance to next wave if all wave are complete
 
-            // ---- WAVE 0 ----
-            if global.wave == 0 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	                // Random chance to spawn a rogue Bee
-	                if count1 > 0 || rogue1 > 0 {
-	                    if random(1) < (rogue1 / (rogue1 + count1)) {
-	                    rogueyes = 1;
-	                    }
-	                }
-	                if (global.roomname == "GalagaWars") {
-						instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
-					}
-					else {
-						instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
-					}
+				// reset spawn counter
+				global.spawnCounter = 0;
 					
-	                // Random chance to spawn a rogue Butterfly
-	                if count2 > 0 || rogue2 > 0 {
-	                    if random(1) < (rogue2 / (rogue2 + count2)) {
-	                    rogueyes = 1;
-	                    }
-	                }
-	                instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly); // Spawn Butterfly from top
-	                alarm[2] = 6; // Delay before next possible spawn
-                }
-
-                // Advance to next wave if all counts are zero
-                if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                    count1 == 0 && count2 == 0 &&
-                    rogue1 == 0 && rogue2 == 0 &&
-                    global.divecap == global.divecapstart {
-	                global.wave = 1;
-	                script_execute(waverogue); // Recalculate rogue spawn logic
-                }
+				// advance to the next WAVE (if applicable)
+	            global.wave += 1;
+				
+				// check if we've completed the PATTERN
+				if (patternComplete()) global.open = 0;
             }
+			else {
+				// more WAVES to complete, or current WAVE is still moving into formation ... wait
+				// delay before next WAVE SPAWN
+				alarm[2] = 6; 
+			}
+		}
+	}		
+                //if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-            // ---- WAVE 1 ----
-            if global.wave == 1 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-                alt += 1;
-                if alt == 2 { alt = 0; } // Alternate between Bee and Butterfly spawn
-
-                if alt == 1 {
-                    // Chance for rogue Boss
-                    if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                        rogueyes = 1;
-                    }
-                    }
-                    instance_create(-16*global.scale, 496*global.scale, Boss); // Spawn Boss from bottom
-                    alarm[2] = 6;
-                }
-
-                if alt == 0 {
-                    // Chance for rogue Butterfly
-                    if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                        rogueyes = 1;
-                    }
-                    }
-                    instance_create(-16*global.scale, 496*global.scale, Butterfly); // Spawn Butterfly from bottom
-                    alarm[2] = 6;
-                }
-                }
-
-                // Advance to next wave
-                if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                    count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                    global.divecap == global.divecapstart {
-                global.wave = 2;
-                script_execute(waverogue);
-                }
-            }
-
-            // ---- WAVE 2 to 4 ----
-
-            // ---- WAVE 2 ----
-            if global.wave == 2 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-                    // Alternate logic to randomly pick a rogue
-                    if alt == 0 {
-                    if count1 > 0 || rogue1 > 0 {
-                        if random(1) < (rogue1 / (rogue1 + count1)) {
-                        rogueyes = 1;
-                        }
-                    }
-                    } else {
-                    if count2 > 0 || rogue2 > 0 {
-                        if random(1) < (rogue2 / (rogue2 + count2)) {
-                        rogueyes = 1;
-                        }
-                    }
-                    }
-
-                    instance_create(464*global.scale, 496*global.scale, Butterfly); // Butterfly spawns from bottom-right
-                    alt += 1;
-                    if alt == 2 { alt = 0; } // Toggle alt
-                    alarm[2] = 6; // Spawn delay
-                }
-
-                // Transition to next wave
-                if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                    count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                    global.divecap == global.divecapstart {
-                    global.wave = 3;
-                    script_execute(waverogue);
-                }
-            }
-
-            // ---- WAVE 3 ----
-            if global.wave == 3 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-                    if alt == 0 {
-                    if count1 > 0 || rogue1 > 0 {
-                        if random(1) < (rogue1 / (rogue1 + count1)) {
-                        rogueyes = 1;
-                        }
-                    }
-                    } else {
-                    if count2 > 0 || rogue2 > 0 {
-                        if random(1) < (rogue2 / (rogue2 + count2)) {
-                        rogueyes = 1;
-                        }
-                    }
-                    }
-
-	                if (global.roomname == "GalagaWars") {
-						instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
-					}
-					else {
-						instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
-					}
-
-                    alt += 1;
-                    if alt == 2 { alt = 0; }
-                    alarm[2] = 6;
-                }
-
-                if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                    count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                    global.divecap == global.divecapstart {
-                    global.wave = 4;
-                    script_execute(waverogue);
-                }
-            }
-
-            // ---- WAVE 4 ----
-            if global.wave == 4 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-                    if alt == 0 {
-                    if count1 > 0 || rogue1 > 0 {
-                        if random(1) < (rogue1 / (rogue1 + count1)) {
-                        rogueyes = 1;
-                        }
-                    }
-                    } else {
-                    if count2 > 0 || rogue2 > 0 {
-                        if random(1) < (rogue2 / (rogue2 + count2)) {
-                        rogueyes = 1;
-                        }
-                    }
-                    }
+	            //    // Random chance to spawn a rogue Bee
+	            //    if count1 > 0 || rogue1 > 0 {
+	            //        if random(1) < (rogue1 / (rogue1 + count1)) {
+	            //        rogueyes = 1;
+	            //        }
+	            //    }
+	            //    if (global.roomname == "GalagaWars") {
+				//		instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
+				//	}
+				//	else {
+				//		instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
+				//	}
 					
-	                if (global.roomname == "GalagaWars") {
-						instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
-					}
-					else {
-						instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
-					}
+	            //    // Random chance to spawn a rogue Butterfly
+	            //    if count2 > 0 || rogue2 > 0 {
+	            //        if random(1) < (rogue2 / (rogue2 + count2)) {
+	            //        rogueyes = 1;
+	            //        }
+	            //    }
+	            //    if (global.roomname == "GalagaWars") {
+				//		instance_create((448 - 256)*global.scale, -16*global.scale, oImperialShuttle); // Spawn from top
+				//	}
+				//	else {
+				//		instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly); // Spawn Butterfly from top
+				//	}
+					
+	            //    alarm[2] = 6; // Delay before next possible spawn
+                //}
 
-                    alt += 1;
-                    if alt == 2 { alt = 0; }
-                    alarm[2] = 6;
-                }
+                //// Advance to next wave if all counts are zero
+                //if oPlayer.shipStatus == _ShipState.ACTIVE &&
+                //    count1 == 0 && count2 == 0 &&
+                //    rogue1 == 0 && rogue2 == 0 &&
+                //    global.divecap == global.divecapstart {
+	            //    global.wave = 1;
+	            //    script_execute(waverogue); // Recalculate rogue spawn logic
+                //}
+	    //        }
 
-                // === Fighter spawning logic ===
-                if global.fighterstore == 0 && instance_number(Fighter) == 0 {
-                    if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                    global.divecap == global.divecapstart {
-                    global.open = 0;
-                    }
-                } else {
-                    if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                    alarm[2] == -1 {
-                    instance_create(192*global.scale, -16*global.scale, Fighter); // Spawn fighter unit
-                    }
-                }
+	    //        // ---- WAVE 1 ----
+	    //        if global.wave == 1 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //            alt += 1;
+	    //            if alt == 2 { alt = 0; } // Alternate between Bee and Butterfly spawn
 
-                // === Close level if all enemies are cleared and fighter finished dive
-                if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                    global.divecap == global.divecapstart && Fighter.dive == 0 {
-                    global.open = 0;
-                }
-            }
-        } // End of challenge pattern 0
+	    //            if alt == 1 {
+	    //                // Chance for rogue Boss
+	    //                if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                    rogueyes = 1;
+	    //                }
+	    //                }
+	    //                instance_create(-16*global.scale, 496*global.scale, Boss); // Spawn Boss from bottom
+	    //                alarm[2] = 6;
+	    //            }
+
+	    //            if alt == 0 {
+	    //                // Chance for rogue Butterfly
+	    //                if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                    rogueyes = 1;
+	    //                }
+	    //                }
+		//				if (global.roomname == "GalagaWars") {
+		//					instance_create(-16*global.scale, 496*global.scale, oImperialShuttle); // Spawn from bottom
+		//				}
+		//				else {
+		//					instance_create(-16*global.scale, 496*global.scale, Butterfly); // Spawn Butterfly from bottom
+		//				}
+
+	    //                alarm[2] = 6;
+	    //            }
+	    //            }
+
+	    //            // Advance to next wave
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
+	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //                global.divecap == global.divecapstart {
+	    //            global.wave = 2;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
+
+	    //        // ---- WAVE 2 to 4 ----
+
+	    //        // ---- WAVE 2 ----
+	    //        if global.wave == 2 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+
+	    //                // Alternate logic to randomly pick a rogue
+	    //                if alt == 0 {
+	    //                if count1 > 0 || rogue1 > 0 {
+	    //                    if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                    rogueyes = 1;
+	    //                    }
+	    //                }
+	    //                } else {
+	    //                if count2 > 0 || rogue2 > 0 {
+	    //                    if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                    rogueyes = 1;
+	    //                    }
+	    //                }
+	    //                }
+		//				if (global.roomname == "GalagaWars") {
+		//					instance_create(464*global.scale, 496*global.scale, oImperialShuttle); // Spawn from bottom-right
+		//				}
+		//				else {
+		//					instance_create(464*global.scale, 496*global.scale, Butterfly); // Spawn Butterfly from bottom-right
+		//				}
+
+	    //                alt += 1;
+	    //                if alt == 2 { alt = 0; } // Toggle alt
+	    //                alarm[2] = 6; // Spawn delay
+	    //            }
+
+	    //            // Transition to next wave
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
+	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //                global.divecap == global.divecapstart {
+	    //                global.wave = 3;
+	    //                script_execute(waverogue);
+	    //            }
+	    //        }
+
+	    //        // ---- WAVE 3 ----
+	    //        if global.wave == 3 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+
+	    //                if alt == 0 {
+	    //                if count1 > 0 || rogue1 > 0 {
+	    //                    if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                    rogueyes = 1;
+	    //                    }
+	    //                }
+	    //                } else {
+	    //                if count2 > 0 || rogue2 > 0 {
+	    //                    if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                    rogueyes = 1;
+	    //                    }
+	    //                }
+	    //                }
+
+		//                if (global.roomname == "GalagaWars") {
+		//					instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
+		//				}
+		//				else {
+		//					instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
+		//				}
+
+	    //                alt += 1;
+	    //                if alt == 2 { alt = 0; }
+	    //                alarm[2] = 6;
+	    //            }
+
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
+	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //                global.divecap == global.divecapstart {
+	    //                global.wave = 4;
+	    //                script_execute(waverogue);
+	    //            }
+	    //        }
+
+	    //        // ---- WAVE 4 ----
+	    //        if global.wave == 4 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+
+	    //                if alt == 0 {
+	    //                if count1 > 0 || rogue1 > 0 {
+	    //                    if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                    rogueyes = 1;
+	    //                    }
+	    //                }
+	    //                } else {
+	    //                if count2 > 0 || rogue2 > 0 {
+	    //                    if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                    rogueyes = 1;
+	    //                    }
+	    //                }
+	    //                }
+					
+		//                if (global.roomname == "GalagaWars") {
+		//					instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
+		//				}
+		//				else {
+		//					instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
+		//				}
+
+	    //                alt += 1;
+	    //                if alt == 2 { alt = 0; }
+	    //                alarm[2] = 6;
+	    //            }
+
+	    //            // === Fighter spawning logic ===
+	    //            if global.fighterstore == 0 && instance_number(Fighter) == 0 {
+	    //                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //                global.divecap == global.divecapstart {
+	    //                global.open = 0;
+	    //                }
+	    //            } else {
+	    //                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //                alarm[2] == -1 {
+	    //                instance_create(192*global.scale, -16*global.scale, Fighter); // Spawn fighter unit
+	    //                }
+	    //            }
+
+	    //            // === Close level if all enemies are cleared and fighter finished dive
+	    //            if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //                global.divecap == global.divecapstart && Fighter.dive == 0 {
+	    //                global.open = 0;
+	    //            }
+	    //        }
+	    //    } // End of challenge pattern 0
     
 
-        // === PATTERN 1 ===
-        // A different arrangement of waves and spawn directions (e.g., mirrored or center-based logic)
+	    //    // === PATTERN 1 ===
+	    //    // A different arrangement of waves and spawn directions (e.g., mirrored or center-based logic)
 
-        if global.pattern == 1 {
+	    //    if global.pattern == 1 {
 
-            // ---- WAVE 0 ----
-            if global.wave == 0 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 0 ----
+	    //        if global.wave == 0 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Random chance for rogue Bee
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create((448 - 288)*global.scale, -16*global.scale, Bee); // Bee from offset top-left
+	    //            // Random chance for rogue Bee
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create((448 - 288)*global.scale, -16*global.scale, Bee); // Bee from offset top-left
 
-                // Random chance for rogue Butterfly
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(288*global.scale, -16*global.scale, Butterfly); // Butterfly from offset top-right
+	    //            // Random chance for rogue Butterfly
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create(288*global.scale, -16*global.scale, Butterfly); // Butterfly from offset top-right
 
-                alarm[2] = 6;
-                }
+	    //            alarm[2] = 6;
+	    //            }
 
-                // Advance wave if all enemies cleared and ship is alive
-                if oPLayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-                rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-                global.wave = 1;
-                script_execute(waverogue);
-                }
-            }
+	    //            // Advance wave if all enemies cleared and ship is alive
+	    //            if oPLayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
+	    //            global.wave = 1;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 1 ----
-            if global.wave == 1 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 1 ----
+	    //        if global.wave == 1 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Rogue Boss spawn
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(-16*global.scale, 496*global.scale, Boss); // Boss from lower left
+	    //            // Rogue Boss spawn
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create(-16*global.scale, 496*global.scale, Boss); // Boss from lower left
 
-                // Rogue Butterfly spawn
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(-16*global.scale, (496 - 32)*global.scale, Butterfly); // Slightly offset Butterfly
+	    //            // Rogue Butterfly spawn
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create(-16*global.scale, (496 - 32)*global.scale, Butterfly); // Slightly offset Butterfly
 
-                alarm[2] = 6;
-                }
+	    //            alarm[2] = 6;
+	    //            }
 
-                if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                global.divecap == global.divecapstart {
-                global.wave = 2;
-                script_execute(waverogue);
-                }
-            }
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
+	    //            count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //            global.divecap == global.divecapstart {
+	    //            global.wave = 2;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 2 ----
-            if global.wave == 2 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 2 ----
+	    //        if global.wave == 2 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Rogue Bee or Butterfly decision
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 0;
-                instance_create(464*global.scale, 496*global.scale, Butterfly); // From far right
+	    //            // Rogue Bee or Butterfly decision
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 0;
+	    //            instance_create(464*global.scale, 496*global.scale, Butterfly); // From far right
 
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 1;
-                instance_create(464*global.scale, (496 - 32)*global.scale, Butterfly); // Another butterfly
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 1;
+	    //            instance_create(464*global.scale, (496 - 32)*global.scale, Butterfly); // Another butterfly
 
-                alarm[2] = 6;
-                }
+	    //            alarm[2] = 6;
+	    //            }
 
-                if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                global.divecap == global.divecapstart {
-                global.wave = 3;
-                script_execute(waverogue);
-                }
-            }
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
+	    //            count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //            global.divecap == global.divecapstart {
+	    //            global.wave = 3;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 3 ----
-            if global.wave == 3 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 3 ----
+	    //        if global.wave == 3 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                    // Attempt to spawn rogue Bee from top positions
-                    alt = 0;
-                    if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                        rogueyes = 1;
-                    }
-                    }
-                    instance_create((256 + 32)*global.scale, -16*global.scale, Bee);  // Slightly offset Bee
+	    //                // Attempt to spawn rogue Bee from top positions
+	    //                alt = 0;
+	    //                if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                    rogueyes = 1;
+	    //                }
+	    //                }
+	    //                instance_create((256 + 32)*global.scale, -16*global.scale, Bee);  // Slightly offset Bee
 
-                    alt = 1;
-                    if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                        rogueyes = 1;
-                    }
-                    }
-                    instance_create((228 + 32)*global.scale, -16*global.scale, Bee);  // Another Bee from nearby offset
+	    //                alt = 1;
+	    //                if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                    rogueyes = 1;
+	    //                }
+	    //                }
+	    //                instance_create((228 + 32)*global.scale, -16*global.scale, Bee);  // Another Bee from nearby offset
 
-                    alarm[2] = 6;
-                }
+	    //                alarm[2] = 6;
+	    //            }
 
-                // Advance wave once enemies are cleared
-                if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                    count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                    global.divecap == global.divecapstart {
-                    global.wave = 4;
-                    script_execute(waverogue);
-                }
-            }
+	    //            // Advance wave once enemies are cleared
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
+	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //                global.divecap == global.divecapstart {
+	    //                global.wave = 4;
+	    //                script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 4 ----
-            if global.wave == 4 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 4 ----
+	    //        if global.wave == 4 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                    // Patterned Bee spawns from mirrored offset
-                    if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                        rogueyes = 1;
-                    }
-                    }
-                    alt = 0;
-                    instance_create((448 - 256 - 32)*global.scale, -16*global.scale, Bee); // Left Bee
+	    //                // Patterned Bee spawns from mirrored offset
+	    //                if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                    rogueyes = 1;
+	    //                }
+	    //                }
+	    //                alt = 0;
+	    //                instance_create((448 - 256 - 32)*global.scale, -16*global.scale, Bee); // Left Bee
 
-                    if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                        rogueyes = 1;
-                    }
-                    }
-                    alt = 1;
-                    instance_create((448 - 228 - 32)*global.scale, -16*global.scale, Bee); // Right Bee
+	    //                if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                    rogueyes = 1;
+	    //                }
+	    //                }
+	    //                alt = 1;
+	    //                instance_create((448 - 228 - 32)*global.scale, -16*global.scale, Bee); // Right Bee
 
-                    alarm[2] = 6;
-                }
+	    //                alarm[2] = 6;
+	    //            }
            
-	            // === Final cleanup or Fighter spawn ===
-	            // === Fighter spawning and pattern closing ===
+		//            // === Final cleanup or Fighter spawn ===
+		//            // === Fighter spawning and pattern closing ===
 
-	            // If no Fighters remain to deploy and no enemies are left, close the pattern
-	            if global.fighterstore == 0 && instance_number(Fighter) == 0 {
-	                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	                global.divecap == global.divecapstart {
-	                global.open = 0;
-	                }
-	            } else {
-	                // Otherwise deploy a fighter if enemies are clear and alarm is ready
-	                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	                alarm[2] == -1 {
-	                instance_create(160*global.scale, -16*global.scale, Fighter); // Spawn Fighter unit from mid-top
-	                }
-	            }
+		//            // If no Fighters remain to deploy and no enemies are left, close the pattern
+		//            if global.fighterstore == 0 && instance_number(Fighter) == 0 {
+		//                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+		//                global.divecap == global.divecapstart {
+		//                global.open = 0;
+		//                }
+		//            } else {
+		//                // Otherwise deploy a fighter if enemies are clear and alarm is ready
+		//                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+		//                alarm[2] == -1 {
+		//                instance_create(160*global.scale, -16*global.scale, Fighter); // Spawn Fighter unit from mid-top
+		//                }
+		//            }
 			
-	            // End pattern if Fighter dive is complete and no enemies remain
-	            if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	                global.divecap == global.divecapstart && Fighter.dive == 0 {
-	                global.open = 0;
-	            }
-			}
-        }
+		//            // End pattern if Fighter dive is complete and no enemies remain
+		//            if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+		//                global.divecap == global.divecapstart && Fighter.dive == 0 {
+		//                global.open = 0;
+		//            }
+		//		}
+	    //    }
 
-        // === PATTERN 2 ===
-        // A third pattern variation with different positioning for enemies.
+	    //    // === PATTERN 2 ===
+	    //    // A third pattern variation with different positioning for enemies.
 
-        if global.pattern == 2 {
+	    //    if global.pattern == 2 {
 
-            // ---- WAVE 0 ----
-            if global.wave == 0 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 0 ----
+	    //        if global.wave == 0 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Spawn Bee with rogue chance
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(256*global.scale, -16*global.scale, Bee);  // From top center
+	    //            // Spawn Bee with rogue chance
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create(256*global.scale, -16*global.scale, Bee);  // From top center
 
-                // Spawn Butterfly with rogue chance
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly);  // From top offset right
-                alarm[2] = 6;
-                }
+	    //            // Spawn Butterfly with rogue chance
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly);  // From top offset right
+	    //            alarm[2] = 6;
+	    //            }
 
-                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-                rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-                global.wave = 1;
-                script_execute(waverogue);
-                }
-            }
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
+	    //            global.wave = 1;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 1 ----
-            if global.wave == 1 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 1 ----
+	    //        if global.wave == 1 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Rogue Boss spawn
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(-16*global.scale, 496*global.scale, Boss); // From lower left
+	    //            // Rogue Boss spawn
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create(-16*global.scale, 496*global.scale, Boss); // From lower left
 
-                // Rogue Butterfly spawn
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                instance_create(464*global.scale, 496*global.scale, Butterfly); // From lower right
+	    //            // Rogue Butterfly spawn
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            instance_create(464*global.scale, 496*global.scale, Butterfly); // From lower right
 
-                alarm[2] = 6;
-                }
+	    //            alarm[2] = 6;
+	    //            }
 
-                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-                rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-                global.wave = 2;
-                script_execute(waverogue);
-                }
-            }
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
+	    //            global.wave = 2;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 2 ----
-            if global.wave == 2 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 2 ----
+	    //        if global.wave == 2 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Left butterfly
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 0;
-                instance_create(-16, 496, Butterfly);
+	    //            // Left butterfly
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 0;
+	    //            instance_create(-16, 496, Butterfly);
 
-                // Right butterfly
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 1;
-                instance_create(464, 496, Butterfly);
+	    //            // Right butterfly
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 1;
+	    //            instance_create(464, 496, Butterfly);
 
-                alarm[2] = 6;
-                }
+	    //            alarm[2] = 6;
+	    //            }
 
-                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-                rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-                global.wave = 3;
-                script_execute(waverogue);
-                }
-            }
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
+	    //            global.wave = 3;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 3 ----
-            if global.wave == 3 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 3 ----
+	    //        if global.wave == 3 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Bee 1
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 0;
-                instance_create(256, -16, Bee);
+	    //            // Bee 1
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 0;
+	    //            instance_create(256, -16, Bee);
 
-                // Bee 2
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 1;
-                instance_create(448 - 256, -16, Bee);
+	    //            // Bee 2
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 1;
+	    //            instance_create(448 - 256, -16, Bee);
 
-                alarm[2] = 6;
-                }
+	    //            alarm[2] = 6;
+	    //            }
 
-                if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-                rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-                global.wave = 4;
-                script_execute(waverogue);
-                }
-            }
+	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
+	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
+	    //            global.wave = 4;
+	    //            script_execute(waverogue);
+	    //            }
+	    //        }
 
-            // ---- WAVE 4 ----
-            if global.wave == 4 {
-                if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
+	    //        // ---- WAVE 4 ----
+	    //        if global.wave == 4 {
+	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
-                // Bee 1
-                if count1 > 0 || rogue1 > 0 {
-                    if random(1) < (rogue1 / (rogue1 + count1)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 0;
-                instance_create(256, -16, Bee);
+	    //            // Bee 1
+	    //            if count1 > 0 || rogue1 > 0 {
+	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 0;
+	    //            instance_create(256, -16, Bee);
 
-                // Bee 2
-                if count2 > 0 || rogue2 > 0 {
-                    if random(1) < (rogue2 / (rogue2 + count2)) {
-                    rogueyes = 1;
-                    }
-                }
-                alt = 1;
-                instance_create(448 - 256, -16, Bee);
+	    //            // Bee 2
+	    //            if count2 > 0 || rogue2 > 0 {
+	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
+	    //                rogueyes = 1;
+	    //                }
+	    //            }
+	    //            alt = 1;
+	    //            instance_create(448 - 256, -16, Bee);
 
-                alarm[2] = 6;
-                }
-            }
+	    //            alarm[2] = 6;
+	    //            }
+	    //        }
 
-            // === Final cleanup or Fighter spawn ===
-            if global.fighterstore == 0 && instance_number(Fighter) == 0 {
-            if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                global.divecap == global.divecapstart {
-                global.open = 0;
-            }
-            } else {
-            if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-                alarm[2] == -1 {
-                instance_create(192, -16, Fighter);
-            }
-            }
+	    //        // === Final cleanup or Fighter spawn ===
+	    //        if global.fighterstore == 0 && instance_number(Fighter) == 0 {
+	    //        if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //            global.divecap == global.divecapstart {
+	    //            global.open = 0;
+	    //        }
+	    //        } else {
+	    //        if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //            alarm[2] == -1 {
+	    //            instance_create(192, -16, Fighter);
+	    //        }
+	    //        }
 
-            if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-            global.divecap == global.divecapstart && Fighter.dive == 0 {
-                lobal.open = 0;
-            }
+	    //        if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
+	    //        global.divecap == global.divecapstart && Fighter.dive == 0 {
+	    //            lobal.open = 0;
+	    //        }
 
-        } // End of pattern 2
-    } // End of challenge pattern handling
+	    //    } // End of pattern 2
+	    //} // End of challenge pattern handling
   }
     // === NON-CHALLENGE WAVE / FALLBACK SPAWNING ===
     // This logic triggers if no challenge pattern is active, handling standard enemy waves.
@@ -884,25 +1018,8 @@ else {
         }
     
     }
+	}
 }
-}
-
-//function Attact_Mode() {
-
-//	if (global.credits == 1) {
-
-//        sound_play(GCredit);     // Play credit sound
-//        global.gameMode = GameMode.INSTRUCTIONS;             // Move to gameMode screen 2 (instructions or title)
-
-//        //path_end();              // Stop any path-following movement
-//		x = xstart;              // Reset object to original x
-//		y = ystart;              // Reset object to original y
-
-//		// Reset player ship position
-//		Ship.x = Ship.xstart;
-//		Ship.y = Ship.ystart;
-//    }	
-//}
 
 function Show_Instructions() {
 	// if player presses space, start the actual game

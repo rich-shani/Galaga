@@ -1,5 +1,3 @@
-// Inherit the parent event
-event_inherited();
 
 dive = 0;
 

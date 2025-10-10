@@ -67,3 +67,5 @@ targx = 0;
 // Target Y-coordinate for movement, initialized to 0.
 // Complements targx for navigation or attack patterns.
 targy = 0;
+
+formation = load_formation_position("Patterns/formation_coordinates.json");

@@ -1,0 +1,61 @@
+{
+  "NAME": "oTieFighter",
+  "PATTERN": [
+    {
+      "WAVE": [
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1" },
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1" },
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1" },
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1" },
+        { "PATH": "Ent1e1Flip", "ALT_PATH": "Ent1e1Flip" }
+      ]
+    },
+    {
+      "WAVE": [
+        { "PATH": "Ent1e1Flip", "ALT_PATH": "Ent1e1Flip" },
+        {},
+        {},
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent2e1" },
+        { "PATH": "Ent1e1Flip", "ALT_PATH": "Ent2e1Flip" }
+      ]
+    },
+    {
+      "WAVE": [
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1" },
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1Flip" },
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1Flip" },
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1Flip" },
+        { "PATH": "Ent1e1", "ALT_PATH": "Ent1e1Flip" }
+      ]
+    }
+  ],
+  "ROGUE_PATTERN": [
+    {
+      "WAVE": [
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1" },
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1" },
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1" },
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1" },
+        { "PATH": "Rogue1e1Flip", "ALT_PATH": "Rogue1e1Flip" }
+      ]
+    },
+    {
+      "WAVE": [
+        { "PATH": "Rogue1e1Flip", "ALT_PATH": "Rogue1e1Flip" },
+        {},
+        {},
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue2e1" },
+        { "PATH": "Rogue1e1Flip", "ALT_PATH": "Rogue2e1Flip" }
+      ]
+    },
+    {
+      "WAVE": [
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1" },
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1Flip" },
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1Flip" },
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1Flip" },
+        { "PATH": "Rogue1e1", "ALT_PATH": "Rogue1e1Flip" }
+      ]
+    }
+  ]
+}

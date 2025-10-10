@@ -50,7 +50,11 @@
   ],
   "ForcedPrefabProjectReferences":[],
   "IncludedFiles":[
-    {"$GMIncludedFile":"","%Name":"atari.ttf","CopyToMask":-1,"filePath":"datafiles","name":"atari.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"atari.ttf","CopyToMask":-1,"filePath":"datafiles/Fonts","name":"atari.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"oTieFighter.json","CopyToMask":-1,"filePath":"datafiles/Pattern","name":"oTieFighter.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"formation_coordinates.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"formation_coordinates.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"oTieFighter.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"oTieFighter.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"wave_spawn.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"wave_spawn.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
   "LibraryEmitters":[
@@ -211,6 +215,7 @@
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},
     {"id":{"name":"newlevel","path":"scripts/newlevel/newlevel.yy",},},
     {"id":{"name":"object_get_depth","path":"scripts/object_get_depth/object_get_depth.yy",},},
+    {"id":{"name":"oEnemyBase_FNs","path":"scripts/oEnemyBase_FNs/oEnemyBase_FNs.yy",},},
     {"id":{"name":"rogueturn","path":"scripts/rogueturn/rogueturn.yy",},},
     {"id":{"name":"ship_functions","path":"scripts/ship_functions/ship_functions.yy",},},
     {"id":{"name":"shot1for2","path":"scripts/shot1for2/shot1for2.yy",},},

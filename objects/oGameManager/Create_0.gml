@@ -1,3 +1,5 @@
+// DEBUG MODE
+global.debug = true;
 
 // room name
 global.roomname = room_get_name(room);
@@ -58,6 +60,7 @@ global.init5 = "EE"; // Initials for fifth place;
 // Current wave or level of the game, initialized to 0.
 // Incremented as the player progresses through enemy waves or stages.
 global.wave = 0;
+global.spawnCounter = 0;
 
 /// @section Game State Flags
 // Open flag, initialized to 0.
@@ -235,6 +238,8 @@ scrolling_nebula_bg = layer_get_id("ScrollingNebula");
 
 attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.scale, "GameSprites", oAttractMode);
 
+spawn_data = load_enemy_waves("Patterns/wave_spawn.json");
+				
 // is the Game Paused?
 //global.isGamePaused = false;
 

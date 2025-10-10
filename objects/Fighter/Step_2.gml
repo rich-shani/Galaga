@@ -58,7 +58,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	    if irandom(10) = 0 and global.prohib = 0 and uprohib = 0 and oPlayer.shipStatus = _ShipState.ACTIVE and global.divecap > 0 and global.open = 0 and oPlayer.alarm[4] = -1{
 
-	    if instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack{}else{
+	    if instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack{}else{
 
 	        check = 0;
 
@@ -116,7 +116,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	    if loop = 1{
 
-	        if instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -48 - 32 - add or 
+	        if instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -48 - 32 - add or 
 						oPlayer.shipStatus == _ShipState.DEAD {
 
 	            if y < breathey{y = y + 3;

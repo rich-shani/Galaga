@@ -3,6 +3,8 @@ function Draw_Scores() {
 	draw_set_halign(fa_right);
 
 	draw_set_color(c_red);
+	draw_set_alpha(0.6);
+	
 	if (oGameManager.blink) { draw_text(80*global.scale, 10*global.scale, string_hash_to_newline("1UP")) };
 	draw_text(304*global.scale, 10*global.scale, string_hash_to_newline("HIGH SCORE"));
 
@@ -15,6 +17,7 @@ function Draw_Scores() {
 	draw_text(272*global.scale, 26*global.scale, string_hash_to_newline(global.disp))
 
 	draw_set_halign(fa_left);
+	draw_set_alpha(1);
 	
 	return;
 }
@@ -55,88 +58,88 @@ function Draw_Enter_Initials() {
 	
 	draw_set_color(c_red)
 
-	draw_text(64, 96, string_hash_to_newline("ENTER YOUR INITIALS "));
-	draw_sprite_ext(spr_exc, 0, 384, 96, 1, 1, 0, c_red, 1);
+	draw_text(64*global.scale, 96*global.scale, string_hash_to_newline("ENTER YOUR INITIALS "));
+	draw_sprite_ext(spr_exc, 0, 384*global.scale, 96*global.scale, 1, 1, 0, c_red, 1);
 
 	draw_set_color(c_aqua)
 
-	draw_text(96, 144, string_hash_to_newline("SCORE       NAME"));
+	draw_text(96*global.scale, 144*global.scale, string_hash_to_newline("SCORE       NAME"));
 
 	draw_set_halign(fa_right);
-	draw_text(176, 176, string_hash_to_newline(global.p1score));
+	draw_text(176*global.scale, 176*global.scale, string_hash_to_newline(global.p1score));
 	draw_set_halign(fa_left);
 
 	draw_set_color(c_red);
-	draw_text(192, 288, string_hash_to_newline("TOP 5"));
+	draw_text(192*global.scale, 288*global.scale, string_hash_to_newline("TOP 5"));
 
 	draw_set_color(c_aqua);
-	draw_text(160, 304 + 16, string_hash_to_newline("SCORE     NAME"));
+	draw_text(160*global.scale, (304 + 16)*global.scale, string_hash_to_newline("SCORE     NAME"));
 
 	if scored = 1 { draw_set_color(c_yellow) }
 	
-	draw_text(64, 304 + 32 + 16, string_hash_to_newline("1ST"));
+	draw_text(64*global.scale, (304 + 32 + 16)*global.scale, string_hash_to_newline("1ST"));
 	draw_set_halign(fa_right);
-	draw_text(240, 304 + 32 + 16, string_hash_to_newline(global.galaga1));
+	draw_text(240*global.scale, (304 + 32 + 16)*global.scale, string_hash_to_newline(global.galaga1));
 	draw_set_halign(fa_left);
-	draw_text(336, 304 + 32 + 16, string_hash_to_newline(global.init1));
+	draw_text(336*global.scale, (304 + 32 + 16)*global.scale, string_hash_to_newline(global.init1));
 	draw_set_color(c_aqua);
 	
-	if scored = 1 { draw_text(304, 176, string_hash_to_newline(global.init1)) }
+	if scored = 1 { draw_text(304*global.scale, 176*global.scale, string_hash_to_newline(global.init1)) }
 
 	if scored = 2 { draw_set_color(c_yellow) }
 	
-	draw_text(64, 304 + 32 + 32 + 16, string_hash_to_newline("2ND"));
+	draw_text(64*global.scale, (304 + 32 + 32 + 16)*global.scale, string_hash_to_newline("2ND"));
 	draw_set_halign(fa_right);
 	draw_text(
-	240, 304 + 32 + 32 + 16, string_hash_to_newline(global.galaga2));
+	240*global.scale, (304 + 32 + 32 + 16)*global.scale, string_hash_to_newline(global.galaga2));
 	draw_set_halign(fa_left);
 	draw_text(
-	336, 304 + 32 + 32 + 16, string_hash_to_newline(global.init2));
+	336*global.scale, (304 + 32 + 32 + 16)*global.scale, string_hash_to_newline(global.init2));
 	draw_set_color(c_aqua);
-	if scored = 2 { draw_text(304, 176, string_hash_to_newline(global.init2)) }
+	if scored = 2 { draw_text(304*global.scale, 176*global.scale, string_hash_to_newline(global.init2)) }
 
 	if scored = 3 { draw_set_color(c_yellow) }
-	draw_text(64, 304 + 32 + 32 + 32 + 16, string_hash_to_newline("3RD"));
+	draw_text(64*global.scale, (304 + 32 + 32 + 32 + 16)*global.scale, string_hash_to_newline("3RD"));
 	draw_set_halign(fa_right);
-	draw_text(240, 304 + 32 + 32 + 32 + 16,
+	draw_text(240*global.scale, (304 + 32 + 32 + 32 + 16)*global.scale,
 	string_hash_to_newline(global.galaga3));
 	draw_set_halign(fa_left);
 	draw_text(
-	336, 304 + 32 + 32 + 32 + 16, string_hash_to_newline(global.init3));
+	336*global.scale, (304 + 32 + 32 + 32 + 16)*global.scale, string_hash_to_newline(global.init3));
 	draw_set_color(c_aqua);
-	if scored = 3 { draw_text(304, 176, string_hash_to_newline(global.init3)) }
+	if scored = 3 { draw_text(304*global.scale, 176*global.scale, string_hash_to_newline(global.init3)) }
 
 	if scored = 4 { draw_set_color(c_yellow) }
-	draw_text(64, 304 + 32 + 32 + 32 + 32 + 16, string_hash_to_newline("4TH"));
+	draw_text(64*global.scale, (304 + 32 + 32 + 32 + 32 + 16)*global.scale, string_hash_to_newline("4TH"));
 	draw_set_halign(fa_right);
-	draw_text(240, 304 + 32 + 32 + 32 + 32 + 16,
+	draw_text(240*global.scale, (304 + 32 + 32 + 32 + 32 + 16)*global.scale,
 	string_hash_to_newline(global.galaga4));
 	draw_set_halign(fa_left);
-	draw_text(336, 304 + 32 + 32 + 32 + 32 + 16,
+	draw_text(336*global.scale, (304 + 32 + 32 + 32 + 32 + 16)*global.scale,
 	string_hash_to_newline(global.init4));
 	draw_set_color(c_aqua);
-	if scored = 4 { draw_text(304, 176, string_hash_to_newline(global.init4)) }
+	if scored = 4 { draw_text(304*global.scale, 176*global.scale, string_hash_to_newline(global.init4)) }
 
 	if scored = 5 { draw_set_color(c_yellow) }
-	draw_text(64, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+	draw_text(64*global.scale, (304 + 32 + 32 + 32 + 32 + 32 + 16)*global.scale,
 	string_hash_to_newline("5TH"));
 	draw_set_halign(fa_right);
-	draw_text(240, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+	draw_text(240*global.scale, (304 + 32 + 32 + 32 + 32 + 32 + 16)*global.scale,
 	string_hash_to_newline(global.galaga5));
 	draw_set_halign(fa_left);
-	draw_text(336, 304 + 32 + 32 + 32 + 32 + 32 + 16,
+	draw_text(336*global.scale, (304 + 32 + 32 + 32 + 32 + 32 + 16)*global.scale,
 	string_hash_to_newline(global.init5));
 	draw_set_color(c_aqua);
-	if scored = 5 { draw_text(304, 176, string_hash_to_newline(global.init5)) }
+	if scored = 5 { draw_text(304*global.scale, 176*global.scale, string_hash_to_newline(global.init5)) }
 
 	if global.results < 5 {
 		draw_set_color(c_aqua);
-		draw_text(304 + (16 * char), 176,
+		draw_text((304 + (16 * char))*global.scale, 176*global.scale,
 		string_hash_to_newline(string_char_at(cycle, cyc)));
 
 		if oGameManager.blink {
 			draw_set_color(c_yellow);
-			draw_text(304 + (16 * char), 176,
+			draw_text((304 + (16 * char))*global.scale, 176*global.scale,
 			string_hash_to_newline(string_char_at(cycle, cyc)))
 		}
 	}

@@ -47,7 +47,7 @@ if (global.transnum > 0) {
 		dive == 0 && irandom(5) == 0 && global.divecap > 0 && uprohib == 0 &&
 		global.prohib == 0 && global.transform == 0 &&
 		oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0 &&
-		instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) < 21 &&
+		instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) < 21 &&
 		global.open == 0 && oPlayer.alarm[4] == -1
 	) {
 		alarm[2] = 50;
@@ -158,7 +158,7 @@ if (dive == 1 && enter == 0) {
 		if (loop == 2) {
 			// End loop if too many enemies or player is dead/regaining
 			if (
-				instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack ||
+				instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack ||
 				(oPlayer.shipStatus == _ShipState.DEAD || oPlayer.regain == 1)
 			) {
 				if (xstart > 224 * global.scale && direction > 75 && direction < 80) {
@@ -216,27 +216,31 @@ if (global.challcount > 0) {
 
 						// Assign formation positions based on pattern and room
 
-						// Galaga Wars formation positions
-						if (numb == 1) { xstart = 400; ystart = 176 * global.scale; }
-						if (numb == 3) { xstart = 480; ystart = 176 * global.scale; }
-						if (numb == 5) { xstart = 400; ystart = 216 * global.scale; }
-						if (numb == 7) { xstart = 480; ystart = 216 * global.scale; }
-						if (numb == 25) { xstart = 560; ystart = 176 * global.scale; }
-						if (numb == 26) { xstart = 640; ystart = 176 * global.scale; }
-						if (numb == 27) { xstart = 560; ystart = 216 * global.scale; }
-						if (numb == 28) { xstart = 640; ystart = 216 * global.scale; }
-						if (numb == 29) { xstart = 240; ystart = 176 * global.scale; }
-						if (numb == 30) { xstart = 320; ystart = 176 * global.scale; }
-						if (numb == 31) { xstart = 240; ystart = 216 * global.scale; }
-						if (numb == 32) { xstart = 320; ystart = 216 * global.scale; }
-						if (numb == 33) { xstart = 80; ystart = 176 * global.scale; }
-						if (numb == 34) { xstart = 160; ystart = 176 * global.scale; }
-						if (numb == 35) { xstart = 80; ystart = 216 * global.scale; }
-						if (numb == 36) { xstart = 160; ystart = 216 * global.scale; }
-						if (numb == 37) { xstart = 720; ystart = 176 * global.scale; }
-						if (numb == 38) { xstart = 800; ystart = 176 * global.scale; }
-						if (numb == 39) { xstart = 720; ystart = 216 * global.scale; }
-						if (numb == 40) { xstart = 800; ystart = 216 * global.scale; }
+						// look-up formation position based on INDEX
+						xstart = formation.POSITION[INDEX]._x;
+						ystart = formation.POSITION[INDEX]._y;
+						
+						//// Galaga Wars formation positions
+						//if (numb == 1) { xstart = 400; ystart = 176 * global.scale; }
+						//if (numb == 3) { xstart = 480; ystart = 176 * global.scale; }
+						//if (numb == 5) { xstart = 400; ystart = 216 * global.scale; }
+						//if (numb == 7) { xstart = 480; ystart = 216 * global.scale; }
+						//if (numb == 25) { xstart = 560; ystart = 176 * global.scale; }
+						//if (numb == 26) { xstart = 640; ystart = 176 * global.scale; }
+						//if (numb == 27) { xstart = 560; ystart = 216 * global.scale; }
+						//if (numb == 28) { xstart = 640; ystart = 216 * global.scale; }
+						//if (numb == 29) { xstart = 240; ystart = 176 * global.scale; }
+						//if (numb == 30) { xstart = 320; ystart = 176 * global.scale; }
+						//if (numb == 31) { xstart = 240; ystart = 216 * global.scale; }
+						//if (numb == 32) { xstart = 320; ystart = 216 * global.scale; }
+						//if (numb == 33) { xstart = 80; ystart = 176 * global.scale; }
+						//if (numb == 34) { xstart = 160; ystart = 176 * global.scale; }
+						//if (numb == 35) { xstart = 80; ystart = 216 * global.scale; }
+						//if (numb == 36) { xstart = 160; ystart = 216 * global.scale; }
+						//if (numb == 37) { xstart = 720; ystart = 176 * global.scale; }
+						//if (numb == 38) { xstart = 800; ystart = 176 * global.scale; }
+						//if (numb == 39) { xstart = 720; ystart = 216 * global.scale; }
+						//if (numb == 40) { xstart = 800; ystart = 216 * global.scale; }
 
 						// Set speed for fast entry or normal
 						if (global.fastenter == 1) {

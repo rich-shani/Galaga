@@ -1,5 +1,4 @@
-// Inherit the parent event
-event_inherited();
+
 
 if rogue = 1 and (y > (592*global.scale) or x < -16*global.scale or x > 464*global.scale){instance_destroy()};
 
@@ -34,7 +33,7 @@ if global.transnum > 0{
 
 if dive = 0 and irandom(5) = 0 and global.divecap > 0 and uprohib = 0 and global.prohib = 0 and global.transform = 0 and oPlayer.shipStatus = _ShipState.ACTIVE and oPlayer.regain = 0 ///transforming
 
-and instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) < 21 and instance_number(Bee) = 0 and global.open = 0 and oPlayer.alarm[4] = -1{
+and instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) < 21 and instance_number(Bee) = 0 and global.open = 0 and oPlayer.alarm[4] = -1{
 
     alarm[2] = 50; global.transform = 1; sound_play(GTransform);
 
@@ -119,7 +118,7 @@ if dive = 1 and escort = 0 and enter = 0{ ///charger, no escort
 
     if loop = 5{
 
-        if instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -16  or (oPlayer.shipStatus == _ShipState.DEAD or oPlayer.regain = 1){
+        if instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -16  or (oPlayer.shipStatus == _ShipState.DEAD or oPlayer.regain = 1){
 
             speed = 0;
 
@@ -199,7 +198,7 @@ if dive = 1 and escort = 1 and enter = 0{ ///charger, escort
 
     if loop = 1{
 
-        if instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -16+add or (oPlayer.shipStatus == _ShipState.DEAD or oPlayer.regain = 1){
+        if instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack or y > -16+add or (oPlayer.shipStatus == _ShipState.DEAD or oPlayer.regain = 1){
 
             if y < breathey{
 
@@ -300,7 +299,7 @@ if dive = 1 and enter = 0{ ///charger
 
         if loop = 2{
 
-            if instance_number(Bee) + instance_number(oTieFighter) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack  or (oPlayer.shipStatus == _ShipState.DEAD or oPlayer.regain = 1){
+            if instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack  or (oPlayer.shipStatus == _ShipState.DEAD or oPlayer.regain = 1){
 
                 if (xstart > 224*global.scale and direction > 75 and direction < 80) {
 					path_end(); loop = 1;}

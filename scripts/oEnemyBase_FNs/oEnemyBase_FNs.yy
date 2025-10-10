@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"oEnemyBase_FNs",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"oEnemyBase_FNs",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

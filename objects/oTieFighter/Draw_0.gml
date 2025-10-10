@@ -1,18 +1,12 @@
-//// DRAW in FORMATION ....
-//if (dive == 0 and alarm[0] == -1) {
-//	var d = (direction)%360;
-//	// divide 0..360 by 15, ie 24 sprite images for the animation
-//	var i = round(d/15);
-	
-//	draw_sprite_ext(sTieFighter,i,x,y,1,1,0,c_white,1);
-//}
-//else { // DRAW as it moves on a PATH
 
-	//var d = (direction)%360;
-	// divide 0..360 by 15, ie 24 sprite images for the animation
-	var i = round(direction/15);
+// divide 0..360 by 15, ie 24 sprite images for the animation
+var i = round(direction/15);
 					
-	draw_sprite_ext(sTieFighter,i,x,y,1,1,0,c_white,1);
- //}
+draw_sprite_ext(sTieFighter,i,x,y,1,1,0,c_white,1);
 
-
+if (global.debug) {
+	// draw collision mask
+	draw_set_alpha(0.5);
+	draw_rectangle_colour(bbox_left,bbox_top,bbox_right,bbox_bottom,c_red,c_red,c_red,c_red,false);
+	draw_set_alpha(1);
+}
