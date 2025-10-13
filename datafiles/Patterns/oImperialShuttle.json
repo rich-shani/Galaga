@@ -1,5 +1,5 @@
 {
-  "ENEMY_NAME": "oTieFighter",
+  "ENEMY_NAME": "oImperialShuttle",
   "STANDARD": {
     "SPEED": 6,
     "HEALTH": 1,
@@ -9,13 +9,13 @@
     "BULLET_SPEED": 12,
     "BULLET_DAMAGE": 1,
     "DIVE_CHANCE": 0.1,
-    "DIVE_PATH1": "Bee1",
-    "DIVE_ALT_PATH1": "Bee1Flip",
-    "DIVE_PATH2": "Bee1Alt",
-    "DIVE_ALT_PATH2": "Bee1AltFlip",
+    "DIVE_PATH1": "Butterfly1",
+    "DIVE_ALT_PATH1": "Butterfly1Flip",
+    "DIVE_PATH2": "Butterfly2",
+    "DIVE_ALT_PATH2": "Butterfly2Flip",
     "DIVE_SPEED": 4,
     "DIVE_FIRE_RATE": 0.04,
-    "CAN_LOOP": true,
+    "CAN_LOOP": false,
     "LOOP_PATH": "BeeLoop",
     "LOOP_ALT_PATH": "BeeLoopFlip",
     "POINT_VALUE": 50

@@ -1,4 +1,21 @@
 /// @section Enemy Behavior Variables
+enum EnemyState {
+	ENTER_SCREEN,
+	MOVE_INTO_FORMATION,
+	IN_FORMATION,
+	IN_DIVE_ATTACK,
+	IN_LOOP_ATTACK
+}
+
+// spawn new enemy in the ENTER_SCREEN mode
+enemyState = EnemyState.ENTER_SCREEN;
+
+enum EnemyMode {
+	STANDARD,
+	ROGUE
+}
+
+enemyMode = EnemyMode.STANDARD;
 
 // Flag to prohibit upward movement, initialized to 0 (0 = allowed, 1 = prohibited).
 // Used to restrict enemy movement in specific scenarios.
@@ -32,21 +49,9 @@ spit = 0;
 // Purpose unclear; possibly a placeholder or used for specific enemy mechanics.
 add = 0;
 
-// Flag indicating the enemy is entering the screen, initialized to 1 (1 = entering, 0 = positioned).
-// Controls whether the enemy is in its initial entry phase.
-enter = 1;
-
-// Flag for primary dive behavior, initialized to 1 (1 = diving, 0 = not diving).
-// Indicates whether the enemy is performing a dive attack toward the player.
-dive = 1;
-
 // Flag indicating if the enemy is a rogue, initialized to 0 (0 = normal, 1 = rogue).
 // Rogue enemies may follow unique paths or behaviors compared to standard enemies.
 rogue = 0;
-
-// Flag for directing the enemy to a specific target or position, initialized to 0.
-// Used for navigation or homing behavior.
-goto = 0;
 
 // Timer variable, initialized to 0.
 // Used to control timing of enemy actions (e.g., shooting, diving).
@@ -68,4 +73,16 @@ targx = 0;
 // Complements targx for navigation or attack patterns.
 targy = 0;
 
-formation = load_formation_position("Patterns/formation_coordinates.json");
+formation = load_json_datafile("Patterns/formation_coordinates.json");
+attributes = load_json_datafile("Patterns/" + ENEMY_NAME + ".json");
+
+if (PATH_NAME != noone) {
+	var path_id = asset_get_index(PATH_NAME);
+	if (path_id != -1) path_start(path_id, 6*global.scale, 0, 0);
+}
+	
+/// @section Fast Entry Adjustment
+// If global.fastenter == 1, adjust timing variables for faster enemy entry.
+// fasty set to 50 steps to speed up entry animations.
+if (global.fastenter == 1) fasty = 50;
+	

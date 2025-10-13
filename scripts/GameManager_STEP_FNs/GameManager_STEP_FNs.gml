@@ -114,25 +114,31 @@ function checkDiveCapacity() {
     // Decrease dive capacity based on current state of enemy units
 
     with Bee {
-        if dive == 1 or alarm[2] > -1 {
+        if dive == 1  or alarm[2] > -1 {
             global.divecap -= 1; // Bees actively diving or about to dive
         }
     }
 
     with oTieFighter {
-        if dive == 1 or alarm[2] > -1 {
+        if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
             global.divecap -= 1; // Bees actively diving or about to dive
         }
     }
 
     with oImperialShuttle {
-        if dive == 1 or alarm[2] > -1 {
+        if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
+            global.divecap -= 1; // Bees actively diving or about to dive
+        }
+    }
+
+    with oTieIntercepter {
+        if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
             global.divecap -= 1; // Bees actively diving or about to dive
         }
     }
 	
     with Butterfly {
-        if dive == 1 or alarm[2] > -1 {
+        if dive == 1  or alarm[2] > -1 {
             global.divecap -= 1; // Butterflies actively diving or about to dive
         }
     }
@@ -251,7 +257,7 @@ function load_enemy_waves(_datafile) {
 	}	
 }
 
-function load_formation_position(_datafile) {
+function load_json_datafile(_datafile) {
 	var _data = "";
 
 	// Check if the file exists to avoid errors
@@ -284,7 +290,7 @@ function spawnEnemy() {
 	var enemy_id = asset_get_index(enemy_data.ENEMY);
 	if (enemy_id != -1) {
 		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
-															{ INDEX: enemy_data.INDEX, PATH: enemy_data.PATH });
+															{ ENEMY_NAME: enemy_data.ENEMY, INDEX: enemy_data.INDEX, PATH_NAME: enemy_data.PATH });
 	}
 	
 	// advance the enemy spawn counter

@@ -1,5 +1,0 @@
-enum ENEMY_MANAGER_STATE {
-	TEST
-}
-
-enemy_manager_state = ENEMY_MANAGER_STATE.TEST;

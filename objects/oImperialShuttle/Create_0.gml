@@ -29,9 +29,9 @@ if (oGameManager.rogueyes == 0) {
 	// use data/oTieFighter.json for pattern reference
 	// assign_enemy_path("Patterns/oTieFighter.json", global.pattern, global.wave, oGameManager.alt);
 
-	if (PATH != noone) {
+	if (PATH_NAME != noone) {
 		// NEW CODE
-		var path_id = asset_get_index(PATH);
+		var path_id = asset_get_index(PATH_NAME);
 		if (path_id != -1) path_start(path_id, 6*global.scale, 0, 0);
 		
 		// just use INDEX and we can remove numb ...

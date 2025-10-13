@@ -111,7 +111,7 @@ if dive = 1 and enter = 0{ ///charger
             ///else{
 
                 if (xstart > 224*global.scale) {
-					path_start(BeeLoop,spd*global.scale,0,false); loop = 2}
+					path_start(BeeLoopFlip,spd*global.scale,0,false); loop = 2}
 
                 else{path_start(BeeLoopFlip,spd*global.scale,0,false); loop = 2}
 

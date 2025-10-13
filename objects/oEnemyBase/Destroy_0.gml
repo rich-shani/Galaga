@@ -3,11 +3,11 @@
 
 if (!global.gameover) {
 
-	// Check if the Tie Fighter is within the visible play area or during challenge mode
+	// Check if the Enemy is within the visible play area or during challenge mode
 	if (y < 592 * global.scale && x > -16 && x < 464 * global.scale && (y > -16 * global.scale || global.challcount > 0)) {
 
 		// If the Tie Fighter is diving
-		if (dive == 1) {
+		if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 			oPlayer.alarm[4] = global.hold + irandom(global.hold);
 
 			// If not in transformation state
