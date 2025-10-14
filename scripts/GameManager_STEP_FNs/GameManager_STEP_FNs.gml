@@ -76,7 +76,7 @@ function Enter_Initials(){
 
 function nOfEnemies() {
 	// return the total number of active enemies (all enemies)
-	return instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) +
+	return instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(oTieIntercepter) +
 			instance_number(Butterfly) + instance_number(Boss) + instance_number(Fighter) + instance_number(Transform);
 }
 
@@ -95,6 +95,8 @@ function checkForExtraLives() {
 function readyForNextLevel() {	
 	//// If no enemies are present and all game conditions are met,
 	//// initiate transition to the next level.
+	if (alarm[10] != -1) return true;
+	
 	if nOfEnemies() == 0 &&
 	    nextlevel == 0 &&
 	    global.open == 0 &&
@@ -103,7 +105,11 @@ function readyForNextLevel() {
 			
 		nextlevel = 1;       // Flag to begin next level
 		alarm[10] = 90;      // Delay for level transition effects
+		
+		return true;
 	}
+	
+	return false;
 }
 
 function checkDiveCapacity() {
@@ -315,7 +321,11 @@ function Game_Loop(){
 	checkForExtraLives();
 	
 	//// === LEVEL TRANSITION CHECK ===
-	readyForNextLevel();
+	if (readyForNextLevel()) {
+		var tmp = 0;
+		
+		return;
+	}
 
     // === ENEMY DIVE CAPACITY HANDLING ===
 	checkDiveCapacity();

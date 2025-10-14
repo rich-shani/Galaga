@@ -104,6 +104,7 @@ if (enemyState == EnemyState.ENTER_SCREEN) {
 }
 else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
 	// Have we reached the formation position?
+	// enemy can come in from bottom or top of screen, so use ABS()
 	if (abs (y - breathey) < 6) {
 		x = breathex;
 		y = breathey;
@@ -266,4 +267,4 @@ else if (enemyState == EnemyState.IN_LOOP_ATTACK) {
 }
 
 // Execute rogue turn script (custom behavior)
-script_execute(rogueturn);
+// script_execute(rogueturn);

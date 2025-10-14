@@ -1,5 +1,5 @@
 // DEBUG MODE
-global.debug = true;
+global.debug = false;
 
 // room name
 global.roomname = room_get_name(room);
