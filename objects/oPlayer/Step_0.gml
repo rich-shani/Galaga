@@ -45,17 +45,17 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			// screem shake OFF
 			layer_set_visible("ScreenShake", false);	
 			
-			if (!global.gameover) {
+			if (!global.isGameOver) {
 				global.p1lives -= 1; // Decrease player lives
        
 				if (global.p1lives > 0) {
 				    shipStatus = _ShipState.RESPAWN;
 					
-					alarm[8] = 90; // Set respawn timer
+					alarm[1] = 90; // Set respawn timer
 				}
 				else {
 					// GAME OVER
-					global.gameover = true;
+					global.isGameOver = true;
 					// clean up as it's GAME OVER!
 					alarm[10] = 120;
 				}
@@ -66,7 +66,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 		case _ShipState.RELEASING: break;
 		case _ShipState.RESPAWN:
 			// if timer has expired, then RESPAWN
-			if (alarm[8] ==-1) {
+			if (alarm[1] ==-1) {
 				shipStatus = _ShipState.ACTIVE;
 				
 				x = 224*global.scale; // Reset position

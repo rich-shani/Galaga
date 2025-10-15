@@ -1,7 +1,7 @@
 /// @description Destroy event for oTieFighter
 /// Handles scoring, sound, and special effects when a Tie Fighter is destroyed.
 
-if (!global.gameover) {
+if (!global.isGameOver) {
 
 	// Check if the Enemy is within the visible play area or during challenge mode
 	if (y < 592 * global.scale && x > -16 && x < 464 * global.scale && (y > -16 * global.scale || global.challcount > 0)) {

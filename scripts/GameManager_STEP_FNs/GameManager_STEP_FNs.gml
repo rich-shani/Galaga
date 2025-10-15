@@ -102,9 +102,17 @@ function readyForNextLevel() {
 	    global.open == 0 &&
 	    oPlayer.shipStatus == _ShipState.ACTIVE &&
 		global.gameMode == GameMode.GAME_ACTIVE {
-			
-		nextlevel = 1;       // Flag to begin next level
-		alarm[10] = 90;      // Delay for level transition effects
+		
+		
+		// trigger oGameManager.alarm[10] with nextlevel == 1
+		// this is to skip the 'PLAYER 1' message above STAGE 1
+		nextlevel = 1; 
+		// trigger the initial level variables - ie Alarm[10] with nextlevl == 1
+		alarm[10] = 1; 
+		
+		// set state to STATE MESSAGE and trigger alarm[11]
+		global.gameMode = GameMode.GAME_STAGE_MESSAGE; 
+		alarm[11] = 90; 
 		
 		return true;
 	}
@@ -316,23 +324,16 @@ function patternComplete() {
 function Game_Loop(){
 	
 	if (global.isGamePaused) return;
+	if (readyForNextLevel()) return;
 	
 	// === EXTRA LIVES ===
 	checkForExtraLives();
 	
-	//// === LEVEL TRANSITION CHECK ===
-	if (readyForNextLevel()) {
-		var tmp = 0;
-		
-		return;
-	}
-
     // === ENEMY DIVE CAPACITY HANDLING ===
 	checkDiveCapacity();
 
     // === BREATHING ANIMATION MECHANIC ===
 	controlEnemyFormation();
-
 	
   // === PATTERN HANDLING ===
   if global.challcount > 0 {

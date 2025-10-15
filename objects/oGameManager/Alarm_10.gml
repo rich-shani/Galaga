@@ -28,7 +28,11 @@ if (nextlevel == 1) {
             
             /// Increment the global level counter (global.lvl) to advance to the next level or wave.
             global.lvl += 1;
-            
+       
+		    /// Reset global wave counter to 0 to start a new wave cycle.
+		    global.wave = 0;
+			global.spawnCounter = 0;
+	
 			/// set the game state to ACTIVE
 			//global.gameMode = GameMode.GAME_ACTIVE;
 			
@@ -116,17 +120,16 @@ if (nextlevel == 2) {
     count2 = 0;
     count = 0;
     
-    /// Reset shot counters (shotcount, global.shottotal) to 0, likely tracking shots fired or hit accuracy.
-    global.shotcount = 0;
-    global.shottotal = 0;
+    /// Set shot counters (shotcount, global.shottotal) to 0 if LEVEL 1
+    if (global.lvl == 1) {
+		global.shotcount = 0;
+		global.shottotal = 0;
+	}
     
     /// Reset rogue enemy flags (rogue1, rogue2) to 0, indicating no active rogue behaviors.
     rogue1 = 0;
     rogue2 = 0;
-    
-    /// Reset global wave counter to 0 to start a new wave cycle.
-    global.wave = 0;
-    
+ 
     /// Execute the waverogue script to initialize rogue enemy behavior or wave setup.
     script_execute(waverogue);
     
@@ -162,7 +165,6 @@ if (nextlevel == 2) {
 	/// If not in challenge mode (global.challcount == 0) and in the initial state (start == 0),
 	/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.
 	if (global.challcount == 0) alarm[2] = 70;
-
 
     /// @subsection Challenge Mode Path Adjustment
     /// If in challenge mode 4 (global.chall == 4), adjust enemy paths (path1, path1flip) if their starting X position is 256.

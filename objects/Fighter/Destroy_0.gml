@@ -1,4 +1,4 @@
-if !global.gameover {
+if !global.isGameOver {
 
 	if y < 576 and oPlayer.regain = 0{
 

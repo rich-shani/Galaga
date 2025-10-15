@@ -175,96 +175,92 @@ else if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 	if (y < 480 * global.scale) {
 		// do nothing ... execute DIVE PATH	
 	}
-	else if ((y > 480 * global.scale) && (attributes.STANDARD.CAN_LOOP)) {
-	
-		path_end();
+	else if ((y > 480 * global.scale)) {
+		
+		// check if we're the last two enemies left ...
+		if (nOfEnemies() < 3) {
 			
-		if (xstart > 224 * global.scale) {				
-			if (attributes.STANDARD.LOOP_PATH != noone) {
-				var path_id = asset_get_index(attributes.STANDARD.LOOP_PATH);
-				if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+			enemyState = EnemyState.IN_FINAL_ATTACK;	
+		}
+		else if (attributes.STANDARD.CAN_LOOP) {
+	
+			path_end();
+			
+			if (xstart > 224 * global.scale) {				
+				if (attributes.STANDARD.LOOP_PATH != noone) {
+					var path_id = asset_get_index(attributes.STANDARD.LOOP_PATH);
+					if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+				}
 			}
+			else {
+				if (attributes.STANDARD.LOOP_ALT_PATH != noone) {
+					var path_id = asset_get_index(attributes.STANDARD.LOOP_ALT_PATH);
+					if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+				}
+			}
+					
+			enemyState = EnemyState.IN_LOOP_ATTACK;				
+		}
+		else if (y < 592 * global.scale) {
+			// Adjust direction towards 270 (downwards)
+			if (direction < 270) {
+				direction += 1;
+			}
+			if (direction > 270) {
+				direction -= 1;
+			}		
 		}
 		else {
-			if (attributes.STANDARD.LOOP_ALT_PATH != noone) {
-				var path_id = asset_get_index(attributes.STANDARD.LOOP_ALT_PATH);
-				if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
-			}
-		}
-					
-		enemyState = EnemyState.IN_LOOP_ATTACK;				
-	}
-	else if (y < 592 * global.scale) {
-		// Adjust direction towards 270 (downwards)
-		if (direction < 270) {
-			direction += 1;
-		}
-		if (direction > 270) {
-			direction -= 1;
-		}		
-	}
-	else {
-		// reset to the top of screen and move into formation
-		path_end();
-		speed = 3 * global.scale;
+			// reset to the top of screen and move into formation
+			path_end();
+			speed = 3 * global.scale;
 		
-		x = breathex;
-		y = -16;
+			x = breathex;
+			y = -16;
 
-		enemyState = EnemyState.MOVE_INTO_FORMATION;
+			enemyState = EnemyState.MOVE_INTO_FORMATION;
+		}
 	}
 }
 else if (enemyState == EnemyState.IN_LOOP_ATTACK) {
-	// End loop if too many enemies or player is dead/regaining
-	//if (
-	//	instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack ||
-	//	(oPlayer.shipStatus == _ShipState.DEAD || oPlayer.regain == 1)
-	//) {
-	//if (oPlayer.shipStatus == _ShipState.DEAD) {
-
-	//	path_end();
-	//	enemyState = EnemyState.MOVE_INTO_FORMATION;
-	//}
 
 	// check if path has ended ... return to formation
 	if (path_position >= 1) {
-		//// cancel LOOP and return to FORMATION
-		//path_end();
+		// return to FORMATION
 		speed = 3 * global.scale;
-		
 
 		enemyState = EnemyState.MOVE_INTO_FORMATION;		
 	}
-	//else if (y > 592 * global.scale) {
-	//	path_end();
-	//	speed = 3 * global.scale;
-		
-	//	x = breathex;
-	//	y = -16;
-
-	//	enemyState = EnemyState.MOVE_INTO_FORMATION;
-	//}				
-	//else {
-
-	//	//if (global.fast == 1) { spd = 6; }
-	//	//sound_stop(GDive);
-	//	//sound_play(GDive);
-
-	//	//if (xstart > 224 * global.scale) {
-	//	//	if (attributes.STANDARD.DIVE_PATH2 != noone) {
-	//	//		var path_id = asset_get_index(attributes.STANDARD.DIVE_PATH2);
-	//	//		if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
-	//	//	}			
-	//	//} else {
-	//	//	if (attributes.STANDARD.DIVE_ALT_PATH2 != noone) {
-	//	//		var path_id = asset_get_index(attributes.STANDARD.DIVE_ALT_PATH2);
-	//	//		if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
-	//	//	}
-	//	//}
-				
-	//	//enemyState = EnemyState.IN_DIVE_ATTACK;
-	//}
 }
+else if (enemyState == EnemyState.IN_FINAL_ATTACK) {
+	if (y > 592 * global.scale) {
+		// reset to the top of screen and move into formation
+		path_end();
+		
+		// randomize the x location of where the enemy will drop in ...
+		x = irandom(global.screen_width);
+		y = -16;
+		
+		// spawn enemy bullets ...
+		alarm[1] = 90;
+		
+		// dive sound ...
+		sound_stop(GDive);
+		sound_play(GDive);
 
+		// Choose path based on starting position
+		if (x > 224 * global.scale) {
+			if (attributes.STANDARD.DIVE_PATH2 != noone) {
+				var path_id = asset_get_index(attributes.STANDARD.DIVE_PATH2);
+				if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+			}
+		} else {
+			if (attributes.STANDARD.DIVE_ALT_PATH2 != noone) {
+				var path_id = asset_get_index(attributes.STANDARD.DIVE_ALT_PATH2);
+				if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+			}				
+		}
+	}
+}
 // Execute rogue turn script (custom behavior)
 // script_execute(rogueturn);

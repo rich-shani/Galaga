@@ -400,7 +400,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
     
 	/// @section Dead State
 	// Handle ship death animation and respawn logic
-	if (!global.gameover) {
+	if (!global.isGameOver) {
 		if (shipStatus == ShipState.DEAD && alarm[0] ==-1) {
 		    global.p1lives -= 1; // Decrease player lives
 		
@@ -416,7 +416,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 		        }
 				else {
 					// GAME OVER
-					global.gameover = true; // Set game over state
+					global.isGameOver = true; // Set game over state
 					alarm[10] = 120; // Set game over timer
 				}
 		}
@@ -566,8 +566,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 	/// @section Game Over
 	// Trigger game over state
-	//if (shipStatus == ShipState.DEAD && caught == 0 && regain == 0 && global.p1lives == 1 && global.gameover == 0) {
-	//    global.gameover = 1; // Set game over state
+	//if (shipStatus == ShipState.DEAD && caught == 0 && regain == 0 && global.p1lives == 1 && global.isGameOver == 0) {
+	//    global.isGameOver = 1; // Set game over state
 	//    alarm[10] = 120; // Set game over timer
 	//}
     

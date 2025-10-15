@@ -35,6 +35,7 @@ function newlevel() {
 		///beamtime
 		if global.beamtime > 150{global.beamtime = global.beamtime - 50};
 	}
+	
 	///hold
 	global.hold -= 3; if global.hold < 1{global.hold = 1};
 	///starspeed

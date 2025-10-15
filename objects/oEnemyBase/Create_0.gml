@@ -4,7 +4,8 @@ enum EnemyState {
 	MOVE_INTO_FORMATION,
 	IN_FORMATION,
 	IN_DIVE_ATTACK,
-	IN_LOOP_ATTACK
+	IN_LOOP_ATTACK,
+	IN_FINAL_ATTACK
 }
 
 // spawn new enemy in the ENTER_SCREEN mode

@@ -1,4 +1,4 @@
-if !global.gameover {
+if !global.isGameOver {
 
 	if y < 592 and x > -16 and x < 464{
 

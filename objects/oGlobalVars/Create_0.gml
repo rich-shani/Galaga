@@ -78,7 +78,7 @@ global.gameMode = GameMode.INITIALIZE;
 /// @section Game Over
 // Flag indicating game over state (0 = game active, 1 = game over).
 // Set when the player's lives reach 0 and no regain is possible.
-global.gameover = false;
+global.isGameOver = false;
 
 // Initial position (off-screen to the right)
 global.screen_width = view_get_wport(view_current);

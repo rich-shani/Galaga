@@ -1,4 +1,4 @@
-if (global.gameover) {
+if (global.isGameOver) {
 
 	// clean up all enemies that are still alive ...
 	
@@ -19,7 +19,7 @@ if (global.gameover) {
 	}
 
 	// reset the game over flag
-	global.gameover = false;
+	global.isGameOver = false;
 
     //instance_destroy();
 }

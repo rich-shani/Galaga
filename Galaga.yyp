@@ -90,7 +90,6 @@
     {"id":{"name":"oGameCamera","path":"objects/oGameCamera/oGameCamera.yy",},},
     {"id":{"name":"oGameManager","path":"objects/oGameManager/oGameManager.yy",},},
     {"id":{"name":"oGlobalVars","path":"objects/oGlobalVars/oGlobalVars.yy",},},
-    {"id":{"name":"oHUD","path":"objects/oHUD/oHUD.yy",},},
     {"id":{"name":"oImperialShuttle","path":"objects/oImperialShuttle/oImperialShuttle.yy",},},
     {"id":{"name":"oLaserEmit","path":"objects/oLaserEmit/oLaserEmit.yy",},},
     {"id":{"name":"oMissile","path":"objects/oMissile/oMissile.yy",},},

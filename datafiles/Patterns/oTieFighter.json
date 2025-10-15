@@ -18,7 +18,8 @@
     "CAN_LOOP": true,
     "LOOP_PATH": "BeeLoop",
     "LOOP_ALT_PATH": "BeeLoopFlip",
-    "POINT_VALUE": 50
+    "POINT_VALUE": 50,
+    "DIVE_POINT_VALUE": 100
   },
   "ROGUE": {
     "SPEED": 6,
@@ -38,6 +39,7 @@
     "CAN_LOOP": true,
     "LOOP_PATH": "BeeLoop",
     "LOOP_ALT_PATH": "BeeLoopFlip",
-    "POINT_VALUE": 50
+    "POINT_VALUE": 50,
+    "DIVE_POINT_VALUE": 100
   }
 }

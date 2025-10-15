@@ -1,4 +1,4 @@
-if !global.gameover {
+if !global.isGameOver {
 
 	if (irandom(1)) {
 		instance_create(round(x), round(y), oExplosion);

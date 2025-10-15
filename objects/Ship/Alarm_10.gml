@@ -1,6 +1,6 @@
-//if global.gameover = 1{global.gameover = 2; alarm[10] = 150; exit};
+//if global.isGameOver = 1{global.isGameOver = 2; alarm[10] = 150; exit};
 
-if global.gameover {
+if global.isGameOver {
 
     with Bee{instance_destroy()}
 
@@ -18,7 +18,7 @@ if global.gameover {
     with oGameManager{global.gameMode = GameMode.SHOW_RESULTS; results = 1; alarm[9] = 450};
 
 	// reset the game over flag
-	global.gameover = false;
+	global.isGameOver = false;
 
     instance_destroy()
 
