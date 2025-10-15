@@ -218,7 +218,6 @@ blink = 1;
 // Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
 enum GameMode {
 	INITIALIZE = 0,
-	GAME_PAUSED,
     ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
     INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
 	GAME_PLAYER_MESSAGE,
@@ -227,7 +226,8 @@ enum GameMode {
 	GAME_READY,
     GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
 	SHOW_RESULTS,
-	ENTER_INITIALS
+	ENTER_INITIALS,
+	GAME_PAUSED
 }
 
 // grab a handle to the pause/unpause screen effect

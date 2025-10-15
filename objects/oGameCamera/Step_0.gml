@@ -1,6 +1,8 @@
 /// @description 
 // Restart
-if (keyboard_check_pressed(ord("R"))) room_restart();
+if (keyboard_check_pressed(ord("R"))) {
+	room_restart();
+}
 
 // FOV
 var _wheel = mouse_wheel_down() - mouse_wheel_up();

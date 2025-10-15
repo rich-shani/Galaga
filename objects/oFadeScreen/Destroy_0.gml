@@ -1,0 +1,1 @@
+var fadeDestroy = 0;
