@@ -6,6 +6,12 @@ function Draw_Hud(){
 		draw_set_font(fAtari24);	
 	}
 	else draw_set_font(fAtari12);
+	
+	// show CREDITS if we're not in an active game
+	if (global.gameMode > GameMode.ATTRACT_MODE) {
+		// draw the scores (top of screen)
+		Draw_Scores();		
+	}
 
 	if (global.isGameOver)
 	{
@@ -14,12 +20,6 @@ function Draw_Hud(){
 		draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("GAME OVER"));
 		
 		return;
-	}
-		
-	// show CREDITS if we're not in an active game
-	if (global.gameMode > GameMode.ATTRACT_MODE) {
-		// draw the scores (top of screen)
-		Draw_Scores();		
 	}
 	
 	if (global.gameMode < GameMode.GAME_STAGE_MESSAGE) {
