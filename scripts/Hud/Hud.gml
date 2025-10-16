@@ -7,9 +7,6 @@ function Draw_Hud(){
 	}
 	else draw_set_font(fAtari12);
 
-	// draw the scores (top of screen)
-	Draw_Scores();
-		
 	if (global.isGameOver)
 	{
 		//draw_set_color(c_aqua);
@@ -20,6 +17,11 @@ function Draw_Hud(){
 	}
 		
 	// show CREDITS if we're not in an active game
+	if (global.gameMode > GameMode.ATTRACT_MODE) {
+		// draw the scores (top of screen)
+		Draw_Scores();		
+	}
+	
 	if (global.gameMode < GameMode.GAME_STAGE_MESSAGE) {
 		Draw_Credits();
 	}

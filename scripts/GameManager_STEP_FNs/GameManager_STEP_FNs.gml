@@ -1044,8 +1044,8 @@ function Show_Instructions() {
 		// 'use' credit to enter game mode
 		global.credits--;
 		
-		if (audio_is_playing(Galaga_Theme_Remix)) {
-			audio_stop_sound(Galaga_Theme_Remix);
+		if (audio_is_playing(Galaga_Theme_Remix_Short)) {
+			audio_stop_sound(Galaga_Theme_Remix_Short);
 		}
 		
         // === INITIALIZE GAME STATE ===

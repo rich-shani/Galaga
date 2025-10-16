@@ -9,7 +9,8 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 		if sequence > 0 {
 			draw_set_color(c_aqua);
 			if (global.roomname == "GalagaWars") {
-				draw_text(130*global.scale, 80*global.scale, string_hash_to_newline("GALAGA WARS"));
+		//		draw_text(130*global.scale, 80*global.scale, string_hash_to_newline("GALAGA WARS"));
+				draw_sprite_ext(galagawars_logo, -1, 224*global.scale, 5*global.scale,0.5,0.5,0,c_white,1);
 			}
 			else {
 				draw_text(170*global.scale, 80*global.scale, string_hash_to_newline("GALAGA"));					
@@ -240,10 +241,13 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 		} // sequence 5 to 20
 	} // sequence < 21
 	else if (sequence > 20) {	// DRAW HIGH SCORE TABLE ...
-
+		if (global.roomname == "GalagaWars") {
+			draw_sprite_ext(galagawars_logo, -1, 224*global.scale, 5*global.scale,0.5,0.5,0,c_white,1);
+		}
+			
 		draw_set_halign(fa_left);
 		draw_set_color(c_blue);
-		draw_text(64*global.scale, 112*global.scale, string_hash_to_newline("THE GALACTIC HEROES"))
+		draw_text(64*global.scale, 140*global.scale, string_hash_to_newline("THE GALACTIC HEROES"))
 
 		draw_set_color(c_red);
 		draw_text(122*global.scale, 224*global.scale, string_hash_to_newline("-- BEST 5 --"));

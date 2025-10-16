@@ -9,5 +9,5 @@ if (global.gameMode == GameMode.INITIALIZE) {
 	
 	global.gameMode = GameMode.ATTRACT_MODE;
 	
-	audio_play_sound(Galaga_Theme_Remix,1,false);
+	audio_play_sound(Galaga_Theme_Remix_Short,1,false);
 }

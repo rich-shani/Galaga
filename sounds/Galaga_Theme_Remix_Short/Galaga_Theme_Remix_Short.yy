@@ -1,0 +1,25 @@
+{
+  "$GMSound":"",
+  "%Name":"Galaga_Theme_Remix_Short",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "bitRate":128,
+  "compression":0,
+  "conversionMode":0,
+  "duration":110.22292,
+  "name":"Galaga_Theme_Remix_Short",
+  "parent":{
+    "name":"Sounds",
+    "path":"folders/Sounds.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"Galaga_Theme_Remix_Short.wav",
+  "type":0,
+  "volume":1.0,
+}

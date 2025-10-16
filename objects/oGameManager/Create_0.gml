@@ -258,3 +258,7 @@ if (!global.scalePath) {
 	// we have scaled the path
 	global.scalePath = true;
 }
+
+// pre-fetch sprite sheets (to avoid game glitches)
+var _sprites_to_load = [sTieFighter, sTieIntercepter, sImperialShuttle, xwing_sprite_sheet, galagawars_logo];
+sprite_prefetch_multi(_sprites_to_load);
