@@ -9,7 +9,7 @@ if (window_get_fullscreen()) {
 		inst.viewport_shift_y = -0.8;
 	}
 
-	draw_sprite_stretched(galaga, 0, 0, 0, window_get_width(), window_get_height());
+	draw_sprite_stretched(galagawars_decal, 0, 0, 0, window_get_width(), window_get_height());
 }
 else {
 	if (inst != noone) {

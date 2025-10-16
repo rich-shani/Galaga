@@ -1,7 +1,7 @@
 /// @description 
 // Restart
 if (keyboard_check_pressed(ord("R"))) {
-	room_restart();
+	game_restart();
 }
 
 // FOV

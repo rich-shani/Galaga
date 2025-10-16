@@ -7,4 +7,4 @@ _h = 1152; //view_get_hport(view_current);
 splashScreenSetup = false;
 
 // default splash screen
-sprite_splash_screen = load0;
+sprite_splash_screen = Splash0;

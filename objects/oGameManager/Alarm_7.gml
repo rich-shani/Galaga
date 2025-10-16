@@ -22,7 +22,8 @@ if loop == 0 {
 else {
 	loop += 1; // Increment loop counter
 	if loop == 4 {
-		room_restart(); // Restart the room on the 4th loop
+	//	room_restart(); // Restart the room on the 4th loop
+		game_restart();
 	} 
 	else {
 		alarm[7] = 633; // Otherwise, set alarm[7] again
