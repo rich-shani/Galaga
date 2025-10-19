@@ -1,0 +1,23 @@
+{
+  "$GMPath":"",
+  "%Name":"Ent_Top_L2R",
+  "closed":false,
+  "kind":1,
+  "name":"Ent_Top_L2R",
+  "parent":{
+    "name":"Entrance",
+    "path":"folders/Paths/GalagaWars/Entrance.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-20.0,"y":-32.0,},
+    {"speed":100.0,"x":-20.0,"y":64.0,},
+    {"speed":100.0,"x":348.0,"y":466.0,},
+    {"speed":100.0,"x":480.0,"y":606.0,},
+    {"speed":100.0,"x":356.0,"y":840.0,},
+    {"speed":100.0,"x":92.0,"y":720.0,},
+    {"speed":100.0,"x":-20.0,"y":580.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

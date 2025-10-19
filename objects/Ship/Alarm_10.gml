@@ -5,6 +5,7 @@ if global.isGameOver {
     with Bee{instance_destroy()}
 
 	with oTieFighter { instance_destroy(); }
+	with oTieIntercepter { instance_destroy(); }
 	with oImperialShuttle { instance_destroy(); }	
 	
     with Butterfly{instance_destroy()}

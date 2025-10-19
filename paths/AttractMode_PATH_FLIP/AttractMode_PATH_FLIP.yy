@@ -1,0 +1,21 @@
+{
+  "$GMPath":"",
+  "%Name":"AttractMode_PATH_FLIP",
+  "closed":false,
+  "kind":1,
+  "name":"AttractMode_PATH_FLIP",
+  "parent":{
+    "name":"AttractMode",
+    "path":"folders/Paths/GalagaWars/AttractMode.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":512.0,"y":320.0,},
+    {"speed":100.0,"x":512.0,"y":256.0,},
+    {"speed":100.0,"x":448.0,"y":256.0,},
+    {"speed":100.0,"x":448.0,"y":320.0,},
+    {"speed":100.0,"x":544.0,"y":800.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

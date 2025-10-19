@@ -1,43 +1,43 @@
 {
   "ENEMY_NAME": "oTieIntercepter",
+  "HEALTH": 2,
+
+  "CAN_LOOP": false,
+
+  "POINT_VALUE": 150,
+  "DIVE_POINT_VALUE": 400,
+  "CHALLENGE_POINT_VALUE": 100,
+
   "STANDARD": {
     "SPEED": 6,
-    "HEALTH": 1,
-    "COLLISION_DAMAGE": 1,
     "FIRE_RATE": 0.02,
+
     "BULLET_TYPE": "EnemyShot",
     "BULLET_SPEED": 12,
     "BULLET_DAMAGE": 1,
+
     "DIVE_CHANCE": 0.1,
-    "DIVE_PATH1": "Boss1",
-    "DIVE_ALT_PATH1": "Boss1Flip",
-    "DIVE_PATH2": "Boss2",
-    "DIVE_ALT_PATH2": "Boss2Flip",
+    "DIVE_PATH1": "TI_PATH1",
+    "DIVE_ALT_PATH1": "TI_PATH1_FLIP",
+    "DIVE_PATH2": "TI_PATH2",
+    "DIVE_ALT_PATH2": "TI_PATH2_FLIP",
     "DIVE_SPEED": 4,
-    "DIVE_FIRE_RATE": 0.04,
-    "CAN_LOOP": false,
-    "LOOP_PATH": "BeeLoop",
-    "LOOP_ALT_PATH": "BeeLoopFlip",
-    "POINT_VALUE": 50
+    "DIVE_FIRE_RATE": 0.04
   },
   "ROGUE": {
     "SPEED": 6,
-    "HEALTH": 1,
-    "COLLISION_DAMAGE": 1,
     "FIRE_RATE": 0.02,
+
     "BULLET_TYPE": "EnemyShot",
     "BULLET_SPEED": 12,
     "BULLET_DAMAGE": 1,
+
     "DIVE_CHANCE": 0.1,
-    "DIVE_PATH1": "Bee1",
-    "DIVE_ALT_PATH1": "Bee1Flip",
-    "DIVE_PATH2": "Bee1",
-    "DIVE_ALT_PATH2": "Bee1Flip",
+    "DIVE_PATH1": "TI_PATH1",
+    "DIVE_ALT_PATH1": "TI_PATH1_FLIP",
+    "DIVE_PATH2": "TI_PATH2",
+    "DIVE_ALT_PATH2": "TI_PATH2_FLIP",
     "DIVE_SPEED": 4,
-    "DIVE_FIRE_RATE": 0.04,
-    "CAN_LOOP": true,
-    "LOOP_PATH": "BeeLoop",
-    "LOOP_ALT_PATH": "BeeLoopFlip",
-    "POINT_VALUE": 50
+    "DIVE_FIRE_RATE": 0.04
   }
 }

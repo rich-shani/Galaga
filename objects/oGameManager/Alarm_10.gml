@@ -25,17 +25,14 @@ if (nextlevel == 1) {
             
             /// Reset global.results flag to 0, likely to clear any previous level-end global.results display.
             global.results = 0;
-            
+			
             /// Increment the global level counter (global.lvl) to advance to the next level or wave.
             global.lvl += 1;
-       
+					
 		    /// Reset global wave counter to 0 to start a new wave cycle.
 		    global.wave = 0;
 			global.spawnCounter = 0;
-	
-			/// set the game state to ACTIVE
-			//global.gameMode = GameMode.GAME_ACTIVE;
-			
+		
             /// Execute the newlevel script to set up the new level (e.g., spawn enemies, reset timers).
             script_execute(newlevel);
 
@@ -125,7 +122,9 @@ if (nextlevel == 2) {
 		global.shotcount = 0;
 		global.shottotal = 0;
 	}
-    
+           
+	Set_Nebula_Color();
+			
     /// Reset rogue enemy flags (rogue1, rogue2) to 0, indicating no active rogue behaviors.
     rogue1 = 0;
     rogue2 = 0;

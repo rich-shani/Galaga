@@ -1,0 +1,24 @@
+{
+  "$GMPath":"",
+  "%Name":"IS_PATH2",
+  "closed":false,
+  "kind":1,
+  "name":"IS_PATH2",
+  "parent":{
+    "name":"ImperialShuttle",
+    "path":"folders/Paths/GalagaWars/ImperialShuttle.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":480.0,"y":64.0,},
+    {"speed":100.0,"x":544.0,"y":320.0,},
+    {"speed":100.0,"x":512.0,"y":384.0,},
+    {"speed":100.0,"x":160.0,"y":512.0,},
+    {"speed":100.0,"x":96.0,"y":544.0,},
+    {"speed":100.0,"x":96.0,"y":640.0,},
+    {"speed":100.0,"x":1098.0,"y":898.0,},
+    {"speed":100.0,"x":472.0,"y":1440.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

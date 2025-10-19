@@ -54,14 +54,14 @@ if (global.gameMode == GameMode.ATTRACT_MODE) {
 	if (sequence == 8 or sequence == 11) {
 		x=0; y=0; 
 		
-		path_start(Attract,3*global.scale,0,0);
+		path_start(AttractMode_PATH,3*global.scale,0,0);
 	}
 
 	if (sequence == 14) {
 		path_end(); 
 		x=0; y=0;
 		
-		path_start(AttractFlip,3*global.scale,0,0);
+		path_start(AttractMode_PATH_FLIP,3*global.scale,0,0);
 	}
 
 	if (sequence == 16) {

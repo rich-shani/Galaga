@@ -1,0 +1,27 @@
+{
+  "$GMPath":"",
+  "%Name":"IS_PATH1_FLIP",
+  "closed":false,
+  "kind":1,
+  "name":"IS_PATH1_FLIP",
+  "parent":{
+    "name":"ImperialShuttle",
+    "path":"folders/Paths/GalagaWars/ImperialShuttle.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":268.0,"y":320.0,},
+    {"speed":100.0,"x":268.0,"y":256.0,},
+    {"speed":100.0,"x":204.0,"y":256.0,},
+    {"speed":100.0,"x":204.0,"y":320.0,},
+    {"speed":100.0,"x":236.0,"y":384.0,},
+    {"speed":100.0,"x":588.0,"y":512.0,},
+    {"speed":100.0,"x":652.0,"y":544.0,},
+    {"speed":100.0,"x":652.0,"y":640.0,},
+    {"speed":100.0,"x":96.0,"y":872.0,},
+    {"speed":100.0,"x":484.0,"y":1040.0,},
+    {"speed":100.0,"x":128.0,"y":1440.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

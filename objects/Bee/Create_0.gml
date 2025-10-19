@@ -29,15 +29,15 @@ if oGameManager.rogueyes = 0{
 
 if global.pattern = 0{
 
-    if global.wave < 4{path_start(Ent1e1,6*global.scale,0,0)} else{path_start(Ent1e1Flip,6*global.scale,0,0)}};
+    if global.wave < 4{path_start(Ent1e1,6*global.scale,0,0)} else{path_start(Ent1e1Flip_ORIG,6*global.scale,0,0)}};
 
 if global.pattern = 1{
 
-    if global.wave = 0{path_start(Ent1e1Flip,6*global.scale,0,0)}; 
+    if global.wave = 0{path_start(Ent1e1Flip_ORIG,6*global.scale,0,0)}; 
 
     if global.wave = 3{if oGameManager.alt = 0{path_start(Ent1e1,6*global.scale,0,0)} else{path_start(Ent2e1,6*global.scale,0,0)}}
 
-    if global.wave = 4{if oGameManager.alt = 0{path_start(Ent1e1Flip,6*global.scale,0,0)} else{path_start(Ent2e1Flip,6*global.scale,0,0)}}
+    if global.wave = 4{if oGameManager.alt = 0{path_start(Ent1e1Flip_ORIG,6*global.scale,0,0)} else{path_start(Ent2e1Flip,6*global.scale,0,0)}}
 
 }
 
@@ -45,7 +45,7 @@ if global.pattern = 2{
 
     if global.wave = 0{path_start(Ent1e1,6*global.scale,0,0)} else{
 
-    if oGameManager.alt = 0{path_start(Ent1e1,6*global.scale,0,0)}else{path_start(Ent1e1Flip,6*global.scale,0,0)}}
+    if oGameManager.alt = 0{path_start(Ent1e1,6*global.scale,0,0)}else{path_start(Ent1e1Flip_ORIG,6*global.scale,0,0)}}
 
 }
 

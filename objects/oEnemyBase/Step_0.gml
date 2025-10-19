@@ -44,8 +44,8 @@ if (instance_number(EnemyShot) < 8) {
 breathex = xstart + ((global.breathe / 120) * (48 * ((xstart - 448) / 368))) + floor(oGameManager.x);
 breathey = ystart + ((global.breathe / 120) * (48 * ((ystart - 128) / 288)));
 
-// Set speed based on global.fast and dive2 state
-if (global.fast == 1 && dive2 == 1) {
+// Set speed based on global.fast
+if (global.fast == 1) {
 	spd = 6;
 } else {
 	spd = 3;
@@ -63,10 +63,10 @@ if (global.fastenter == 1 && global.open == 1) {
 // Transformation logic (enemy transforms into another type)
 if (global.transnum > 0) {
 	if (
-		enemyState == EnemyState.IN_FORMATION && irandom(5) == 0 && global.divecap > 0 && uprohib == 0 &&
+		enemyState == EnemyState.IN_FORMATION && irandom(5) == 0 && global.divecap > 0 &&
 		global.prohib == 0 && global.transform == 0 &&
 		oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0 &&
-		instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) < 21 &&
+		instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) < 21 &&
 		global.open == 0 && oPlayer.alarm[4] == -1
 	) {
 		alarm[2] = 50;
@@ -80,11 +80,11 @@ if (global.transnum > 0) {
 if (enemyState == EnemyState.ENTER_SCREEN) {
 
 	// Check if reached end of path
-	if (y < (272 - 16) * global.scale) {
-		if (rogue == 0) { 
+	//if (y < (272 - 16) * global.scale) {
+	//	if (rogue == 0) { 
 
-			if (direction < 180) {
-				path_end();
+		// check if path has ended ... move to formation
+		if (path_position >= 1) {
 
 				// look-up formation position based on INDEX
 				xstart = formation.POSITION[INDEX]._x;
@@ -99,8 +99,8 @@ if (enemyState == EnemyState.ENTER_SCREEN) {
 
 				enemyState = EnemyState.MOVE_INTO_FORMATION;
 			}
-		}
-	}
+		//}
+	//}
 }
 else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
 	// Have we reached the formation position?
@@ -140,7 +140,7 @@ else if (enemyState == EnemyState.IN_FORMATION) {
 	// Random chance to start a dive attack
 	if (global.divecap > 0 and global.open == 0 and oPlayer.alarm[4] == -1) {
 		if (
-			irandom(10) == 0 && global.prohib == 0 && uprohib == 0 &&
+			irandom(10) == 0 && global.prohib == 0 &&
 			alarm[2] == -1 && oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0
 		) {
 			global.prohib = 1;
@@ -182,19 +182,19 @@ else if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 			
 			enemyState = EnemyState.IN_FINAL_ATTACK;	
 		}
-		else if (attributes.STANDARD.CAN_LOOP) {
+		else if (attributes.CAN_LOOP) {
 	
 			path_end();
 			
 			if (xstart > 224 * global.scale) {				
-				if (attributes.STANDARD.LOOP_PATH != noone) {
-					var path_id = asset_get_index(attributes.STANDARD.LOOP_PATH);
+				if (attributes.LOOP_PATH != noone) {
+					var path_id = asset_get_index(attributes.LOOP_PATH);
 					if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
 				}
 			}
 			else {
-				if (attributes.STANDARD.LOOP_ALT_PATH != noone) {
-					var path_id = asset_get_index(attributes.STANDARD.LOOP_ALT_PATH);
+				if (attributes.LOOP_ALT_PATH != noone) {
+					var path_id = asset_get_index(attributes.LOOP_ALT_PATH);
 					if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
 				}
 			}

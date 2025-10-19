@@ -1,0 +1,24 @@
+{
+  "$GMPath":"",
+  "%Name":"TF_PATH2",
+  "closed":false,
+  "kind":1,
+  "name":"TF_PATH2",
+  "parent":{
+    "name":"TieFighter",
+    "path":"folders/Paths/GalagaWars/TieFighter.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":512.0,"y":0.0,},
+    {"speed":100.0,"x":544.0,"y":256.0,},
+    {"speed":100.0,"x":544.0,"y":320.0,},
+    {"speed":100.0,"x":512.0,"y":384.0,},
+    {"speed":100.0,"x":160.0,"y":448.0,},
+    {"speed":100.0,"x":96.0,"y":544.0,},
+    {"speed":100.0,"x":96.0,"y":640.0,},
+    {"speed":100.0,"x":96.0,"y":1280.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

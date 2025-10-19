@@ -1,0 +1,21 @@
+{
+  "$GMPath":"",
+  "%Name":"AttractMode_PATH",
+  "closed":false,
+  "kind":1,
+  "name":"AttractMode_PATH",
+  "parent":{
+    "name":"AttractMode",
+    "path":"folders/Paths/GalagaWars/AttractMode.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":480.0,"y":320.0,},
+    {"speed":100.0,"x":480.0,"y":256.0,},
+    {"speed":100.0,"x":544.0,"y":256.0,},
+    {"speed":100.0,"x":544.0,"y":320.0,},
+    {"speed":100.0,"x":448.0,"y":800.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

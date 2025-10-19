@@ -10,10 +10,6 @@ if (global.roomname == "GalagaWars") {
 	global.scale = 2;
 }
 
-// global variable to determine if we have applied the path scaler already
-// ie on a game restart, we don't want to re-scale again all the path data
-global.scalePath = false;
-
 /// @section High Scores
 // Global variables to store the top 5 high scores, initialized to 0.
 // These are likely used to track and display the highest scores achieved by players.
@@ -230,11 +226,14 @@ enum GameMode {
 	GAME_PAUSED
 }
 
+global.isChallengeStage = false;
+global.nLvls2ChallengeStage = 2;
+
 // grab a handle to the pause/unpause screen effect
 // set the FX filter to a random color
 layer_pause_fx = layer_get_fx("PauseEffect");
 scrolling_nebula_bg = layer_get_id("ScrollingNebula");
-//layer_set_visible(scrolling_nebula_bg, true);
+hue_value = [0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 0.8, 0.97];
 
 attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.scale, "GameSprites", oAttractMode);
 
@@ -245,19 +244,6 @@ spawn_data = load_enemy_waves("Patterns/wave_spawn.json");
 
 //window_set_fullscreen(false);
 fullScreen = window_get_fullscreen();
-
-// do we need to scale the path data (once ONLY)
-if (!global.scalePath) {
-	// for each path, rescale using the global.scale factor
-	var _pathIds = asset_get_ids(asset_path);
-
-	// Loop through the array and scale each path
-	for (var i = 0; i < array_length(_pathIds); i++) {
-	    path_rescale(_pathIds[i], global.scale, global.scale);
-	}
-	// we have scaled the path
-	global.scalePath = true;
-}
 
 // pre-fetch sprite sheets (to avoid game glitches)
 var _sprites_to_load = [sTieFighter, sTieIntercepter, sImperialShuttle, xwing_sprite_sheet, galagawars_logo];

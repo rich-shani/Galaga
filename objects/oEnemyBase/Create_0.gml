@@ -18,21 +18,9 @@ enum EnemyMode {
 
 enemyMode = EnemyMode.STANDARD;
 
-// Flag to prohibit upward movement, initialized to 0 (0 = allowed, 1 = prohibited).
-// Used to restrict enemy movement in specific scenarios.
-uprohib = 0;
-
 // Flag indicating if the enemy is an escort, initialized to 0 (0 = not escort, 1 = escort).
 // Escorts may have special behaviors, such as accompanying a boss or following unique paths.
 escort = 0;
-
-// Direction of the enemy in degrees, initialized to 0.
-// Used for movement or orientation, possibly updated during path following or diving.
-dir = 0;
-
-// Flag for a second dive behavior, initialized to 0 (0 = inactive, 1 = active).
-// Used for specific enemy attack patterns, such as a secondary dive toward the player.
-dive2 = 0;
 
 // Speed of the enemy, set to 3 pixels per step.
 // Controls the movement speed along paths or during free movement.
@@ -42,21 +30,9 @@ spd = 3;
 // Used for enemies that change form or behavior (e.g., Butterfly transforming).
 trans = 0;
 
-// Flag for shooting or "spitting" behavior, initialized to 0 (0 = not shooting, 1 = shooting).
-// Indicates whether the enemy fires projectiles at the player.
-spit = 0;
-
-// Additional flag, initialized to 0.
-// Purpose unclear; possibly a placeholder or used for specific enemy mechanics.
-add = 0;
-
 // Flag indicating if the enemy is a rogue, initialized to 0 (0 = normal, 1 = rogue).
 // Rogue enemies may follow unique paths or behaviors compared to standard enemies.
 rogue = 0;
-
-// Timer variable, initialized to 0.
-// Used to control timing of enemy actions (e.g., shooting, diving).
-tim = 0;
 
 // X-coordinate offset for a breathing animation, initialized to 0.
 // Used for visual effects, such as pulsating or moving enemies (e.g., boss-related).

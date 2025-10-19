@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"Chall31_1",
+  "closed":false,
+  "kind":1,
+  "name":"Chall31_1",
+  "parent":{
+    "name":"ChallengeStage",
+    "path":"folders/Paths/GalagaWars/ChallengeStage.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":192.0,"y":-32.0,},
+    {"speed":100.0,"x":192.0,"y":128.0,},
+    {"speed":100.0,"x":192.0,"y":272.0,},
+    {"speed":100.0,"x":368.0,"y":416.0,},
+    {"speed":1.0,"x":370.0,"y":418.0,},
+    {"speed":100.0,"x":372.0,"y":416.0,},
+    {"speed":100.0,"x":184.0,"y":272.0,},
+    {"speed":100.0,"x":184.0,"y":128.0,},
+    {"speed":100.0,"x":184.0,"y":-32.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

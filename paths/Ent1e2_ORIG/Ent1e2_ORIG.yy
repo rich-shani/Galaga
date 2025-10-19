@@ -1,0 +1,26 @@
+{
+  "$GMPath":"",
+  "%Name":"Ent1e2_ORIG",
+  "closed":false,
+  "kind":1,
+  "name":"Ent1e2_ORIG",
+  "parent":{
+    "name":"original",
+    "path":"folders/Paths/original.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-16.0,"y":496.0,},
+    {"speed":100.0,"x":16.0,"y":496.0,},
+    {"speed":100.0,"x":112.0,"y":480.0,},
+    {"speed":100.0,"x":192.0,"y":400.0,},
+    {"speed":100.0,"x":192.0,"y":256.0,},
+    {"speed":100.0,"x":96.0,"y":256.0,},
+    {"speed":100.0,"x":96.0,"y":352.0,},
+    {"speed":100.0,"x":192.0,"y":352.0,},
+    {"speed":100.0,"x":192.0,"y":224.0,},
+    {"speed":100.0,"x":192.0,"y":230.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

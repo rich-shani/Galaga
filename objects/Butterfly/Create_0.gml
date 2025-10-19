@@ -80,7 +80,7 @@ if (oGameManager.rogueyes == 0) {
     /// Standard enemy paths for pattern 0, typically a specific formation or entry sequence.
     if (global.pattern == 0) {
         // Wave 0: Start the enemy on the Ent1e1Flip path (flipped entry path 1).
-        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
+        if (global.wave == 0) { path_start(Ent1e1Flip_ORIG, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Ent1e2 path (second entry path).
         if (global.wave == 1) { path_start(Ent1e2, 6*global.scale, 0, 0); }
         // Wave 2: Start on the Ent1e2Flip path (flipped second entry path).
@@ -106,7 +106,7 @@ if (oGameManager.rogueyes == 0) {
     /// Standard enemy paths for pattern 2, likely another distinct formation or sequence.
     if (global.pattern == 2) {
         // Wave 0: Start on the Ent1e1Flip path.
-        if (global.wave == 0) { path_start(Ent1e1Flip, 6*global.scale, 0, 0); }
+        if (global.wave == 0) { path_start(Ent1e1Flip_ORIG, 6*global.scale, 0, 0); }
         // Wave 1: Start on the Ent1e2Flip path.
         if (global.wave == 1) { path_start(Ent1e2Flip, 6*global.scale, 0, 0); }
         // Wave 2: Choose between Ent1e2 or Ent1e2Flip based on oGameManager.alt.

@@ -24,6 +24,8 @@ function newlevel() {
 		if global.lvl > 19{global.bosscap = 4}
 	}
 	else{
+		global.isChallengeStage = true;
+		
 		global.challcount = 0; sound_play(GChallenging);
 		global.chall += 1; if global.chall = 9{global.chall = 1}; script_execute(challenging);
 		///transnum

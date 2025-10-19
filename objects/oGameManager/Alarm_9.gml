@@ -88,8 +88,7 @@ if (global.p1score > global.galaga5) {
 }
 // If the player's score is not high enough, restart the room (game)
 else {
-    //room_restart();
-	game_restart();
+    room_restart();
 }
 
 

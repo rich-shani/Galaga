@@ -76,7 +76,7 @@ function Enter_Initials(){
 
 function nOfEnemies() {
 	// return the total number of active enemies (all enemies)
-	return instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(oTieIntercepter) +
+	return instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) +
 			instance_number(Butterfly) + instance_number(Boss) + instance_number(Fighter) + instance_number(Transform);
 }
 
@@ -113,7 +113,7 @@ function readyForNextLevel() {
 		// set state to STATE MESSAGE and trigger alarm[11]
 		global.gameMode = GameMode.GAME_STAGE_MESSAGE; 
 		alarm[11] = 90; 
-		
+				
 		return true;
 	}
 	
@@ -139,6 +139,12 @@ function checkDiveCapacity() {
         }
     }
 
+    with oTieIntercepter {
+        if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
+            global.divecap -= 1; // Bees actively diving or about to dive
+        }
+    }
+	
     with oImperialShuttle {
         if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
             global.divecap -= 1; // Bees actively diving or about to dive
@@ -242,7 +248,7 @@ function controlEnemyFormation() {
         && !sound_isplaying(GCaptured)
         && !sound_isplaying(GFighterCaptured)
         && !sound_isplaying(GRescue)
-        && (instance_number(Bee) + instance_number(oTieFighter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack)
+        && (instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack)
         {
             sound_volume(GBreathe, 1); // Play breathing sound at full volume
         } else {
@@ -300,6 +306,7 @@ function spawnEnemy() {
 	// SPAWN_XPOS	512
 	// SPAWN YPOS	-16
 	// INDEX		1
+	// COMBINE		true/false
 				
 	var enemy_id = asset_get_index(enemy_data.ENEMY);
 	if (enemy_id != -1) {
@@ -309,6 +316,12 @@ function spawnEnemy() {
 	
 	// advance the enemy spawn counter
 	global.spawnCounter++;
+	
+	// is this a comination spawn, ie 2 enemies side by side?
+	if (enemy_data.COMBINE) {
+		// spawn another enemy in-sync with the current spawn cycle
+		spawnEnemy();
+	}
 }
 
 function waveComplete() {
@@ -1038,6 +1051,25 @@ else {
 	}
 }
 
+function Set_Nebula_Color() {
+	// change the hue mix for the nebula
+	if (scrolling_nebula_bg != -1) 
+	{
+		var layer_fx = layer_get_fx(scrolling_nebula_bg);
+   
+		if (layer_fx != -1)
+		{
+			if (fx_get_name(layer_fx) == "_filter_hue")
+			{
+				// background color based on Level, wrap around array length of pre-set colors
+			    fx_set_parameter(layer_fx, "g_HueShift", global.lvl % array_length(hue_value));
+			}
+		}		
+		// make the nebula visible
+		layer_set_visible(scrolling_nebula_bg, true);
+	}
+}
+
 function Show_Instructions() {
 	// if player presses space, start the actual game
     if keyboard_check_pressed(vk_space) == true {
@@ -1050,8 +1082,11 @@ function Show_Instructions() {
 		
         // === INITIALIZE GAME STATE ===
         global.lvl           = 0;
+		
         global.chall         = 0;
+		// start the counter at 1, as the 1st challenge stage is Stage 3, then +4 after that, ie 7, 11, 15, ...
         global.challcount    = 1;
+		
         global.divecapstart  = 2;
         global.lastattack    = 4;
         global.beamtime      = 300;
@@ -1086,10 +1121,9 @@ function Show_Instructions() {
         firstlife   = 20000;  // Score threshold for first extra life
         additional  = 70000;  // Score threshold for each subsequent extra life
 
-		// make the nebula visible
-		layer_set_visible(scrolling_nebula_bg, true);
 		// create the death star on the DeathStar layer (ie behind the game sprites)
 		instance_create_layer(0, 0, "DeathStar", oDeathStar);
+		Set_Nebula_Color();
 		
 		global.gameMode = GameMode.GAME_PLAYER_MESSAGE;
 
