@@ -192,6 +192,7 @@
     {"id":{"name":"Ent_Bot_L2R","path":"paths/Ent_Bot_L2R/Ent_Bot_L2R.yy",},},
     {"id":{"name":"Ent_Bot_R2L","path":"paths/Ent_Bot_R2L/Ent_Bot_R2L.yy",},},
     {"id":{"name":"Ent_Top_L2R","path":"paths/Ent_Top_L2R/Ent_Top_L2R.yy",},},
+    {"id":{"name":"Ent_Top_R2L_IN","path":"paths/Ent_Top_R2L_IN/Ent_Top_R2L_IN.yy",},},
     {"id":{"name":"Ent_Top_R2L","path":"paths/Ent_Top_R2L/Ent_Top_R2L.yy",},},
     {"id":{"name":"Ent1e1","path":"paths/Ent1e1/Ent1e1.yy",},},
     {"id":{"name":"Ent1e1Flip_ORIG","path":"paths/Ent1e1Flip_ORIG/Ent1e1Flip_ORIG.yy",},},

@@ -118,16 +118,16 @@
         {
             "SPAWN": [
                 { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 25, "PATH": "Ent_Top_R2L", "COMBINE": true },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 26, "PATH": "Ent_Top_R2L", "COMBINE": false },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 26, "PATH": "Ent_Top_R2L_IN", "COMBINE": false },
 
                 { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 27, "PATH": "Ent_Top_R2L", "COMBINE": true },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 28, "PATH": "Ent_Top_R2L", "COMBINE": false },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 28, "PATH": "Ent_Top_R2L_IN", "COMBINE": false },
 
                 { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 29, "PATH": "Ent_Top_R2L", "COMBINE": true },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 30, "PATH": "Ent_Top_R2L", "COMBINE": false },
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 30, "PATH": "Ent_Top_R2L_IN", "COMBINE": false },
 
                 { "ENEMY": "oTieFighter", "SPAWN_XPOS": 512, "SPAWN_YPOS": -16, "INDEX": 31, "PATH": "Ent_Top_R2L","COMBINE": true },
-                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 32, "PATH": "Ent_Top_R2L", "COMBINE": false } 
+                { "ENEMY": "oTieFighter", "SPAWN_XPOS": 608, "SPAWN_YPOS": -16, "INDEX": 32, "PATH": "Ent_Top_R2L_IN", "COMBINE": false } 
             ]
         },
         {
