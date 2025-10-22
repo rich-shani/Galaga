@@ -52,6 +52,7 @@ targy = 0;
 
 formation = load_json_datafile("Patterns/formation_coordinates.json");
 attributes = load_json_datafile("Patterns/" + ENEMY_NAME + ".json");
+hitCount = attributes.HEALTH;
 
 if (PATH_NAME != noone) {
 	var path_id = asset_get_index(PATH_NAME);

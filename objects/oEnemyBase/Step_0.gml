@@ -79,28 +79,22 @@ if (global.transnum > 0) {
 
 if (enemyState == EnemyState.ENTER_SCREEN) {
 
-	// Check if reached end of path
-	//if (y < (272 - 16) * global.scale) {
-	//	if (rogue == 0) { 
+	// check if path has ended ... move to formation
+	if (path_position >= 1) {
 
-		// check if path has ended ... move to formation
-		if (path_position >= 1) {
+		// look-up formation position based on INDEX
+		xstart = formation.POSITION[INDEX]._x;
+		ystart = formation.POSITION[INDEX]._y;
 
-				// look-up formation position based on INDEX
-				xstart = formation.POSITION[INDEX]._x;
-				ystart = formation.POSITION[INDEX]._y;
+		// Set speed for fast entry or normal
+		if (global.fastenter == 1) {
+			speed = 12 * global.scale;
+		} else {
+			speed = 6 * global.scale;
+		}
 
-				// Set speed for fast entry or normal
-				if (global.fastenter == 1) {
-					speed = 12 * global.scale;
-				} else {
-					speed = 6 * global.scale;
-				}
-
-				enemyState = EnemyState.MOVE_INTO_FORMATION;
-			}
-		//}
-	//}
+		enemyState = EnemyState.MOVE_INTO_FORMATION;
+	}
 }
 else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
 	// Have we reached the formation position?

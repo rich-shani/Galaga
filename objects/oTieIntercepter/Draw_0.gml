@@ -1,6 +1,11 @@
 var i = round(direction/15);
-					
-draw_sprite_ext(sTieIntercepter,i,x,y,1,1,0,c_white,1);
+
+if (hitCount == 2) {
+	draw_sprite_ext(sTieIntercepter,i,x,y,1,1,0,c_white,1);
+}
+else {
+	draw_sprite_ext(sTieIntercepter,i,x,y,1,1,0,c_maroon,1);
+}
 
 if (global.debug) {
 	// draw collision mask

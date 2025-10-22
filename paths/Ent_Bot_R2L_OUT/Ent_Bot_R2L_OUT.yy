@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"Ent_Bot_R2L_OUT",
+  "closed":false,
+  "kind":1,
+  "name":"Ent_Bot_R2L_OUT",
+  "parent":{
+    "name":"Entrance",
+    "path":"folders/Paths/GalagaWars/Entrance.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":384.0,"y":992.0,},
+    {"speed":112.0,"x":320.0,"y":992.0,},
+    {"speed":125.0,"x":128.0,"y":960.0,},
+    {"speed":112.0,"x":-26.0,"y":860.0,},
+    {"speed":155.0,"x":-32.0,"y":600.0,},
+    {"speed":165.0,"x":232.0,"y":600.0,},
+    {"speed":165.0,"x":232.0,"y":860.0,},
+    {"speed":155.0,"x":-32.0,"y":860.0,},
+    {"speed":100.0,"x":-32.0,"y":520.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

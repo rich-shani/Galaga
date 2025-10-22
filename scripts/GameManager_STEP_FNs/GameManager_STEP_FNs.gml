@@ -377,8 +377,8 @@ function Game_Loop(){
             }
 			else {
 				// more WAVES to complete, or current WAVE is still moving into formation ... wait
-				// delay before next WAVE SPAWN
-				alarm[2] = 6; 
+				// 12 frame delay before next WAVE SPAWN
+				alarm[2] = 9; 
 			}
 		}
 	}		

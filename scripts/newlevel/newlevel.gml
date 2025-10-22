@@ -3,7 +3,7 @@ function newlevel() {
 	global.challcount = global.challcount + 1;
 	if global.challcount < 4{
 		///pattern
-		if global.lvl = 1{global.pattern = 0}; if global.lvl = 2{global.pattern = 1}; if global.lvl = 4{global.pattern = 2};
+		if global.lvl = 1{global.pattern = 1}; if global.lvl = 2{global.pattern = 1}; if global.lvl = 4{global.pattern = 2};
 		if global.lvl > 4{global.pattern = global.pattern - 1; if global.pattern = -1{global.pattern = 2}};
 		///rogue
 		if global.lvl > 3{global.rogue = 1}
