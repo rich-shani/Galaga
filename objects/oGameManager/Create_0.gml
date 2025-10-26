@@ -33,9 +33,9 @@ global.p1lives = 0;
 // Incremented based on enemy hits or other scoring events.
 global.p1score = 0;
 
-// Displayed high score, initialized to 0.
+// Displayed high score, initialized to 20000.
 // Likely used to show the current high score on the UI, updated if p1score exceeds it.
-global.disp = 0;
+global.disp = 20000;
 
 // number of game credits (coins entered)
 global.credits = 0;
@@ -241,8 +241,37 @@ attractMode = instance_create_layer(global.screen_width/2, global.screen_height 
 spawn_data = load_enemy_waves("Patterns/wave_spawn.json");
 challenge_data = load_enemy_waves("Patterns/challenge_spawn.json");
 
-// is the Game Paused?
-//global.isGamePaused = false;
+// setup the GM Scoreboard using the unique game tag
+setup_gmscoreboard("fd0828983a329a0be9e26c34d892769b");
+
+// get the current set of high-scores
+get_scores(5);
+
+// setup an alarm to refresh the high score table every 5 minutes
+alarm[3]=5*60*60;
+
+// create the USER name, used to store a high score (top 5)
+userName = environment_get_variable("USERNAME"); 
+
+if (userName != "") {
+	// get last name only
+	var _path_parts = string_split(userName, " ");
+
+	// the last name
+	userName = array_last(_path_parts);
+	// convert to Upper case
+	userName = string_upper(userName);
+}
+else {
+	userName = "GALAGA";
+}
+
+// check if we have a gamepad connected
+useGamepad = false;
+
+if (gamepad_is_connected(0)) {
+	useGamepad = true;
+}
 
 //window_set_fullscreen(false);
 fullScreen = window_get_fullscreen();

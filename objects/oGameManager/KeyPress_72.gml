@@ -6,9 +6,7 @@ if (scrolling_nebula_bg != -1)
     {
         if (fx_get_name(layer_fx) == "_filter_hue")
         {
-				hue_value = random(1);
-				
-            fx_set_parameter(layer_fx, "g_HueShift", random(hue_value));
+            fx_set_parameter(layer_fx, "g_HueShift", global.lvl % array_length(hue_value));
         }
     }		
 }

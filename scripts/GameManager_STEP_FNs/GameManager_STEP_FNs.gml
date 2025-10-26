@@ -23,31 +23,43 @@ function Enter_Initials(){
     if keyboard_check_pressed(vk_space) and loop > 0 {
 
         // The 'scored' variable determines which player’s initials are being entered (1 to 5)
-
+		var _initials = "";
+		var _score = 0;
+		
         if scored == 1 {
             // Replace character at current position in init1
             global.init1 = string_delete(global.init1, char + 1, 1); // Remove old character
             global.init1 = string_insert(string_char_at(cycle, cyc), global.init1, char + 1); // Insert new
+			_initials = global.init1;
+			_score = global.galaga1;
         }
 
         if scored == 2 {
             global.init2 = string_delete(global.init2, char + 1, 1);
             global.init2 = string_insert(string_char_at(cycle, cyc), global.init2, char + 1);
+			_initials = global.init2;
+			_score = global.galaga2;
         }
 
         if scored == 3 {
             global.init3 = string_delete(global.init3, char + 1, 1);
             global.init3 = string_insert(string_char_at(cycle, cyc), global.init3, char + 1);
+			_initials = global.init3;
+			_score = global.galaga3;
         }
 
         if scored == 4 {
             global.init4 = string_delete(global.init4, char + 1, 1);
             global.init4 = string_insert(string_char_at(cycle, cyc), global.init4, char + 1);
+			_initials = global.init4;
+			_score = global.galaga4;
         }
 
         if scored == 5 {
             global.init5 = string_delete(global.init5, char + 1, 1);
             global.init5 = string_insert(string_char_at(cycle, cyc), global.init5, char + 1);
+			_initials = global.init5;
+			_score = global.galaga5;
         }
 
         global.results += 1; // Move to the next character position or scorer
@@ -55,6 +67,9 @@ function Enter_Initials(){
 
         // === FINALIZE NAME ENTRY ===
         if global.results == 5 {
+			// save score in the GM scoreboard
+			set_score(_initials, _score);
+	
             // Adjust timer to move to next screen or scorer
             if loop == 1 {
                 alarm[7] -= 2;
@@ -1154,8 +1169,16 @@ function Set_Nebula_Color() {
 }
 
 function Show_Instructions() {
+	var startGame = false;
+	// check if we have a gamepad
+	if (oGameManager.useGamepad) {
+			// A button on the XBOX Controller
+			if (gamepad_button_check_pressed(0,gp_face1)) startGame = true;
+	}
+	else  if (keyboard_check_pressed(vk_space)) startGame = true;
+	
 	// if player presses space, start the actual game
-    if keyboard_check_pressed(vk_space) == true {
+    if (startGame) {
 		// 'use' credit to enter game mode
 		global.credits--;
 		

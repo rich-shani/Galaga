@@ -8,6 +8,7 @@
 // Check if the player's score is higher than the lowest high score
 if (global.p1score > global.galaga5) {
 
+						
     // Set the game mode to allow the player to enter their initials
     global.gameMode = GameMode.ENTER_INITIALS;
 
@@ -80,7 +81,8 @@ if (global.p1score > global.galaga5) {
                     sound_stop_all();
                     sound_play(G1st15);
                     loop = 0;
-                    scored = 1;
+					
+
                 }
             }
         }

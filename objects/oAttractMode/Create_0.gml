@@ -41,6 +41,9 @@ alarm[3] = 60;
 // Possibly used for enemy or shot movement in attract mode or specific mechanics.
 direction = 90;
 
+// high score table colors
+colors = [c_yellow, c_white, c_green, c_red, c_blue];
+	
 // pre-fetch sprite sheets (to avoid game glitches)
 var _sprites_to_load = [sTieFighter, sTieIntercepter, sImperialShuttle, xwing_sprite_sheet];
 sprite_prefetch_multi(_sprites_to_load);

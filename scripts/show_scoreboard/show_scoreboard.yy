@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"show_scoreboard",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"show_scoreboard",
+  "parent":{
+    "name":"gmscoreboard",
+    "path":"folders/Scripts/gmscoreboard.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
