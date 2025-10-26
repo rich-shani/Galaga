@@ -12,6 +12,7 @@ switch(global.gameMode) {
 		break;
 	}
 	case GameMode.GAME_STAGE_MESSAGE:
+	case GameMode.CHALLENGE_STAGE_MESSAGE:
 	{	
 		global.gameMode = GameMode.GAME_READY; 
 		alarm[11] = 90;

@@ -1,40 +1,26 @@
 function challenging() {
-	oGameManager.list = ds_list_create()
-	switch global.chall{
-	    case 1:
-	        path1 = Chall11; path2 = Chall12; path1flip = Chall11Flip; path2flip = Chall12Flip
-	        ds_list_add(list,2); repeat 4 {ds_list_add(list,1)};
-	        break;
-	    case 2:
-	        path1 = Chall21; path2 = Chall22; path1flip = Chall21Flip; path2flip = Chall22Flip
-	        repeat 3 {ds_list_add(list,2)}; repeat 2 {ds_list_add(list,1)};
-	        break;
-	    case 3:
-	        path1 = Chall31; path2 = Chall32; path1flip = Chall31Flip; path2flip = Chall32Flip
-	        ds_list_add(list,1); repeat 2 {ds_list_add(list,2)}; repeat 2 {ds_list_add(list,1)};
-	        break;
-	    case 4:
-	        path1 = Chall41; path2 = Chall42; path1flip = Chall41Flip; path2flip = Chall42Flip
-	        ds_list_add(list,2); repeat 2 {ds_list_add(list,1)}; repeat 2 {ds_list_add(list,2)};
-	        break;
-	    case 5:
-	        path1 = Chall51; path2 = Chall52; path1flip = Chall51Flip; path2flip = Chall52Flip
-	        repeat 5 {ds_list_add(list,1)};
-	        break;
-	    case 6:
-	        path1 = Chall61; path2 = Chall62; path1flip = Chall61Flip; path2flip = Chall62Flip
-	        ds_list_add(list,1); repeat 2 {ds_list_add(list,2)}; repeat 2 {ds_list_add(list,1)};
-	        break;
-	    case 7:
-	        path1 = Chall71; path2 = Chall72; path1flip = Chall71Flip; path2flip = Chall72Flip
-	        repeat 5 {ds_list_add(list,1)};
-	        break;
-	    case 8:
-	        path1 = Chall81; path2 = Chall82; path1flip = Chall81Flip; path2flip = Chall82Flip
-	        ds_list_add(list,2); repeat 2 {ds_list_add(list,1)}; repeat 2 {ds_list_add(list,2)};
-	        break;
+	// Load challenge data from JSON and set up path references
+	// This maintains backward compatibility with code that references path1, path2, etc.
+
+	oGameManager.list = ds_list_create();
+
+	// Get challenge data for current challenge (global.chall is 1-8)
+	var chall_data = challenge_data.CHALLENGES[global.chall - 1];
+
+	// Set path variables by getting asset IDs from path names
+	path1 = asset_get_index(chall_data.PATH1);
+	path2 = asset_get_index(chall_data.PATH2);
+	path1flip = asset_get_index(chall_data.PATH1_FLIP);
+	path2flip = asset_get_index(chall_data.PATH2_FLIP);
+
+	// Build the list from wave data (for backward compatibility)
+	// Convert DOUBLED boolean to 2 (doubled) or 1 (single)
+	for (var i = 0; i < array_length(chall_data.WAVES); i++) {
+		var wave = chall_data.WAVES[i];
+		if (wave.DOUBLED) {
+			ds_list_add(list, 2);
+		} else {
+			ds_list_add(list, 1);
+		}
 	}
-
-
-
 }

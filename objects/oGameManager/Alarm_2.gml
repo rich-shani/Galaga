@@ -33,8 +33,11 @@ if (global.challcount == 0 && global.wave == 5) {
     }
 
     if (results == 5) {
-        alarm[10] = 210; // Prepare for next level
         results = 6;
         nextlevel = 1;
+		
+		alarm[10] = 210; // Prepare for next level
+		
+		alarm[11] = 300; 
     }
 }

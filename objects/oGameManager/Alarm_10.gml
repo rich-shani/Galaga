@@ -161,17 +161,17 @@ if (nextlevel == 2) {
 
     /// @subsection Challenge Mode and Game Start   
 	global.open = 1;
-	/// If not in challenge mode (global.challcount == 0) and in the initial state (start == 0),
+	/// If in challenge mode (global.challcount == 0) and in the initial state (start == 0),
 	/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.
 	if (global.challcount == 0) alarm[2] = 70;
 
     /// @subsection Challenge Mode Path Adjustment
     /// If in challenge mode 4 (global.chall == 4), adjust enemy paths (path1, path1flip) if their starting X position is 256.
     /// Shifts both paths by -64 pixels horizontally to reposition enemies for the challenge mode.
-    if (global.chall == 4) {
-        if (path_get_x(path1, 0) == 256) {
-            path_shift(path1, -64, 0);
-            path_shift(path1flip, -64, 0);
-        }
-    }
+    //if (global.chall == 4) {
+    //    if (path_get_x(path1, 0) == 256) {
+    //        path_shift(path1, -64, 0);
+    //        path_shift(path1flip, -64, 0);
+    //    }
+    //}
 }

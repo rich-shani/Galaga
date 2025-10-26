@@ -9,7 +9,7 @@
   "bitRate":192,
   "compression":0,
   "conversionMode":0,
-  "duration":6.934671,
+  "duration":6.9346714,
   "name":"GResults",
   "parent":{
     "name":"Sounds",

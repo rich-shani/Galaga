@@ -107,11 +107,9 @@ function readyForNextLevel() {
 		// trigger oGameManager.alarm[10] with nextlevel == 1
 		// this is to skip the 'PLAYER 1' message above STAGE 1
 		nextlevel = 1; 
-		// trigger the initial level variables - ie Alarm[10] with nextlevl == 1
+		// trigger the initial level variables - ie Alarm[10] with nextlevel == 1
 		alarm[10] = 1; 
 		
-		// set state to STATE MESSAGE and trigger alarm[11]
-		global.gameMode = GameMode.GAME_STAGE_MESSAGE; 
 		alarm[11] = 90; 
 				
 		return true;
@@ -311,7 +309,7 @@ function spawnEnemy() {
 	var enemy_id = asset_get_index(enemy_data.ENEMY);
 	if (enemy_id != -1) {
 		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
-															{ ENEMY_NAME: enemy_data.ENEMY, INDEX: enemy_data.INDEX, PATH_NAME: enemy_data.PATH });
+															{ ENEMY_NAME: enemy_data.ENEMY, INDEX: enemy_data.INDEX, PATH_NAME: enemy_data.PATH, MODE: "STANDARD" });
 	}
 	
 	// advance the enemy spawn counter
@@ -332,6 +330,87 @@ function waveComplete() {
 function patternComplete() {
 
 	return (global.wave == array_length(spawn_data.PATTERN[global.pattern].WAVE));
+}
+
+function getChallengeData() {
+	// Get the challenge data for the current challenge (global.chall is 1-8)
+	// Array is 0-indexed, so subtract 1
+	return challenge_data.CHALLENGES[global.chall - 1];
+}
+
+function getChallengeWaveData() {
+	// Get the wave data for the current wave in the current challenge
+	var chall_data = getChallengeData();
+	return chall_data.WAVES[global.wave];
+}
+
+function spawnChallengeEnemy() {
+	var chall_data = getChallengeData();
+	var wave_data = getChallengeWaveData();
+	var enemy_name = wave_data.ENEMY;
+	var enemy_id = asset_get_index(enemy_name);
+
+	if (enemy_id == -1) {
+		show_debug_message("Error: Could not find enemy: " + enemy_name);
+		return;
+	}
+
+	// Determine which path to use based on wave and count
+	var path_name = "";
+	var spawn_x = 0;
+	var spawn_y = 0;
+
+	// Wave 0, 3, 4 use path1/path1flip
+	if (global.wave == 0 ||
+	    (global.wave == 3 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
+	    (global.wave == 4 && (global.chall == 1 || global.chall == 6 || global.chall == 7))) {
+		path_name = chall_data.PATH1;
+		var path_id = asset_get_index(path_name);
+		if (path_id != -1) {
+			spawn_x = path_get_x(path_id, 0) ;
+			spawn_y = path_get_y(path_id, 0) ;
+		}
+	}
+	// Wave 1 uses path2 (alternating enemy types handled below)
+	else if (global.wave == 1) {
+		path_name = chall_data.PATH2;
+		var path_id = asset_get_index(path_name);
+		if (path_id != -1) {
+			spawn_x = path_get_x(path_id, 0) ;
+			spawn_y = path_get_y(path_id, 0) ;
+		}
+	}
+	// Wave 2 uses path2flip
+	else if (global.wave == 2) {
+		path_name = chall_data.PATH2_FLIP;
+		var path_id = asset_get_index(path_name);
+		if (path_id != -1) {
+			spawn_x = path_get_x(path_id, 0) ;
+			spawn_y = path_get_y(path_id, 0) ;
+		}
+	}
+	// Wave 4 or 3 (depending on challenge) use path1flip
+	else if ((global.wave == 4 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
+	         (global.wave == 3 && (global.chall == 1 || global.chall == 6 || global.chall == 7))) {
+		path_name = chall_data.PATH1_FLIP;
+		var path_id = asset_get_index(path_name);
+		if (path_id != -1) {
+			spawn_x = path_get_x(path_id, 0) ;
+			spawn_y = path_get_y(path_id, 0) ;
+		}
+	}
+
+	// For wave 1, alternate between primary enemy and TieFighter based on count
+	if (global.wave == 1) {
+		if (count == 1 || count == 3 || count == 5 || count == 7) {
+			// Use TieFighter instead of the wave's enemy for odd counts
+			enemy_id = asset_get_index("oTieFighter");
+		}
+	}
+
+	// Spawn the enemy
+	instance_create_layer(spawn_x, spawn_y, "GameSprites", enemy_id,
+	                      { ENEMY_NAME: object_get_name(enemy_id), INDEX: -1, PATH_NAME: path_name, MODE: "CHALLENGE" });
 }
 
 function Game_Loop(){
@@ -958,87 +1037,91 @@ function Game_Loop(){
     // This logic triggers if no challenge pattern is active, handling standard enemy waves.
   
 else {
-	// CHALLENGE STAGE LOGIC 
-	
+	// CHALLENGE STAGE LOGIC (JSON-based)
+
     // Only proceed if we're within valid wave range, alarm is inactive, and not transitioning to next level
     if global.wave < 5 && alarm[2] == -1 && nextlevel == 0 {
 
         if count < 8 {  // Only spawn if current wave hasn't reached full enemy count (e.g., 8 max)
 
+            var chall_data = getChallengeData();
+            var wave_data = getChallengeWaveData();
+
+            // === PATH SHIFTING FOR CHALLENGE 4 ===
+            // Adjust path if in challenge 4, wave 4
+            if global.chall == 4 && global.wave == 4 {
+                var path1_id = asset_get_index(chall_data.PATH1);
+                if path1_id != -1 && path_get_x(path1_id, 0) == 192 {
+                    var path1flip_id = asset_get_index(chall_data.PATH1_FLIP);
+                    // Shift paths right by 64 pixels
+                    path_shift(path1_id, 64*global.scale, 0);
+                    path_shift(path1flip_id, 64*global.scale, 0);
+                }
+            }
+
             // === DOUBLED WAVE CHECK ===
-            if ds_list_find_value(list, global.wave) == 2 {
+            if wave_data.DOUBLED {
                 // This wave is a doubled wave, meaning two spawns instead of one
 
                 if global.wave == 0 || global.wave == 3 || global.wave == 4 {
-	                // Adjust path if in a specific challenge scenario
-	                if global.chall == 4 {
-	                    if global.wave == 4 && path_get_x(path1, 0) == 192 {
-		                    // Shift paths right by 64 pixels
-		                    path_shift(path1, 64*global.scale, 0);
-		                    path_shift(path1flip, 64*global.scale, 0);
-		                }
-					}
+                    // Spawn two enemies on mirrored paths
+                    var path1_id = asset_get_index(chall_data.PATH1);
+                    var path1flip_id = asset_get_index(chall_data.PATH1_FLIP);
+                    var enemy_id = asset_get_index(wave_data.ENEMY);
 
-	                // Spawn two Bees on mirrored paths
-	                instance_create(path_get_x(path1, 0)*global.scale, path_get_y(path1, 0)*global.scale, Bee);
-	                instance_create(path_get_x(path1flip, 0)*global.scale, path_get_y(path1flip, 0)*global.scale, Bee);
-	                alarm[2] = 6;
+                    if path1_id != -1 && path1flip_id != -1 && enemy_id != -1 {
+                        instance_create_layer(path_get_x(path1_id, 0), path_get_y(path1_id, 0),
+                                            "GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1, MODE: "CHALLENGE" });
+                        instance_create_layer(path_get_x(path1flip_id, 0), path_get_y(path1flip_id, 0),
+                                            "GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1_FLIP, MODE: "CHALLENGE" });
+                    }
+                    alarm[2] = 6;
                 }
 
                 if global.wave == 1 {
-	                // Spawn a Boss and a Bee
-	                instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Boss);
-	                instance_create(path_get_x(path2flip, 0)*global.scale, path_get_y(path2flip, 0)*global.scale, Bee);
-	                alarm[2] = 6;
+                    // Spawn primary enemy and a TieFighter on mirrored paths
+                    var path2_id = asset_get_index(chall_data.PATH2);
+                    var path2flip_id = asset_get_index(chall_data.PATH2_FLIP);
+                    var enemy1_id = asset_get_index(wave_data.ENEMY);
+                    var enemy2_id = asset_get_index("oTieFighter");
+
+                    if path2_id != -1 && path2flip_id != -1 && enemy1_id != -1 && enemy2_id != -1 {
+                        instance_create_layer(path_get_x(path2_id, 0), path_get_y(path2_id, 0),
+                                            "GameSprites", enemy1_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: "CHALLENGE" });
+                        instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
+                                            "GameSprites", enemy2_id, { ENEMY_NAME: "oTieFighter", INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: "CHALLENGE" });
+                    }
+                    alarm[2] = 6;
                 }
 
                 if global.wave == 2 {
-	                // Spawn mirrored Bees
-	                instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Bee);
-	                instance_create(path_get_x(path2flip, 0)*global.scale, path_get_y(path2flip, 0)*global.scale, Bee);
-	                alarm[2] = 6;
+                    // Spawn mirrored enemies
+                    var path2_id = asset_get_index(chall_data.PATH2);
+                    var path2flip_id = asset_get_index(chall_data.PATH2_FLIP);
+                    var enemy_id = asset_get_index(wave_data.ENEMY);
+
+                    if path2_id != -1 && path2flip_id != -1 && enemy_id != -1 {
+                        instance_create_layer(path_get_x(path2_id, 0), path_get_y(path2_id, 0),
+                                            "GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: "CHALLENGE" });
+                        instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
+                                            "GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: "CHALLENGE" });
+                    }
+                    alarm[2] = 6;
                 }
 
             } else {
                 // === NON-DOUBLED WAVE ===
-
-                if global.wave == 0 || 
-                (global.wave == 3 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
-                (global.wave == 4 && (global.chall == 1 || global.chall == 6 || global.chall == 7)) {
-	                // Single Bee spawn path for specific wave/challenge combinations
-	                instance_create(path_get_x(path1, 0)*global.scale, path_get_y(path1, 0)*global.scale, Bee);
-	                alarm[2] = 6;
-                }
-
-                if global.wave == 1 {
-	                // Alternates Boss/Bee depending on count
-	                if count == 0 || count == 2 || count == 4 || count == 6 {
-	                    instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Boss);
-	                } else {
-	                    instance_create(path_get_x(path2, 0)*global.scale, path_get_y(path2, 0)*global.scale, Bee);
-	                }
-	                alarm[2] = 6;
-                }
-
-                if global.wave == 2 {
-	                // Spawn from mirrored path
-	                instance_create(path_get_x(path2flip, 0)*global.scale, path_get_y(path2flip, 0)*global.scale, Bee);
-	                alarm[2] = 6;
-                }
-
-                // Wave 3 or 4 mirrored Bee spawn if specific challenge pattern
-                if (global.wave == 4 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
-	                (global.wave == 3 && (global.chall == 1 || global.chall == 6 || global.chall == 7)) {
-	                instance_create(path_get_x(path1flip, 0)*global.scale, path_get_y(path1flip, 0)*global.scale, Bee);
-	                alarm[2] = 6;
-                }
+                spawnChallengeEnemy();
+                alarm[2] = 6;
             }
+
+            count++;
         } // End of count check for spawning
 
         // === ADVANCE WAVE ===
         if count == 8 {
             // If max enemies spawned and all cleared, reset for next wave
-            if instance_number(Bee) == 0 && instance_number(Boss) == 0 {
+            if nOfEnemies() == 0 {
                 alarm[2] = 45;  // Delay before next wave starts
                 global.wave += 1;
                 count = 0;
@@ -1046,7 +1129,7 @@ else {
                 global.shotcount = 0;
             }
         }
-    
+
     }
 	}
 }
@@ -1085,7 +1168,8 @@ function Show_Instructions() {
 		
         global.chall         = 0;
 		// start the counter at 1, as the 1st challenge stage is Stage 3, then +4 after that, ie 7, 11, 15, ...
-        global.challcount    = 1;
+        global.challcount    = 2;
+		global.isChallengeStage = false;
 		
         global.divecapstart  = 2;
         global.lastattack    = 4;

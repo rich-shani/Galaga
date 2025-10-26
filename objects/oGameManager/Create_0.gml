@@ -223,6 +223,7 @@ enum GameMode {
     GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
 	SHOW_RESULTS,
 	ENTER_INITIALS,
+	CHALLENGE_STAGE_MESSAGE,
 	GAME_PAUSED
 }
 
@@ -238,7 +239,8 @@ hue_value = [0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 0.8, 0.97];
 attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.scale, "GameSprites", oAttractMode);
 
 spawn_data = load_enemy_waves("Patterns/wave_spawn.json");
-				
+challenge_data = load_enemy_waves("Patterns/challenge_spawn.json");
+
 // is the Game Paused?
 //global.isGamePaused = false;
 

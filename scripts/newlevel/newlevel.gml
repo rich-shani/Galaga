@@ -3,7 +3,7 @@ function newlevel() {
 	global.challcount = global.challcount + 1;
 	if global.challcount < 4{
 		///pattern
-		if global.lvl = 1{global.pattern = 1}; if global.lvl = 2{global.pattern = 1}; if global.lvl = 4{global.pattern = 2};
+		if global.lvl = 1{global.pattern = 0}; if global.lvl = 2{global.pattern = 1}; if global.lvl = 4{global.pattern = 2};
 		if global.lvl > 4{global.pattern = global.pattern - 1; if global.pattern = -1{global.pattern = 2}};
 		///rogue
 		if global.lvl > 3{global.rogue = 1}
@@ -22,9 +22,13 @@ function newlevel() {
 		///bosscap
 		if global.lvl > 11{global.bosscap = 3}
 		if global.lvl > 19{global.bosscap = 4}
+		
+		global.isChallengeStage = false;
+		global.gameMode = GameMode.GAME_STAGE_MESSAGE;
 	}
 	else{
 		global.isChallengeStage = true;
+		global.gameMode = GameMode.CHALLENGE_STAGE_MESSAGE;
 		
 		global.challcount = 0; sound_play(GChallenging);
 		global.chall += 1; if global.chall = 9{global.chall = 1}; script_execute(challenging);

@@ -212,3 +212,32 @@ function Draw_Credits() {
 	
 	return;
 }
+
+function Draw_ChallengeStage_Results() {		
+	
+	/// challenging stage end
+	if results > 1{ 
+		draw_set_color(c_aqua); 
+		draw_text(80*global.scale,288*global.scale,"NUMBER OF HITS");
+	
+		if results > 2 { ///display shottotal
+		    draw_text(340*global.scale,288*global.scale, global.shottotal);
+		    if results > 3 { ///display "PERFECT!" or "BONUS"
+		        if global.shottotal = 40 {
+		            draw_set_color(c_red); 
+		            if results > 4 or (alarm[2] > 84 or (alarm[2] < 68 and alarm[2] > 50) or (alarm[2] < 34 and alarm[2] > 16)) {
+		                draw_text(160*global.scale,240*global.scale,"PERFECT"); draw_sprite_ext(spr_exc,0,304-16,240*global.scale,1,1,0,c_red,1);
+		            }
+		        }
+		        else { draw_text(144*global.scale,336*global.scale,"BONUS"); }
+		        if results > 4 {///display "SPECIAL BONUS 10000 PTS" or custom multiplied number;
+		            if global.shottotal = 40 {
+		                draw_set_color(c_yellow);
+		                draw_text(32*global.scale,336*global.scale,"SPECIAL BONUS 10000 PTS");
+		            }
+		            else{draw_text(240*global.scale,336*global.scale, global.shottotal*100);}
+		        }
+		    }
+		}
+	}
+}

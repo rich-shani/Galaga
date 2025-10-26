@@ -60,10 +60,18 @@ function Draw_Hud(){
 				draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
 				draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));
 				break;
+			case GameMode.CHALLENGE_STAGE_MESSAGE:
+				draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));			
+				break;
 			case GameMode.GAME_READY:
 	//			draw_text(160*global.scale, 256*global.scale, string_hash_to_newline("PLAYER 1"));
-				draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
-				draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));
+				if (global.isChallengeStage) {
+					draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));		
+				}
+				else {
+					draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
+					draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));					
+				}
 				break;
 			case GameMode.GAME_ACTIVE:
 				// if the oPlayer RESPAWN is still in effect, show 'READY'
@@ -71,6 +79,11 @@ function Draw_Hud(){
 					draw_text(170*global.scale, 288*global.scale, string_hash_to_newline("READY"));
 		        }
 				break;
+			
 		} // SWITCH STATEMENT
 	}
- }
+	
+	if (global.isChallengeStage) {
+		Draw_ChallengeStage_Results();
+	}
+}

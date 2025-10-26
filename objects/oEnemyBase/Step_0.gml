@@ -18,8 +18,9 @@
 //}
 
 // ROGUE enemy are killed if they leave the screen
-if (enemyMode == EnemyMode.ROGUE) {
-	if (y > 592*global.scale or x < -32*global.scale or x > 464*global.scale) {
+if (enemyMode == EnemyMode.CHALLENGE) {
+	// check if path has ended ...
+	if (path_position >= 1) {
 		instance_destroy();
 	}
 	
@@ -82,18 +83,23 @@ if (enemyState == EnemyState.ENTER_SCREEN) {
 	// check if path has ended ... move to formation
 	if (path_position >= 1) {
 
-		// look-up formation position based on INDEX
-		xstart = formation.POSITION[INDEX]._x;
-		ystart = formation.POSITION[INDEX]._y;
+		if (INDEX != -1) {
+			// look-up formation position based on INDEX
+			xstart = formation.POSITION[INDEX]._x;
+			ystart = formation.POSITION[INDEX]._y;
+		
+			// Set speed for fast entry or normal
+			if (global.fastenter == 1) {
+				speed = 12 * global.scale;
+			} else {
+				speed = 6 * global.scale;
+			}
 
-		// Set speed for fast entry or normal
-		if (global.fastenter == 1) {
-			speed = 12 * global.scale;
-		} else {
-			speed = 6 * global.scale;
+			enemyState = EnemyState.MOVE_INTO_FORMATION;
 		}
-
-		enemyState = EnemyState.MOVE_INTO_FORMATION;
+		else {
+			// challenge state, end of PATH
+		}
 	}
 }
 else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {

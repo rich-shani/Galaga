@@ -13,10 +13,11 @@ enemyState = EnemyState.ENTER_SCREEN;
 
 enum EnemyMode {
 	STANDARD,
+	CHALLENGE,
 	ROGUE
 }
 
-enemyMode = EnemyMode.STANDARD;
+
 
 // Flag indicating if the enemy is an escort, initialized to 0 (0 = not escort, 1 = escort).
 // Escorts may have special behaviors, such as accompanying a boss or following unique paths.
@@ -58,7 +59,14 @@ if (PATH_NAME != noone) {
 	var path_id = asset_get_index(PATH_NAME);
 	if (path_id != -1) path_start(path_id, 6*global.scale, 0, 0);
 }
-	
+
+if (MODE == "STANDARD") {
+	enemyMode = EnemyMode.STANDARD;
+}
+else if (MODE == "CHALLENGE") {
+	enemyMode = EnemyMode.CHALLENGE;
+}
+
 /// @section Fast Entry Adjustment
 // If global.fastenter == 1, adjust timing variables for faster enemy entry.
 // fasty set to 50 steps to speed up entry animations.
