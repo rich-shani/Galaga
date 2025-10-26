@@ -28,17 +28,29 @@ if y < 592*global.scale and x > -16 and x < 464*global.scale and (y > -16 or glo
 
 				    }
 
-				    else{instance_create(round(x),round(y),Points400)};
+				    else{
+						instance_create(round(x),round(y),Points400);
+						global.p1score += 400;
+					}
 
 				}
 
 				else{
 
-				if intesc = 0{instance_create(round(x),round(y),Points400)}
+				if intesc = 0{
+					instance_create(round(x),round(y),Points400);
+					global.p1score += 400;
+				}
 
-				if intesc = 1{instance_create(round(x),round(y),Points800)}
+				if intesc = 1{
+					instance_create(round(x),round(y),Points800);
+					global.p1score += 800;
+				}
 
-				if intesc = 2{instance_create(round(x),round(y),Points1600)}
+				if intesc = 2{
+					instance_create(round(x),round(y),Points1600);
+					global.p1score += 1600;
+				}
 
 				}
 

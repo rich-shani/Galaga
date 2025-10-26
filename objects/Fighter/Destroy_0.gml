@@ -13,7 +13,10 @@ if !global.isGameOver {
 			instance_create(round(x), round(y), oExplosion2);	
 		}
 
-	if dive > 0{instance_create(round(x),round(y),Points1000)};
+	if dive > 0{
+		instance_create(round(x),round(y),Points1000);
+		global.p1score += 1000;
+	}
 
 	with Boss{carrying = 0};
 
