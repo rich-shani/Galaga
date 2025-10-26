@@ -14,7 +14,7 @@ if (!splashScreenSetup) {
 	// set properties
 	_inst.w = _w;
 	_inst.h = _h;
-	_inst.targetRoom = GalagaWars;
+	_inst.targetRoom = TitleScreen;
 	_inst.duration = 170;
 	_inst.c = c_black;
 	_inst.timer = 0;
