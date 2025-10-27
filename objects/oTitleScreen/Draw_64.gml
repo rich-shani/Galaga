@@ -1,30 +1,31 @@
+// BIG font required
+draw_set_font(fAtari24);
+draw_set_color(c_aqua);
+
+// GALAGA WARS logo
+draw_sprite_ext(galagawars_logo, -1, 224*global.scale, 5*global.scale,0.55,0.55,0,c_white,1);
+
 switch (ScreenShown) {
 	case TITLE_SCREEN.TITLE:
+	
+		if sequence > 1 {
+			draw_text((176 - 48)*global.scale, 132*global.scale, string_hash_to_newline("-- SCORE --"));
+			draw_text((176 - 40)*global.scale, 132*global.scale, string_hash_to_newline("-        -"));
 
-		draw_set_font(fAtari24);
-
-		// GALAGA, SCORE, INTRO
-		draw_set_color(c_aqua);
-		draw_sprite_ext(galagawars_logo, -1, 224*global.scale, 5*global.scale,0.55,0.55,0,c_white,1);
-			
-			if sequence > 1 {
-				draw_text((176 - 48)*global.scale, 132*global.scale, string_hash_to_newline("-- SCORE --"));
-				draw_text((176 - 40)*global.scale, 132*global.scale, string_hash_to_newline("-        -"));
-
-				if sequence > 2 {
-					draw_text((176 - 48)*global.scale, 176*global.scale, string_hash_to_newline("    50    100"));
-					draw_sprite_ext(sTieFighter, animationIndex/4, 104*global.scale, (168+16)*global.scale, 1, 1, 0, c_white, 1);
+			if sequence > 2 {
+				draw_text((176 - 48)*global.scale, 176*global.scale, string_hash_to_newline("    50    100"));
+				draw_sprite_ext(sTieFighter, animationIndex/4, 104*global.scale, (168+16)*global.scale, 1, 1, 0, c_white, 1);
 						
-					if sequence > 3 {
-						draw_text((176 - 48)*global.scale, 224*global.scale, string_hash_to_newline("    80    160"));
-						draw_sprite_ext(sImperialShuttle, animationIndex/4, 104*global.scale, (168+48+16)*global.scale, 1, 1, 0, c_white, 1);
+				if sequence > 3 {
+					draw_text((176 - 48)*global.scale, 224*global.scale, string_hash_to_newline("    80    160"));
+					draw_sprite_ext(sImperialShuttle, animationIndex/4, 104*global.scale, (168+48+16)*global.scale, 1, 1, 0, c_white, 1);
 						
-						if sequence > 4 {											
-							draw_sprite_ext(sTieIntercepter, 18, 224*global.scale, (168 + 48 + 48 + 24)*global.scale, 1, 1, 0, c_white, 1);										
-						} // sequence > 4
-					} // sequence > 3
-				} // sequence > 2
-			} // sequence > 1
+					if sequence > 4 {											
+						draw_sprite_ext(sTieIntercepter, 18, 224*global.scale, (168 + 48 + 48 + 24)*global.scale, 1, 1, 0, c_white, 1);										
+					} // sequence > 4
+				} // sequence > 3
+			} // sequence > 2
+		} // sequence > 1
 
 		// animation sequence for the attract page ... ie dive, shoot and points
 		if (sequence > 5 && sequence < 21) {
@@ -131,11 +132,6 @@ switch (ScreenShown) {
 	
 		break;
 	case TITLE_SCREEN.HIGH_SCORE:
-
-		// draw the High Score table
-		draw_set_font(fAtari24);
-
-		draw_sprite_ext(galagawars_logo, -1, 224*global.scale, 5*global.scale,0.55,0.55,0,c_white,1);
 		
 		draw_set_halign(fa_left);
 		draw_set_color(c_blue);
@@ -187,5 +183,35 @@ switch (ScreenShown) {
 			draw_set_color(c_aqua);
 		}
 		
+		break;
+	case TITLE_SCREEN.INSTRUCTIONS:
+		draw_set_color(c_aqua);
+
+		draw_text(96*global.scale, 208*global.scale, string_hash_to_newline("PUSH START BUTTON"));
+
+		draw_set_color(c_yellow);
+
+		draw_text(64*global.scale, (208 + 64)*global.scale, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
+
+		draw_text(64*global.scale, (208 + 64 + 48)*global.scale, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
+
+		draw_text(64*global.scale, (208 + 64 + 48 + 48)*global.scale, string_hash_to_newline("AND FOR EVERY 70000 PTS"));
+
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
+
+		draw_set_halign(fa_center);
+		draw_set_color(c_white);
+
+		draw_text(224*global.scale, (416 + 32)*global.scale, string_hash_to_newline("© 1981-2024 BANDAI"));
+		draw_text(224*global.scale, (448 + 32)*global.scale,
+		string_hash_to_newline("  NAMCO ENTERTAINMENT, INC. "));
+
+		draw_set_color(c_red)
+		draw_text(224*global.scale, (480 + 32)*global.scale,
+		string_hash_to_newline("2025 Richard Shannon"));
+		draw_set_halign(fa_left);	
+	
 		break;
 }

@@ -7,7 +7,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	// set the alarm
 	alarm[0] = 4*60;
 }
-else {
+else if (ScreenShown != TITLE_SCREEN.INSTRUCTIONS) {
 	
 	ScreenShown = TITLE_SCREEN.TITLE;
 	

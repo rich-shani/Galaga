@@ -1,5 +1,5 @@
-// gameMode mode ... 30 steps, one per second, unless we're at step 15
-
+if (ScreenShown == TITLE_SCREEN.TITLE) {
+	
 	hitFlag = 0;
 	
 	// advance the attract mode sequence counter and reset the alarm timer
@@ -76,5 +76,5 @@
 		
 		alarm[0] = 60;
 	}
-
+}
 
