@@ -88,9 +88,9 @@ if (global.p1score > global.galaga5) {
         }
     }
 }
-// If the player's score is not high enough, restart the room (game)
+// If the player's score is not high enough, goto TITLE SCREEN
 else {
-    room_restart();
+    room_goto(TitleScreen);
 }
 
 

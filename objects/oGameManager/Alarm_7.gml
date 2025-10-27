@@ -22,7 +22,7 @@ if loop == 0 {
 else {
 	loop += 1; // Increment loop counter
 	if loop == 4 {
-		room_restart();
+		room_goto(TitleScreen);
 	} 
 	else {
 		alarm[7] = 633; // Otherwise, set alarm[7] again
