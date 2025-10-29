@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Ent_Bot_R2L",
   "parent":{
-    "name":"Entrance",
-    "path":"folders/Paths/GalagaWars/Entrance.yy",
+    "name":"STANDARD",
+    "path":"folders/Paths/GalagaWars/Entrance/STANDARD.yy",
   },
   "points":[
     {"speed":100.0,"x":384.0,"y":992.0,},

@@ -310,6 +310,60 @@ function load_json_datafile(_datafile) {
 	}	
 }
 
+function nRogueEnemies() {
+
+	switch (global.rogue) {
+		case 0:
+			return 0;
+			break;
+		case 1:
+		    if (global.wave == 0 or global.wave == 3 or global.wave == 4) return 1;
+			else return 0;
+			break;
+		case 2:
+			return 1;
+			break;
+		case 3:
+			if (global.wave == 0 or global.wave == 3 or global.wave == 4) return 2;
+			else return 1;
+			break;
+		case 4:
+			return 2;
+			break;
+		default:
+			return 0;
+			break;
+	}
+}
+
+function spawnRogueEnemy(_spawn) {
+	// Get the enemy data from a specific SPAWN instance
+	var enemy_data = spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN[_spawn];
+	
+	
+	// SPAWN a ROGUE Enemy, create path using the STANDARD path and prefix "ROGUE_"
+	var path_name = "ROGUE_" + enemy_data.PATH;
+	var enemy_id = asset_get_index(enemy_data.ENEMY);
+	if (enemy_id != -1) {
+		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
+															{ ENEMY_NAME: enemy_data.ENEMY, INDEX: -1, PATH_NAME: path_name, MODE: "ROGUE" });
+	}
+	
+	// is this a comination spawn, ie 2 enemies side by side?
+	if (enemy_data.COMBINE) {
+		// spawn another enemy in-sync with the current spawn cycle
+		spawnRogueEnemy(_spawn+1);
+	}
+}
+
+function spawnRogueEnemies(_nRogues) {
+	
+	// loop to SPAWN _nRogues (and check for a COMBINATION SPAWN)
+	for (var i=0; i < _nRogues; i++ ) {
+		spawnRogueEnemy(global.spawnCounter-2);
+	}
+}
+
 function spawnEnemy() {
 	var enemy_data = spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN[global.spawnCounter];
 				
@@ -320,7 +374,8 @@ function spawnEnemy() {
 	// SPAWN YPOS	-16
 	// INDEX		1
 	// COMBINE		true/false
-				
+	
+	// SPAWN a STANDARD Enemy
 	var enemy_id = asset_get_index(enemy_data.ENEMY);
 	if (enemy_id != -1) {
 		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
@@ -454,6 +509,15 @@ function Game_Loop(){
 				// SPAWN ENEMY
 				spawnEnemy();
 			}
+			else if (!global.checkRoguePerWave) { // WaveComplete
+				// check if we need to ADD any ROGUE enemies to this wave				
+				var nRogue = nRogueEnemies();
+				if (nRogue > 0) {
+					spawnRogueEnemies(nRogue);
+				}
+
+				global.checkRoguePerWave = true;
+			}
 			
 			// check if we've completed the wave, as we just spawned more enemies
 			// note: divecap is active is the wave is still moving into formation
@@ -465,9 +529,7 @@ function Game_Loop(){
 					
 				// advance to the next WAVE (if applicable)
 	            global.wave += 1;
-				
-				// check if we've completed the PATTERN
-				if (patternComplete()) global.open = 0;
+				global.checkRoguePerWave = false;
             }
 			else {
 				// more WAVES to complete, or current WAVE is still moving into formation ... wait
@@ -475,7 +537,11 @@ function Game_Loop(){
 				alarm[2] = 9; 
 			}
 		}
-	}		
+	}
+	else {
+		// We've completed the PATTERN
+		global.open = 0;
+	}
                 //if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
 
 	            //    // Random chance to spawn a rogue Bee

@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"ROGUE_Ent_Top_R2L",
+  "closed":false,
+  "kind":1,
+  "name":"ROGUE_Ent_Top_R2L",
+  "parent":{
+    "name":"ROGUE",
+    "path":"folders/Paths/GalagaWars/Entrance/ROGUE.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":282.175,"y":-32.0,},
+    {"speed":100.0,"x":282.175,"y":64.0,},
+    {"speed":100.0,"x":-131.82501,"y":448.0,},
+    {"speed":100.0,"x":-165.82501,"y":590.0,},
+    {"speed":100.0,"x":-10.825012,"y":742.0,},
+    {"speed":100.0,"x":133.17499,"y":668.0,},
+    {"speed":100.0,"x":280.175,"y":501.0,},
+    {"speed":100.0,"x":414.00003,"y":636.65,},
+    {"speed":100.0,"x":412.00003,"y":754.4,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

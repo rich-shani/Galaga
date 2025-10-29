@@ -62,13 +62,29 @@ if (PATH_NAME != noone) {
 
 if (MODE == "STANDARD") {
 	enemyMode = EnemyMode.STANDARD;
+	
+	/// @section Dive Alarm Setup
+	// Set alarm[5] to control the timing of enemy shots
+	// For waves 1 or 2, use 75 steps (1.25 seconds) or 63 steps if global.fastenter == 1 (faster entry).
+	// For wave 0, use a shorter 10-step delay (0.167 seconds).
+	if (global.wave == 1 || global.wave == 2) {
+	    alarm[5] = 75;
+	    if (global.fastenter == 1) { alarm[5] = 63; }
+	} else {
+	    alarm[5] = 10;
+	}
 }
 else if (MODE == "CHALLENGE") {
 	enemyMode = EnemyMode.CHALLENGE;
+}
+else if (MODE == "ROGUE") {
+	enemyMode = EnemyMode.ROGUE;
 }
 
 /// @section Fast Entry Adjustment
 // If global.fastenter == 1, adjust timing variables for faster enemy entry.
 // fasty set to 50 steps to speed up entry animations.
 if (global.fastenter == 1) fasty = 50;
+
+
 	

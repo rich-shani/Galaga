@@ -12,7 +12,7 @@ if (global.gameMode == GameMode.INITIALIZE) {
 		
         global.chall         = 0;
 		// start the counter at 1, as the 1st challenge stage is Stage 3, then +4 after that, ie 7, 11, 15, ...
-        global.challcount    = 2;
+        global.challcount    = 1;
 		global.isChallengeStage = false;
 		
         global.divecapstart  = 2;
@@ -29,7 +29,10 @@ if (global.gameMode == GameMode.INITIALIZE) {
         global.pattern       = 0;
         global.hold          = 15;
         global.bosscap       = 2;
+		
         global.wave          = 0;
+		global.checkRoguePerWave = false;
+						
         global.flip          = 0;
         global.breathing     = 1;
         global.breathe       = 0;

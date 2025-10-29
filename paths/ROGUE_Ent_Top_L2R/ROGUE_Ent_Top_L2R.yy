@@ -1,12 +1,12 @@
 {
   "$GMPath":"",
-  "%Name":"Ent_Top_L2R",
+  "%Name":"ROGUE_Ent_Top_L2R",
   "closed":false,
   "kind":1,
-  "name":"Ent_Top_L2R",
+  "name":"ROGUE_Ent_Top_L2R",
   "parent":{
-    "name":"STANDARD",
-    "path":"folders/Paths/GalagaWars/Entrance/STANDARD.yy",
+    "name":"ROGUE",
+    "path":"folders/Paths/GalagaWars/Entrance/ROGUE.yy",
   },
   "points":[
     {"speed":100.0,"x":-34.0,"y":-32.0,},
@@ -15,7 +15,9 @@
     {"speed":100.0,"x":414.0,"y":590.0,},
     {"speed":100.0,"x":259.0,"y":742.0,},
     {"speed":100.0,"x":115.0,"y":668.0,},
-    {"speed":100.0,"x":0.0,"y":520.0,},
+    {"speed":100.0,"x":-32.0,"y":501.0,},
+    {"speed":100.0,"x":-165.82504,"y":636.65,},
+    {"speed":100.0,"x":-163.82504,"y":752.4,},
   ],
   "precision":4,
   "resourceType":"GMPath",

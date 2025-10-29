@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Ent_Top_R2L",
   "parent":{
-    "name":"Entrance",
-    "path":"folders/Paths/GalagaWars/Entrance.yy",
+    "name":"STANDARD",
+    "path":"folders/Paths/GalagaWars/Entrance/STANDARD.yy",
   },
   "points":[
     {"speed":100.0,"x":414.0,"y":-32.0,},

@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Ent_Top_L2R_OUT",
   "parent":{
-    "name":"Entrance",
-    "path":"folders/Paths/GalagaWars/Entrance.yy",
+    "name":"COMBO",
+    "path":"folders/Paths/GalagaWars/Entrance/STANDARD/COMBO.yy",
   },
   "points":[
     {"speed":100.0,"x":-34.0,"y":-32.0,},
