@@ -17,10 +17,10 @@
     },
     {
       "CHALLENGE_ID": 2,
-      "PATH1": "Chall12_1",
-      "PATH2": "Chall12_2",
-      "PATH1_FLIP": "Chall12_1Flip",
-      "PATH2_FLIP": "Chall12_2Flip",
+      "PATH1": "Chall2_PATH1",
+      "PATH2": "Chall2_PATH2",
+      "PATH1_FLIP": "Chall2_PATH1_FLIP",
+      "PATH2_FLIP": "Chall2_PATH2_FLIP",
       "WAVES": [
         { "WAVE_ID": 0, "DOUBLED": true, "ENEMY": "oTieFighter" },
         { "WAVE_ID": 1, "DOUBLED": true, "ENEMY": "oImperialShuttle" },

@@ -2,7 +2,7 @@
 /// Handles scoring, sound, and special effects when a Tie Fighter is destroyed.
 if (!global.isGameOver) {
 	// Check if the Enemy is within the visible play area or during challenge mode
-	if (y < 592 * global.scale && x > -16 && x < 464 * global.scale) { // && (y > -16 * global.scale || global.challcount > 0)) {
+	if (y > -16 * global.scale && y < 592 * global.scale && x > -16 && x < 464 * global.scale) { // && (y > -16 * global.scale || global.challcount > 0)) {
 
 		// If the Tie Fighter is diving
 		if (enemyState == EnemyState.IN_DIVE_ATTACK) {

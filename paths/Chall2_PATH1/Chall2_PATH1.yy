@@ -1,12 +1,12 @@
 {
   "$GMPath":"",
-  "%Name":"Chall21_1",
+  "%Name":"Chall2_PATH1",
   "closed":false,
   "kind":1,
-  "name":"Chall21_1",
+  "name":"Chall2_PATH1",
   "parent":{
-    "name":"ChallengeStage",
-    "path":"folders/Paths/GalagaWars/ChallengeStage.yy",
+    "name":"Challenge_2",
+    "path":"folders/Paths/GalagaWars/ChallengeStage/Challenge_2.yy",
   },
   "points":[
     {"speed":200.0,"x":512.0,"y":-64.0,},

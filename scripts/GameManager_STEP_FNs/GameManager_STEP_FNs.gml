@@ -1190,13 +1190,15 @@ else {
                     alarm[2] = 6;
                 }
 
+				// advance count by 2, as this was a DOUBLE spawn
+				count += 2;
             } else {
                 // === NON-DOUBLED WAVE ===
                 spawnChallengeEnemy();
                 alarm[2] = 6;
+				
+				count++;
             }
-
-            count++;
         } // End of count check for spawning
 
         // === ADVANCE WAVE ===

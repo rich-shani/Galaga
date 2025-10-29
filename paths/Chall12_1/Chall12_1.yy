@@ -5,8 +5,8 @@
   "kind":1,
   "name":"Chall12_1",
   "parent":{
-    "name":"ChallengeStage",
-    "path":"folders/Paths/GalagaWars/ChallengeStage.yy",
+    "name":"Challenge_1",
+    "path":"folders/Paths/GalagaWars/ChallengeStage/Challenge_1.yy",
   },
   "points":[
     {"speed":100.0,"x":-64.0,"y":992.0,},
