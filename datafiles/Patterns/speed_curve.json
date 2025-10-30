@@ -1,0 +1,15 @@
+  {
+      "SPEED_CURVE": {
+          "BASE_ENTRANCE_SPEED": 6,
+          "BASE_FORMATION_SPEED": 3,
+          "BASE_ROGUE_SPEED": 6,
+          "LEVEL_MULTIPLIERS": [
+              { "LEVEL": 1,  "MULTIPLIER": 1.0 },
+              { "LEVEL": 4,  "MULTIPLIER": 1.2 },
+              { "LEVEL": 8,  "MULTIPLIER": 1.5 },
+              { "LEVEL": 12, "MULTIPLIER": 1.7 },
+              { "LEVEL": 16, "MULTIPLIER": 2.0 }
+          ],
+          "FAST_ENTRANCE_BOOST": 1.5
+      }
+  }

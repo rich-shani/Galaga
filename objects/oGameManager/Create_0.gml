@@ -84,6 +84,9 @@ global.isGameOver = false;
 global.screen_width = view_get_wport(view_current);
 global.screen_height = view_get_hport(view_current);
 
+// Speed difficulty scaling
+global.speedMultiplier = 1.0;  // Base multiplier
+  
 // is the Game Paused?
 global.isGamePaused = false;
 
@@ -240,6 +243,8 @@ attractMode = instance_create_layer(global.screen_width/2, global.screen_height 
 
 spawn_data = load_enemy_waves("Patterns/wave_spawn.json");
 challenge_data = load_enemy_waves("Patterns/challenge_spawn.json");
+rogue_config = load_json_datafile("Patterns/rogue_spawn.json");
+speed_curves = load_json_datafile("Patterns/speed_curve.json");
 
 // setup the GM Scoreboard using the unique game tag
 setup_gmscoreboard("fd0828983a329a0be9e26c34d892769b");

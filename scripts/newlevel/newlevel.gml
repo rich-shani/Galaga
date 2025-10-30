@@ -11,6 +11,22 @@ function newlevel() {
 		if global.lvl > 11{global.rogue = 3}
 		if global.lvl > 15{global.rogue = 4}
 		if global.lvl = 10 or global.lvl = 18{global.rogue = 0};
+		
+		// Calculate progressive speed multiplier based on level
+		
+		// Level 1: 1.0x, Level 5: 1.2x, Level 10: 1.5x, Level 20: 2.0x
+		global.speedMultiplier = 1.0 + (global.lvl * 0.05);  // +5% per level
+		global.speedMultiplier = clamp(global.speedMultiplier, 1.0, 2.0);  // Cap at 2x
+  
+		var curve = speed_curves.SPEED_CURVE.LEVEL_MULTIPLIERS;
+		global.speedMultiplier = 1.0;
+
+		for (var i = 0; i < array_length(curve); i++) {
+			if (global.lvl >= curve[i].LEVEL) {
+				global.speedMultiplier = curve[i].MULTIPLIER;
+			}
+		}
+  
 		///fastenter
 		if global.lvl > 7{global.fastenter = 1};
 		if global.lvl = 10{global.fastenter = 0};

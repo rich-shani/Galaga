@@ -16,21 +16,14 @@
 //if (rogue == 1) && (y > 592 * global.scale || x < -32 * global.scale || x > 464 * global.scale) {
 //	instance_destroy();
 //}
-
-// Set speed based on global.fast
-if (global.fast == 1) {
-	spd = 6;
-} else {
-	spd = 3;
-}
-
+  
 if (global.fastenter == 1 && global.open == 1) {
 	// delays the onset of the faster speed, so its looks like acceleration
 	if (fasty > 0) {
 		fasty -= 1;
 	} else {
-		path_speed = 9 * global.scale;
-		speed = 9 * global.scale;
+//		pathSpeed = pathSpeed * 1.5;
+//		baseSpeed = baseSpeed * 1.5;
 	}
 }
 	
@@ -48,7 +41,7 @@ else if (enemyMode == EnemyMode.ROGUE) {
 	if (targx == 0) {
 		// not yet, check if we've completed the PATH
 		if (path_position >= 1) {
-			path_end(); speed = 6*global.scale;
+			path_end(); speed = entranceSpeed;
 			
 			// set the x coordinate target to the PLAYER
 			targx = oPlayer.x;
@@ -75,7 +68,7 @@ else if (enemyMode == EnemyMode.ROGUE) {
 	}
 	else {
 		// move towards the PLAYER
-		move_towards_point(targx, targy, speed);
+		move_towards_point(targx, targy, entranceSpeed);
 	}
 	
 	return;
@@ -127,7 +120,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			ystart = formation.POSITION[INDEX]._y;
 		
 			// Set speed for fast entry or normal
-			speed = spd * global.scale;
+			speed = entranceSpeed;
 
 			enemyState = EnemyState.MOVE_INTO_FORMATION;
 		}
@@ -146,7 +139,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 		else { 
 			// continue to move towards the formation position
-			move_towards_point(breathex, breathey, speed); 
+			move_towards_point(breathex, breathey, entranceSpeed); 
 		}
 	}
 	else if (enemyState == EnemyState.IN_FORMATION) {
@@ -183,12 +176,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				if (xstart > 224 * global.scale) {
 					if (attributes.STANDARD.DIVE_PATH1 != noone) {
 						var path_id = asset_get_index(attributes.STANDARD.DIVE_PATH1);
-						if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 					}
 				} else {
 					if (attributes.STANDARD.DIVE_ALT_PATH1 != noone) {
 						var path_id = asset_get_index(attributes.STANDARD.DIVE_ALT_PATH1);
-						if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 					}				
 				}
 				
@@ -214,16 +207,16 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	
 				path_end();
 			
-				if (xstart > 224 * global.scale) {				
+				if (x > 224 * global.scale) {				
 					if (attributes.LOOP_PATH != noone) {
 						var path_id = asset_get_index(attributes.LOOP_PATH);
-						if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 					}
 				}
 				else {
 					if (attributes.LOOP_ALT_PATH != noone) {
 						var path_id = asset_get_index(attributes.LOOP_ALT_PATH);
-						if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 					}
 				}
 					
@@ -241,7 +234,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			else {
 				// reset to the top of screen and move into formation
 				path_end();
-				speed = spd * global.scale;
+				speed = entranceSpeed;
 		
 				x = breathex;
 				y = -16;
@@ -255,7 +248,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		// check if path has ended ... return to formation
 		if (path_position >= 1) {
 			// return to FORMATION
-			speed = spd * global.scale;
+			speed = entranceSpeed;
 
 			enemyState = EnemyState.MOVE_INTO_FORMATION;		
 		}
@@ -280,12 +273,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			if (x > 224 * global.scale) {
 				if (attributes.STANDARD.DIVE_PATH2 != noone) {
 					var path_id = asset_get_index(attributes.STANDARD.DIVE_PATH2);
-					if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+					if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 				}
 			} else {
 				if (attributes.STANDARD.DIVE_ALT_PATH2 != noone) {
 					var path_id = asset_get_index(attributes.STANDARD.DIVE_ALT_PATH2);
-					if (path_id != -1) path_start(path_id, spd*global.scale, 0, 0);
+					if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 				}				
 			}
 		}

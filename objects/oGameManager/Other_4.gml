@@ -8,7 +8,7 @@ if (global.gameMode == GameMode.INITIALIZE) {
 	load_highscores();
 	
         // === INITIALIZE GAME STATE ===
-        global.lvl           = 0;
+        global.lvl           = 4;
 		
         global.chall         = 0;
 		// start the counter at 1, as the 1st challenge stage is Stage 3, then +4 after that, ie 7, 11, 15, ...

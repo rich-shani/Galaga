@@ -311,29 +311,9 @@ function load_json_datafile(_datafile) {
 }
 
 function nRogueEnemies() {
-
-	switch (global.rogue) {
-		case 0:
-			return 0;
-			break;
-		case 1:
-		    if (global.wave == 0 or global.wave == 3 or global.wave == 4) return 1;
-			else return 0;
-			break;
-		case 2:
-			return 1;
-			break;
-		case 3:
-			if (global.wave == 0 or global.wave == 3 or global.wave == 4) return 2;
-			else return 1;
-			break;
-		case 4:
-			return 2;
-			break;
-		default:
-			return 0;
-			break;
-	}
+    // Get spawn count for current rogue level and wave
+    var rogue_level_data = rogue_config.ROGUE_LEVELS[global.rogue];
+    return rogue_level_data.SPAWN_COUNT[global.wave];
 }
 
 function spawnRogueEnemy(_spawn) {

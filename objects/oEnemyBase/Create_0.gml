@@ -23,9 +23,9 @@ enum EnemyMode {
 // Escorts may have special behaviors, such as accompanying a boss or following unique paths.
 escort = 0;
 
-// Speed of the enemy, set to 3 pixels per step.
-// Controls the movement speed along paths or during free movement.
-spd = 3;
+baseSpeed = 6;
+moveSpeed = baseSpeed * global.speedMultiplier;
+entranceSpeed = baseSpeed  + (baseSpeed * global.speedMultiplier);
 
 // Flag for transformation state, initialized to 0 (0 = normal, 1 = transformed).
 // Used for enemies that change form or behavior (e.g., Butterfly transforming).
@@ -53,11 +53,12 @@ targy = 0;
 
 formation = load_json_datafile("Patterns/formation_coordinates.json");
 attributes = load_json_datafile("Patterns/" + ENEMY_NAME + ".json");
+
 hitCount = attributes.HEALTH;
 
 if (PATH_NAME != noone) {
 	var path_id = asset_get_index(PATH_NAME);
-	if (path_id != -1) path_start(path_id, 6*global.scale, 0, 0);
+	if (path_id != -1) path_start(path_id, entranceSpeed, 0, 0);
 }
 
 if (MODE == "STANDARD") {
@@ -85,6 +86,3 @@ else if (MODE == "ROGUE") {
 // If global.fastenter == 1, adjust timing variables for faster enemy entry.
 // fasty set to 50 steps to speed up entry animations.
 if (global.fastenter == 1) fasty = 50;
-
-
-	

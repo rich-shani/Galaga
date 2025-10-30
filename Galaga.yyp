@@ -71,6 +71,8 @@
     {"$GMIncludedFile":"","%Name":"oImperialShuttle.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"oImperialShuttle.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"oTieFighter.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"oTieFighter.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"oTieIntercepter.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"oTieIntercepter.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"rogue_spawn.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"rogue_spawn.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
+    {"$GMIncludedFile":"","%Name":"speed_curve.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"speed_curve.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"wave_spawn.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"wave_spawn.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
   ],
   "isEcma":false,
