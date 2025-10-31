@@ -2,7 +2,7 @@
   "$GMProject":"v1",
   "%Name":"Galaga",
   "AudioGroups":[
-    {"$GMAudioGroup":"","%Name":"audiogroup_default","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
+    {"$GMAudioGroup":"v1","%Name":"audiogroup_default","exportDir":"","name":"audiogroup_default","resourceType":"GMAudioGroup","resourceVersion":"2.0","targets":-1,},
   ],
   "configs":{
     "children":[],
@@ -81,7 +81,7 @@
     {"name":"StarFieldEmitter","path":"particlelib/StarFieldEmitter/StarFieldEmitter.yy",},
   ],
   "MetaData":{
-    "IDEVersion":"2024.13.1.193",
+    "IDEVersion":"2024.14.0.207",
   },
   "name":"Galaga",
   "resources":[
@@ -290,6 +290,7 @@
     {"id":{"name":"challenging","path":"scripts/challenging/challenging.yy",},},
     {"id":{"name":"Controller_draw_fns","path":"scripts/Controller_draw_fns/Controller_draw_fns.yy",},},
     {"id":{"name":"CRTFunctions","path":"scripts/CRTFunctions/CRTFunctions.yy",},},
+    {"id":{"name":"ErrorHandling","path":"scripts/ErrorHandling/ErrorHandling.yy",},},
     {"id":{"name":"GameConstants","path":"scripts/GameConstants/GameConstants.yy",},},
     {"id":{"name":"GameManager_STEP_FNs","path":"scripts/GameManager_STEP_FNs/GameManager_STEP_FNs.yy",},},
     {"id":{"name":"get_scores","path":"scripts/get_scores/get_scores.yy",},},
@@ -298,7 +299,6 @@
     {"id":{"name":"instance_create","path":"scripts/instance_create/instance_create.yy",},},
     {"id":{"name":"newlevel","path":"scripts/newlevel/newlevel.yy",},},
     {"id":{"name":"object_get_depth","path":"scripts/object_get_depth/object_get_depth.yy",},},
-    {"id":{"name":"oEnemyBase_FNs","path":"scripts/oEnemyBase_FNs/oEnemyBase_FNs.yy",},},
     {"id":{"name":"rogueturn","path":"scripts/rogueturn/rogueturn.yy",},},
     {"id":{"name":"set_score","path":"scripts/set_score/set_score.yy",},},
     {"id":{"name":"setup_gmscoreboard","path":"scripts/setup_gmscoreboard/setup_gmscoreboard.yy",},},

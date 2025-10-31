@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"oEnemyBase_FNs",
+  "%Name":"ErrorHandling",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"oEnemyBase_FNs",
+  "name":"ErrorHandling",
   "parent":{
     "name":"Scripts",
     "path":"folders/Scripts.yy",

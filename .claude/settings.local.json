@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(find:*)",
+      "Bash(student)",
+      "Bash(quick:*)",
+      "Bash(error \")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -17,15 +17,15 @@
 //	instance_destroy();
 //}
   
-if (global.fastenter == 1 && global.open == 1) {
-	// delays the onset of the faster speed, so its looks like acceleration
-	if (fasty > 0) {
-		fasty -= 1;
-	} else {
-//		pathSpeed = pathSpeed * 1.5;
-//		baseSpeed = baseSpeed * 1.5;
-	}
-}
+//if (global.fastenter == 1 && global.open == 1) {
+//	// delays the onset of the faster speed, so its looks like acceleration
+//	if (fasty > 0) {
+//		fasty -= 1;
+//	} else {
+////		pathSpeed = pathSpeed * 1.5;
+////		baseSpeed = baseSpeed * 1.5;
+//	}
+//}
 	
 // CHALLENGE enemy are killed if they leave the screen
 if (enemyMode == EnemyMode.CHALLENGE) {
@@ -50,15 +50,6 @@ else if (enemyMode == EnemyMode.ROGUE) {
 	}
 	else if (y > 462 * global.scale) {
 		// shift to straight down
-		// y += 6;
-		
-		//// Adjust direction towards 270 (downwards)
-		//if (direction < 270) {
-		//	direction += 1;
-		//}
-		//if (direction > 270) {
-		//	direction -= 1;
-		//}
 		
 		// have we left the bottom of the screen?
 		if (y > 592 * global.scale) {
@@ -89,11 +80,31 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 	}
 
-	// Calculate breathing (formation oscillation) positions
+	/// ================================================================
+	/// BREATHING ANIMATION - Formation oscillation effect
+	/// ================================================================
+	/// Creates a smooth wave-like motion for enemies in formation.
+	/// The breathing effect occurs around the formation position and syncs
+	/// with global.breathe variable which cycles 0-120.
+	/// breathing provides visual feedback that enemies are "alive"
+	/// ================================================================
 	breathex = xstart + ((global.breathe / 120) * (48 * ((xstart - 448) / 368))) + floor(oGameManager.x);
 	breathey = ystart + ((global.breathe / 120) * (48 * ((ystart - 128) / 288)));
-	
-	// Transformation logic (enemy transforms into another type)
+
+	/// ================================================================
+	/// TRANSFORMATION LOGIC - Enemy morphing into special types
+	/// ================================================================
+	/// Triggers random enemy transformations when specific conditions met.
+	/// This adds variety and challenge to later waves.
+	/// Requirements:
+	///   • Transformation tokens available (global.transnum > 0)
+	///   • Enemy is in formation and alive
+	///   • Random chance (1 in 6) passes
+	///   • Dive capacity available
+	///   • Player is active and not invulnerable
+	///   • Less than 21 enemies on screen
+	///   • Player is not firing
+	/// ================================================================
 	if (global.transnum > 0) {
 		if (
 			enemyState == EnemyState.IN_FORMATION && irandom(5) == 0 && global.divecap > 0 &&
@@ -102,26 +113,39 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) < 21 &&
 			global.open == 0 && oPlayer.alarm[4] == -1
 		) {
+			// Trigger transformation animation (50 frames)
 			alarm[2] = 50;
 			global.transform = 1;
 			sound_play(GTransform);
 		}
 	}
 
-	///=======================
+	/// ================================================================
+	/// ENEMY STATE MACHINE - Coordinate enemy behavior
+	/// ================================================================
+	/// Each enemy progresses through states from entry to attack:
+	///   1. ENTER_SCREEN       → Following entrance path
+	///   2. MOVE_INTO_FORMATION → Transitioning to grid position
+	///   3. IN_FORMATION       → Stationary, breathing, awaiting dive chance
+	///   4. IN_DIVE_ATTACK     → Diving at player (can loop or go final)
+	///   5. IN_LOOP_ATTACK     → Looping back to formation
+	///   6. IN_FINAL_ATTACK    → Last two enemies - aggressive attack
+	/// ================================================================
 
 	if (enemyState == EnemyState.ENTER_SCREEN) {
+		/// Enemies enter from off-screen, following a predefined path
+		/// When path completes (path_position >= 1), move to formation
 
-		// check if path has ended ... move to formation
 		if (path_position >= 1) {
-
-			// look-up formation position based on INDEX
+			/// Path entry is complete, now move into grid formation
+			/// Look up the formation grid position using enemy's INDEX (1-40)
 			xstart = formation.POSITION[INDEX]._x;
 			ystart = formation.POSITION[INDEX]._y;
-		
-			// Set speed for fast entry or normal
+
+			/// Set speed for this movement phase
 			speed = entranceSpeed;
 
+			/// Transition to next state: moving into grid formation
 			enemyState = EnemyState.MOVE_INTO_FORMATION;
 		}
 	}
@@ -143,52 +167,96 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 	}
 	else if (enemyState == EnemyState.IN_FORMATION) {
-		// LOGIC to rotate sprite during ALARM[0] is active
-		// To align the sprite to face-down in formation 
+		/// ================================================================
+		/// IN_FORMATION STATE - Enemy is in grid, awaiting attack command
+		/// ================================================================
+		/// This is the "calm" state where enemies breathe and look for
+		/// opportunities to dive at the player. It's the majority state.
+		///
+		/// Activities:
+		///   1. Rotate sprite to face downward (270°)
+		///   2. Apply breathing oscillation for visual effect
+		///   3. Monitor for dive attack conditions
+		///   4. Prevent collisions with other formation enemies
+		/// ================================================================
 
-		// 270 degree is pointing down 
-		// ... 0 is to the right, 90 is up, 180 left, 270 down
+		/// === SPRITE ROTATION ===
+		/// Smoothly rotate sprite to face down (270 degrees)
+		/// Rotation is skipped while alarm[0] is active (post-entry animation)
+		/// This aligns enemy direction with their dive path
+		///
+		/// GameMaker rotation angles:
+		///   0°   = facing right
+		///   90°  = facing up
+		///   180° = facing left
+		///   270° = facing down (dive direction)
+
 		if ((alarm[0] == -1) && direction != 270) {
-		
+			// Rotation alarm expired, set direction to down
 			direction = 270;
-		} 
+		}
 		else if (abs(direction - 270) > 6) {
+			// Smoothly rotate toward down direction (6 degrees per frame)
 			direction += 6;
 		}
-	
-		// Move to breathing position
+
+		/// === BREATHING OSCILLATION ===
+		/// Update position with breathing effect
+		/// This creates the wave-like motion of the formation
 		x = breathex;
 		y = breathey;
-	
-		// Random chance to start a dive attack
+
+		/// === DIVE ATTACK TRIGGER ===
+		/// Monitor conditions to initiate dive attack when safe
+		///
+		/// Global conditions (prevent inopportune attacks):
+		///   • global.divecap > 0 : Dive slots available
+		///   • global.open == 0 : Not spawning new enemies
+		///   • oPlayer.alarm[4] == -1 : Player is not invulnerable (cooldown)
+		///
+		/// Dive trigger probability: ~10% per frame (irandom(10) == 0)
+
 		if (global.divecap > 0 and global.open == 0 and oPlayer.alarm[4] == -1) {
 			if (
 				irandom(10) == 0 && global.prohib == 0 &&
 				alarm[2] == -1 && oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0
 			) {
+				/// All conditions met - initiate dive attack
+
+				// Set global flags to prevent concurrent dives
 				global.prohib = 1;
 				oGameManager.alarm[0] = 15;
+
+				// Set shooting timer (shots during dive)
 				alarm[1] = 90;
+
+				// Play dive sound effect
 				sound_stop(GDive);
 				sound_play(GDive);
 
-				// Choose path based on starting position
+				/// === DIVE PATH SELECTION ===
+				/// Choose appropriate dive path based on starting formation position
+				/// This creates asymmetric dives that depend on initial position
+
 				if (xstart > 224 * global.scale) {
+					// Enemy on right side of formation → use right dive path
 					if (attributes.STANDARD.DIVE_PATH1 != noone) {
-						var path_id = asset_get_index(attributes.STANDARD.DIVE_PATH1);
+						var path_id = safe_get_asset(attributes.STANDARD.DIVE_PATH1, -1);
 						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 					}
 				} else {
+					// Enemy on left side of formation → use left dive path
 					if (attributes.STANDARD.DIVE_ALT_PATH1 != noone) {
-						var path_id = asset_get_index(attributes.STANDARD.DIVE_ALT_PATH1);
+						var path_id = safe_get_asset(attributes.STANDARD.DIVE_ALT_PATH1, -1);
 						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
-					}				
+					}
 				}
-				
+
+				// Transition to dive attack state
 				enemyState = EnemyState.IN_DIVE_ATTACK;
 			}
 		}
-		
+
 	}
 	else if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 	

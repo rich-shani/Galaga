@@ -64,31 +64,110 @@ targx = 0;
 // Complements targx for navigation or attack patterns.
 targy = 0;
 
-formation = global.formation_data;
-attributes = global.enemy_attributes[$ ENEMY_NAME];
-  
-//formation = load_json_datafile("Patterns/formation_coordinates.json");
-//attributes = load_json_datafile("Patterns/" + ENEMY_NAME + ".json");
+/// ================================================================
+/// SAFE DATA INITIALIZATION - Load global game data
+/// ================================================================
+/// Validates that required global data structures are loaded and
+/// accessible. These structures contain game-wide configuration
+/// loaded from JSON files during GameManager initialization.
+///
+/// Critical structures:
+///   • global.formation_data: Grid positions for all enemies
+///   • global.enemy_attributes: Stats (health, points, etc.) by type
+/// ================================================================
 
-hitCount = attributes.HEALTH;
-
-if (PATH_NAME != noone) {
-	var path_id = asset_get_index(PATH_NAME);
-	if (path_id != -1) path_start(path_id, entranceSpeed, 0, 0);
+// Validate formation data exists
+if (!is_struct(global.formation_data)) {
+	log_error("global.formation_data is not initialized", "oEnemyBase Create_0", 3);
+	global.formation_data = {};  // Fallback to empty structure
 }
 
-if (MODE == "STANDARD") {
-	enemyMode = EnemyMode.STANDARD;
-	
-	/// @section Dive Alarm Setup
-	// Set alarm[5] to control the timing of enemy shots
-	// For waves 1 or 2, use 75 steps (1.25 seconds) or 63 steps if global.fastenter == 1 (faster entry).
-	// For wave 0, use a shorter 10-step delay (0.167 seconds).
-	if (global.wave == 1 || global.wave == 2) {
-	    alarm[5] = 75;
-	    if (global.fastenter == 1) { alarm[5] = 63; }
+// Validate enemy attributes map exists
+if (!is_struct(global.enemy_attributes)) {
+	log_error("global.enemy_attributes is not initialized", "oEnemyBase Create_0", 3);
+	global.enemy_attributes = {};  // Fallback to empty structure
+}
+
+// === ASSIGNMENT ===
+/// Store references to global data for use throughout object lifetime
+formation = global.formation_data;
+
+/// === LOAD ENEMY-SPECIFIC ATTRIBUTES ===
+/// Safely retrieve this enemy type's stats from the attributes map
+/// Uses safe_struct_get() to avoid crashes if enemy type not found
+attributes = safe_struct_get(global.enemy_attributes, ENEMY_NAME, {});
+
+// === VALIDATE REQUIRED FIELDS ===
+/// Check that essential attributes exist, provide safe defaults
+/// HEALTH is critical - determines how many hits enemy can take
+if (!struct_exists(attributes, "HEALTH")) {
+	log_error("Enemy attributes missing HEALTH for: " + ENEMY_NAME, "oEnemyBase Create_0", 2);
+	attributes.HEALTH = 1;  // Default: 1 hit to kill (fallback)
+}
+
+/// === INITIALIZE HITCOUNT ===
+/// hitCount tracks damage taken. When hitCount reaches 0, enemy dies.
+hitCount = attributes.HEALTH;
+
+/// ================================================================
+/// PATH INITIALIZATION - Set up entrance animation
+/// ================================================================
+/// Each enemy follows a predefined path from spawn point to formation.
+/// Paths are visual in GameMaker editor, providing choreographed entry
+/// animations. Path names vary by spawn direction (top/bottom, left/right).
+/// ================================================================
+
+if (PATH_NAME != noone && is_string(PATH_NAME)) {
+	// Safely retrieve path asset with error handling
+	var path_id = safe_get_asset(PATH_NAME, -1);
+
+	if (path_id != -1) {
+		/// Path found - begin entrance animation
+		/// Parameters:
+		///   path_id: Asset ID of the path to follow
+		///   entranceSpeed: Speed along path (pixels per frame)
+		///   0: Path mode (point-to-point, not smooth)
+		///   0: Closed path (false - open-ended)
+		path_start(path_id, entranceSpeed, 0, 0);
 	} else {
-	    alarm[5] = 10;
+		/// Path asset not found
+		/// Enemy will be created but won't move during entrance
+		/// This is non-fatal but indicates missing path asset
+		log_error("Failed to start path for enemy: " + ENEMY_NAME + " (path: " + PATH_NAME + ")", "oEnemyBase Create_0", 2);
+	}
+}
+
+/// ================================================================
+/// GAME MODE INITIALIZATION
+/// ================================================================
+/// Set the game mode which determines enemy behavior patterns.
+/// Three modes exist: STANDARD (normal waves), CHALLENGE (bonus), ROGUE (special)
+/// ================================================================
+
+if (MODE == "STANDARD") {
+	/// === STANDARD MODE ===
+	/// Normal enemy spawned from regular waves
+	/// Uses all standard behaviors: formation, diving, attacking
+
+	enemyMode = EnemyMode.STANDARD;
+
+	/// === DIVE ATTACK TIMING ===
+	/// Set alarm[5] to control when this enemy can fire shots
+	///
+	/// Timing varies by wave:
+	///   • Waves 0: 10 frames (0.167s) - quick, scattered attacks
+	///   • Waves 1-2: 75 frames (1.25s) - standard 1-2s interval
+	///   • Waves 1-2 (fast): 63 frames (1.05s) - slightly faster during fast entry
+	///
+	/// This stagger prevents all enemies shooting simultaneously
+
+	if (global.wave == 1 || global.wave == 2) {
+		alarm[5] = 75;
+		if (global.fastenter == 1) {
+			alarm[5] = 63;  // Faster intervals during fast entry mode
+		}
+	} else {
+		alarm[5] = 10;  // Wave 0: shorter delay
 	}
 }
 else if (MODE == "CHALLENGE") {

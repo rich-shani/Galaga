@@ -1,16 +1,42 @@
-/// @description Destroy event for oTieFighter
-/// Handles scoring, sound, and special effects when a Tie Fighter is destroyed.
-if (!global.isGameOver) {
-	// Check if the Enemy is within the visible play area or during challenge mode
-	if (y > -16 * global.scale && y < 592 * global.scale && x > -16 && x < 464 * global.scale) { // && (y > -16 * global.scale || global.challcount > 0)) {
+/// @description Destroy event for oEnemyBase (and all enemy types)
+/// ================================================================
+/// ENEMY DESTRUCTION AND SCORING SYSTEM
+/// ================================================================
+/// Handles all effects when an enemy is destroyed, including:
+/// • Awarding player score (based on enemy state and mode)
+/// • Managing transformation counters
+/// • Playing appropriate sound effects
+/// • Tracking special achievement conditions
+///
+/// Only applies scoring and effects if the enemy dies within the
+/// visible play area, preventing score exploitation from off-screen kills.
+/// ================================================================
 
-		// If the Tie Fighter is diving
+if (!global.isGameOver) {
+	/// === BOUNDARY CHECK ===
+	/// Only award points and play effects for on-screen kills
+	/// This prevents exploiting off-screen enemy kills for free points
+	/// Boundaries: Y between -64 and 592, X between -64 and 464 (scaled)
+	if (y > -64 * global.scale && y < 592 * global.scale && x > -64 && x < 464 * global.scale) {
+
+		/// ================================================================
+		/// SCORING SYSTEM - Award points based on enemy state
+		/// ================================================================
+		/// Different point values reward different gameplay strategies:
+		/// • IN_DIVE_ATTACK: DIVE_POINT_VALUE (dangerous enemies worth more)
+		/// • Otherwise: POINT_VALUE (standard formation enemies)
+		///
+		/// Challenge mode multipliers apply different point values:
+		/// • In challenge: Uses DIVE_POINT_VALUE even for non-diving
+		/// • Normal waves: Uses CHALLENGE_POINT_VALUE
+		/// ================================================================
 		if (enemyState == EnemyState.IN_DIVE_ATTACK) {
+			/// Enemy is currently diving/attacking - grant invulnerability window
 			oPlayer.alarm[4] = global.hold + irandom(global.hold);
 
-			// If not in transformation state
+			/// If not a transformed enemy, award points for the kill
 			if (trans == 0) {
-				// Award score based on challenge mode
+				/// Award higher points for diving enemies (more dangerous)
 				if (global.challcount > 0 || global.chall == 1) {
 					global.p1score += attributes.DIVE_POINT_VALUE;
 				} else {
@@ -18,29 +44,53 @@ if (!global.isGameOver) {
 				}
 			}
 		} else {
-			// Not diving, award standard score
+			/// Enemy is in formation or other non-dive state - standard points
 			global.p1score += attributes.POINT_VALUE;
 		}
 
-		// Handle shot count and TransPoints creation outside challenge mode
+		/// ================================================================
+		/// TRANSFORMATION TRACKING AND COMBO SYSTEM
+		/// ================================================================
+		/// The transformation system tracks enemy combinations for bonuses.
+		/// When 3 specific enemies are destroyed in sequence, a special
+		/// combined enemy appears (Boss, Butterfly, etc.) worth bonus points.
+		///
+		/// Transformation combo mechanics:
+		/// • Tracks number of consecutive kills (shotcount for normal, transcount for transformed)
+		/// • After 8 kills: spawns TransPoints bonus (normal mode)
+		/// • After 3 transformations: spawns TransPoints bonus (transformation mode)
+		/// ================================================================
+
+		/// === NORMAL MODE COMBO TRACKING ===
+		/// Track regular enemy kills for TransPoints bonus
 		if global.challcount == 0 {
 			global.shotcount += 1;
+
+			/// Every 8 consecutive kills in normal mode creates a bonus
 			if global.shotcount == 8 {
 				instance_create(round(x), round(y), TransPoints);
 			}
 		}
 
-		// If in transformation state
+		/// === TRANSFORMATION MODE COMBO TRACKING ===
 		if trans == 1 {
+			/// Increment transformation counter and award transformation bonus
 			global.transcount += 1;
-			global.p1score += 160;
+			global.p1score += 160;  // Fixed bonus per transformed enemy
 
-			// Create TransPoints after 3 transformations
+			/// After 3 transformation kills, spawn TransPoints bonus
 			if global.transcount == 3 {
 				instance_create(round(x), round(y), TransPoints);
 			}
 
-			// Play transformation sounds based on transnum
+			/// ================================================================
+			/// TRANSFORMATION SOUND EFFECTS
+			/// ================================================================
+			/// Sound cues indicate which transformation stage was defeated:
+			/// • transnum = 1: Boss2 sound (first transformation)
+			/// • transnum = 2: Butterfly sound (second transformation)
+			/// • transnum = 3: Boss1 sound (third transformation)
+			/// ================================================================
 			if global.transnum == 1 {
 				sound_stop(GBoss2);
 				sound_play(GBoss2);
@@ -54,7 +104,16 @@ if (!global.isGameOver) {
 				sound_play(GBoss1);
 			}
 		} else {
-			// Play sounds based on challenge mode and challenge number
+			/// ================================================================
+			/// STANDARD SOUND EFFECTS
+			/// ================================================================
+			/// Sound cues vary by challenge stage type to provide audio feedback
+			/// Challenge stages 1-8 use different sound themes:
+			/// • Challenge 1: Bee sound
+			/// • Challenges 2,3,5,6,8: Butterfly sound
+			/// • Challenge 4: Boss2 sound
+			/// • Challenge 7: Boss1 sound
+			/// ================================================================
 			if global.challcount > 0 || global.chall == 1 {
 				sound_stop(GBee);
 				sound_play(GBee);
