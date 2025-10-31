@@ -1,22 +1,151 @@
-// Script assets have changed for v2.3.0 see
-// https://help.yoyogames.com/hc/en-us/articles/360005277377 for more information
+/// @file GameManager_STEP_FNs.gml
+/// @description Helper functions for game manager operations including initial entry,
+///              enemy counting, extra lives, level progression, wave spawning, and formation control
+
+/// @function init_globals
+/// @description Initializes all global game variables used throughout the application
+///              This centralizes global state initialization for better maintainability
+///              Should be called once in oGameManager Create event before any other initialization
+/// @return {undefined}
+function init_globals() {
+    // === DEBUG MODE ===
+    global.debug = false; // Debug mode flag (set to true for debug output)
+
+    // === ROOM AND DISPLAY SETTINGS ===
+    global.roomname = "GalagaWars"; // Current room name (can be "GalagaWars", "Galaga", "Galaga2")
+
+    // Scale the system based on the room mode
+    global.scale = 1; // Default scale
+    if (global.roomname == "GalagaWars") {
+        global.scale = 2; //SCALE_GALAGA_WARS; // 2x scale for Star Wars theme
+    } else {
+        global.scale = 1; //SCALE_GALAGA_ORIGINAL; // 1x scale for original Galaga
+    }
+
+    // Screen dimensions
+    global.screen_width = view_get_wport(view_current);
+    global.screen_height = view_get_hport(view_current);
+
+    // Global variable to determine if we have applied the path scaler already
+    // ie on a game restart, we don't want to re-scale again all the path data
+    global.scalePath = false;
+
+    // === HIGH SCORES ===
+    // Top 5 high scores, initialized to 0
+    global.galaga1 = 0; // First place
+    global.galaga2 = 0; // Second place
+    global.galaga3 = 0; // Third place
+    global.galaga4 = 0; // Fourth place
+    global.galaga5 = 0; // Fifth place
+
+    // High score initials (3 characters each)
+    global.init1 = "AA "; // First place initials
+    global.init2 = "BB "; // Second place initials
+    global.init3 = "CC "; // Third place initials
+    global.init4 = "DD "; // Fourth place initials
+    global.init5 = "EE "; // Fifth place initials
+
+    // Displayed high score
+    global.disp = 0;
+
+    // === PLAYER STATE ===
+    global.p1score = 0; // Player 1's current score
+    global.p1lives = get_config_value("PLAYER", "STARTING_LIVES", 3); // Player lives
+    global.credits = 0; // Number of game credits (coins entered)
+
+    // Shot tracking
+    global.shotcount = 0; // Shots fired in current wave
+    global.shottotal = 0; // Total shots fired
+
+    // === GAME STATE ===
+    global.gameMode = GameMode.INITIALIZE; // Initial game mode
+    global.isGameOver = false; // Game over flag
+    global.isGamePaused = false; // Pause state flag
+
+    // === LEVEL/WAVE PROGRESSION ===
+    global.lvl = 8; // Current level
+    global.wave = 0; // Current wave within level
+    global.stage = 0; // Current stage
+    global.pattern = 0; // Current spawn pattern
+    global.spawnCounter = 0; // Tracks current spawn index
+
+    // === CHALLENGE STAGE ===
+    global.isChallengeStage = false; // Is currently in challenge stage
+    global.chall = 0; // Current challenge number (1-8)
+    global.challcount = 1; // Counter for challenge stage progression
+    global.nLvls2ChallengeStage = get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS);
+
+    // === ENEMY BEHAVIOR ===
+    global.flip = 0; // Sprite/screen flip control
+    global.animationIndex = 0; // Animation frame index
+
+    // Dive and attack capacity
+    global.divecap = get_config_value("ENEMIES", "MAX_DIVE_CAP", 2); // Current dive capacity
+    global.divecapstart = get_config_value("ENEMIES", "DIVE_CAP_START", 2); // Starting dive capacity
+    global.bosscap = get_config_value("ENEMIES", "MAX_BOSS_DIVE_CAP", 2); // Boss dive capacity
+
+    // Enemy state flags
+    global.open = 0; // Open flag for wave spawning
+    global.breathing = 1; // Breathing animation state
+    global.breathe = 0; // Breathing cycle position
+    global.prohib = 0; // Prohibit dive flag
+    global.transform = 0; // Transformation state
+    global.beamcheck = 0; // Boss beam check
+    global.transcount = 0; // Transformation counter
+    global.escortcount = 0; // Escort enemy counter
+    global.fighterstore = 0; // Stored fighter count
+    global.bosscount = 1; // Boss counter
+
+    // Rogue enemy settings
+    global.rogue = 0; // Rogue level
+    global.checkRoguePerWave = false; // Check rogue spawn per wave
+
+    // Speed and timing
+    global.fast = 0; // Fast mode flag
+    global.fastenter = 0; // Fast entry flag
+    global.entershot = 0; // Entry shot flag
+    global.transnum = 0; // Transformation number
+    global.hold = 15; // Hold time
+    global.beamtime = 300; // Beam duration
+    global.shotnumber = 2; // Number of shots
+    global.lastattack = 4; // Last attack threshold
+
+    // === DIFFICULTY SCALING ===
+    global.speedMultiplier = get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0);
+
+    // === VISUAL SETTINGS ===
+    global.ArcadeSprites = true; // Use arcade-style sprites
+    global.ArcadeSpritesPrefix = "OG_"; // Prefix for arcade sprite names
+    global.enemy_animation_speed = 0; // Enemy animation speed modifier
+
+    // === RESULT TRACKING ===
+    global.results = 0; // Results display flag
+
+    show_debug_message("Global variables initialized successfully");
+}
+
+/// @function Enter_Initials
+/// @description Handles player input for entering initials on the high score screen
+///              Allows navigation through character cycle and selection of characters
+///              for high score name entry
+/// @return {undefined}
 function Enter_Initials(){
     // === NAVIGATE LEFT THROUGH CHARACTER CYCLE ===
-    if keyboard_check(vk_left) and alarm[6] == -1 {
+    if keyboard_check(vk_left) and alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
         cyc -= 1;  // Move to previous character in the 'cycle' string
         if cyc == 0 {
             cyc = string_length(cycle); // Wrap around to last character if we go before the first
         }
-        alarm[6] = 10; // Cooldown to prevent rapid input (10 frames)
+        alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Cooldown to prevent rapid input (10 frames)
     }
 
     // === NAVIGATE RIGHT THROUGH CHARACTER CYCLE ===
-    if keyboard_check(vk_right) and alarm[6] == -1 {
+    if keyboard_check(vk_right) and alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
         cyc += 1; // Move to next character in the 'cycle' string
         if cyc == string_length(cycle) + 1 {
             cyc = 1; // Wrap around to first character if we go past the end
         }
-        alarm[6] = 10; // Cooldown to prevent rapid input
+        alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Cooldown to prevent rapid input
     }
 
     // === SELECT CURRENT CHARACTER ===
@@ -72,15 +201,15 @@ function Enter_Initials(){
 	
             // Adjust timer to move to next screen or scorer
             if loop == 1 {
-                alarm[7] -= 2;
+                alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] -= 2;
             }
             if loop == 2 {
-                alarm[7] -= 1;
+                alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] -= 1;
             }
             loop = 3; // Set to end loop state (post-entry phase)
 
             if scored > 1 {
-                alarm[7] = 120; // Longer delay if more than one player is entering initials
+                alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] = 120; // Longer delay if more than one player is entering initials
             }
         }
     }
@@ -89,15 +218,25 @@ function Enter_Initials(){
     char = global.results - 2;
 }
 
+/// @function nOfEnemies
+/// @description Counts the total number of active enemies across all enemy types
+///              Includes: Bee, TieFighter, TieIntercepter, ImperialShuttle, Butterfly, Boss, Fighter, Transform
+/// @return {Real} Total count of active enemy instances
 function nOfEnemies() {
 	// return the total number of active enemies (all enemies)
 	return instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) +
 			instance_number(Butterfly) + instance_number(Boss) + instance_number(Fighter) + instance_number(Transform);
 }
 
+/// @function checkForExtraLives
+/// @description Awards extra lives to the player based on score thresholds
+///              Default: First life at 20,000 points, then every 70,000 points after
+///              Stops awarding lives after 1,000,000 points (configurable)
+/// @return {undefined}
 function checkForExtraLives() {
 	// Award extra lives based on score thresholds
-	if global.p1score > firstlife and global.p1score < 1000000 {
+	var max_score = get_config_value("SCORE", "MAX_SCORE_FOR_EXTRA_LIVES", MAX_SCORE_FOR_EXTRA_LIVES);
+	if global.p1score > firstlife and global.p1score < max_score {
 	    if firstlife == 20000 {
 	        firstlife = 0; // Reset first life marker
 	    }
@@ -107,10 +246,14 @@ function checkForExtraLives() {
 	}
 }
 
-function readyForNextLevel() {	
+/// @function readyForNextLevel
+/// @description Checks if all conditions are met to advance to the next level
+///              Requires: no enemies, nextlevel==0, no open flag, player active
+/// @return {Bool} True if transitioning to next level, false otherwise
+function readyForNextLevel() {
 	//// If no enemies are present and all game conditions are met,
 	//// initiate transition to the next level.
-	if (alarm[10] != -1) return true;
+	if (alarm[AlarmIndex.LEVEL_ADVANCE] != -1) return true;
 	
 	if nOfEnemies() == 0 &&
 	    nextlevel == 0 &&
@@ -119,13 +262,13 @@ function readyForNextLevel() {
 		global.gameMode == GameMode.GAME_ACTIVE {
 		
 		
-		// trigger oGameManager.alarm[10] with nextlevel == 1
+		// trigger oGameManager.alarm[LEVEL_ADVANCE] with nextlevel == 1
 		// this is to skip the 'PLAYER 1' message above STAGE 1
-		nextlevel = 1; 
-		// trigger the initial level variables - ie Alarm[10] with nextlevel == 1
-		alarm[10] = 1; 
-		
-		alarm[11] = 90; 
+		nextlevel = 1;
+		// trigger the initial level variables - ie Alarm[LEVEL_ADVANCE] with nextlevel == 1
+		alarm[AlarmIndex.LEVEL_ADVANCE] = 1;
+
+		alarm[AlarmIndex.SPAWN_FORMATION_TIMER] = 90; 
 				
 		return true;
 	}
@@ -133,8 +276,13 @@ function readyForNextLevel() {
 	return false;
 }
 
+/// @function checkDiveCapacity
+/// @description Calculates and updates the available dive capacity for enemies
+///              Limits how many enemies can be diving or attacking simultaneously
+///              Checks all enemy types and reduces capacity for active divers
+/// @return {undefined}
 function checkDiveCapacity() {
-	
+
     // Reset dive cap to its starting value at the beginning of each frame
     global.divecap = global.divecapstart;
 
@@ -148,25 +296,19 @@ function checkDiveCapacity() {
 
     with oTieFighter {
         if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
-            global.divecap -= 1; // Bees actively diving or about to dive
+            global.divecap -= 1; // TieFighters actively diving or about to dive
         }
     }
 
     with oTieIntercepter {
         if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
-            global.divecap -= 1; // Bees actively diving or about to dive
+            global.divecap -= 1; // TieIntercepters actively diving or about to dive
         }
     }
-	
+
     with oImperialShuttle {
         if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
-            global.divecap -= 1; // Bees actively diving or about to dive
-        }
-    }
-
-    with oTieIntercepter {
-        if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
-            global.divecap -= 1; // Bees actively diving or about to dive
+            global.divecap -= 1; // ImperialShuttles actively diving or about to dive
         }
     }
 	
@@ -201,6 +343,11 @@ function checkDiveCapacity() {
     }
 }
 
+/// @function controlEnemyFormation
+/// @description Controls the breathing animation and sound for enemy formation
+///              Manages the oscillating motion of enemies in formation and syncs
+///              the breathing sound effect with visual animation
+/// @return {undefined}
 function controlEnemyFormation() {
 	// Controls breathing motion of a visual/background element and audio
 
@@ -270,6 +417,10 @@ function controlEnemyFormation() {
     }
 }
 
+/// @function load_enemy_waves
+/// @description Loads enemy wave spawn data from a JSON file
+/// @param {String} _datafile Path to the JSON data file (relative to game directory)
+/// @return {Struct} Parsed JSON data structure, or undefined if file not found
 function load_enemy_waves(_datafile) {
 	var _data = "";
 
@@ -290,6 +441,10 @@ function load_enemy_waves(_datafile) {
 	}	
 }
 
+/// @function load_json_datafile
+/// @description Generic JSON file loader for game data files
+/// @param {String} _datafile Path to the JSON data file (relative to game directory)
+/// @return {Struct} Parsed JSON data structure, or undefined if file not found
 function load_json_datafile(_datafile) {
 	var _data = "";
 
@@ -310,12 +465,21 @@ function load_json_datafile(_datafile) {
 	}	
 }
 
+/// @function nRogueEnemies
+/// @description Returns the number of rogue enemies to spawn for current level and wave
+///              Uses rogue_config data loaded from rogue_spawn.json
+/// @return {Real} Number of rogue enemies to spawn
 function nRogueEnemies() {
     // Get spawn count for current rogue level and wave
     var rogue_level_data = rogue_config.ROGUE_LEVELS[global.rogue];
     return rogue_level_data.SPAWN_COUNT[global.wave];
 }
 
+/// @function spawnRogueEnemy
+/// @description Spawns a single rogue enemy using ROGUE_ prefixed paths
+///              Handles combination spawns (paired enemies) recursively
+/// @param {Real} _spawn The spawn index in the wave data
+/// @return {undefined}
 function spawnRogueEnemy(_spawn) {
 	// Get the enemy data from a specific SPAWN instance
 	var enemy_data = spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN[_spawn];
@@ -336,14 +500,23 @@ function spawnRogueEnemy(_spawn) {
 	}
 }
 
+/// @function spawnRogueEnemies
+/// @description Spawns multiple rogue enemies for the current wave
+/// @param {Real} _nRogues Number of rogue enemies to spawn
+/// @return {undefined}
 function spawnRogueEnemies(_nRogues) {
-	
+
 	// loop to SPAWN _nRogues (and check for a COMBINATION SPAWN)
 	for (var i=0; i < _nRogues; i++ ) {
 		spawnRogueEnemy(global.spawnCounter-2);
 	}
 }
 
+/// @function spawnEnemy
+/// @description Spawns a standard enemy using data from wave_spawn.json
+///              Automatically handles combination spawns (paired enemies)
+///              Increments the global spawn counter after spawning
+/// @return {undefined}
 function spawnEnemy() {
 	var enemy_data = spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN[global.spawnCounter];
 				
@@ -372,28 +545,46 @@ function spawnEnemy() {
 	}
 }
 
+/// @function waveComplete
+/// @description Checks if all enemies in the current wave have been spawned
+/// @return {Bool} True if all spawn indices have been processed
 function waveComplete() {
 
 	return (global.spawnCounter == array_length(spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN));
 }
 
+/// @function patternComplete
+/// @description Checks if all waves in the current pattern have been completed
+/// @return {Bool} True if all waves in pattern are done
 function patternComplete() {
 
 	return (global.wave == array_length(spawn_data.PATTERN[global.pattern].WAVE));
 }
 
+/// @function getChallengeData
+/// @description Retrieves challenge stage data for the current challenge number
+///              Note: global.chall is 1-indexed (1-8), array is 0-indexed
+/// @return {Struct} Challenge data structure with paths and wave information
 function getChallengeData() {
 	// Get the challenge data for the current challenge (global.chall is 1-8)
 	// Array is 0-indexed, so subtract 1
 	return challenge_data.CHALLENGES[global.chall - 1];
 }
 
+/// @function getChallengeWaveData
+/// @description Retrieves wave data for the current wave in the current challenge
+/// @return {Struct} Wave data structure with enemy type and spawn settings
 function getChallengeWaveData() {
 	// Get the wave data for the current wave in the current challenge
 	var chall_data = getChallengeData();
 	return chall_data.WAVES[global.wave];
 }
 
+/// @function spawnChallengeEnemy
+/// @description Spawns a challenge stage enemy based on current wave and challenge
+///              Handles wave-specific path selection and enemy alternation
+///              Used for challenge stage-specific spawning logic
+/// @return {undefined}
 function spawnChallengeEnemy() {
 	var chall_data = getChallengeData();
 	var wave_data = getChallengeWaveData();
@@ -463,8 +654,13 @@ function spawnChallengeEnemy() {
 	                      { ENEMY_NAME: object_get_name(enemy_id), INDEX: -1, PATH_NAME: path_name, MODE: "CHALLENGE" });
 }
 
+/// @function Game_Loop
+/// @description Main game loop that handles all active gameplay logic
+///              Manages enemy spawning, wave progression, challenge stages, and game state
+///              Called from oGameManager Step event when in GAME_ACTIVE mode
+/// @return {undefined}
 function Game_Loop(){
-	
+
 	if (global.isGamePaused) return;
 	if (readyForNextLevel()) return;
 	
@@ -489,7 +685,7 @@ function Game_Loop(){
 				// SPAWN ENEMY
 				spawnEnemy();
 			}
-			else if (!global.checkRoguePerWave) { // WaveComplete
+			else if (!global.checkRoguePerWave) { // Wave Complete
 				// check if we need to ADD any ROGUE enemies to this wave				
 				var nRogue = nRogueEnemies();
 				if (nRogue > 0) {
@@ -513,8 +709,8 @@ function Game_Loop(){
             }
 			else {
 				// more WAVES to complete, or current WAVE is still moving into formation ... wait
-				// 12 frame delay before next WAVE SPAWN
-				alarm[2] = 9; 
+				// Frame delay before next WAVE SPAWN (using WAVE_SPAWN_DELAY constant)
+				alarm[AlarmIndex.SPAWN_DELAY] = WAVE_SPAWN_DELAY; 
 			}
 		}
 	}
@@ -522,577 +718,6 @@ function Game_Loop(){
 		// We've completed the PATTERN
 		global.open = 0;
 	}
-                //if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	            //    // Random chance to spawn a rogue Bee
-	            //    if count1 > 0 || rogue1 > 0 {
-	            //        if random(1) < (rogue1 / (rogue1 + count1)) {
-	            //        rogueyes = 1;
-	            //        }
-	            //    }
-	            //    if (global.roomname == "GalagaWars") {
-				//		instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
-				//	}
-				//	else {
-				//		instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
-				//	}
-					
-	            //    // Random chance to spawn a rogue Butterfly
-	            //    if count2 > 0 || rogue2 > 0 {
-	            //        if random(1) < (rogue2 / (rogue2 + count2)) {
-	            //        rogueyes = 1;
-	            //        }
-	            //    }
-	            //    if (global.roomname == "GalagaWars") {
-				//		instance_create((448 - 256)*global.scale, -16*global.scale, oImperialShuttle); // Spawn from top
-				//	}
-				//	else {
-				//		instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly); // Spawn Butterfly from top
-				//	}
-					
-	            //    alarm[2] = 6; // Delay before next possible spawn
-                //}
-
-                //// Advance to next wave if all counts are zero
-                //if oPlayer.shipStatus == _ShipState.ACTIVE &&
-                //    count1 == 0 && count2 == 0 &&
-                //    rogue1 == 0 && rogue2 == 0 &&
-                //    global.divecap == global.divecapstart {
-	            //    global.wave = 1;
-	            //    script_execute(waverogue); // Recalculate rogue spawn logic
-                //}
-	    //        }
-
-	    //        // ---- WAVE 1 ----
-	    //        if global.wave == 1 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-	    //            alt += 1;
-	    //            if alt == 2 { alt = 0; } // Alternate between Bee and Butterfly spawn
-
-	    //            if alt == 1 {
-	    //                // Chance for rogue Boss
-	    //                if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                    rogueyes = 1;
-	    //                }
-	    //                }
-	    //                instance_create(-16*global.scale, 496*global.scale, Boss); // Spawn Boss from bottom
-	    //                alarm[2] = 6;
-	    //            }
-
-	    //            if alt == 0 {
-	    //                // Chance for rogue Butterfly
-	    //                if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                    rogueyes = 1;
-	    //                }
-	    //                }
-		//				if (global.roomname == "GalagaWars") {
-		//					instance_create(-16*global.scale, 496*global.scale, oImperialShuttle); // Spawn from bottom
-		//				}
-		//				else {
-		//					instance_create(-16*global.scale, 496*global.scale, Butterfly); // Spawn Butterfly from bottom
-		//				}
-
-	    //                alarm[2] = 6;
-	    //            }
-	    //            }
-
-	    //            // Advance to next wave
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
-	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //                global.divecap == global.divecapstart {
-	    //            global.wave = 2;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 2 to 4 ----
-
-	    //        // ---- WAVE 2 ----
-	    //        if global.wave == 2 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //                // Alternate logic to randomly pick a rogue
-	    //                if alt == 0 {
-	    //                if count1 > 0 || rogue1 > 0 {
-	    //                    if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                    rogueyes = 1;
-	    //                    }
-	    //                }
-	    //                } else {
-	    //                if count2 > 0 || rogue2 > 0 {
-	    //                    if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                    rogueyes = 1;
-	    //                    }
-	    //                }
-	    //                }
-		//				if (global.roomname == "GalagaWars") {
-		//					instance_create(464*global.scale, 496*global.scale, oImperialShuttle); // Spawn from bottom-right
-		//				}
-		//				else {
-		//					instance_create(464*global.scale, 496*global.scale, Butterfly); // Spawn Butterfly from bottom-right
-		//				}
-
-	    //                alt += 1;
-	    //                if alt == 2 { alt = 0; } // Toggle alt
-	    //                alarm[2] = 6; // Spawn delay
-	    //            }
-
-	    //            // Transition to next wave
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
-	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //                global.divecap == global.divecapstart {
-	    //                global.wave = 3;
-	    //                script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 3 ----
-	    //        if global.wave == 3 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //                if alt == 0 {
-	    //                if count1 > 0 || rogue1 > 0 {
-	    //                    if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                    rogueyes = 1;
-	    //                    }
-	    //                }
-	    //                } else {
-	    //                if count2 > 0 || rogue2 > 0 {
-	    //                    if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                    rogueyes = 1;
-	    //                    }
-	    //                }
-	    //                }
-
-		//                if (global.roomname == "GalagaWars") {
-		//					instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
-		//				}
-		//				else {
-		//					instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
-		//				}
-
-	    //                alt += 1;
-	    //                if alt == 2 { alt = 0; }
-	    //                alarm[2] = 6;
-	    //            }
-
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
-	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //                global.divecap == global.divecapstart {
-	    //                global.wave = 4;
-	    //                script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 4 ----
-	    //        if global.wave == 4 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //                if alt == 0 {
-	    //                if count1 > 0 || rogue1 > 0 {
-	    //                    if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                    rogueyes = 1;
-	    //                    }
-	    //                }
-	    //                } else {
-	    //                if count2 > 0 || rogue2 > 0 {
-	    //                    if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                    rogueyes = 1;
-	    //                    }
-	    //                }
-	    //                }
-					
-		//                if (global.roomname == "GalagaWars") {
-		//					instance_create(256*global.scale, -16*global.scale, oTieFighter); // Spawn from top
-		//				}
-		//				else {
-		//					instance_create(256*global.scale, -16*global.scale, Bee); // Spawn Bee from top
-		//				}
-
-	    //                alt += 1;
-	    //                if alt == 2 { alt = 0; }
-	    //                alarm[2] = 6;
-	    //            }
-
-	    //            // === Fighter spawning logic ===
-	    //            if global.fighterstore == 0 && instance_number(Fighter) == 0 {
-	    //                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //                global.divecap == global.divecapstart {
-	    //                global.open = 0;
-	    //                }
-	    //            } else {
-	    //                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //                alarm[2] == -1 {
-	    //                instance_create(192*global.scale, -16*global.scale, Fighter); // Spawn fighter unit
-	    //                }
-	    //            }
-
-	    //            // === Close level if all enemies are cleared and fighter finished dive
-	    //            if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //                global.divecap == global.divecapstart && Fighter.dive == 0 {
-	    //                global.open = 0;
-	    //            }
-	    //        }
-	    //    } // End of challenge pattern 0
-    
-
-	    //    // === PATTERN 1 ===
-	    //    // A different arrangement of waves and spawn directions (e.g., mirrored or center-based logic)
-
-	    //    if global.pattern == 1 {
-
-	    //        // ---- WAVE 0 ----
-	    //        if global.wave == 0 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Random chance for rogue Bee
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create((448 - 288)*global.scale, -16*global.scale, Bee); // Bee from offset top-left
-
-	    //            // Random chance for rogue Butterfly
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create(288*global.scale, -16*global.scale, Butterfly); // Butterfly from offset top-right
-
-	    //            alarm[2] = 6;
-	    //            }
-
-	    //            // Advance wave if all enemies cleared and ship is alive
-	    //            if oPLayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-	    //            global.wave = 1;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 1 ----
-	    //        if global.wave == 1 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Rogue Boss spawn
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create(-16*global.scale, 496*global.scale, Boss); // Boss from lower left
-
-	    //            // Rogue Butterfly spawn
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create(-16*global.scale, (496 - 32)*global.scale, Butterfly); // Slightly offset Butterfly
-
-	    //            alarm[2] = 6;
-	    //            }
-
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
-	    //            count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //            global.divecap == global.divecapstart {
-	    //            global.wave = 2;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 2 ----
-	    //        if global.wave == 2 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Rogue Bee or Butterfly decision
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 0;
-	    //            instance_create(464*global.scale, 496*global.scale, Butterfly); // From far right
-
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 1;
-	    //            instance_create(464*global.scale, (496 - 32)*global.scale, Butterfly); // Another butterfly
-
-	    //            alarm[2] = 6;
-	    //            }
-
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
-	    //            count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //            global.divecap == global.divecapstart {
-	    //            global.wave = 3;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 3 ----
-	    //        if global.wave == 3 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //                // Attempt to spawn rogue Bee from top positions
-	    //                alt = 0;
-	    //                if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                    rogueyes = 1;
-	    //                }
-	    //                }
-	    //                instance_create((256 + 32)*global.scale, -16*global.scale, Bee);  // Slightly offset Bee
-
-	    //                alt = 1;
-	    //                if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                    rogueyes = 1;
-	    //                }
-	    //                }
-	    //                instance_create((228 + 32)*global.scale, -16*global.scale, Bee);  // Another Bee from nearby offset
-
-	    //                alarm[2] = 6;
-	    //            }
-
-	    //            // Advance wave once enemies are cleared
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE &&
-	    //                count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //                global.divecap == global.divecapstart {
-	    //                global.wave = 4;
-	    //                script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 4 ----
-	    //        if global.wave == 4 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //                // Patterned Bee spawns from mirrored offset
-	    //                if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                    rogueyes = 1;
-	    //                }
-	    //                }
-	    //                alt = 0;
-	    //                instance_create((448 - 256 - 32)*global.scale, -16*global.scale, Bee); // Left Bee
-
-	    //                if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                    rogueyes = 1;
-	    //                }
-	    //                }
-	    //                alt = 1;
-	    //                instance_create((448 - 228 - 32)*global.scale, -16*global.scale, Bee); // Right Bee
-
-	    //                alarm[2] = 6;
-	    //            }
-           
-		//            // === Final cleanup or Fighter spawn ===
-		//            // === Fighter spawning and pattern closing ===
-
-		//            // If no Fighters remain to deploy and no enemies are left, close the pattern
-		//            if global.fighterstore == 0 && instance_number(Fighter) == 0 {
-		//                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-		//                global.divecap == global.divecapstart {
-		//                global.open = 0;
-		//                }
-		//            } else {
-		//                // Otherwise deploy a fighter if enemies are clear and alarm is ready
-		//                if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-		//                alarm[2] == -1 {
-		//                instance_create(160*global.scale, -16*global.scale, Fighter); // Spawn Fighter unit from mid-top
-		//                }
-		//            }
-			
-		//            // End pattern if Fighter dive is complete and no enemies remain
-		//            if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-		//                global.divecap == global.divecapstart && Fighter.dive == 0 {
-		//                global.open = 0;
-		//            }
-		//		}
-	    //    }
-
-	    //    // === PATTERN 2 ===
-	    //    // A third pattern variation with different positioning for enemies.
-
-	    //    if global.pattern == 2 {
-
-	    //        // ---- WAVE 0 ----
-	    //        if global.wave == 0 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Spawn Bee with rogue chance
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create(256*global.scale, -16*global.scale, Bee);  // From top center
-
-	    //            // Spawn Butterfly with rogue chance
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create((448 - 256)*global.scale, -16*global.scale, Butterfly);  // From top offset right
-	    //            alarm[2] = 6;
-	    //            }
-
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-	    //            global.wave = 1;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 1 ----
-	    //        if global.wave == 1 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Rogue Boss spawn
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create(-16*global.scale, 496*global.scale, Boss); // From lower left
-
-	    //            // Rogue Butterfly spawn
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            instance_create(464*global.scale, 496*global.scale, Butterfly); // From lower right
-
-	    //            alarm[2] = 6;
-	    //            }
-
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-	    //            global.wave = 2;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 2 ----
-	    //        if global.wave == 2 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Left butterfly
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 0;
-	    //            instance_create(-16, 496, Butterfly);
-
-	    //            // Right butterfly
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 1;
-	    //            instance_create(464, 496, Butterfly);
-
-	    //            alarm[2] = 6;
-	    //            }
-
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-	    //            global.wave = 3;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 3 ----
-	    //        if global.wave == 3 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Bee 1
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 0;
-	    //            instance_create(256, -16, Bee);
-
-	    //            // Bee 2
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 1;
-	    //            instance_create(448 - 256, -16, Bee);
-
-	    //            alarm[2] = 6;
-	    //            }
-
-	    //            if oPlayer.shipStatus == _ShipState.ACTIVE && count1 == 0 && count2 == 0 &&
-	    //            rogue1 == 0 && rogue2 == 0 && global.divecap == global.divecapstart {
-	    //            global.wave = 4;
-	    //            script_execute(waverogue);
-	    //            }
-	    //        }
-
-	    //        // ---- WAVE 4 ----
-	    //        if global.wave == 4 {
-	    //            if (count1 > 0 || count2 > 0 || rogue1 > 0 || rogue2 > 0) && alarm[2] == -1 {
-
-	    //            // Bee 1
-	    //            if count1 > 0 || rogue1 > 0 {
-	    //                if random(1) < (rogue1 / (rogue1 + count1)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 0;
-	    //            instance_create(256, -16, Bee);
-
-	    //            // Bee 2
-	    //            if count2 > 0 || rogue2 > 0 {
-	    //                if random(1) < (rogue2 / (rogue2 + count2)) {
-	    //                rogueyes = 1;
-	    //                }
-	    //            }
-	    //            alt = 1;
-	    //            instance_create(448 - 256, -16, Bee);
-
-	    //            alarm[2] = 6;
-	    //            }
-	    //        }
-
-	    //        // === Final cleanup or Fighter spawn ===
-	    //        if global.fighterstore == 0 && instance_number(Fighter) == 0 {
-	    //        if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //            global.divecap == global.divecapstart {
-	    //            global.open = 0;
-	    //        }
-	    //        } else {
-	    //        if count1 == 0 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //            alarm[2] == -1 {
-	    //            instance_create(192, -16, Fighter);
-	    //        }
-	    //        }
-
-	    //        if count1 == -1 && count2 == 0 && rogue1 == 0 && rogue2 == 0 &&
-	    //        global.divecap == global.divecapstart && Fighter.dive == 0 {
-	    //            lobal.open = 0;
-	    //        }
-
-	    //    } // End of pattern 2
-	    //} // End of challenge pattern handling
   }
     // === NON-CHALLENGE WAVE / FALLBACK SPAWNING ===
     // This logic triggers if no challenge pattern is active, handling standard enemy waves.
@@ -1101,9 +726,9 @@ else {
 	// CHALLENGE STAGE LOGIC (JSON-based)
 
     // Only proceed if we're within valid wave range, alarm is inactive, and not transitioning to next level
-    if global.wave < 5 && alarm[2] == -1 && nextlevel == 0 {
+    if global.wave < CHALLENGE_TOTAL_WAVES && alarm[AlarmIndex.SPAWN_DELAY] == -1 && nextlevel == 0 {
 
-        if count < 8 {  // Only spawn if current wave hasn't reached full enemy count (e.g., 8 max)
+        if count < CHALLENGE_ENEMIES_PER_WAVE {  // Only spawn if current wave hasn't reached full enemy count
 
             var chall_data = getChallengeData();
             var wave_data = getChallengeWaveData();
@@ -1136,7 +761,7 @@ else {
                         instance_create_layer(path_get_x(path1flip_id, 0), path_get_y(path1flip_id, 0),
                                             "GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1_FLIP, MODE: "CHALLENGE" });
                     }
-                    alarm[2] = 6;
+                    alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_SPAWN_DELAY;
                 }
 
                 if global.wave == 1 {
@@ -1152,7 +777,7 @@ else {
                         instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
                                             "GameSprites", enemy2_id, { ENEMY_NAME: "oTieFighter", INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: "CHALLENGE" });
                     }
-                    alarm[2] = 6;
+                    alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_SPAWN_DELAY;
                 }
 
                 if global.wave == 2 {
@@ -1167,7 +792,7 @@ else {
                         instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
                                             "GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: "CHALLENGE" });
                     }
-                    alarm[2] = 6;
+                    alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_SPAWN_DELAY;
                 }
 
 				// advance count by 2, as this was a DOUBLE spawn
@@ -1175,17 +800,17 @@ else {
             } else {
                 // === NON-DOUBLED WAVE ===
                 spawnChallengeEnemy();
-                alarm[2] = 6;
+                alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_SPAWN_DELAY;
 				
 				count++;
             }
         } // End of count check for spawning
 
         // === ADVANCE WAVE ===
-        if count == 8 {
+        if count == CHALLENGE_ENEMIES_PER_WAVE {
             // If max enemies spawned and all cleared, reset for next wave
             if nOfEnemies() == 0 {
-                alarm[2] = 45;  // Delay before next wave starts
+                alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_WAVE_DELAY;  // Delay before next wave starts
                 global.wave += 1;
                 count = 0;
                 global.shottotal += global.shotcount;
@@ -1197,6 +822,10 @@ else {
 	}
 }
 
+/// @function Set_Nebula_Color
+/// @description Updates the scrolling nebula background color based on current level
+///              Cycles through predefined hue values to create visual variety
+/// @return {undefined}
 function Set_Nebula_Color() {
 	// change the hue mix for the nebula
 	if (scrolling_nebula_bg != -1) 
@@ -1216,6 +845,11 @@ function Set_Nebula_Color() {
 	}
 }
 
+/// @function Show_Instructions
+/// @description Displays game instructions and handles start game input
+///              Supports both gamepad and keyboard input
+///              Initializes all game state when player starts game
+/// @return {undefined}
 function Show_Instructions() {
 	var startGame = false;
 	// check if we have a gamepad
@@ -1271,10 +905,10 @@ function Show_Instructions() {
 
         // === PLAYER INITIAL VALUES ===
         global.p1score = 0;
-        global.p1lives = 3;
+        global.p1lives = get_config_value("PLAYER", "STARTING_LIVES", 3);
 
-        firstlife   = 20000;  // Score threshold for first extra life
-        additional  = 70000;  // Score threshold for each subsequent extra life
+        firstlife   = get_config_value("PLAYER", "EXTRA_LIFE_FIRST", EXTRA_LIFE_FIRST_THRESHOLD);
+        additional  = get_config_value("PLAYER", "EXTRA_LIFE_ADDITIONAL", EXTRA_LIFE_ADDITIONAL_THRESHOLD);
 
 		// create the death star on the DeathStar layer (ie behind the game sprites)
 		instance_create_layer(0, 0, "DeathStar", oDeathStar);
@@ -1284,8 +918,8 @@ function Show_Instructions() {
 
         sound_play(GStart);  // Play game start sound
 
-        alarm[11] = 250;  // Start spawn / formation timer
-        alarm[8]  = 14;   // Start formation countdown
+        alarm[AlarmIndex.SPAWN_FORMATION_TIMER] = 250;  // Start spawn / formation timer
+        alarm[AlarmIndex.FORMATION_COUNTDOWN]  = 14;   // Start formation countdown
 
         fire = 0;   // Reset fire state
         hits = 0;   // Reset hit count

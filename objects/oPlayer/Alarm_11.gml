@@ -14,7 +14,7 @@ shipStatus = _ShipState.DEAD;
 
 // move Ship location off-screen
 // this addresses an edge condition with Enemy collision
-x = 224*global.scale*2;
+// x = 224*global.scale*2;
 
 // set timer (to pause before respawn, or game over)
 alarm[0] = 120;

@@ -28,7 +28,7 @@ if (nextlevel == 1) {
 			
             /// Increment the global level counter (global.lvl) to advance to the next level or wave.
             global.lvl += 1;
-					
+			
 		    /// Reset global wave counter to 0 to start a new wave cycle.
 		    global.wave = 0;
 			global.spawnCounter = 0;
@@ -89,15 +89,15 @@ if (nextlevel == 1) {
             /// Used in the ranking display system (e.g., to position tiles or determine UI layout).
             rank = onerank + tenrank + hundrank;
 
-            /// @subsubsection Clear Rank Display Layer
-            /// Delete the tile layer at depth -10, likely clearing the previous rank display tiles.
-            /// This prepares the screen for the new level’s rank or score display.
-            tile_layer_delete(-10);
+            /// @subsubsection Clear Rank Display Array
+            /// Clear the rank display sprites array from previous level
+            /// This prepares for the new level's rank display
+            rank_display_sprites = [];
 
             /// @subsubsection Set Rank Update Timer
-            /// Set alarm[1] to 7 steps (approximately 0.117 seconds at 60 FPS) to control the timing of rank updates.
+            /// Set alarm to 7 steps (approximately 0.117 seconds at 60 FPS) to control the timing of rank updates.
             /// Likely used to animate or stagger the display of rank digits.
-            alarm[1] = 7;
+            alarm[AlarmIndex.RANK_UPDATE] = 7;
         }
     }
 }

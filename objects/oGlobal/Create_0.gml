@@ -1,11 +1,29 @@
 // room name
-global.roomname = room_get_name(room);
+global.roomname = "GalagaWars"; //room_get_name(room);
 
 // scale the system based on the mode ...
 global.scale = 1;
 if (global.roomname == "GalagaWars") {
 	global.scale = 2;
 }
+
+/// @section Game Mode Enum
+// Enum defining the possible game modes for state management.
+// Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
+//enum GameMode {
+//	INITIALIZE = 0,
+//    ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
+//    INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
+//	GAME_PLAYER_MESSAGE,
+//	GAME_STAGE_MESSAGE,
+//	SPAWN_ENEMY_WAVES,
+//	GAME_READY,
+//    GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
+//	SHOW_RESULTS,
+//	ENTER_INITIALS,
+//	CHALLENGE_STAGE_MESSAGE,
+//	GAME_PAUSED
+//}
 
 // global variable to determine if we have applied the path scaler already
 // ie on a game restart, we don't want to re-scale again all the path data
@@ -57,6 +75,7 @@ global.init5 = "EE"; // Initials for fifth place;
 // Current wave or level of the game, initialized to 0.
 // Incremented as the player progresses through enemy waves or stages.
 global.wave = 0;
+global.spawnCounter = 0;
 
 /// @section Game State Flags
 // Open flag, initialized to 0.
@@ -74,6 +93,8 @@ global.stage = 0;
 // Initial game mode, set to attract mode (demo mode).
 // Controls whether the game is in gameplay, instructions, or demo state.
 global.gameMode = GameMode.INITIALIZE;
+
+global.speedMultiplier = 1.0;  // Base multiplier
 
 /// @section Game Over
 // Flag indicating game over state (0 = game active, 1 = game over).

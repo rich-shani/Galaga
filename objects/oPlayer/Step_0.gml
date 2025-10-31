@@ -67,14 +67,15 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			// check if fire has been pressed, if so (and we can) release a missile
 			if (fireIsPressed) {
 	
-				// check if we can spawn a new missile
-				if (missileInterval <= 0) {
+				// check if we can spawn a new missile,
+				// ie we only have two missiles active on screen (and a slight delay between firing) ...
+				if (missileInterval <= 0 && instance_number(oMissile) < 2) {
 					// spawn a player missile ...
 					instance_create_layer(x, y-48, "GameSprites", oMissile);
 		
 					// play the firing sound fx
 					audio_play_sound(GShot, 1, false);
-					missileInterval = 0.2*game_get_speed(gamespeed_fps);
+					missileInterval = 0.1*game_get_speed(gamespeed_fps);
 					
 					// increment the fire counter
 					oGameManager.fire += 1;

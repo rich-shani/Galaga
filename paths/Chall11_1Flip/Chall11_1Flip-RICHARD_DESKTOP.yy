@@ -1,0 +1,24 @@
+{
+  "$GMPath":"",
+  "%Name":"Chall11_1Flip",
+  "closed":false,
+  "kind":1,
+  "name":"Chall11_1Flip",
+  "parent":{
+    "name":"Challenge_1",
+    "path":"folders/Paths/GalagaWars/ChallengeStage/Challenge_1.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":544.0,"y":-32.0,},
+    {"speed":100.0,"x":544.0,"y":256.0,},
+    {"speed":100.0,"x":544.0,"y":648.0,},
+    {"speed":100.0,"x":208.0,"y":928.0,},
+    {"speed":100.0,"x":56.0,"y":896.0,},
+    {"speed":100.0,"x":50.0,"y":736.0,},
+    {"speed":100.0,"x":208.0,"y":640.0,},
+    {"speed":100.0,"x":990.0,"y":384.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

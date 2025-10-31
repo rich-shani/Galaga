@@ -1,0 +1,28 @@
+{
+  "$GMPath":"",
+  "%Name":"ROGUE_Ent_Bot_L2R_IN",
+  "closed":false,
+  "kind":1,
+  "name":"ROGUE_Ent_Bot_L2R_IN",
+  "parent":{
+    "name":"COMBO",
+    "path":"folders/Paths/GalagaWars/Entrance/ROGUE/COMBO.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-50.0,"y":982.0,},
+    {"speed":100.0,"x":133.0,"y":949.0,},
+    {"speed":100.0,"x":261.0,"y":880.0,},
+    {"speed":80.0,"x":261.0,"y":760.0,},
+    {"speed":60.0,"x":140.0,"y":760.0,},
+    {"speed":60.0,"x":140.0,"y":880.0,},
+    {"speed":80.0,"x":271.0,"y":880.0,},
+    {"speed":100.0,"x":271.0,"y":784.0,},
+    {"speed":100.0,"x":309.94165,"y":750.9667,},
+    {"speed":100.0,"x":343.39166,"y":763.0,},
+    {"speed":100.0,"x":358.99164,"y":809.45,},
+    {"speed":100.0,"x":357.425,"y":866.6333,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

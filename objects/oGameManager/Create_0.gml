@@ -1,98 +1,91 @@
-// DEBUG MODE
-global.debug = false;
+/// @description Initializes game controller, global variables, and game systems
+/// This is the main initialization point for the entire game
 
-// room name
-global.roomname = room_get_name(room);
-
-// scale the system based on the mode ...
-global.scale = 1;
-if (global.roomname == "GalagaWars") {
-	global.scale = 2;
-}
-
-/// @section High Scores
-// Global variables to store the top 5 high scores, initialized to 0.
-// These are likely used to track and display the highest scores achieved by players.
-global.galaga1 = 0; // First place high score.
-global.galaga2 = 0; // Second place high score.
-global.galaga3 = 0; // Third place high score.
-global.galaga4 = 0; // Fourth place high score.
-global.galaga5 = 0; // Fifth place high score.
+///// @section High Scores (MOVED TO init_globals())
+//// Global variables to store the top 5 high scores, initialized to 0.
+//// These are likely used to track and display the highest scores achieved by players.
+//global.galaga1 = 0; // First place high score.
+//global.galaga2 = 0; // Second place high score.
+//global.galaga3 = 0; // Third place high score.
+//global.galaga4 = 0; // Fourth place high score.
+//global.galaga5 = 0; // Fifth place high score.
 
 /// @section Game Mechanics
 // Flag to control sprite or screen flipping (0 = no flip, likely 1 = flip).
 // Possibly used for visual effects or mirroring game elements (e.g., ship or enemy sprites).
-global.flip = 0;
-global.animationIndex = 0;
+//global.flip = 0;
+//global.animationIndex = 0;
 
-// Number of lives for Player 1, initialized to 3.
-// Decremented when the player ship is destroyed; game over when it reaches 0.
-global.p1lives = 0;
+//// Number of lives for Player 1, initialized to 3.
+//// Decremented when the player ship is destroyed; game over when it reaches 0.
+//global.p1lives = 0;
 
-// Player 1's current score, initialized to 0.
-// Incremented based on enemy hits or other scoring events.
-global.p1score = 0;
+//// Player 1's current score, initialized to 0.
+//// Incremented based on enemy hits or other scoring events.
+//global.p1score = 0;
 
-// Displayed high score, initialized to 20000.
-// Likely used to show the current high score on the UI, updated if p1score exceeds it.
-global.disp = 20000;
+//// Displayed high score, initialized to 20000.
+//// Likely used to show the current high score on the UI, updated if p1score exceeds it.
+//global.disp = 20000;
 
-// number of game credits (coins entered)
-global.credits = 0;
+//// number of game credits (coins entered)
+//global.credits = 0;
 
-global.shotcount = 0;
-global.shottotal = 0;
+//global.shotcount = 0;
+//global.shottotal = 0;
 
-/// @section High Score Initials
-// Initials for the top 5 high scores, defaulting to two-letter placeholders.
-// Used to display player initials alongside high scores in the high-score table.
-global.init1 = "AA"; // Initials for first place.
-global.init2 = "BB"; // Initials for second place.
-global.init3 = "CC"; // Initials for third place.
-global.init4 = "DD"; // Initials for fourth place.
-global.init5 = "EE"; // Initials for fifth place;
+///// @section High Score Initials
+//// Initials for the top 5 high scores, defaulting to two-letter placeholders.
+//// Used to display player initials alongside high scores in the high-score table.
+//global.init1 = "AA"; // Initials for first place.
+//global.init2 = "BB"; // Initials for second place.
+//global.init3 = "CC"; // Initials for third place.
+//global.init4 = "DD"; // Initials for fourth place.
+//global.init5 = "EE"; // Initials for fifth place;
 
 /// @section Wave Progression
 // Current wave or level of the game, initialized to 0.
 // Incremented as the player progresses through enemy waves or stages.
-global.wave = 0;
-global.spawnCounter = 0;
+//global.wave = 0;
+//global.spawnCounter = 0;
 
 /// @section Game State Flags
 // Open flag, initialized to 0.
 // Purpose unclear; possibly controls access to a menu, level, or mechanic.
-global.open = 0;
+//global.open = 0;
 
-global.ArcadeSprites = true;
-global.ArcadeSpritesPrefix = "OG_";
-global.enemy_animation_speed = 0;
+//global.ArcadeSprites = true;
+//global.ArcadeSpritesPrefix = "OG_";
+//global.enemy_animation_speed = 0;
 
 // Current stage or level, initialized to 0.
 // May track sub-levels within a wave or specific game phases.
-global.stage = 0;
+//global.stage = 0;
 
 // Initial game mode, set to attract mode (demo mode).
 // Controls whether the game is in gameplay, instructions, or demo state.
-global.gameMode = GameMode.INITIALIZE;
+//global.gameMode = GameMode.INITIALIZE;
 
 /// @section Game Over
 // Flag indicating game over state (0 = game active, 1 = game over).
 // Set when the player's lives reach 0 and no regain is possible.
-global.isGameOver = false;
+//global.isGameOver = false;
 
 // Initial position (off-screen to the right)
-global.screen_width = view_get_wport(view_current);
-global.screen_height = view_get_hport(view_current);
+//global.screen_width = view_get_wport(view_current);
+//global.screen_height = view_get_hport(view_current);
 
 // Speed difficulty scaling
-global.speedMultiplier = 1.0;  // Base multiplier
+//global.speedMultiplier = 1.0;  // Base multiplier
   
-// is the Game Paused?
-global.isGamePaused = false;
+//// is the Game Paused?
+//global.isGamePaused = false;
 
 /// @description Initializes global variables, enums, and controller state for the space shooter game.
 /// This script sets up the core game state, including scoring, lives, high scores, game modes, and other mechanics.
 /// It is assumed to run in the Create event of a controller object that manages global game logic.
+
+init_globals();
 
 /// @section Data Structures
 // Creates a data structure list to store dynamic game data.
@@ -111,6 +104,11 @@ lifecount = 0;
 // Loop counter, initialized to 0.
 // Likely used to control repeated actions, such as enemy spawning or wave cycles.
 loop = 0;
+
+/// @section Rank Display System
+// Array to store rank display sprite information for draw event
+// Each entry: { sprite_x, sprite_y, sprite_width, sprite_height, x_pos, y_pos }
+rank_display_sprites = [];
 
 /// @section Visual and Animation
 // Cycle counter, initialized to 0.
@@ -144,13 +142,13 @@ fire = 0;
 hits = 0;
 
 /// @section Extra Lives
-// Score threshold for awarding the first extra life, set to 20,000 points.
-// When global.p1score reaches this, an extra life is likely granted.
-firstlife = 20000;
+// Score threshold for awarding the first extra life
+// Loaded from config, defaults to 20,000 points
+firstlife = get_config_value("PLAYER", "EXTRA_LIFE_FIRST", EXTRA_LIFE_FIRST_THRESHOLD);
 
-// Score threshold for additional extra lives, set to 70,000 points.
-// Likely awards further lives at multiples of this value.
-additional = 70000;
+// Score threshold for additional extra lives
+// Loaded from config, defaults to 70,000 points
+additional = get_config_value("PLAYER", "EXTRA_LIFE_ADDITIONAL", EXTRA_LIFE_ADDITIONAL_THRESHOLD);
 
 /// @section Input and UI
 // String of characters for high-score input, including letters, space, and period.
@@ -212,23 +210,23 @@ hundrank = 0;
 // used for blinking UI elements, such as score or lives display.
 blink = 1;
 
-/// @section Game Mode Enum
-// Enum defining the possible game modes for state management.
-// Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
-enum GameMode {
-	INITIALIZE = 0,
-    ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
-    INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
-	GAME_PLAYER_MESSAGE,
-	GAME_STAGE_MESSAGE,
-	SPAWN_ENEMY_WAVES,
-	GAME_READY,
-    GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
-	SHOW_RESULTS,
-	ENTER_INITIALS,
-	CHALLENGE_STAGE_MESSAGE,
-	GAME_PAUSED
-}
+///// @section Game Mode Enum
+//// Enum defining the possible game modes for state management.
+//// Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
+//enum GameMode {
+//	INITIALIZE = 0,
+//    ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
+//    INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
+//	GAME_PLAYER_MESSAGE,
+//	GAME_STAGE_MESSAGE,
+//	SPAWN_ENEMY_WAVES,
+//	GAME_READY,
+//    GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
+//	SHOW_RESULTS,
+//	ENTER_INITIALS,
+//	CHALLENGE_STAGE_MESSAGE,
+//	GAME_PAUSED
+//}
 
 global.isChallengeStage = false;
 global.nLvls2ChallengeStage = 2;
@@ -241,19 +239,35 @@ hue_value = [0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 0.8, 0.97];
 
 attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.scale, "GameSprites", oAttractMode);
 
+// Load game data files
 spawn_data = load_enemy_waves("Patterns/wave_spawn.json");
 challenge_data = load_enemy_waves("Patterns/challenge_spawn.json");
 rogue_config = load_json_datafile("Patterns/rogue_spawn.json");
 speed_curves = load_json_datafile("Patterns/speed_curve.json");
+// Load formation coordinates once (optimization - shared by all enemies)
+global.formation_data = load_json_datafile("Patterns/formation_coordinates.json");
 
-// setup the GM Scoreboard using the unique game tag
-setup_gmscoreboard("fd0828983a329a0be9e26c34d892769b");
+// Load enemy attributes once (optimization - prevents loading per enemy instance)
+global.enemy_attributes = {
+    oTieFighter: load_json_datafile("Patterns/oTieFighter.json"),
+    oTieIntercepter: load_json_datafile("Patterns/oTieIntercepter.json"),
+    oImperialShuttle: load_json_datafile("Patterns/oImperialShuttle.json")
+};
+  
+// Load game configuration
+global.game_config = load_game_config();
+
+// Setup the GM Scoreboard using the unique game tag (loaded from config)
+var game_tag = get_config_value("HIGH_SCORES", "GAME_TAG", "fd0828983a329a0be9e26c34d892769b");
+setup_gmscoreboard(game_tag);
 
 // get the current set of high-scores
 get_scores(5);
 
-// setup an alarm to refresh the high score table every 5 minutes
-alarm[3]=5*60*60;
+// Setup an alarm to refresh the high score table (using AlarmIndex enum)
+// Default: refresh every 5 minutes (300 seconds * 60 frames/second)
+var refresh_seconds = get_config_value("HIGH_SCORES", "REFRESH_INTERVAL_SECONDS", 300);
+alarm[AlarmIndex.HIGH_SCORE_REFRESH] = refresh_seconds * 60;
 
 // check if we have a gamepad connected
 useGamepad = false;

@@ -1,0 +1,24 @@
+{
+  "$GMPath":"",
+  "%Name":"Ent_Top_L2R_OUT",
+  "closed":false,
+  "kind":1,
+  "name":"Ent_Top_L2R_OUT",
+  "parent":{
+    "name":"COMBO",
+    "path":"folders/Paths/GalagaWars/Entrance/STANDARD/COMBO.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-34.0,"y":-32.0,},
+    {"speed":100.0,"x":-34.0,"y":64.0,},
+    {"speed":112.0,"x":380.0,"y":448.0,},
+    {"speed":155.0,"x":414.0,"y":590.0,},
+    {"speed":165.0,"x":350.57495,"y":669.0,},
+    {"speed":155.0,"x":259.0,"y":742.0,},
+    {"speed":112.0,"x":115.0,"y":668.0,},
+    {"speed":100.0,"x":0.0,"y":520.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

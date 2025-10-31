@@ -71,7 +71,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 
 		// reset vars
 		player_x = 448;
-		player_y = 1056;
+		player_y = 1024;
 	    hitFlag = 0; attpause = 0; attshot = 0; attshotx = 0; attshoty = 0; shipXPosTarget = 0;
 		
 		alarm[0] = 60;

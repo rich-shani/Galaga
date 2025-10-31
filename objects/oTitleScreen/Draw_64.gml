@@ -154,6 +154,11 @@ switch (ScreenShown) {
 				var player = item[? "player"];
 				var player_score = item[? "score"];
 
+				// update high-score counter
+				if (player_score > global.disp) {
+					global.disp = player_score;	
+				}
+				
 				draw_set_color(colors[min(i,4)]);
 				
 				draw_text(64*global.scale, (352 + 32*i)*global.scale, TITLE[i]);

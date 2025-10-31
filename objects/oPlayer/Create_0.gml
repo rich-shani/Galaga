@@ -17,7 +17,7 @@ if (global.roomname == "GalagaWars") {
 	SHIP_MIN_X = 64;
 	// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
 	// 432 is derived from the room width minus the ship's sprite width.
-	SHIP_MAX_X = 968;
+	SHIP_MAX_X = 832;
 	// Off-screen coordinate for shots (-32 ensures shots are not visible/processed).
 	SHOT_OFFSCREEN = -32;
 	// Speed of shots in pixels per step (12 pixels for consistent movement).
@@ -27,13 +27,13 @@ if (global.roomname == "GalagaWars") {
 	SHIP_MOVE_INCREMENT = 6;
 }
 
-enum _ShipState {
-	ACTIVE,
-	CAPTURED,
-	RELEASING,
-	DEAD,
-	RESPAWN
-}
+//enum _ShipState {
+//	ACTIVE,
+//	CAPTURED,
+//	RELEASING,
+//	DEAD,
+//	RESPAWN
+//}
 
 /// @section Ship State
 // Indicates the ship's life state (0 = alive, 1 = dead, 2 = respawning).

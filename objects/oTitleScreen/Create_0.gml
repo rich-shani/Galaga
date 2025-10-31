@@ -12,8 +12,6 @@ colors = [c_yellow, c_white, c_green, c_red, c_blue];
 		
 alarm[0] = 4*60;
 
-global.scale = 2;
-
 /// @section Attract Mode
 // Pause flag for attract mode, initialized to 0.
 // When non-zero, likely pauses attract mode animations or transitions.
@@ -38,7 +36,7 @@ sequence = 0;
 shipXPosTarget = 0;
 
 player_x = 448;
-player_y = 1056;
+player_y = 1024;
 
 SHIP_MOVE_INCREMENT = 6;
 
