@@ -280,6 +280,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			if (y > 368 * global.scale) {
 				/// BEAM ACTIVATION POSITION REACHED - Stop and fire beam
 				if (loop == 0) {
+					path_end();
+									
 					/// First frame at beam position: Stop movement and start charge sequence
 					speed = 0;
 					direction = 270;
@@ -297,8 +299,11 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 				/// BEAM FIRING COMPLETE - Begin dive away
 				if (loop < 0 && alarm[3] == -1) {
+					speed = entranceSpeed;
+									
 					/// Beam duration expired, start moving away
-					y = y + 4 * global.scale;
+				//	y = y + 4 * global.scale;
+					
 					loop = -2;  // Mark as firing complete
 				}
 			}
@@ -351,6 +356,9 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				x = breathex;
 				y = -16;
 
+				// reset beam loop
+				loop = 0;
+				
 				enemyState = EnemyState.MOVE_INTO_FORMATION;
 			}
 		}
