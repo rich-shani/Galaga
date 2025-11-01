@@ -63,7 +63,7 @@ function init_globals() {
     global.isGamePaused = false; // Pause state flag
 
     // === LEVEL/WAVE PROGRESSION ===
-    global.lvl = 8; // Current level
+    global.lvl = 0; // Current level
     global.wave = 0; // Current wave within level
     global.stage = 0; // Current stage
     global.pattern = 0; // Current spawn pattern

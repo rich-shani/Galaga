@@ -259,10 +259,54 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 	}
 	else if (enemyState == EnemyState.IN_DIVE_ATTACK) {
-	
+
+		/// ================================================================
+		/// BEAM WEAPON LOGIC - Special charge and firing system
+		/// ================================================================
+		/// Allows beam-capable enemies (like TIE Intercepters) to activate
+		/// a special beam weapon during the dive attack phase.
+		///
+		/// Beam activation occurs when:
+		/// • beam flag is enabled for this enemy
+		/// • Enemy reaches activation position (y > 368 * global.scale)
+		/// • Player is vulnerable (not invulnerable, not in dual mode)
+		///
+		/// Beam phases:
+		/// • loop = 0: Normal charging phase, moving to beam position
+		/// • loop = -1: Beam is active, charging animation playing
+		/// • loop = -2: Beam charging complete, beginning dive away
+		/// ================================================================
+		if (beam == 1) {
+			if (y > 368 * global.scale) {
+				/// BEAM ACTIVATION POSITION REACHED - Stop and fire beam
+				if (loop == 0) {
+					/// First frame at beam position: Stop movement and start charge sequence
+					speed = 0;
+					direction = 270;
+
+					/// Set beam duration timer (alarm[3] controls beam animation timing)
+					alarm[3] = global.beamtime;
+
+					/// Mark loop state as active (-1 means charging)
+					loop = -1;
+
+					/// Stop dive sound and play beam sound effect
+					sound_stop(GBeam);
+					sound_loop(GBeam);
+				}
+
+				/// BEAM FIRING COMPLETE - Begin dive away
+				if (loop < 0 && alarm[3] == -1) {
+					/// Beam duration expired, start moving away
+					y = y + 4 * global.scale;
+					loop = -2;  // Mark as firing complete
+				}
+			}
+		}
+
 		// follow DIVE path until a certain Y location ...
 		if (y <= 480 * global.scale) {
-			// do nothing ... execute DIVE PATH	
+			// do nothing ... execute DIVE PATH
 		}
 		else if ((y > 480 * global.scale)) {
 		

@@ -267,6 +267,8 @@
     {"id":{"name":"TI_PATH1","path":"paths/TI_PATH1/TI_PATH1.yy",},},
     {"id":{"name":"TI_PATH2_FLIP","path":"paths/TI_PATH2_FLIP/TI_PATH2_FLIP.yy",},},
     {"id":{"name":"TI_PATH2","path":"paths/TI_PATH2/TI_PATH2.yy",},},
+    {"id":{"name":"TI_RETURN_FLIP","path":"paths/TI_RETURN_FLIP/TI_RETURN_FLIP.yy",},},
+    {"id":{"name":"TI_RETURN","path":"paths/TI_RETURN/TI_RETURN.yy",},},
     {"id":{"name":"Transform1","path":"paths/Transform1/Transform1.yy",},},
     {"id":{"name":"Transform1Flip","path":"paths/Transform1Flip/Transform1Flip.yy",},},
     {"id":{"name":"Transform2","path":"paths/Transform2/Transform2.yy",},},

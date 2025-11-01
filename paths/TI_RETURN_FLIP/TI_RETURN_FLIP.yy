@@ -1,0 +1,21 @@
+{
+  "$GMPath":"",
+  "%Name":"TI_RETURN_FLIP",
+  "closed":false,
+  "kind":1,
+  "name":"TI_RETURN_FLIP",
+  "parent":{
+    "name":"TieIntercepter",
+    "path":"folders/Paths/GalagaWars/TieIntercepter.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":256.0,"y":640.0,},
+    {"speed":100.0,"x":256.0,"y":700.0,},
+    {"speed":100.0,"x":320.0,"y":700.0,},
+    {"speed":100.0,"x":320.0,"y":640.0,},
+    {"speed":100.0,"x":320.0,"y":256.0,},
+  ],
+  "precision":4,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}

@@ -1,37 +1,11 @@
-/// @section Enemy Behavior Variables
-//enum EnemyState {
-//	ENTER_SCREEN,
-//	MOVE_INTO_FORMATION,
-//	IN_FORMATION,
-//	IN_DIVE_ATTACK,
-//	IN_LOOP_ATTACK,
-//	IN_FINAL_ATTACK
-//}
+
 
 // spawn new enemy in the ENTER_SCREEN mode
 enemyState = EnemyState.ENTER_SCREEN;
 
-//enum EnemyMode {
-//	STANDARD,
-//	CHALLENGE,
-//	ROGUE
-//}
-
 // default is STANDARD enemy
 enemyMode = EnemyMode.STANDARD;
 	
-//#macro ENEMY_BASE_SPEED					6
-//#macro ENEMY_ENTRANCE_SPEED_MULTIPLIER	2
-//#macro FORMATION_ROTATION_ANGLE_STEP	6
-//#macro BREATHING_CYCLE_MAX				120
-//#macro DIVE_ALARM_STANDARD				75
-//#macro DIVE_ALARM_FAST					63
-//#macro DIVE_ALARM_INITIAL				10
-//#macro MAX_ENEMY_SHOTS					8
-//#macro ENEMY_SHOT_TIMING_1				60
-//#macro ENEMY_SHOT_TIMING_2				40
-//#macro ENEMY_SHOT_TIMING_3				20
-
 // Flag indicating if the enemy is an escort, initialized to 0 (0 = not escort, 1 = escort).
 // Escorts may have special behaviors, such as accompanying a boss or following unique paths.
 escort = 0;
@@ -181,3 +155,34 @@ else if (MODE == "ROGUE") {
 // If global.fastenter == 1, adjust timing variables for faster enemy entry.
 // fasty set to 50 steps to speed up entry animations.
 if (global.fastenter == 1) fasty = 50;
+
+/// ================================================================
+/// BEAM WEAPON SYSTEM - Special Ability
+/// ================================================================
+/// The beam weapon system allows special enemy types (like TIE Intercepters)
+/// to charge and fire a powerful energy beam at the player ship.
+///
+/// Beam mechanics:
+/// • beam: Flag indicating if this enemy can use beam weapon (0 = no, 1 = yes)
+/// • beamsignal: Tracks beam charging state during activation
+/// • loop: State machine for beam charging and firing phases
+/// • anim: Animation frame counter for beam sprite cycling
+///
+/// Beam can only activate once per dive attack when:
+/// • No other beam currently active
+/// • Player is in single-ship mode (not dual/doubled)
+/// • No fighters are captured
+/// • Global beam check flag is clear
+/// ================================================================
+
+// Beam weapon flag - set to 0 by default (disable until enabled by subclass)
+beam = 0;
+
+// Beam signal/state tracking during charge sequence
+beamsignal = 0;
+
+// Loop state machine for beam charging phases (0 = normal, -1 = charging, -2 = firing, etc)
+loop = 0;
+
+// Animation frame counter (used for beam sprite animation)
+anim = 0;
