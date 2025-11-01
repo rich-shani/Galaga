@@ -53,27 +53,20 @@ if (hitCount == 2) {
 /// Draw captured player sprite when player is held by this enemy's beam
 /// ================================================================
 /// If player is captured by this enemy's beam, render player sprite above
-if (oPlayer.shipStatus == _ShipState.CAPTURED && oPlayer.captor == id && beam_weapon.state == BEAM_STATE.FIRE) {
+if (oPlayer.shipStatus == _ShipState.CAPTURED && oPlayer.captor == id) {
 	/// Player is being carried by this TIE Intercepter's beam
 	/// Render player sprite with captured effects
 
 	/// Calculate rotation for captured ship spin animation
 	var player_rotation = (oPlayer.capturedanimation / 360) * 360;
 
-	/// Draw captured player sprite above enemy
-	if (global.roomname == "GalagaWars") {
-		/// GalagaWars: Use X-Wing with spin effect
-		draw_sprite_ext(xwing_sprite_sheet, 2, oPlayer.x, oPlayer.y, 0.8, 0.8, player_rotation, c_white, 1);
-	}
-	else {
-		/// Original Galaga room: Use ship sprite with spin effect
-		draw_sprite_ext(spr_ship, 0, oPlayer.x, oPlayer.y, 1, 1, player_rotation, c_white, 1);
-	}
+	/// GalagaWars: Use X-Wing with spin effect
+	draw_sprite_ext(xwing_sprite_sheet, 2, x, y-48, 0.6, 0.6, player_rotation, c_white, 1);
 
 	/// Draw pulsing glow effect around captured player
 	var glow_alpha = (sin(oPlayer.capturedanimation * 0.02) + 1) / 2;  // Oscillates 0 to 1
 	draw_set_alpha(glow_alpha * 0.5);
-	draw_circle_colour(oPlayer.x, oPlayer.y, 32, c_yellow, c_red, false);
+	draw_circle_colour(x, y-48, 32, c_yellow, c_red, false);
 	draw_set_alpha(1);
 }
 

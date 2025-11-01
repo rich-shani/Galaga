@@ -149,6 +149,16 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			enemyState = EnemyState.MOVE_INTO_FORMATION;
 		}
 	}
+	else if (enemyState == EnemyState.RETURN_PATH) {
+		// check if path has ended ...
+		if (path_position >= 1) {
+			/// Set speed for this movement phase
+			speed = entranceSpeed;
+
+			/// Transition to next state: moving into grid formation
+			enemyState = EnemyState.MOVE_INTO_FORMATION;		
+		}		
+	}
 	else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
 		// Have we reached the formation position?
 		// enemy can come in from bottom or top of screen, so use ABS()
@@ -312,11 +322,14 @@ else if (enemyMode == EnemyMode.STANDARD) {
 					/// Capture zone: Circular radius around beam center (48 pixels * global.scale)
 					else if (beam_weapon.state == BEAM_STATE.FIRE) {
 						/// Calculate distance from beam center to player
-						var distance_to_player = distance_to_point(oPlayer.x, oPlayer.y);
-						var capture_radius = 48 * global.scale;
+						//var distance_to_player = distance_to_point(oPlayer.x, oPlayer.y);
+						//var capture_radius = 48 * global.scale;
 
+						// check if player is 'within the tracker beam'
+						var withinBem = (oPlayer.x > x-32 && oPlayer.x < x+32);
+						
 						/// Check if player is within capture zone and is vulnerable
-						if (distance_to_player < capture_radius && oPlayer.shipStatus == _ShipState.ACTIVE) {
+						if (withinBem && oPlayer.shipStatus == _ShipState.ACTIVE) {
 							/// Player is captured by beam!
 							oPlayer.shipStatus = _ShipState.CAPTURED;
 

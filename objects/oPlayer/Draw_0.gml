@@ -38,25 +38,19 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 		/// Calculate rotation based on captured animation counter
 		/// Completes full rotation every 360 frames
-		var captured_rotation = (capturedanimation / 360) * 360;
+	//	var captured_rotation = (capturedanimation / 360) * 360;
 
-		if (global.roomname == "GalagaWars") {
-			/// GalagaWars room: Use X-Wing sprite with spin effect
-			var frame_index = (capturedanimation / 30) mod 2;  // Alternate frames
-			draw_sprite_ext(xwing_sprite_sheet, 2, x, y, 0.8, 0.8, captured_rotation, c_white, 1);
-		}
-		else {
-			/// Original Galaga room: Use ship sprite with spin effect
-			draw_sprite_ext(spr_ship, 0, x, y, 1, 1, captured_rotation, c_white, 1);
-		}
-
-		/// Draw a glowing effect around captured ship
-		if (!global.isGamePaused) {
-			/// Create pulsing glow effect
-			var glow_alpha = (sin(capturedanimation * 0.02) + 1) / 2;  // Oscillates 0 to 1
-			draw_set_alpha(glow_alpha * 0.5);
-			draw_circle_colour(x, y, 32, c_yellow, c_red, false);
-			draw_set_alpha(1);
-		}
+	//	/// GalagaWars room: Use X-Wing sprite with spin effect
+	//	var frame_index = (capturedanimation / 30) mod 2;  // Alternate frames
+	//	draw_sprite_ext(xwing_sprite_sheet, 2, x, y, 0.6, 0.6, captured_rotation, c_white, 1);
+	
+	//	/// Draw a glowing effect around captured ship
+	//	if (!global.isGamePaused) {
+	//		/// Create pulsing glow effect
+	//		var glow_alpha = (sin(capturedanimation * 0.02) + 1) / 2;  // Oscillates 0 to 1
+	//		draw_set_alpha(glow_alpha * 0.5);
+	//		draw_circle_colour(x, y, 32, c_yellow, c_red, false);
+	//		draw_set_alpha(1);
+	//	}
 	}
 }

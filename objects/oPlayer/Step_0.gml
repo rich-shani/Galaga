@@ -141,11 +141,11 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 				}
 
 				/// Check if captor is no longer in FIRE state (beam finished)
-				if (captor.beam_weapon.state != BEAM_STATE.FIRE) {
-					/// Beam has completed, release the player
-					shipStatus = _ShipState.ACTIVE;
-					captor = noone;
-				}
+				//if (captor.beam_weapon.state != BEAM_STATE.FIRE) {
+				//	/// Beam has completed, release the player
+				//	shipStatus = _ShipState.ACTIVE;
+				//	captor = noone;
+				//}
 			}
 			break;
 		case _ShipState.RELEASING: break;
