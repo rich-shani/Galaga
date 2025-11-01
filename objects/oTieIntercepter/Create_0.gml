@@ -23,7 +23,7 @@ event_inherited();
 /// === ENABLE BEAM WEAPON ===
 /// TIE Intercepters are equipped with a special beam weapon
 /// that can be fired during dive attack sequences
-beam = 1;
+beam_weapon.available = true;
 
 /// Optional: Add custom speed multiplier for intercepter aggressiveness
 /// These enemies may have different speed curves than standard fighters

@@ -175,14 +175,21 @@ if (global.fastenter == 1) fasty = 50;
 /// • Global beam check flag is clear
 /// ================================================================
 
-// Beam weapon flag - set to 0 by default (disable until enabled by subclass)
-beam = 0;
+// Beam weapon structure - set to false by default (disable until enabled by subclass)
+enum BEAM_STATE {
+	READY,
+	CHARGING,
+	FIRE,
+	FIRE_COMPLETE,
+	FAILED
+}
 
-// Beam signal/state tracking during charge sequence
-beamsignal = 0;
+beam_weapon = {
+	available : false,
 
-// Loop state machine for beam charging phases (0 = normal, -1 = charging, -2 = firing, etc)
-loop = 0;
-
-// Animation frame counter (used for beam sprite animation)
-anim = 0;
+	// state machine for beam charging phases (0 = normal, -1 = charging, -2 = firing, etc)
+	state : BEAM_STATE.READY,
+	
+	// Animation frame counter (used for beam sprite animation)
+	animation : 0
+};

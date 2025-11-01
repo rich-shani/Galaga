@@ -276,35 +276,42 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// • loop = -1: Beam is active, charging animation playing
 		/// • loop = -2: Beam charging complete, beginning dive away
 		/// ================================================================
-		if (beam == 1) {
-			if (y > 368 * global.scale) {
-				/// BEAM ACTIVATION POSITION REACHED - Stop and fire beam
-				if (loop == 0) {
-					path_end();
-									
-					/// First frame at beam position: Stop movement and start charge sequence
-					speed = 0;
-					direction = 270;
-
-					/// Set beam duration timer (alarm[3] controls beam animation timing)
-					alarm[3] = global.beamtime;
-
-					/// Mark loop state as active (-1 means charging)
-					loop = -1;
-
-					/// Stop dive sound and play beam sound effect
-					sound_stop(GBeam);
-					sound_loop(GBeam);
+		if (beam_weapon.available) {
+			
+			if ((y > 368 * global.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
+				
+				if (beam_weapon.state == BEAM_STATE.READY) {
+					// BEAM ACTIVATION POSITION REACHED 
+					// Check if PLAYER is in single mode && use a random one-in-three chance to activate
+					if ((oPlayer.shotMode == _ShotMode.SINGLE) && (irandom(2) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
+					else beam_weapon.state = BEAM_STATE.FAILED;
 				}
+				else { // BEAM will be CHARGING, then FIRE, then FIRE_COMPLETE
+					// advance the animation counter (used in Draw)
+					beam_weapon.animation += 1; if (beam_weapon.animation == 12) beam_weapon.animation = 0;
 
-				/// BEAM FIRING COMPLETE - Begin dive away
-				if (loop < 0 && alarm[3] == -1) {
-					speed = entranceSpeed;
+					if (beam_weapon.state == BEAM_STATE.CHARGING) {
+						path_end();
 									
-					/// Beam duration expired, start moving away
-				//	y = y + 4 * global.scale;
-					
-					loop = -2;  // Mark as firing complete
+						/// First frame at beam position: Stop movement and start charge sequence
+						speed = 0;
+						direction = 270;
+
+						/// Set beam duration timer (alarm[3] controls beam animation timing)
+						alarm[3] = global.beamtime;
+
+						/// Mark loop state as firing
+						beam_weapon.state = BEAM_STATE.FIRE;
+
+						/// Stop dive sound and play beam sound effect
+						sound_stop(GBeam);
+						sound_loop(GBeam);
+					}
+					else if (alarm[3] == -1) {
+						speed = entranceSpeed;
+
+						beam_weapon.state = BEAM_STATE.FIRE_COMPLETE;
+					}
 				}
 			}
 		}
@@ -356,8 +363,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				x = breathex;
 				y = -16;
 
-				// reset beam loop
-				loop = 0;
+				// reset beam state
+				if (beam_weapon.available) { beam_weapon.state = BEAM_STATE.READY; }
 				
 				enemyState = EnemyState.MOVE_INTO_FORMATION;
 			}

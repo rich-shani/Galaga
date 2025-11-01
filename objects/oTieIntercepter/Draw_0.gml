@@ -6,14 +6,24 @@
 /// ================================================================
 
 /// === BEAM ANIMATION OVERLAY ===
-/// Draw beam charging animation if beam is currently active (loop == -1)
-if (loop == -1) {
+/// Draw beam charging animation if beam is currently active 
+if (beam_weapon.state == BEAM_STATE.FIRE) {
 	/// Beam is in active firing phase - draw beam animation with scaling
 
 	/// BEAM CHARGE-UP PHASE: Scales from small to full size
 	/// Visible when alarm[3] is in upper 2/3 of timer duration
 	if (alarm[3] > ((2 * global.beamtime) / 3) - 1) {
-		draw_sprite_ext(spr_beam, floor(anim / 2), round(x), round(y),
+		
+		var a = alarm[3];
+		if (a < 250) {
+			var tmp = 1;
+		}
+		
+		var xscale = ((abs(global.beamtime - alarm[3]) * global.scale) / (global.beamtime / 3));
+		var yscale = ((abs(global.beamtime - alarm[3]) * global.scale) / (global.beamtime / 3));
+		var alpha = ((abs(global.beamtime - alarm[3])) / (global.beamtime / 3));
+		
+		draw_sprite_ext(spr_beam, floor(beam_weapon.animation / 2), round(x), round(y),
 			((abs(global.beamtime - alarm[3]) * global.scale) / (global.beamtime / 3)),
 			((abs(global.beamtime - alarm[3]) * global.scale) / (global.beamtime / 3)),
 			0, c_white, ((abs(global.beamtime - alarm[3])) / (global.beamtime / 3)));
@@ -21,15 +31,15 @@ if (loop == -1) {
 
 	/// BEAM SUSTAIN PHASE: Full size, full opacity
 	/// Visible in the middle 1/3 of timer duration
-	if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3) {
-		draw_sprite_ext(spr_beam, floor(anim / 2), round(x), round(y),
+	else if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3) {
+		draw_sprite_ext(spr_beam, floor(beam_weapon.animation / 2), round(x), round(y),
 			1 * global.scale, 1 * global.scale, 0, c_white, 1);
 	}
 
 	/// BEAM POWER-DOWN PHASE: Scales from full to small size
 	/// Visible when alarm[3] is in lower 1/3 of timer duration
-	if (alarm[3] < (global.beamtime / 3) + 1) {
-		draw_sprite_ext(spr_beam, floor(anim / 2), round(x), round(y),
+	else if (alarm[3] < (global.beamtime / 3) + 1) {
+		draw_sprite_ext(spr_beam, floor(beam_weapon.animation / 2), round(x), round(y),
 			((alarm[3] * global.scale) / (global.beamtime / 3)),
 			((alarm[3] * global.scale) / (global.beamtime / 3)),
 			0, c_white, ((alarm[3]) / (global.beamtime / 3)));
