@@ -109,7 +109,45 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			}		
 			
 			break;
-		case _ShipState.CAPTURED: break;
+		case _ShipState.CAPTURED:
+			/// ================================================================
+			/// CAPTURED STATE - Player follows captor enemy during beam attack
+			/// ================================================================
+			/// When captured by a beam weapon, the player ship is locked to the
+			/// capturing enemy's position with a fixed offset. The player cannot
+			/// move or fire while captured.
+			///
+			/// Capture behavior:
+			/// • Position: Follows captor with captured_offset_x/y
+			/// • Movement: Player input is ignored while captured
+			/// • Firing: Player cannot fire while captured
+			/// • Release: Captured status persists until beam sequence ends
+			/// ================================================================
+
+			/// Check if captor still exists
+			if (!instance_exists(captor)) {
+				/// Captor was destroyed, return to active state
+				shipStatus = _ShipState.ACTIVE;
+				captor = noone;
+			} else {
+				/// Follow the captor's position with offset
+				x = captor.x + captured_offset_x;
+				y = captor.y + captured_offset_y;
+
+				/// Increment animation counter for captured state effects
+				capturedanimation += 1;
+				if (capturedanimation >= 360) {
+					capturedanimation = 0;
+				}
+
+				/// Check if captor is no longer in FIRE state (beam finished)
+				if (captor.beam_weapon.state != BEAM_STATE.FIRE) {
+					/// Beam has completed, release the player
+					shipStatus = _ShipState.ACTIVE;
+					captor = noone;
+				}
+			}
+			break;
 		case _ShipState.RELEASING: break;
 		case _ShipState.RESPAWN:
 			// if timer has expired, then RESPAWN

@@ -307,7 +307,33 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						sound_stop(GBeam);
 						sound_loop(GBeam);
 					}
-					else if (alarm[3] == -1) {
+					/// === PLAYER CAPTURE ZONE ===
+					/// During beam FIRE phase, check if player is in capture zone
+					/// Capture zone: Circular radius around beam center (48 pixels * global.scale)
+					else if (beam_weapon.state == BEAM_STATE.FIRE) {
+						/// Calculate distance from beam center to player
+						var distance_to_player = distance_to_point(oPlayer.x, oPlayer.y);
+						var capture_radius = 48 * global.scale;
+
+						/// Check if player is within capture zone and is vulnerable
+						if (distance_to_player < capture_radius && oPlayer.shipStatus == _ShipState.ACTIVE) {
+							/// Player is captured by beam!
+							oPlayer.shipStatus = _ShipState.CAPTURED;
+
+							/// Store the capturing enemy reference
+							oPlayer.captor = id;
+
+							/// Lock player to enemy position (offset below enemy)
+							oPlayer.captured_offset_x = 0;
+							oPlayer.captured_offset_y = 28 * global.scale;
+
+							/// Play capture sound
+							sound_stop(GCaptured);
+							sound_play(GCaptured);
+						}
+					}
+
+					if (alarm[3] == -1) {
 						speed = entranceSpeed;
 
 						beam_weapon.state = BEAM_STATE.FIRE_COMPLETE;
