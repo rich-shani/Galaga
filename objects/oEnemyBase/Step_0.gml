@@ -155,6 +155,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			/// Set speed for this movement phase
 			speed = entranceSpeed;
 
+			sound_stop(GFighterCaptured);
 			/// Transition to next state: moving into grid formation
 			enemyState = EnemyState.MOVE_INTO_FORMATION;		
 		}		
@@ -296,7 +297,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 					if ((oPlayer.shotMode == _ShotMode.SINGLE) && (irandom(2) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
 					else beam_weapon.state = BEAM_STATE.FAILED;
 				}
-				else { // BEAM will be CHARGING, then FIRE, then FIRE_COMPLETE
+				else if (!global.isPlayerCaptured) { 
+					// BEAM will be CHARGING, then FIRE, then FIRE_COMPLETE
 					// advance the animation counter (used in Draw)
 					beam_weapon.animation += 1; if (beam_weapon.animation == 12) beam_weapon.animation = 0;
 
@@ -330,23 +332,58 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						
 						/// Check if player is within capture zone and is vulnerable
 						if (withinBem && oPlayer.shipStatus == _ShipState.ACTIVE) {
-							/// Player is captured by beam!
-							oPlayer.shipStatus = _ShipState.CAPTURED;
+							
+							// check if we're within the BEAM period
+							if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3) {
+								beam_weapon.state = BEAM_STATE.CAPTURE_PLAYER;
+							
+								/// Player is captured by beam!
+								oPlayer.shipStatus = _ShipState.CAPTURED;
 
-							/// Store the capturing enemy reference
-							oPlayer.captor = id;
+								/// Store the capturing enemy reference
+								oPlayer.captor = id;
+							
+								global.isPlayerCaptured = true;
 
-							/// Lock player to enemy position (offset below enemy)
-							oPlayer.captured_offset_x = 0;
-							oPlayer.captured_offset_y = 28 * global.scale;
-
-							/// Play capture sound
-							sound_stop(GCaptured);
-							sound_play(GCaptured);
+	        
+								sound_stop(GBeam); // Stop beam sound
+						        sound_loop(GCaptured); // Play captured sound
+							
+								alarm[0] = 90;
+								
+								// extend the beam to cover the period to CAPTURE the player
+						        alarm[3] = ((global.beamtime / 3) / (90 / alarm[0])) + 20; 
+							}
 						}
 					}
-
-					if (alarm[3] == -1) {
+					else if (beam_weapon.state == BEAM_STATE.CAPTURE_PLAYER) {
+						// animation to draw the player to the Enemy ...
+						
+						// player is at 1024, Enemy is at 736
+						// 90 seconds to move 288 pixels					
+						oPLayer.y = 736 + ((alarm[0] * 288) / 90); // Move ship vertically towards boss
+        
+						// align the PLAYER x with the centre of the Enemy 
+						if (oPlayer.x < x) { oPlayer.x += 3; }
+						else if (oPlayer.x > x) { oPlayer.x -= 3; }
+						
+					    //if (alarm[2] > -1) {
+					    //    oPlayer.spinanim -= 22.5; // Rotate ship
+					    //    if (oPlayer.spinanim == 0) { oPlayer.spinanim = 360; } // Reset rotation
+					    //}
+        
+					    //if (alarm[2] == -1) {
+					    //    grav = 0; // Reset gravity
+					    //    if (spinanim > 0) { spinanim -= 22.5; } // Continue rotation
+					    //}
+						
+						// rotate ship and draw up to enemy ...
+						// once captured, stop sound GCaptured (is loop?)
+						if (alarm[0] == -1) {
+							beam_weapon.state = BEAM_STATE.FIRE_COMPLETE;
+						}
+					}
+					else if (alarm[3] == -1) {
 						speed = entranceSpeed;
 
 						beam_weapon.state = BEAM_STATE.FIRE_COMPLETE;

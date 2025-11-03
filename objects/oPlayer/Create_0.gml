@@ -80,19 +80,8 @@ regain = 0;
 ///
 /// Capture mechanics:
 /// • captor: Reference to the enemy that captured the player
-/// • captured_offset_x: X offset from captor position
-/// • captured_offset_y: Y offset from captor position (below enemy)
-/// • capturedanimation: Animation counter for captured state
 /// ================================================================
 
 // Reference to the enemy that captured this player
 captor = noone;
 
-// X offset from captor's position when captured
-captured_offset_x = 0;
-
-// Y offset from captor's position when captured (defaults to 28 pixels below)
-captured_offset_y = 0;
-
-// Animation frame counter for captured spinning animation
-capturedanimation = 0;

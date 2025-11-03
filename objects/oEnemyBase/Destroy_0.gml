@@ -135,4 +135,14 @@ if (!global.isGameOver) {
 			}
 		}
 	}
+	
+	// check if this enemy had a CAPTURED PLAYER
+	if (oPlayer.captor == id) {
+	
+		// no longer captured ...
+		global.isPlayerCaptured = true;
+		
+		// notify oPlayer that a PLAYER will be released
+		oPlayer.alarm[3] = 1;
+	}
 }

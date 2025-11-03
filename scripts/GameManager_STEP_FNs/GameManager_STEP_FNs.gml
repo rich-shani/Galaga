@@ -61,7 +61,8 @@ function init_globals() {
     global.gameMode = GameMode.INITIALIZE; // Initial game mode
     global.isGameOver = false; // Game over flag
     global.isGamePaused = false; // Pause state flag
-
+	global.isPlayerCaptured = false;
+	
     // === LEVEL/WAVE PROGRESSION ===
     global.lvl = 0; // Current level
     global.wave = 0; // Current wave within level
