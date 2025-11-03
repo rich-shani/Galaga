@@ -51,31 +51,50 @@ if (hitCount == 2) {
 /// === CAPTURED PLAYER RENDERING ===
 /// ================================================================
 /// Draw captured player sprite when player is held by this enemy's beam
-/// Sprite rotates based on the direction of the TIE Intercepter
+/// Sprite position orbits around the TIE Intercepter and rotates based on
+/// the TIE Intercepter's direction. The X-Wing is always positioned at the
+/// "top" relative to the intercepter's current orientation.
 /// ================================================================
 /// If player is captured by this enemy's beam, render player sprite above enemy
 if (oPlayer.captor == id) {
 
 	var player_rotation = beam_weapon.animation * 30;
 
-	/// Calculate X-Wing rotation based on TIE Intercepter's current direction
-	/// The direction variable (0-359) is already in degrees, so we can use it directly
-	var xwing_direction_rotation = direction + 90;
+	/// Calculate X-Wing rotation to align with the top of the intercepter
+	/// The X-Wing sprite should always point towards the center of the intercepter
+	/// This is the opposite angle of where it is positioned on the circle
+
 
 	if (beam_weapon.state == BEAM_STATE.CAPTURE_PLAYER) {
-		/// CAPTURE_PLAYER: X-Wing spinning towards intercepter, rotates with intercepter's direction
-		/// Combines captured player spin animation with intercepter direction for immersive capture effect
-		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, player_rotation + xwing_direction_rotation, c_white, 1);
+		/// CAPTURE_PLAYER: X-Wing spinning in circular orbit around intercepter
+		/// Position orbits around the intercepter at fixed radius
+		/// Sprite spins while aligned with the intercepter's orientation
+		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, player_rotation, c_white, 1);
 	}
 	else {
-		/// FIRE/OTHER STATES: X-Wing held steady, aligned with intercepter's direction
-		/// Shows player oriented relative to the intercepter's orientation
-		draw_sprite_ext(xwing_sprite_sheet, 2, x, y-72, 0.8, 0.8, xwing_direction_rotation, c_white, 0.5);
+		/// FIRE/OTHER STATES: X-Wing held steady at rotating position
+		/// Position stays on the circle circumference, "above" the intercepter relative to its orientation
+		/// X-Wing sprite always aligns with the top of the intercepter
+		
+		/// Calculate X-Wing position on circle circumference
+		/// The X-Wing orbits around the intercepter (x, y) with a fixed radius.
+		/// It stays positioned at the "top" (270°) relative to the intercepter's direction.
+		/// Circle formula: x_pos = center_x + radius * cos(angle)
+		///                 y_pos = center_y + radius * sin(angle)
+		var circle_radius = 72;  // Distance from intercepter center to X-Wing
+		//var top_offset_angle = 90;  // 270° = "up" on the circle
+		//var circle_position_angle = degtorad(top_offset_angle + image_angle);
+		var xwing_center_rotation =  direction+90;
+	
+		var xwing_x = x - (circle_radius * cos(degtorad(-direction)));
+		var xwing_y = y - (circle_radius * sin(degtorad(-direction)));
+	
+		draw_sprite_ext(xwing_sprite_sheet, 2, xwing_x, xwing_y, 0.8, 0.8, xwing_center_rotation, c_white, 0.5);
 
-		/// Draw pulsing glow effect around captured player
+		/// Draw pulsing glow effect around captured player position on circle
 		var glow_alpha = (sin(player_rotation * 0.02) + 1) / 2;  // Oscillates 0 to 1
 		draw_set_alpha(glow_alpha * 0.5);
-		draw_circle_colour(x, y-72, 48, c_yellow, c_red, false);
+		draw_circle_colour(xwing_x, xwing_y, 48, c_yellow, c_red, false);
 		draw_set_alpha(1);
 	}
 }
