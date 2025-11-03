@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":6,
   "conversionMode":0,
-  "duration":3.168277,
+  "duration":3.1682765,
   "exportDir":"",
   "name":"GRescue",
   "parent":{

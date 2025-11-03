@@ -25,6 +25,7 @@ event_inherited();
 /// that can be fired during dive attack sequences
 beam_weapon.available = true;
 
-/// Optional: Add custom speed multiplier for intercepter aggressiveness
-/// These enemies may have different speed curves than standard fighters
-// moveSpeed = baseSpeed * 1.2;  // Uncomment to make intercepters faster
+#macro CIRCLE_RADIUS  72  // Distance from intercepter center to X-Wing
+
+captured_x = 0;
+captured_y = 0;

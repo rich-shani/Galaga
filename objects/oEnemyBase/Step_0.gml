@@ -80,19 +80,6 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 	}
 
-
-	/// ================================================================
-	/// BEAM ANIMATION - beam and captured player effect
-	/// ================================================================
-	/// if this enemy has a BEAM weapon, then advance the animation counter
-	/// the animation is used in the Draw() routine for the BEAM and CAPTURED player
-	/// ================================================================
-	
-	if (beam_weapon.available) {
-		// advance the animation counter (used in Draw)
-		beam_weapon.animation += 1; if (beam_weapon.animation == 12) beam_weapon.animation = 0;
-	}
-
 	/// ================================================================
 	/// BREATHING ANIMATION - Formation oscillation effect
 	/// ================================================================
