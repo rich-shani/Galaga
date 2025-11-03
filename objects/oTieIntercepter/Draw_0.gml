@@ -7,7 +7,7 @@
 
 /// === BEAM ANIMATION OVERLAY ===
 /// Draw beam charging animation if beam is currently active 
-if (beam_weapon.state == BEAM_STATE.FIRE) {
+if (alarm[3] > -1) {
 	/// Beam is in active firing phase - draw beam animation with scaling
 
 	/// BEAM CHARGE-UP PHASE: Scales from small to full size
@@ -54,20 +54,23 @@ if (hitCount == 2) {
 /// ================================================================
 /// If player is captured by this enemy's beam, render player sprite above enemy
 if (oPlayer.captor == id) {
-	/// Player is being carried by this TIE Intercepter's beam
-	/// Render player sprite with captured effects
+	
+	var player_rotation = beam_weapon.animation * 30;
+	
+	if (beam_weapon.state == BEAM_STATE.CAPTURE_PLAYER) {
+		/// GalagaWars: Use X-Wing with spin effect
+		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, player_rotation, c_white, 1);
+	}
+	else {
+		/// GalagaWars: Use X-Wing with spin effect
+		draw_sprite_ext(xwing_sprite_sheet, 2, x, y-72, 0.8, 0.8, 0, c_white, 0.5);
 
-	/// Calculate rotation for captured ship spin animation
-	var player_rotation = floor(beam_weapon.animation * 30); //(oPlayer.capturedanimation / 360) * 360;
-
-	/// GalagaWars: Use X-Wing with spin effect
-	draw_sprite_ext(xwing_sprite_sheet, 2, x, y-64, 0.6, 0.6, player_rotation, c_white, 1);
-
-	/// Draw pulsing glow effect around captured player
-	var glow_alpha = (sin(player_rotation * 0.02) + 1) / 2;  // Oscillates 0 to 1
-	draw_set_alpha(glow_alpha * 0.5);
-	draw_circle_colour(x, y-64, 32, c_yellow, c_red, false);
-	draw_set_alpha(1);
+		/// Draw pulsing glow effect around captured player
+		var glow_alpha = (sin(player_rotation * 0.02) + 1) / 2;  // Oscillates 0 to 1
+		draw_set_alpha(glow_alpha * 0.5);
+		draw_circle_colour(x, y-72, 48, c_yellow, c_red, false);
+		draw_set_alpha(1);
+	}
 }
 
 /// === DEBUG COLLISION DISPLAY ===

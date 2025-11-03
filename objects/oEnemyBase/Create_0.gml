@@ -192,5 +192,8 @@ beam_weapon = {
 	state : BEAM_STATE.READY,
 	
 	// Animation frame counter (used for beam sprite animation)
-	animation : 0
+	animation : 0,
+	
+	player_x : 0,
+	player_y : 0
 };
