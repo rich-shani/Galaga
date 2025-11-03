@@ -3,7 +3,7 @@ beam_weapon.state = BEAM_STATE.FIRE_COMPLETE;
 	
 /// If player is captured by this enemy's beam, render player sprite above enemy
 if (oPlayer.captor == id) {
-	alarm[4] = 90; 
+	alarm[4] = 60; 
 	
 	sound_stop(GCaptured); 
 	sound_loop(GFighterCaptured);

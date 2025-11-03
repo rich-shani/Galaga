@@ -51,19 +51,26 @@ if (hitCount == 2) {
 /// === CAPTURED PLAYER RENDERING ===
 /// ================================================================
 /// Draw captured player sprite when player is held by this enemy's beam
+/// Sprite rotates based on the direction of the TIE Intercepter
 /// ================================================================
 /// If player is captured by this enemy's beam, render player sprite above enemy
 if (oPlayer.captor == id) {
-	
+
 	var player_rotation = beam_weapon.animation * 30;
-	
+
+	/// Calculate X-Wing rotation based on TIE Intercepter's current direction
+	/// The direction variable (0-359) is already in degrees, so we can use it directly
+	var xwing_direction_rotation = direction + 90;
+
 	if (beam_weapon.state == BEAM_STATE.CAPTURE_PLAYER) {
-		/// GalagaWars: Use X-Wing with spin effect
-		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, player_rotation, c_white, 1);
+		/// CAPTURE_PLAYER: X-Wing spinning towards intercepter, rotates with intercepter's direction
+		/// Combines captured player spin animation with intercepter direction for immersive capture effect
+		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, player_rotation + xwing_direction_rotation, c_white, 1);
 	}
 	else {
-		/// GalagaWars: Use X-Wing with spin effect
-		draw_sprite_ext(xwing_sprite_sheet, 2, x, y-72, 0.8, 0.8, 0, c_white, 0.5);
+		/// FIRE/OTHER STATES: X-Wing held steady, aligned with intercepter's direction
+		/// Shows player oriented relative to the intercepter's orientation
+		draw_sprite_ext(xwing_sprite_sheet, 2, x, y-72, 0.8, 0.8, xwing_direction_rotation, c_white, 0.5);
 
 		/// Draw pulsing glow effect around captured player
 		var glow_alpha = (sin(player_rotation * 0.02) + 1) / 2;  // Oscillates 0 to 1

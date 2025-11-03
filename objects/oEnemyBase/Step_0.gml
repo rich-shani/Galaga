@@ -359,13 +359,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 								oPlayer.captor = id;
 							
 								global.isPlayerCaptured = true;
-
-	        
-								sound_stop(GBeam); // Stop beam sound
-						        sound_loop(GCaptured); // Play captured sound
+      
+								sound_stop(GBeam);			// Stop beam sound
+						        sound_loop(GCaptured);		// Play captured sound
 							
-								//alarm[0] = 90;
-								oPlayer.alarm[0] = 120;
+								// delay the RESPAWN of the PLAYER
+								oPlayer.alarm[0] = 180;
 								
 								// extend the beam to cover the period to CAPTURE the player
 						        alarm[3] = ((global.beamtime / 3) / (90 / alarm[3])) + 20; 
