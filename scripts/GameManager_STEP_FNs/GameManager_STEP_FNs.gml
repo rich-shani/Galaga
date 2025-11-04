@@ -46,7 +46,7 @@ function init_globals() {
     global.init5 = "EE "; // Fifth place initials
 
     // Displayed high score
-    global.disp = 0;
+    //global.disp = 0;
 
     // === PLAYER STATE ===
     global.p1score = 0; // Player 1's current score
@@ -225,8 +225,7 @@ function Enter_Initials(){
 /// @return {Real} Total count of active enemy instances
 function nOfEnemies() {
 	// return the total number of active enemies (all enemies)
-	return instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) +
-			instance_number(Butterfly) + instance_number(Boss) + instance_number(Fighter) + instance_number(Transform);
+	return instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle); // + instance_number(Transform);
 }
 
 /// @function checkForExtraLives
@@ -289,12 +288,6 @@ function checkDiveCapacity() {
 
     // Decrease dive capacity based on current state of enemy units
 
-    with Bee {
-        if dive == 1  or alarm[2] > -1 {
-            global.divecap -= 1; // Bees actively diving or about to dive
-        }
-    }
-
     with oTieFighter {
         if enemyState != EnemyState.IN_FORMATION or alarm[2] > -1 {
             global.divecap -= 1; // TieFighters actively diving or about to dive
@@ -312,36 +305,9 @@ function checkDiveCapacity() {
             global.divecap -= 1; // ImperialShuttles actively diving or about to dive
         }
     }
-	
-    with Butterfly {
-        if dive == 1  or alarm[2] > -1 {
-            global.divecap -= 1; // Butterflies actively diving or about to dive
-        }
-    }
-
-    with Boss {
-        if dive == 1 {
-            global.divecap -= 1; // Bosses currently diving
-        }
-    }
-
-    with Fighter {
-        if dive == 1 and check == 0 {
-            global.divecap -= 1; // Fighters diving that haven't been marked as checked
-        }
-    }
-
-    with Transform {
-        global.divecap -= 1; // Transforming entities reduce available dive capacity
-    }
 
     // Boss dive cap handling: maximum of 2 bosses can dive
     global.bosscap = 2;
-    with Boss {
-        if dive == 1 {
-            global.bosscap -= 1;
-        }
-    }
 }
 
 /// @function controlEnemyFormation
@@ -409,7 +375,7 @@ function controlEnemyFormation() {
         && !sound_isplaying(GCaptured)
         && !sound_isplaying(GFighterCaptured)
         && !sound_isplaying(GRescue)
-        && (instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) > global.lastattack)
+        && (instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) > global.lastattack)
         {
             sound_volume(GBreathe, 1); // Play breathing sound at full volume
         } else {

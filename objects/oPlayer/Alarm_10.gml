@@ -1,15 +1,9 @@
 if (global.isGameOver) {
 
 	// clean up all enemies that are still alive ...
-	
-    with Bee{instance_destroy()}
 	with oTieFighter{instance_destroy();}
 	with oTieIntercepter{instance_destroy();}
 	with oImperialShuttle{instance_destroy();}
-    with Butterfly{instance_destroy()}
-    with Boss{instance_destroy()}; sound_stop(GBeam);
-    with Transform{instance_destroy()}
-    with Fighter{instance_destroy()}
 
 	// set the GAME MANAGER to show the results screen
     with oGameManager{

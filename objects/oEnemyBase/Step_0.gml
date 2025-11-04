@@ -110,7 +110,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			enemyState == EnemyState.IN_FORMATION && irandom(5) == 0 && global.divecap > 0 &&
 			global.prohib == 0 && global.transform == 0 &&
 			oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0 &&
-			instance_number(Bee) + instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) + instance_number(Butterfly) + instance_number(Boss) < 21 &&
+			instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) < 21 &&
 			global.open == 0 && oPlayer.alarm[4] == -1
 		) {
 			// Trigger transformation animation (50 frames)

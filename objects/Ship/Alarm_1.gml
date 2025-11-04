@@ -1,3 +1,0 @@
-shipStatus = 0;
-
-

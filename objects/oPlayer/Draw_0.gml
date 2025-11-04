@@ -44,7 +44,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 		draw_sprite_ext(xwing_sprite_sheet, shipImage, x, y, 0.8, 0.8, 0, c_white, 1);
 		
 		// Draw descending fighter during rescue animation
-		draw_sprite_ext(xwing_sprite_sheet, shipImage, rescued_fighter_x, rescued_fighter_y, 0.8, 0.8, 0, c_blue, 1);		
+		draw_sprite_ext(xwing_sprite_sheet, shipImage, rescued_fighter_x, rescued_fighter_y, 0.8, 0.8, 0, c_white, 1);		
 	}
 	else if (shipStatus == _ShipState.CAPTURED) {
 

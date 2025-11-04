@@ -74,7 +74,7 @@ if (oPlayer.captor == id) {
 		/// X-Wing sprite always aligns with the top of the intercepter
 
 		/// The X-Wing orbits around the intercepter (x, y) with a fixed radius.
-		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, direction+90, c_blue, 0.5);
+		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, direction+90, c_white, 0.5);
 
 		/// Draw pulsing glow effect around captured player position on circle
 		var glow_alpha = (sin(player_rotation * 0.02) + 1) / 2;  // Oscillates 0 to 1

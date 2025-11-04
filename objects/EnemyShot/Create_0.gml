@@ -30,8 +30,8 @@
 // Calculate target position: player's current location + shot mode offset
 // action_move_point(target_x, target_y, speed) sets movement direction
 // Shot will travel toward this point at 5*scale pixels per frame
-action_move_point(oPlayer.x + (14*(oPlayer.shotMode)), oPlayer.y, 5*global.scale);
-
+move_towards_point(oPlayer.x + (32*(oPlayer.shotMode)), oPlayer.y, 5*global.scale);
+	
 // === COMMENTED OUT: DIRECTION CLAMPING ===
 // Original code limited shot angles to prevent too-steep trajectories
 // Removed to allow full range of shot angles for increased difficulty
