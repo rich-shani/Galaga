@@ -56,17 +56,12 @@ if (hitCount == 2) {
 /// "top" relative to the intercepter's current orientation.
 /// ================================================================
 /// If player is captured by this enemy's beam, render player sprite above enemy
-if (oPlayer.captor == id) {
-
-	draw_rectangle_colour(captured_x, captured_y, captured_x+32, captured_y+32, c_red, c_red, c_red, c_red, false);
-	
+if (oPlayer.captor == id) {	
 	var player_rotation = beam_weapon.animation * 30;
 
 	/// Calculate X-Wing rotation to align with the top of the intercepter
 	/// The X-Wing sprite should always point towards the center of the intercepter
 	/// This is the opposite angle of where it is positioned on the circle
-
-
 	if (beam_weapon.state == BEAM_STATE.CAPTURE_PLAYER) {
 		/// CAPTURE_PLAYER: X-Wing spinning in circular orbit around intercepter
 		/// Position orbits around the intercepter at fixed radius
@@ -79,12 +74,12 @@ if (oPlayer.captor == id) {
 		/// X-Wing sprite always aligns with the top of the intercepter
 
 		/// The X-Wing orbits around the intercepter (x, y) with a fixed radius.
-		draw_sprite_ext(xwing_sprite_sheet, 2, captured_x, captured_y, 0.8, 0.8, direction+90, c_white, 0.5);
+		draw_sprite_ext(xwing_sprite_sheet, 2, beam_weapon.player_x, beam_weapon.player_y, 0.8, 0.8, direction+90, c_blue, 0.5);
 
 		/// Draw pulsing glow effect around captured player position on circle
 		var glow_alpha = (sin(player_rotation * 0.02) + 1) / 2;  // Oscillates 0 to 1
 		draw_set_alpha(glow_alpha * 0.5);
-		draw_circle_colour(captured_x, captured_y, 48, c_yellow, c_red, false);
+		draw_circle_colour(beam_weapon.player_x, beam_weapon.player_y, 48, c_yellow, c_red, false);
 		draw_set_alpha(1);
 	}
 }
@@ -93,7 +88,13 @@ if (oPlayer.captor == id) {
 if (global.debug) {
 	// Draw collision bounding box for debugging
 	draw_set_alpha(0.5);
+	
 	draw_rectangle_colour(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, false);
+	if (oPlayer.captor == id) {
+		draw_rectangle_colour(beam_weapon.player_x-25, beam_weapon.player_y-25, 
+								beam_weapon.player_x+25, beam_weapon.player_y+25, c_red, c_red, c_red, c_red, false);
+	}
+
 	draw_set_alpha(1);
 }
 

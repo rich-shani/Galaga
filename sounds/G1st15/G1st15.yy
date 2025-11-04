@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":6,
   "conversionMode":0,
-  "duration":0.246825,
+  "duration":0.2468254,
   "exportDir":"",
   "name":"G1st15",
   "parent":{

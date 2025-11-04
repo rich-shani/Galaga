@@ -17,8 +17,8 @@
   "name":"Boss",
   "overriddenProperties":[],
   "parent":{
-    "name":"NEW",
-    "path":"folders/Objects/Enemies/NEW.yy",
+    "name":"LEGACY",
+    "path":"folders/Objects/Enemies/LEGACY.yy",
   },
   "parentObjectId":null,
   "persistent":false,

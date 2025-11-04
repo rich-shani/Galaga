@@ -26,6 +26,3 @@ event_inherited();
 beam_weapon.available = true;
 
 #macro CIRCLE_RADIUS  72  // Distance from intercepter center to X-Wing
-
-captured_x = 0;
-captured_y = 0;

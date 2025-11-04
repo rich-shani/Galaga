@@ -14,9 +14,9 @@ if (global.isGameOver) {
 	// set the GAME MANAGER to show the results screen
     with oGameManager{
 		global.gameMode = GameMode.SHOW_RESULTS; 
-		results = 1; 
+		global.results = 1; 
 		// trigger GAME MANAGER alarm[9] ... ie enter Initials (if score is top 5)
-		alarm[9] = 450;
+		oGameManager.alarm[9] = 450;
 	}
 
 	// reset the game over flag

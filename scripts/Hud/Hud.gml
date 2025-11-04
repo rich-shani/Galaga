@@ -1,27 +1,60 @@
-function Draw_Hud(){
-	// 1UP & HIGH SCORE (red text)
+/// @function Draw_Hud
+/// @description Main HUD rendering function - displays all on-screen UI elements
+///
+/// This is the master HUD function called from oGameManager's Draw event.
+/// It orchestrates the display of all UI elements based on game mode:
+///   • Scores (1UP and HIGH SCORE)
+///   • Lives/Credits counter
+///   • Game state messages (PLAYER 1, STAGE #, READY, etc.)
+///   • Results screen
+///   • High score entry
+///   • Game Over message
+///   • Pause overlay
+///
+/// The HUD adapts dynamically based on:
+///   • global.gameMode - Current game state
+///   • global.isGameOver - Game over flag
+///   • global.isGamePaused - Pause flag
+///   • global.isChallengeStage - Challenge stage flag
+///
+/// Font Selection:
+///   • GalagaWars room: fAtari24 (2x scale)
+///   • Galaga/Galaga2 rooms: fAtari12 (1x scale)
+///
+/// @related Controller_draw_fns.gml - Contains Draw_Scores, Draw_Lives, etc.
+/// @related oGameManager/Draw_0.gml - Calls this function
 
-	// load retro Atari font
+function Draw_Hud(){
+	// === FONT SETUP ===
+	// Select appropriate retro Atari font based on room scale
+	// GalagaWars uses 2x scale (24pt), original Galaga uses 1x scale (12pt)
 	if (global.roomname == "GalagaWars") {
-		draw_set_font(fAtari24);	
+		draw_set_font(fAtari24);
 	}
 	else draw_set_font(fAtari12);
-	
-	// show CREDITS if we're not in an active game
+
+	// === SCORE DISPLAY ===
+	// Show scores (1UP and HIGH SCORE) once past attract mode
+	// Attract mode (demo) doesn't show scores
 	if (global.gameMode > GameMode.ATTRACT_MODE) {
-		// draw the scores (top of screen)
-		Draw_Scores();		
+		// Draw the score header and values at top of screen
+		Draw_Scores();
 	}
 
+	// === GAME OVER CHECK ===
+	// If game over flag is set, display GAME OVER message and exit
+	// No other UI elements are drawn in game over state
 	if (global.isGameOver)
 	{
-		//draw_set_color(c_aqua);
 		draw_set_color(c_red);
 		draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("GAME OVER"));
-		
-		return;
+
+		return;  // Exit function early, skip all other drawing
 	}
-	
+
+	// === CREDITS/LIVES DISPLAY ===
+	// Before stage message, show credits counter
+	// After game starts, show lives counter
 	if (global.gameMode < GameMode.GAME_STAGE_MESSAGE) {
 		Draw_Credits();
 	}
@@ -29,60 +62,89 @@ function Draw_Hud(){
 		Draw_Lives();
 	}
 		
-	// is the Game Paused?
-	if (global.isGamePaused) { 
+	// === PAUSE OVERLAY ===
+	// If game is paused, display large "GAME PAUSED" message
+	// This takes priority over all other game mode messages
+	if (global.isGamePaused) {
 		draw_set_font(fAtari36);
 		draw_set_color(c_green);
-	
+
 		draw_text(100*global.scale,265*global.scale, "GAME PAUSED");
-		
-		draw_set_color(c_white);		
+
+		// Reset font and color for other UI elements
+		draw_set_color(c_white);
 		draw_set_font(fAtari24);
 	}
-	else { 
+	else {
+		// === GAME MODE MESSAGES ===
+		// Display appropriate message/screen based on current game mode
+		// Each mode has specific UI requirements
 		draw_set_color(c_aqua);
-							
-		// Draw screen based on Game Mode
+
 		switch (global.gameMode) {
 			case GameMode.INSTRUCTIONS:
+				/// Display instructions screen (controls, scoring, etc.)
 				Draw_Instructions();
 				break
+
 			case GameMode.SHOW_RESULTS:
+				/// Display end-of-stage results (shots fired, hits, accuracy %)
 				Draw_Results();
 				break;
+
 			case GameMode.ENTER_INITIALS:
+				/// Display high score entry screen with keyboard input
 				Draw_Enter_Initials();
 				break;
-			case GameMode.GAME_PLAYER_MESSAGE: 		
+
+			case GameMode.GAME_PLAYER_MESSAGE:
+				/// Display "PLAYER 1" message at start of game
+				/// Shown briefly before stage message
 				draw_text(176*global.scale, 288*global.scale, string_hash_to_newline("PLAYER 1"));
 				break;
-			case GameMode.GAME_STAGE_MESSAGE: 
+
+			case GameMode.GAME_STAGE_MESSAGE:
+				/// Display "STAGE #" message before each level
+				/// Shows current stage number (global.lvl)
 				draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
 				draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));
 				break;
+
 			case GameMode.CHALLENGE_STAGE_MESSAGE:
-				draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));			
+				/// Display "CHALLENGING STAGE" message before bonus round
+				/// Challenge stages occur every 4 levels
+				draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));
 				break;
+
 			case GameMode.GAME_READY:
-	//			draw_text(160*global.scale, 256*global.scale, string_hash_to_newline("PLAYER 1"));
+				/// Display stage indicator just before gameplay begins
+				/// Shows either "CHALLENGING STAGE" or "STAGE #"
 				if (global.isChallengeStage) {
-					draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));		
+					draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));
 				}
 				else {
 					draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
-					draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));					
+					draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));
 				}
 				break;
+
 			case GameMode.GAME_ACTIVE:
-				// if the oPlayer RESPAWN is still in effect, show 'READY'
+				/// During active gameplay, show "READY" during player respawn
+				/// Displays only when player is respawning (alarm[1] active) and has lives
 				if ((oPlayer.alarm[1] > -1) && (global.p1lives > 0)) {
 					draw_text(170*global.scale, 288*global.scale, string_hash_to_newline("READY"));
 		        }
+				else if (oPlayer.alarm[5] > -1) {
+					draw_text(170*global.scale, 288*global.scale, string_hash_to_newline("FIGHTER CAPTURED"));
+				}
 				break;
-			
+
 		} // SWITCH STATEMENT
 	}
-	
+
+	// === CHALLENGE STAGE RESULTS ===
+	// If in a challenge stage, overlay challenge-specific results
+	// Shows perfect clear bonus and enemy count
 	if (global.isChallengeStage) {
 		Draw_ChallengeStage_Results();
 	}

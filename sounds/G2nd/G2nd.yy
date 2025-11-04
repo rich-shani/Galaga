@@ -10,7 +10,7 @@
   "compression":0,
   "compressionQuality":6,
   "conversionMode":0,
-  "duration":0.0,
+  "duration":6.4126983,
   "exportDir":"",
   "name":"G2nd",
   "parent":{

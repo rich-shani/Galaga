@@ -4,9 +4,9 @@
 
 if (global.challcount == 0 && global.wave == 5) {
 
-    results += 1; // Increment the results step
+    global.results += 1; // Increment the results step
 
-    switch (results) {
+    switch (global.results) {
 
         case 1:
             // Play perfect or regular results sound based on shots fired
@@ -28,12 +28,12 @@ if (global.challcount == 0 && global.wave == 5) {
     }
 
     // Set up next alarm or proceed to next level
-    if (results < 5) {
+    if (global.results < 5) {
         alarm[2] = 102; // Continue results sequence
     }
 
-    if (results == 5) {
-        results = 6;
+    if (global.results == 5) {
+        global.results = 6;
         nextlevel = 1;
 		
 		alarm[10] = 210; // Prepare for next level

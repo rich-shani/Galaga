@@ -10,47 +10,43 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 	if (shipStatus == _ShipState.ACTIVE) {
 		/// === ACTIVE STATE RENDERING ===
 		/// Draw normal ship sprite with thrusters when player is active and flying
-
-		if (global.roomname == "GalagaWars") {
-			draw_sprite_ext(xwing_sprite_sheet, shipImage, x, y, 0.8, 0.8, 0, c_white, 1);
-
-			if (global.debug) {
-				// draw collision mask
-				draw_set_alpha(0.5);
-				draw_rectangle_colour(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, false);
-				draw_set_alpha(1);
-			}
+		draw_sprite_ext(xwing_sprite_sheet, shipImage, x, y, 0.8, 0.8, 0, c_white, 1);
+		
+		// DUAL Mode; draw second fighter
+		if (shotMode == _ShotMode.DOUBLE) {
+			// Draw docked dual fighter (positioned to right of main fighter)
+			draw_sprite_ext(xwing_sprite_sheet, shipImage, x + 72, y, 0.8, 0.8, 0, c_white, 1);
 		}
-		else {
-			draw_sprite(spr_ship, 0, x, y);
+		
+		if (global.debug) {
+			// draw collision mask
+			draw_set_alpha(0.5);
+			draw_rectangle_colour(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, false);
+			draw_set_alpha(1);
 		}
 
 		if (!global.isGamePaused) {
 			// if we're not paused, then animate the thrusters
 			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x-(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
 			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
+
+			// DUAL Mode; draw second fighter thrusters
+			if (shotMode == _ShotMode.DOUBLE) {
+				// Draw docked dual fighter (positioned to right of main fighter)
+				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+72-(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
+				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+72+(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
+			}
 		}
 	}
+	else if (shipStatus == _ShipState.RELEASING) {
+
+		/// Draw normal ship sprite 
+		draw_sprite_ext(xwing_sprite_sheet, shipImage, x, y, 0.8, 0.8, 0, c_white, 1);
+		
+		// Draw descending fighter during rescue animation
+		draw_sprite_ext(xwing_sprite_sheet, shipImage, rescued_fighter_x, rescued_fighter_y, 0.8, 0.8, 0, c_blue, 1);		
+	}
 	else if (shipStatus == _ShipState.CAPTURED) {
-		/// === CAPTURED STATE RENDERING ===
-		/// Render captured player sprite above the enemy captor
-		/// Sprite rotates/spins while captured
 
-		/// Calculate rotation based on captured animation counter
-		/// Completes full rotation every 360 frames
-	//	var captured_rotation = (capturedanimation / 360) * 360;
-
-	//	/// GalagaWars room: Use X-Wing sprite with spin effect
-	//	var frame_index = (capturedanimation / 30) mod 2;  // Alternate frames
-	//	draw_sprite_ext(xwing_sprite_sheet, 2, x, y, 0.6, 0.6, captured_rotation, c_white, 1);
-	
-	//	/// Draw a glowing effect around captured ship
-	//	if (!global.isGamePaused) {
-	//		/// Create pulsing glow effect
-	//		var glow_alpha = (sin(capturedanimation * 0.02) + 1) / 2;  // Oscillates 0 to 1
-	//		draw_set_alpha(glow_alpha * 0.5);
-	//		draw_circle_colour(x, y, 32, c_yellow, c_red, false);
-	//		draw_set_alpha(1);
-	//	}
 	}
 }

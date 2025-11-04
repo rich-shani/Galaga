@@ -155,7 +155,6 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			/// Set speed for this movement phase
 			speed = entranceSpeed;
 
-			sound_stop(GFighterCaptured);
 			/// Transition to next state: moving into grid formation
 			enemyState = EnemyState.MOVE_INTO_FORMATION;		
 		}		
@@ -167,6 +166,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			x = breathex;
 			y = breathey;
 
+			sound_stop(GFighterCaptured);
 			enemyState = EnemyState.IN_FORMATION;
 					
 			// set alarm : to give time for the Draw function to ROTATE the ship to down direction
@@ -287,14 +287,14 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// • loop = -1: Beam is active, charging animation playing
 		/// • loop = -2: Beam charging complete, beginning dive away
 		/// ================================================================
-		if (beam_weapon.available) {
+		if (beam_weapon.available && (oPlayer.shotMode == _ShotMode.SINGLE)) {
 			
 			if ((y > 368 * global.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
 				
-				if ((oPlayer.shotMode == _ShotMode.SINGLE) && (beam_weapon.state == BEAM_STATE.READY)) {
+				if (beam_weapon.state == BEAM_STATE.READY) {
 					// BEAM ACTIVATION POSITION REACHED 
 					// Check if PLAYER is in single mode && use a random one-in-three chance to activate
-					if (!global.isPlayerCaptured && (irandom(2) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
+					if (!global.isPlayerCaptured && (irandom(0) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
 					else beam_weapon.state = BEAM_STATE.FAILED;
 				}
 				else { 
@@ -337,21 +337,22 @@ else if (enemyMode == EnemyMode.STANDARD) {
 							
 								/// Player is captured by beam!
 								oPlayer.shipStatus = _ShipState.CAPTURED;
-					
+								oPlayer.alarm[5] = 240;
+								
 								// grab the player x location
 								beam_weapon.player_x = oPlayer.x;
 								beam_weapon.player_y = 1024;
 								
 								/// Store the capturing enemy reference
-								oPlayer.captor = id;
-							
+								oPlayer.captor = id;					
+
 								global.isPlayerCaptured = true;
-      
+								
 								sound_stop(GBeam);			// Stop beam sound
 						        sound_loop(GCaptured);		// Play captured sound
 							
 								// delay the RESPAWN of the PLAYER
-								oPlayer.alarm[0] = 180;
+								oPlayer.alarm[0] = 420;
 								
 								// extend the beam to cover the period to CAPTURE the player
 						        alarm[3] = ((global.beamtime / 3) / (90 / alarm[3])) + 20; 
@@ -363,27 +364,11 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						
 						// player is at 1024, Enemy is at 736
 						// 90 seconds to move 288 pixels					
-						//oPLayer.y = 736 + ((alarm[0] * 288) / 90); // Move ship vertically towards boss
-						beam_weapon.player_y = 736 + ((alarm[3] * 288) / global.beamtime);
+						// Move ship vertically towards boss
+						beam_weapon.player_y = 736 + floor((alarm[3] * 288) / global.beamtime);
 						// align the PLAYER x with the centre of the Enemy 
 						if (beam_weapon.player_x < x) { beam_weapon.player_x += 3; }
 						else if (beam_weapon.player_x > x) { beam_weapon.player_x -= 3; }
-						
-					    //if (alarm[2] > -1) {
-					    //    oPlayer.spinanim -= 22.5; // Rotate ship
-					    //    if (oPlayer.spinanim == 0) { oPlayer.spinanim = 360; } // Reset rotation
-					    //}
-        
-					    //if (alarm[2] == -1) {
-					    //    grav = 0; // Reset gravity
-					    //    if (spinanim > 0) { spinanim -= 22.5; } // Continue rotation
-					    //}
-						
-						// rotate ship and draw up to enemy ...
-						// once captured, stop sound GCaptured (is loop?)
-						//if (alarm[0] == -1) {
-						//	beam_weapon.state = BEAM_STATE.FIRE_COMPLETE;
-						//}
 					}
 					else if (alarm[3] == -1) {
 						speed = entranceSpeed;
@@ -400,12 +385,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 		else if ((y > 480 * global.scale)) {
 		
-			// check if we're the last two enemies left ...
-			if (nOfEnemies() < 3) {
-			
-				enemyState = EnemyState.IN_FINAL_ATTACK;
-			}
-			else if (attributes.CAN_LOOP) {
+			if (attributes.CAN_LOOP) {
 	
 				path_end();
 			
@@ -444,7 +424,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				// reset beam state
 				if (beam_weapon.available) { beam_weapon.state = BEAM_STATE.READY; }
 				
-				enemyState = EnemyState.MOVE_INTO_FORMATION;
+				// BUG: weird issue when we get down to last 2 enemies, ...
+				// the enemy has a one-time crazy path then resets ...
+				
+				// check if we're the last two enemies left ...
+				if (nOfEnemies() < 3) enemyState = EnemyState.IN_FINAL_ATTACK;
+				else enemyState = EnemyState.MOVE_INTO_FORMATION;
 			}
 		}
 	}
@@ -464,7 +449,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			path_end();
 		
 			// randomize the x location of where the enemy will drop in ...
-			x = irandom(global.screen_width);
+			// don't spawn near the edges of the screen
+			x = 64 + irandom(global.screen_width-128);
 			y = -16;
 		
 			// spawn enemy bullets ...

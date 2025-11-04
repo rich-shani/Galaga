@@ -1,5 +1,35 @@
+/// @description PLAYER MISSILE MOVEMENT
+/// Handles upward movement and off-screen destruction of player missiles.
+///
+/// Player missiles travel straight up at constant speed (MISSILE_SPEED).
+/// When they reach the top of the screen, they're automatically destroyed
+/// to prevent memory leaks and unnecessary collision checks.
+///
+/// Movement:
+///   • Constant vertical velocity (negative Y direction = up)
+///   • No horizontal movement (straight shot)
+///   • Speed: 12 pixels/frame (Galaga) or 24 pixels/frame (GalagaWars)
+///
+/// Destruction:
+///   • Destroyed when y < -32 (off top of screen)
+///   • Also destroyed on collision with enemy (see Collision events)
+///
+/// @variable {number} MISSILE_SPEED - Upward velocity in pixels/frame (set in Create_0)
+/// @variable {number} MISSILE_OFFSCREEN - Y coordinate threshold for destruction (-32)
+///
+/// @related oMissile/Create_0.gml - Where speed constants are defined
+/// @related oEnemyBase/Collision_oMissile.gml - Enemy collision handling
+
+// === PAUSE CHECK ===
+// Skip movement when game is paused
 if (global.isGamePaused) return;
 
+// === UPWARD MOVEMENT ===
+// Move missile up the screen at constant speed
+// Negative Y direction = upward movement in GameMaker
 y -= MISSILE_SPEED;
 
+// === OFF-SCREEN CHECK ===
+// Destroy missile when it travels past top of visible screen
+// This prevents missiles from existing indefinitely and wasting resources
 if (y < MISSILE_OFFSCREEN) instance_destroy();

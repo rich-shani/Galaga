@@ -37,7 +37,7 @@ cyc = 0;
 
 // Results flag, initialized to 0.
 // Probably used to trigger the display of end-of-level or game-over results.
-results = 0;
+//results = 0;
 
 // Flag to indicate progression to the next level, initialized to 0.
 // Set to 1 when conditions are met to advance to the next wave or stage.

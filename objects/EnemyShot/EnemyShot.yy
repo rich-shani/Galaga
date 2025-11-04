@@ -10,8 +10,8 @@
   "name":"EnemyShot",
   "overriddenProperties":[],
   "parent":{
-    "name":"NEW",
-    "path":"folders/Objects/Enemies/NEW.yy",
+    "name":"STARWARS",
+    "path":"folders/Objects/Enemies/STARWARS.yy",
   },
   "parentObjectId":null,
   "persistent":false,

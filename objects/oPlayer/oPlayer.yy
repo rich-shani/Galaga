@@ -15,6 +15,7 @@
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":2,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":1,"eventType":2,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":3,"eventType":2,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":5,"eventType":2,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"oPlayer",
@@ -45,6 +46,9 @@
     "name":"s",
     "path":"sprites/s/s.yy",
   },
-  "spriteMaskId":null,
+  "spriteMaskId":{
+    "name":"xwing_sprite_sheet",
+    "path":"sprites/xwing_sprite_sheet/xwing_sprite_sheet.yy",
+  },
   "visible":true,
 }

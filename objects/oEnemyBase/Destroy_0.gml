@@ -138,11 +138,13 @@ if (!global.isGameOver) {
 	
 	// check if this enemy had a CAPTURED PLAYER
 	if (oPlayer.captor == id) {
-	
-		// no longer captured ...
-		global.isPlayerCaptured = true;
 		
-		// notify oPlayer that a PLAYER will be released
-		oPlayer.alarm[3] = 1;
+		// Player was captured - initiate rescue sequence!
+		oPlayer.shipStatus = _ShipState.RELEASING;
+		oPlayer.rescued_fighter_x = beam_weapon.player_x;
+		oPlayer.rescued_fighter_y = beam_weapon.player_y;
+
+		// Play rescue sound effect
+		sound_play(GRescue); 
 	}
 }

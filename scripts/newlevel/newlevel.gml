@@ -44,6 +44,10 @@ function newlevel() {
 	}
 	else{
 		global.isChallengeStage = true;
+
+		// reset shot counter for challenge stage(s)
+		global.shottotal = 0;
+		
 		global.gameMode = GameMode.CHALLENGE_STAGE_MESSAGE;
 		
 		global.challcount = 0; sound_play(GChallenging);

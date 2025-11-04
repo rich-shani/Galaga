@@ -150,7 +150,7 @@ function Enter_Initials(){
     }
 
     // === SELECT CURRENT CHARACTER ===
-    if keyboard_check_pressed(vk_space) and loop > 0 {
+    if keyboard_check_pressed(vk_space) and loop > 0 and global.results < 5 {
 
         // The 'scored' variable determines which player’s initials are being entered (1 to 5)
 		var _initials = "";
