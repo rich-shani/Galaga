@@ -14,7 +14,7 @@ SHIP_SPACE = 28;
 SHIP_MOVE_INCREMENT = 3;
 	
 if (global.roomname == "GalagaWars") {
-	SHIP_MIN_X = 64;
+	SHIP_MIN_X = 32;
 	// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
 	// 432 is derived from the room width minus the ship's sprite width.
 	SHIP_MAX_X = 832;
@@ -23,7 +23,7 @@ if (global.roomname == "GalagaWars") {
 	// Speed of shots in pixels per step (12 pixels for consistent movement).
 	SHOT_SPEED = 24;
 	// Horizontal offset for double ship mode (28 pixels between left and right ships).
-	SHIP_SPACE = 56;
+	SHIP_SPACE = 64;
 	SHIP_MOVE_INCREMENT = 6;
 }
 

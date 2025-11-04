@@ -135,7 +135,7 @@ function Draw_Hud(){
 					draw_text(170*global.scale, 288*global.scale, string_hash_to_newline("READY"));
 		        }
 				else if (oPlayer.alarm[5] > -1) {
-					draw_text(170*global.scale, 288*global.scale, string_hash_to_newline("FIGHTER CAPTURED"));
+					draw_text(110*global.scale, 288*global.scale, string_hash_to_newline("FIGHTER CAPTURED"));
 				}
 				break;
 

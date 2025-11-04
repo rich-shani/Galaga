@@ -111,7 +111,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			// Clamp player position to stay within playable area
 			// SHIP_MIN_X and SHIP_MAX_X defined in Create_0.gml
 			// Prevents player from leaving screen boundaries
-			x = clamp(x, SHIP_MIN_X, SHIP_MAX_X);
+			if (shotMode == _ShotMode.SINGLE) x = clamp(x, SHIP_MIN_X, SHIP_MAX_X);
+			else if (shotMode == _ShotMode.DOUBLE) x = clamp(x, SHIP_MIN_X, SHIP_MAX_X-SHIP_SPACE);
 
 			// === SHOOTING LOGIC ===
 			// Handle missile firing with rate limiting
