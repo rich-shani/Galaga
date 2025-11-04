@@ -26,7 +26,7 @@ enum ErrorCode {
 /// @function log_error
 /// @description Logs an error message with severity level and context information
 ///              Output format: [SEVERITY] Message (Context: context_name)
-///              Can be extended to write to files in production
+///              Writes to both debug console and log file in production
 /// @param {String} _error_msg    Error message describing what went wrong
 /// @param {String} _context      Context string (function name, module name)
 /// @param {Real}   _severity     Severity level: 0=DEBUG, 1=WARNING, 2=ERROR, 3=CRITICAL
@@ -38,23 +38,46 @@ function log_error(_error_msg, _context = "Unknown", _severity = 2) {
 	// Get severity string (with bounds checking)
 	var severity_str = ((_severity >= 0 && _severity < 4) ? severity_names[_severity] : "UNKNOWN");
 
+	// Format timestamp
+	var timestamp = string(current_year) + "-" +
+	                string_format(current_month, 2, 0) + "-" +
+	                string_format(current_day, 2, 0) + " " +
+	                string_format(current_hour, 2, 0) + ":" +
+	                string_format(current_minute, 2, 0) + ":" +
+	                string_format(current_second, 2, 0);
+
 	// Format error message with timestamp and context
 	var log_msg = "[" + severity_str + "] " + _error_msg + " (Context: " + _context + ")";
+	var log_msg_with_timestamp = timestamp + " " + log_msg;
 
-	// Output to debug console
+	// === OUTPUT TO DEBUG CONSOLE ===
+	// Always output to console for development
 	show_debug_message(log_msg);
 
-	// FUTURE: Extend this to write to log file in production builds
-	// Uncomment below for production logging:
-	/*
-	if (file_exists("error_log.txt")) {
-		var _file = file_text_open_append("error_log.txt");
-	} else {
-		var _file = file_text_open_write("error_log.txt");
+	// === WRITE TO LOG FILE ===
+	// Write to file for production error tracking
+	// Only log ERROR and CRITICAL by default (change _severity >= 2 to adjust)
+	if (_severity >= 2) {
+		try {
+			var _file;
+
+			// Open log file (append if exists, create if doesn't)
+			if (file_exists("error_log.txt")) {
+				_file = file_text_open_append("error_log.txt");
+			} else {
+				_file = file_text_open_write("error_log.txt");
+			}
+
+			// Write log entry
+			file_text_writeln(_file);
+
+			// Close file handle
+			file_text_close(_file);
+		} catch (_exception) {
+			// Fail silently if file logging fails (don't create infinite loop)
+			show_debug_message("[ERROR] Failed to write to error log file: " + string(_exception));
+		}
 	}
-	file_text_writeln(_file, get_datetime_string(dt_datetime_string, date_create_datetime(current_year, current_month, current_day, current_hour, current_minute, current_second)) + " " + log_msg);
-	file_text_close(_file);
-	*/
 }
 
 // ============================================================================

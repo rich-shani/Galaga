@@ -1,9 +1,34 @@
 
 
+/// ================================================================
+/// ENEMY STATE MACHINE INITIALIZATION
+/// ================================================================
+/// All enemies begin in ENTER_SCREEN state and progress through:
+///
+/// STATE FLOW (Standard Mode):
+///   ENTER_SCREEN ──> MOVE_INTO_FORMATION ──> IN_FORMATION ──┐
+///                                                            │
+///   ┌────────────────────────────────────────────────────────┘
+///   │
+///   ├──> IN_DIVE_ATTACK ──> IN_LOOP_ATTACK ──> MOVE_INTO_FORMATION
+///   │           │                                      ▲
+///   │           └──> (off screen) ──> RETURN_PATH ────┘
+///   │
+///   └──> IN_FINAL_ATTACK (when only 2-3 enemies remain)
+///         └──> Continuous aggressive attacks
+///
+/// STATE FLOW (Challenge Mode):
+///   ENTER_SCREEN ──> (path complete) ──> DESTROY
+///
+/// STATE FLOW (Rogue Mode):
+///   ENTER_SCREEN ──> (path complete) ──> Target Player ──> DESTROY
+///
+/// ================================================================
+
 // spawn new enemy in the ENTER_SCREEN mode
 enemyState = EnemyState.ENTER_SCREEN;
 
-// default is STANDARD enemy
+// default is STANDARD enemy mode
 enemyMode = EnemyMode.STANDARD;
 	
 // Flag indicating if the enemy is an escort, initialized to 0 (0 = not escort, 1 = escort).

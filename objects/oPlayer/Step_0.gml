@@ -61,25 +61,6 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 				// === FIRE BUTTON ===
 				// A button on the XBOX Controller (gp_face1)
 				if (gamepad_button_check_pressed(0,gp_face1)) fireIsPressed = true;
-				
-				//if (gamepad_button_check(0, gp_padl)) xDirection = -1;
-				//else if (gamepad_button_check(0, gp_padr)) xDirection = 1;
-				//else if (gamepad_button_check(0, gp_padu)) new_direction = PACMAN_UP;
-				//else if (gamepad_button_check(0, gp_padd)) new_direction = PACMAN_DOWN;
-				
-				//if (gamepad_button_check_pressed(0,gp_face4)) {
-				//	turboModeModifier = 2;
-				//}
-				//else if (gamepad_button_check_released(0,gp_face4)) {
-				//	turboModeModifier = 1;
-				//}
-		
-				//// B button on the XBOX Controller
-				//if (gamepad_button_check_pressed(0,gp_face2)) {
-				//	freezeMode = true;
-				//}
-				//else if (gamepad_button_check_released(0,gp_face2)) {
-				//	freezeMode = false;
 			}
 			else {
 				// === KEYBOARD INPUT ===
@@ -236,9 +217,6 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			// Rescued fighter has reached player position
 			shipStatus = _ShipState.ACTIVE;
 			shotMode = _ShotMode.DOUBLE; // Enable dual fighter mode!
-
-	          // Play docking complete sound
-//	          sound_play(GDockComplete);
 
 			captor = noone;
 				

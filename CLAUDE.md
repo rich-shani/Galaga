@@ -189,6 +189,177 @@ Game state transitions are handled via:
 - **rooms/**: Room/level definitions
 - **shaders/**: CRT shader effects (shd_crt, shd_crt_fast, shd_raw)
 
+## JSON Data File Schemas
+
+The game uses JSON files for data-driven configuration. Below are the schemas for each JSON file type.
+
+### wave_spawn.json Schema
+
+Defines standard wave enemy spawning patterns.
+
+```json
+{
+  "PATTERN": [
+    {
+      "WAVE": [
+        {
+          "SPAWN": [
+            {
+              "ENEMY": "oTieFighter",     // Enemy object name (must match GML object)
+              "PATH": "Ent1e1",            // Path name (no prefix, system adds as needed)
+              "SPAWN_XPOS": 512,           // Spawn X coordinate (pixels)
+              "SPAWN_YPOS": -16,           // Spawn Y coordinate (typically off-screen)
+              "INDEX": 1,                  // Formation position (1-40) or -1 for no formation
+              "COMBINE": false             // If true, spawns paired enemy immediately after
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Key Rules**:
+- Each WAVE must have exactly 40 enemies total (sum of all SPAWN entries)
+- INDEX values 1-40 map to 5×8 formation grid positions
+- COMBINE spawns happen in same frame (useful for synchronized entries)
+
+### challenge_spawn.json Schema
+
+Defines challenge stage patterns (bonus stages every 4 levels).
+
+```json
+{
+  "CHALLENGES": [
+    {
+      "CHALLENGE_ID": 1,
+      "PATH1": "Chall1_Path1",            // Primary path name
+      "PATH1_FLIP": "Chall1_Path1_Flip",  // Mirrored version of PATH1
+      "PATH2": "Chall1_Path2",            // Secondary path name
+      "PATH2_FLIP": "Chall1_Path2_Flip",  // Mirrored version of PATH2
+      "WAVES": [
+        {
+          "ENEMY": "oTieIntercepter",     // Enemy object name
+          "DOUBLED": true                  // If true, spawns mirrored pairs
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Key Rules**:
+- 8 challenges total (CHALLENGE_ID 1-8)
+- Each challenge has 5 waves
+- DOUBLED: true spawns 2 enemies per spawn call (total 8 per wave)
+- Waves 0, 3, 4 use PATH1/PATH1_FLIP
+- Waves 1, 2 use PATH2/PATH2_FLIP
+- Total enemies per challenge: 40 (8 enemies × 5 waves)
+
+### Enemy Attribute JSON Schema
+
+Individual files for each enemy type (e.g., `oTieFighter.json`).
+
+```json
+{
+  "HEALTH": 1,                          // Hit points (1 = single hit to kill)
+  "POINTS_BASE": 50,                    // Base score value
+  "STANDARD": {
+    "DIVE_PATH1": "TF_Dive1",           // Right side dive path
+    "DIVE_ALT_PATH1": "TF_Dive1_Flip",  // Left side dive path
+    "DIVE_PATH2": "TF_Dive2",           // Right side return path
+    "DIVE_ALT_PATH2": "TF_Dive2_Flip"   // Left side return path
+  },
+  "CAN_LOOP": true,                     // If true, enemy loops back to formation
+  "LOOP_PATH": "TF_Loop",               // Return loop path (right side)
+  "LOOP_ALT_PATH": "TF_Loop_Flip"       // Return loop path (left side)
+}
+```
+
+**Key Rules**:
+- HEALTH determines hit count needed to destroy enemy
+- Path names must match existing path assets in GameMaker
+- DIVE_PATH1/2 used based on formation position (left vs right side)
+- If CAN_LOOP is false, enemy goes straight down after dive
+
+### rogue_spawn.json Schema
+
+Defines rogue enemy spawning (enemies that don't join formation).
+
+```json
+{
+  "ROGUE_LEVELS": [
+    {
+      "LEVEL": 0,                       // Rogue level index
+      "SPAWN_COUNT": [0, 0, 1, 2, 3]   // Number of rogues per wave [wave0, wave1, ...]
+    }
+  ]
+}
+```
+
+**Key Rules**:
+- Rogue enemies use "ROGUE_" prefixed paths
+- They target player directly after entrance path completion
+- Don't count toward formation (INDEX: -1)
+
+### formation_coordinates.json Schema
+
+Defines the 5×8 grid formation positions.
+
+```json
+{
+  "POSITION": [
+    {
+      "_x": 128,                        // X coordinate for formation position
+      "_y": 96                          // Y coordinate for formation position
+    }
+  ]
+}
+```
+
+**Key Rules**:
+- 40 positions total (indices 0-39, accessed as 1-40 in code)
+- Coordinates are base positions; breathing animation adds oscillation
+- Typically arranged as:
+  - Rows 1-2 (INDEX 1-16): Top enemies
+  - Row 3 (INDEX 17-24): Middle enemies
+  - Rows 4-5 (INDEX 25-40): Bottom enemies
+
+### game_config.json Schema
+
+Central configuration for gameplay parameters.
+
+```json
+{
+  "PLAYER": {
+    "STARTING_LIVES": 3,
+    "EXTRA_LIFE_FIRST": 20000,
+    "EXTRA_LIFE_ADDITIONAL": 70000
+  },
+  "ENEMIES": {
+    "MAX_DIVE_CAP": 2,
+    "DIVE_CAP_START": 2,
+    "MAX_BOSS_DIVE_CAP": 2
+  },
+  "CHALLENGE_STAGES": {
+    "INTERVAL_LEVELS": 4
+  },
+  "HIGH_SCORES": {
+    "GAME_TAG": "unique_game_identifier",
+    "REFRESH_INTERVAL_SECONDS": 300
+  },
+  "DIFFICULTY": {
+    "SPEED_MULTIPLIER_BASE": 1.0
+  }
+}
+```
+
+**Key Rules**:
+- All values have hardcoded fallbacks in GameConstants.gml
+- Use `get_config_value(section, key, default)` to access
+- Allows difficulty tuning without code changes
+
 ## Special Considerations
 
 - The game supports two visual modes: original arcade sprites (global.ArcadeSprites) and Star Wars-themed sprites

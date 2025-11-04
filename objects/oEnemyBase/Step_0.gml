@@ -1,31 +1,17 @@
-// The script manages various aspects of the enemy's logic, including:
-//
-// Destroying the enemy if it moves out of bounds.
-// Handling enemy shooting with limits on the number of shots.
-// Calculating "breathing" (oscillation) positions for formation movement.
-// Adjusting speed based on game state.
-// Adjusting speed based on game state.
-// Managing transformation into other enemy types.
-// Coordinating formation and dive attack behaviors.
-// Handling special challenge mode entry and formation logic.
-// Executing custom rogue behaviors and cleaning up instances when needed.
-//
-// The code uses alarms, global variables, and pathing functions to create dynamic and varied enemy actions, ensuring challenging and engaging gameplay.
-
-// Destroy the instance if it goes out of bounds and is rogue
-//if (rogue == 1) && (y > 592 * global.scale || x < -32 * global.scale || x > 464 * global.scale) {
-//	instance_destroy();
-//}
-  
-//if (global.fastenter == 1 && global.open == 1) {
-//	// delays the onset of the faster speed, so its looks like acceleration
-//	if (fasty > 0) {
-//		fasty -= 1;
-//	} else {
-////		pathSpeed = pathSpeed * 1.5;
-////		baseSpeed = baseSpeed * 1.5;
-//	}
-//}
+/// ================================================================
+/// ENEMY STEP EVENT - Main behavior coordinator
+/// ================================================================
+/// This script manages all enemy behavior including:
+///   • Mode-specific logic (Challenge/Rogue/Standard)
+///   • Enemy shooting with shot limits
+///   • Formation breathing oscillation
+///   • Transformation into other enemy types
+///   • Dive attack coordination
+///   • State machine progression
+///
+/// The code uses alarms, global variables, and path following to create
+/// dynamic and varied enemy actions for challenging gameplay.
+/// ================================================================
 	
 // CHALLENGE enemy are killed if they leave the screen
 if (enemyMode == EnemyMode.CHALLENGE) {
@@ -67,16 +53,16 @@ else if (enemyMode == EnemyMode.ROGUE) {
 else if (enemyMode == EnemyMode.STANDARD) {
 	
 	// Enemy shooting logic: limit number of shots on screen
-	if (instance_number(EnemyShot) < 8) {
+	if (instance_number(EnemyShot) < MAX_ENEMY_SHOTS) {
 		// Fire at specific alarm[1] values
-		if (alarm[1] == 60) { // 45 + 15
-			instance_create(x, y, EnemyShot);
+		if (alarm[1] == ENEMY_SHOT_TIMING_1) {
+			instance_create_layer(x, y, "GameSprites", EnemyShot);
 		}
-		if (alarm[1] == 40) { // 30 + 10
-			instance_create(x, y, EnemyShot);
+		if (alarm[1] == ENEMY_SHOT_TIMING_2) {
+			instance_create_layer(x, y, "GameSprites", EnemyShot);
 		}
-		if (global.shotnumber > 2 && alarm[1] == 20) { // 15 + 5
-			instance_create(x, y, EnemyShot);
+		if (global.shotnumber > 2 && alarm[1] == ENEMY_SHOT_TIMING_3) {
+			instance_create_layer(x, y, "GameSprites", EnemyShot);
 		}
 	}
 
@@ -85,19 +71,20 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	/// ================================================================
 	/// Creates a smooth wave-like motion for enemies in formation.
 	/// The breathing effect occurs around the formation position and syncs
-	/// with global.breathe variable which cycles 0-120.
+	/// with global.breathe variable which cycles 0-BREATHING_CYCLE_MAX.
 	/// breathing provides visual feedback that enemies are "alive"
 	/// ================================================================
-	breathex = xstart + ((global.breathe / 120) * (48 * ((xstart - 448) / 368))) + floor(oGameManager.x);
-	breathey = ystart + ((global.breathe / 120) * (48 * ((ystart - 128) / 288)));
+	breathex = xstart + ((global.breathe / BREATHING_CYCLE_MAX) * (48 * ((xstart - 448) / 368))) + floor(oGameManager.x);
+	breathey = ystart + ((global.breathe / BREATHING_CYCLE_MAX) * (48 * ((ystart - 128) / 288)));
 
 	/// ================================================================
 	/// TRANSFORMATION LOGIC - Enemy morphing into special types
 	/// ================================================================
 	/// Triggers random enemy transformations when specific conditions met.
 	/// This adds variety and challenge to later waves.
-	/// Requirements:
-	///   • Transformation tokens available (global.transnum > 0)
+	///
+	/// Requirements (see canTransform() helper for details):
+	///   • Transformation tokens available
 	///   • Enemy is in formation and alive
 	///   • Random chance (1 in 6) passes
 	///   • Dive capacity available
@@ -105,19 +92,11 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	///   • Less than 21 enemies on screen
 	///   • Player is not firing
 	/// ================================================================
-	if (global.transnum > 0) {
-		if (
-			enemyState == EnemyState.IN_FORMATION && irandom(5) == 0 && global.divecap > 0 &&
-			global.prohib == 0 && global.transform == 0 &&
-			oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0 &&
-			instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) < 21 &&
-			global.open == 0 && oPlayer.alarm[4] == -1
-		) {
-			// Trigger transformation animation (50 frames)
-			alarm[2] = 50;
-			global.transform = 1;
-			sound_play(GTransform);
-		}
+	if (global.transnum > 0 && canTransform()) {
+		// Trigger transformation animation
+		alarm[EnemyAlarmIndex.DIVE_ATTACK] = TRANSFORM_ALARM_DELAY;
+		global.transform = 1;
+		sound_play(GTransform);
 	}
 
 	/// ================================================================

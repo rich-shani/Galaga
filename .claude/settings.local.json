@@ -1,7 +1,15 @@
 {
   "permissions": {
     "allow": [
-      "Bash(\"C:\\Users\\shani\\OneDrive\\Documents\\GitHub\\Galaga\\STRUCTURE_SUMMARY.txt\")"
+      "Bash(\"C:\\Users\\shani\\OneDrive\\Documents\\GitHub\\Galaga\\STRUCTURE_SUMMARY.txt\")",
+      "Bash(dir:*)",
+      "Bash(nul)",
+      "Bash(find:*)",
+      "Bash(sed:*)",
+      "Bash(if [ -f \"C:\\Users\\shani\\OneDrive\\Documents\\GitHub\\Galaga\\IMPLEMENTATION_SUMMARY.md\" ])",
+      "Bash(then echo \"exists\")",
+      "Bash(else echo \"not exists\")",
+      "Bash(fi)"
     ],
     "deny": [],
     "ask": []
