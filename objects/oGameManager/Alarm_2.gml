@@ -2,7 +2,7 @@
 /// Handles the results and scoring for the challenge stage in wave 5.
 /// Plays sounds and awards bonus points based on player performance.
 
-if (global.challcount == 0 && global.wave == 5) {
+if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
 
     global.results += 1; // Increment the results step
 
@@ -20,9 +20,9 @@ if (global.challcount == 0 && global.wave == 5) {
         case 5:
             // Award special bonus or multiplied score
             if (global.shottotal == 40) {
-                global.p1score += 10000; // Perfect bonus
+                global.Game.Player.score += 10000; // Perfect bonus
             } else {
-                global.p1score += global.shottotal * 100; // Score based on shots
+                global.Game.Player.score += global.shottotal * 100; // Score based on shots
             }
             break;
     }

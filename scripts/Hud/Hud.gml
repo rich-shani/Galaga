@@ -12,9 +12,9 @@
 ///   • Pause overlay
 ///
 /// The HUD adapts dynamically based on:
-///   • global.gameMode - Current game state
+///   • global.Game.State.mode - Current game state
 ///   • global.isGameOver - Game over flag
-///   • global.isGamePaused - Pause flag
+///   • global.Game.State.isPaused - Pause flag
 ///   • global.isChallengeStage - Challenge stage flag
 ///
 /// Font Selection:
@@ -36,7 +36,7 @@ function Draw_Hud(){
 	// === SCORE DISPLAY ===
 	// Show scores (1UP and HIGH SCORE) once past attract mode
 	// Attract mode (demo) doesn't show scores
-	if (global.gameMode > GameMode.ATTRACT_MODE) {
+	if (global.Game.State.mode > GameMode.ATTRACT_MODE) {
 		// Draw the score header and values at top of screen
 		Draw_Scores();
 	}
@@ -44,10 +44,10 @@ function Draw_Hud(){
 	// === GAME OVER CHECK ===
 	// If game over flag is set, display GAME OVER message and exit
 	// No other UI elements are drawn in game over state
-	if (global.isGameOver)
+	if (global.Game.State.isGameOver)
 	{
 		draw_set_color(c_red);
-		draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("GAME OVER"));
+		draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("GAME OVER"));
 
 		return;  // Exit function early, skip all other drawing
 	}
@@ -55,21 +55,21 @@ function Draw_Hud(){
 	// === CREDITS/LIVES DISPLAY ===
 	// Before stage message, show credits counter
 	// After game starts, show lives counter
-	if (global.gameMode < GameMode.GAME_STAGE_MESSAGE) {
+	if (global.Game.State.mode < GameMode.GAME_STAGE_MESSAGE) {
 		Draw_Credits();
 	}
 	else {
 		Draw_Lives();
 	}
-		
+
 	// === PAUSE OVERLAY ===
 	// If game is paused, display large "GAME PAUSED" message
 	// This takes priority over all other game mode messages
-	if (global.isGamePaused) {
+	if (global.Game.State.isPaused) {
 		draw_set_font(fAtari36);
 		draw_set_color(c_green);
 
-		draw_text(100*global.scale,265*global.scale, "GAME PAUSED");
+		draw_text(100*global.Game.Display.scale,265*global.Game.Display.scale, "GAME PAUSED");
 
 		// Reset font and color for other UI elements
 		draw_set_color(c_white);
@@ -81,7 +81,7 @@ function Draw_Hud(){
 		// Each mode has specific UI requirements
 		draw_set_color(c_aqua);
 
-		switch (global.gameMode) {
+		switch (global.Game.State.mode) {
 			case GameMode.INSTRUCTIONS:
 				/// Display instructions screen (controls, scoring, etc.)
 				Draw_Instructions();
@@ -100,31 +100,31 @@ function Draw_Hud(){
 			case GameMode.GAME_PLAYER_MESSAGE:
 				/// Display "PLAYER 1" message at start of game
 				/// Shown briefly before stage message
-				draw_text(176*global.scale, 288*global.scale, string_hash_to_newline("PLAYER 1"));
+				draw_text(176*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("PLAYER 1"));
 				break;
 
 			case GameMode.GAME_STAGE_MESSAGE:
 				/// Display "STAGE #" message before each level
-				/// Shows current stage number (global.lvl)
-				draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
-				draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));
+				/// Shows current stage number (global.Game.Level.current)
+				draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("STAGE"));
+				draw_text(260*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline(global.Game.Level.current));
 				break;
 
 			case GameMode.CHALLENGE_STAGE_MESSAGE:
 				/// Display "CHALLENGING STAGE" message before bonus round
 				/// Challenge stages occur every 4 levels
-				draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));
+				draw_text(100*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("CHALLENGING STAGE"));
 				break;
 
 			case GameMode.GAME_READY:
 				/// Display stage indicator just before gameplay begins
 				/// Shows either "CHALLENGING STAGE" or "STAGE #"
-				if (global.isChallengeStage) {
-					draw_text(100*global.scale, 288*global.scale, string_hash_to_newline("CHALLENGING STAGE"));
+				if (global.Game.Challenge.isActive) {
+					draw_text(100*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("CHALLENGING STAGE"));
 				}
 				else {
-					draw_text(160*global.scale, 288*global.scale, string_hash_to_newline("STAGE"));
-					draw_text(260*global.scale, 288*global.scale, string_hash_to_newline(global.lvl));
+					draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("STAGE"));
+					draw_text(260*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline(global.Game.Level.current));
 				}
 				break;
 
@@ -132,10 +132,10 @@ function Draw_Hud(){
 				/// During active gameplay, show "READY" during player respawn
 				/// Displays only when player is respawning (alarm[1] active) and has lives
 				if ((oPlayer.alarm[1] > -1) && (global.p1lives > 0)) {
-					draw_text(170*global.scale, 288*global.scale, string_hash_to_newline("READY"));
+					draw_text(170*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("READY"));
 		        }
 				else if (oPlayer.alarm[5] > -1) {
-					draw_text(110*global.scale, 288*global.scale, string_hash_to_newline("FIGHTER CAPTURED"));
+					draw_text(110*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("FIGHTER CAPTURED"));
 				}
 				break;
 
@@ -145,7 +145,7 @@ function Draw_Hud(){
 	// === CHALLENGE STAGE RESULTS ===
 	// If in a challenge stage, overlay challenge-specific results
 	// Shows perfect clear bonus and enemy count
-	if (global.isChallengeStage) {
+	if (global.Game.Challenge.isActive) {
 		Draw_ChallengeStage_Results();
 	}
 }

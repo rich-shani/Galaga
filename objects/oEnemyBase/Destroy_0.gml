@@ -12,12 +12,12 @@
 /// visible play area, preventing score exploitation from off-screen kills.
 /// ================================================================
 
-if (!global.isGameOver) {
+if (!global.Game.State.isGameOver) {
 	/// === BOUNDARY CHECK ===
 	/// Only award points and play effects for on-screen kills
 	/// This prevents exploiting off-screen enemy kills for free points
 	/// Boundaries: Y between -64 and 592, X between -64 and 464 (scaled)
-	if (y > -64 * global.scale && y < 592 * global.scale && x > -64 && x < 464 * global.scale) {
+	if (y > -64 * global.Game.Display.scale && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > -64 && x < 464 * global.Game.Display.scale) {
 
 		/// ================================================================
 		/// SCORING SYSTEM - Award points based on enemy state
@@ -32,20 +32,20 @@ if (!global.isGameOver) {
 		/// ================================================================
 		if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 			/// Enemy is currently diving/attacking - grant invulnerability window
-			oPlayer.alarm[4] = global.hold + irandom(global.hold);
+			oPlayer.alarm[4] = global.Game.State.hold + irandom(global.Game.State.hold);
 
 			/// If not a transformed enemy, award points for the kill
 			if (trans == 0) {
 				/// Award higher points for diving enemies (more dangerous)
-				if (global.challcount > 0 || global.chall == 1) {
-					global.p1score += attributes.DIVE_POINT_VALUE;
+				if (global.Game.Challenge.count > 0 || global.Game.Challenge.current == 1) {
+					global.Game.Player.score += attributes.DIVE_POINT_VALUE;
 				} else {
-					global.p1score += attributes.CHALLENGE_POINT_VALUE;
+					global.Game.Player.score += attributes.CHALLENGE_POINT_VALUE;
 				}
 			}
 		} else {
 			/// Enemy is in formation or other non-dive state - standard points
-			global.p1score += attributes.POINT_VALUE;
+			global.Game.Player.score += attributes.POINT_VALUE;
 		}
 
 		/// ================================================================
@@ -63,12 +63,12 @@ if (!global.isGameOver) {
 
 		/// === NORMAL MODE COMBO TRACKING ===
 		/// Track regular enemy kills for TransPoints bonus
-		if global.challcount == 0 {
+		if global.Game.Challenge.count == 0 {
 			global.shotcount += 1;
 
 			/// Every 8 consecutive kills in normal mode creates a bonus
 			if global.shotcount == 8 {
-				instance_create(round(x), round(y), TransPoints);
+				instance_create_layer(round(x), round(y), "GameSprites", TransPoints);
 			}
 		}
 
@@ -76,11 +76,11 @@ if (!global.isGameOver) {
 		if trans == 1 {
 			/// Increment transformation counter and award transformation bonus
 			global.transcount += 1;
-			global.p1score += 160;  // Fixed bonus per transformed enemy
+			global.Game.Player.score += 160;  // Fixed bonus per transformed enemy
 
 			/// After 3 transformation kills, spawn TransPoints bonus
 			if global.transcount == 3 {
-				instance_create(round(x), round(y), TransPoints);
+				instance_create_layer(round(x), round(y), "GameSprites", TransPoints);
 			}
 
 			/// ================================================================
@@ -91,15 +91,15 @@ if (!global.isGameOver) {
 			/// • transnum = 2: Butterfly sound (second transformation)
 			/// • transnum = 3: Boss1 sound (third transformation)
 			/// ================================================================
-			if global.transnum == 1 {
+			if global.Game.Enemy.transformNum == 1 {
 				sound_stop(GBoss2);
 				sound_play(GBoss2);
 			}
-			if global.transnum == 2 {
+			if global.Game.Enemy.transformNum == 2 {
 				sound_stop(GButterfly);
 				sound_play(GButterfly);
 			}
-			if global.transnum == 3 {
+			if global.Game.Enemy.transformNum == 3 {
 				sound_stop(GBoss1);
 				sound_play(GBoss1);
 			}
@@ -114,21 +114,21 @@ if (!global.isGameOver) {
 			/// • Challenge 4: Boss2 sound
 			/// • Challenge 7: Boss1 sound
 			/// ================================================================
-			if global.challcount > 0 || global.chall == 1 {
+			if global.Game.Challenge.count > 0 || global.Game.Challenge.current == 1 {
 				sound_stop(GBee);
 				sound_play(GBee);
 			}
 
-			if global.challcount == 0 {
-				if global.chall == 2 || global.chall == 3 || global.chall == 5 || global.chall == 6 || global.chall == 8 {
+			if global.Game.Challenge.count == 0 {
+				if global.Game.Challenge.current == 2 || global.Game.Challenge.current == 3 || global.Game.Challenge.current == 5 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 8 {
 					sound_stop(GButterfly);
 					sound_play(GButterfly);
 				}
-				if global.chall == 4 {
+				if global.Game.Challenge.current == 4 {
 					sound_stop(GBoss2);
 					sound_play(GBoss2);
 				}
-				if global.chall == 7 {
+				if global.Game.Challenge.current == 7 {
 					sound_stop(GBoss1);
 					sound_play(GBoss1);
 				}

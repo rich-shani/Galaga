@@ -6,21 +6,30 @@
 /// @description Initializes all global game variables used throughout the application
 ///              This centralizes global state initialization for better maintainability
 ///              Should be called once in oGameManager Create event before any other initialization
+///
+/// MIGRATION NOTE:
+///   This function now performs DUAL INITIALIZATION:
+///   1. Initializes legacy global variables (for backward compatibility)
+///   2. Initializes new global.Game struct system (for better organization)
+///   3. Syncs values between old and new systems
+///
+///   During migration, code can use EITHER old globals OR new structs.
+///   Eventually, all code will migrate to struct-based access.
+///
 /// @return {undefined}
 function init_globals() {
+    // === PREVENT DOUBLE INITIALIZATION ===
+    // If global.Game already exists, skip re-initialization
+    // This allows the function to be safely called from multiple objects
+    if (variable_global_exists("Game")) {
+        return;
+    }
+
     // === DEBUG MODE ===
     global.debug = false; // Debug mode flag (set to true for debug output)
 
     // === ROOM AND DISPLAY SETTINGS ===
     global.roomname = "GalagaWars"; // Current room name (can be "GalagaWars", "Galaga", "Galaga2")
-
-    // Scale the system based on the room mode
-    global.scale = 1; // Default scale
-    if (global.roomname == "GalagaWars") {
-        global.scale = 2; //SCALE_GALAGA_WARS; // 2x scale for Star Wars theme
-    } else {
-        global.scale = 1; //SCALE_GALAGA_ORIGINAL; // 1x scale for original Galaga
-    }
 
     // Screen dimensions
     global.screen_width = view_get_wport(view_current);
@@ -32,97 +41,121 @@ function init_globals() {
 
     // === HIGH SCORES ===
     // Top 5 high scores, initialized to 0
-    global.galaga1 = 0; // First place
-    global.galaga2 = 0; // Second place
-    global.galaga3 = 0; // Third place
-    global.galaga4 = 0; // Fourth place
-    global.galaga5 = 0; // Fifth place
+    global.galaga1 = 0;
+    global.galaga2 = 0;
+    global.galaga3 = 0;
+    global.galaga4 = 0;
+    global.galaga5 = 0;
+    global.init1 = "AA ";
+    global.init2 = "BB ";
+    global.init3 = "CC ";
+    global.init4 = "DD ";
+    global.init5 = "EE ";
 
-    // High score initials (3 characters each)
-    global.init1 = "AA "; // First place initials
-    global.init2 = "BB "; // Second place initials
-    global.init3 = "CC "; // Third place initials
-    global.init4 = "DD "; // Fourth place initials
-    global.init5 = "EE "; // Fifth place initials
+    // === LEGACY GLOBALS (To be migrated to global.Game) ===
+    // Temporary during migration - will be removed
+    global.ArcadeSprites = true;
+    global.ArcadeSpritesPrefix = "OG_";
+    // ========================================================================
+    // NEW STRUCT-BASED SYSTEM INITIALIZATION
+    // ========================================================================
+    // Initialize the new global.Game struct hierarchy
+    // This provides organized, type-safe access to game state
+    global.Game = {
+        Player: {
+            score: 0,
+            lives: get_config_value("PLAYER", "STARTING_LIVES", 3),
+            credits: 0,
+            hits: 0,
+            shotsFired: 0,
+            shotCount: 0,
+            shotTotal: 0,
+            extraLifeThreshold: EXTRA_LIFE_FIRST_THRESHOLD
+        },
+        State: {
+            mode: GameMode.INITIALIZE,
+            isGameOver: false,
+            isPaused: false,
+            prohibitDive: 0,
+            spawnOpen: 0,
+            useArcadeSprites: global.ArcadeSprites,
+            breathing: 1,
+            results: 0,
+            fast: 0,
+            fastEnter: 0,
+            enterShot: 0,
+            hold: 15,
+            lastAttack: 4
+        },
+        Level: {
+            current: 0,
+            wave: 0,
+            stage: 0,
+            pattern: 0
+        },
+        Challenge: {
+            isActive: false,
+            current: 0,
+            count: 2,
+            intervalsToNext: get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS)
+        },
+        Spawn: {
+            counter: 0,
+            flip: 0
+        },
+        Enemy: {
+            diveCapacity: get_config_value("ENEMIES", "MAX_DIVE_CAP", 2),
+            diveCapacityStart: get_config_value("ENEMIES", "DIVE_CAP_START", 2),
+            breathePhase: 0,
+            transformActive: 0,
+            transformTokens: 0,
+            transformCount: 0,
+            transformNum: 0,
+            transformSide: 0,
+            beamDuration: BEAM_TIME_DEFAULT,
+            beamCheck: 0,
+            capturedPlayer: false,
+            count: 0,  // Cached enemy count (updated each frame in oGameManager Step)
+            shotNumber: 2,
+            animationSpeed: 0,
+            escortCount: 0,
+            fighterStore: 0,
+            bossCount: 1,
+            bossCap: get_config_value("ENEMIES", "MAX_BOSS_DIVE_CAP", 2)
+        },
+        Rogue: {
+            level: 0,
+            checkPerWave: false
+        },
+        Display: {
+            roomName: global.roomname,
+            scale: 1,
+            screenWidth: global.screen_width,
+            screenHeight: global.screen_height,
+            animationIndex: 0
+        },
+        HighScores: {
+            first: global.galaga1,
+            second: global.galaga2,
+            third: global.galaga3,
+            fourth: global.galaga4,
+            fifth: global.galaga5
+        },
+        Difficulty: {
+            speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
+            gameSpeed: 60
+        }
+    };
 
-    // Displayed high score
-    //global.disp = 0;
-
-    // === PLAYER STATE ===
-    global.p1score = 0; // Player 1's current score
-    global.p1lives = get_config_value("PLAYER", "STARTING_LIVES", 3); // Player lives
-    global.credits = 0; // Number of game credits (coins entered)
-
-    // Shot tracking
-    global.shotcount = 0; // Shots fired in current wave
-    global.shottotal = 0; // Total shots fired
-
-    // === GAME STATE ===
-    global.gameMode = GameMode.INITIALIZE; // Initial game mode
-    global.isGameOver = false; // Game over flag
-    global.isGamePaused = false; // Pause state flag
-	global.isPlayerCaptured = false;
+    // Scale the system based on the room mode
+    if (global.roomname == "GalagaWars") {
+        global.Game.Display.scale = 2; //SCALE_GALAGA_WARS; // 2x scale for Star Wars theme
+    } else {
+        global.Game.Display.scale = 1; //SCALE_GALAGA_ORIGINAL; // 1x scale for original Galaga
+    }
 	
-    // === LEVEL/WAVE PROGRESSION ===
-    global.lvl = 0; // Current level
-    global.wave = 0; // Current wave within level
-    global.stage = 0; // Current stage
-    global.pattern = 0; // Current spawn pattern
-    global.spawnCounter = 0; // Tracks current spawn index
-
-    // === CHALLENGE STAGE ===
-    global.isChallengeStage = false; // Is currently in challenge stage
-    global.chall = 0; // Current challenge number (1-8)
-    global.challcount = 1; // Counter for challenge stage progression
-    global.nLvls2ChallengeStage = get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS);
-
-    // === ENEMY BEHAVIOR ===
-    global.flip = 0; // Sprite/screen flip control
-    global.animationIndex = 0; // Animation frame index
-
-    // Dive and attack capacity
-    global.divecap = get_config_value("ENEMIES", "MAX_DIVE_CAP", 2); // Current dive capacity
-    global.divecapstart = get_config_value("ENEMIES", "DIVE_CAP_START", 2); // Starting dive capacity
-    global.bosscap = get_config_value("ENEMIES", "MAX_BOSS_DIVE_CAP", 2); // Boss dive capacity
-
-    // Enemy state flags
-    global.open = 0; // Open flag for wave spawning
-    global.breathing = 1; // Breathing animation state
-    global.breathe = 0; // Breathing cycle position
-    global.prohib = 0; // Prohibit dive flag
-    global.transform = 0; // Transformation state
-    global.beamcheck = 0; // Boss beam check
-    global.transcount = 0; // Transformation counter
-    global.escortcount = 0; // Escort enemy counter
-    global.fighterstore = 0; // Stored fighter count
-    global.bosscount = 1; // Boss counter
-
-    // Rogue enemy settings
-    global.rogue = 0; // Rogue level
-    global.checkRoguePerWave = false; // Check rogue spawn per wave
-
-    // Speed and timing
-    global.fast = 0; // Fast mode flag
-    global.fastenter = 0; // Fast entry flag
-    global.entershot = 0; // Entry shot flag
-    global.transnum = 0; // Transformation number
-    global.hold = 15; // Hold time
-    global.beamtime = 300; // Beam duration
-    global.shotnumber = 2; // Number of shots
-    global.lastattack = 4; // Last attack threshold
-
-    // === DIFFICULTY SCALING ===
-    global.speedMultiplier = get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0);
-
-    // === VISUAL SETTINGS ===
-    global.ArcadeSprites = true; // Use arcade-style sprites
-    global.ArcadeSpritesPrefix = "OG_"; // Prefix for arcade sprite names
-    global.enemy_animation_speed = 0; // Enemy animation speed modifier
-
-    // === RESULT TRACKING ===
-    global.results = 0; // Results display flag
-
-    show_debug_message("Global variables initialized successfully");
+    show_debug_message("[init_globals] Struct-based global system initialized");
+    show_debug_message("[init_globals] All game state managed through global.Game namespace");
 }
 
 /// @function Enter_Initials
@@ -150,7 +183,7 @@ function Enter_Initials(){
     }
 
     // === SELECT CURRENT CHARACTER ===
-    if keyboard_check_pressed(vk_space) and loop > 0 and global.results < 5 {
+    if keyboard_check_pressed(vk_space) and loop > 0 and global.Game.State.results < 5 {
 
         // The 'scored' variable determines which player's initials are being entered (1 to 5)
 		var _initials = "";
@@ -158,50 +191,37 @@ function Enter_Initials(){
 		var _new_char = string_char_at(cycle, cyc);
 
 		// === UPDATE APPROPRIATE INITIALS STRING ===
-		// Use switch statement to eliminate code duplication
-		// Each case updates the corresponding global initial string
+		// Use arrays to eliminate code duplication
+		// Build arrays of current initials and scores for indexed access
+		var initials_array = [global.init1, global.init2, global.init3, global.init4, global.init5];
+		var scores_array = [global.galaga1, global.galaga2, global.galaga3, global.galaga4, global.galaga5];
+
+		// Get the array index (scored is 1-based, arrays are 0-based)
+		var idx = scored - 1;
+
+		// Update the initials string at the current character position
+		var current_initials = initials_array[idx];
+		current_initials = string_delete(current_initials, char + 1, 1);
+		current_initials = string_insert(_new_char, current_initials, char + 1);
+
+		// Store for later use
+		_initials = current_initials;
+		_score = scores_array[idx];
+
+		// Write the updated initials back to the appropriate global variable
 		switch(scored) {
-			case 1:
-				global.init1 = string_delete(global.init1, char + 1, 1);
-				global.init1 = string_insert(_new_char, global.init1, char + 1);
-				_initials = global.init1;
-				_score = global.galaga1;
-				break;
-
-			case 2:
-				global.init2 = string_delete(global.init2, char + 1, 1);
-				global.init2 = string_insert(_new_char, global.init2, char + 1);
-				_initials = global.init2;
-				_score = global.galaga2;
-				break;
-
-			case 3:
-				global.init3 = string_delete(global.init3, char + 1, 1);
-				global.init3 = string_insert(_new_char, global.init3, char + 1);
-				_initials = global.init3;
-				_score = global.galaga3;
-				break;
-
-			case 4:
-				global.init4 = string_delete(global.init4, char + 1, 1);
-				global.init4 = string_insert(_new_char, global.init4, char + 1);
-				_initials = global.init4;
-				_score = global.galaga4;
-				break;
-
-			case 5:
-				global.init5 = string_delete(global.init5, char + 1, 1);
-				global.init5 = string_insert(_new_char, global.init5, char + 1);
-				_initials = global.init5;
-				_score = global.galaga5;
-				break;
+			case 1: global.init1 = current_initials; break;
+			case 2: global.init2 = current_initials; break;
+			case 3: global.init3 = current_initials; break;
+			case 4: global.init4 = current_initials; break;
+			case 5: global.init5 = current_initials; break;
 		}
 
-        global.results += 1; // Move to the next character position or scorer
+        global.Game.State.results += 1; // Move to the next character position or scorer
         cyc = 1;      // Reset cycle index to first character
 
         // === FINALIZE NAME ENTRY ===
-        if global.results == 5 {
+        if global.Game.State.results == 5 {
 			// save score in the GM scoreboard
 			set_score(_initials, _score);
 	
@@ -221,16 +241,17 @@ function Enter_Initials(){
     }
 
     // Track which character in the name is currently being edited
-    char = global.results - 2;
+    char = global.Game.State.results - 2;
 }
 
 /// @function nOfEnemies
-/// @description Counts the total number of active enemies across all enemy types
-///              Includes: Bee, TieFighter, TieIntercepter, ImperialShuttle, Butterfly, Boss, Fighter, Transform
+/// @description Counts the total number of active enemies using parent object
+///              Uses oEnemyBase to automatically include all enemy types
+///              This approach scales automatically when new enemy types are added
 /// @return {Real} Total count of active enemy instances
 function nOfEnemies() {
-	// return the total number of active enemies (all enemies)
-	return instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle); // + instance_number(Transform);
+	// Count all instances of oEnemyBase (includes all enemy types that inherit from it)
+	return instance_number(oEnemyBase);
 }
 
 /// @function checkForExtraLives
@@ -241,13 +262,13 @@ function nOfEnemies() {
 function checkForExtraLives() {
 	// Award extra lives based on score thresholds
 	var max_score = get_config_value("SCORE", "MAX_SCORE_FOR_EXTRA_LIVES", MAX_SCORE_FOR_EXTRA_LIVES);
-	if global.p1score > firstlife and global.p1score < max_score {
-	    if firstlife == 20000 {
+	if global.Game.Player.score > firstlife and global.Game.Player.score < max_score {
+	    if firstlife == EXTRA_LIFE_FIRST_THRESHOLD {
 	        firstlife = 0; // Reset first life marker
 	    }
 	    firstlife += additional; // Set next life threshold
 	    sound_play(GLife);       // Play life gained sound
-	    global.p1lives += 1;     // Add a life
+	    global.Game.Player.lives += 1;     // Add a life
 	}
 }
 
@@ -259,12 +280,13 @@ function readyForNextLevel() {
 	//// If no enemies are present and all game conditions are met,
 	//// initiate transition to the next level.
 	if (alarm[AlarmIndex.LEVEL_ADVANCE] != -1) return true;
-	
-	if nOfEnemies() == 0 &&
+
+	if global.Game.Enemy.count == 0 &&
 	    nextlevel == 0 &&
-	    global.open == 0 &&
+	    global.Game.State.spawnOpen == 0 &&
+	    instance_exists(oPlayer) &&
 	    oPlayer.shipStatus == _ShipState.ACTIVE &&
-		global.gameMode == GameMode.GAME_ACTIVE {
+		global.Game.State.mode == GameMode.GAME_ACTIVE {
 		
 		
 		// trigger oGameManager.alarm[LEVEL_ADVANCE] with nextlevel == 1
@@ -302,19 +324,20 @@ function canTransform() {
 
 	// === GAME STATE CHECKS ===
 	// Game must allow transformations (capacity and no active prohibitions)
-	var gameReady = (global.divecap > 0) &&
-	                (global.prohib == 0) &&
-	                (global.open == 0);
+	var gameReady = (global.Game.Enemy.diveCapacity > 0) &&
+	                (global.Game.State.prohibitDive == 0) &&
+	                (global.Game.State.spawnOpen == 0);
 
 	// === PLAYER STATE CHECKS ===
 	// Player must be active and vulnerable for transformation to make sense
-	var playerVulnerable = (oPlayer.shipStatus == _ShipState.ACTIVE) &&
+	var playerVulnerable = instance_exists(oPlayer) &&
+	                       (oPlayer.shipStatus == _ShipState.ACTIVE) &&
 	                       (oPlayer.regain == 0) &&
 	                       (oPlayer.alarm[4] == -1);
 
 	// === ENEMY COUNT CHECK ===
 	// Don't transform if too many enemies already on screen (performance/balance)
-	var notTooManyEnemies = nOfEnemies() < 21;
+	var notTooManyEnemies = global.Game.Enemy.count < 21;
 
 	// === RANDOM CHANCE ===
 	// 1 in 6 chance (approximately 16.7% probability)
@@ -336,7 +359,7 @@ function canTransform() {
 function checkDiveCapacity() {
 
     // Reset dive cap to its starting value at the beginning of each frame
-    global.divecap = global.divecapstart;
+    global.Game.Enemy.diveCapacity = global.Game.Enemy.diveCapacityStart;
 
     // === DIVE CAPACITY CALCULATION ===
     // Check all enemy types in one pass using array iteration
@@ -349,13 +372,13 @@ function checkDiveCapacity() {
     for (var i = 0; i < array_length(enemy_types); i++) {
         with (enemy_types[i]) {
             if (enemyState != EnemyState.IN_FORMATION || alarm[EnemyAlarmIndex.DIVE_ATTACK] > -1) {
-                global.divecap -= 1;
+                global.Game.Enemy.diveCapacity -= 1;
             }
         }
     }
 
     // Boss dive cap handling: maximum of 2 bosses can dive
-    global.bosscap = 2;
+    global.Game.Enemy.bossCap = 2;
 }
 
 /// @function controlEnemyFormation
@@ -366,7 +389,7 @@ function checkDiveCapacity() {
 function controlEnemyFormation() {
 	// Controls breathing motion of a visual/background element and audio
 
-    if global.breathing == 0 {
+    if global.Game.State.breathing == 0 {
         // Not breathing yet; run animation to transition to breathing
 
         if exhale == 0 {
@@ -386,9 +409,9 @@ function controlEnemyFormation() {
 
         skip = 0;
 
-        if global.open == 0 {
+        if global.Game.State.spawnOpen == 0 {
             if x == 16 {
-                global.breathing = 1; // Begin breathing animation loop
+                global.Game.State.breathing = 1; // Begin breathing animation loop
                 exhale = 0;
                 sound_stop(GBreathe);
                 sound_loop(GBreathe); // Loop breathing sound
@@ -396,20 +419,20 @@ function controlEnemyFormation() {
         }
     }
 
-    if global.breathing == 1 {
+    if global.Game.State.breathing == 1 {
         // Active breathing animation and audio logic
 
         if exhale == 0 {
-            global.breathe += BREATHING_RATE; // Simulate inhale rate
-            if round(global.breathe) == BREATHING_CYCLE_MAX {
+            global.Game.Enemy.breathePhase += BREATHING_RATE; // Simulate inhale rate
+            if round(global.Game.Enemy.breathePhase) == BREATHING_CYCLE_MAX {
                 exhale = 1;
                 exit; // Exit breathing update for this frame
             }
         }
 
         if exhale == 1 {
-            global.breathe -= BREATHING_RATE; // Simulate exhale rate
-            if round(global.breathe) == 0 {
+            global.Game.Enemy.breathePhase -= BREATHING_RATE; // Simulate exhale rate
+            if round(global.Game.Enemy.breathePhase) == 0 {
                 exhale = 0;
                 sound_stop(GBreathe);
                 sound_loop(GBreathe); // Restart breathing sound
@@ -423,7 +446,7 @@ function controlEnemyFormation() {
         && !sound_isplaying(GCaptured)
         && !sound_isplaying(GFighterCaptured)
         && !sound_isplaying(GRescue)
-        && (instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) > global.lastattack)
+        && (instance_number(oTieFighter) + instance_number(oTieIntercepter) + instance_number(oImperialShuttle) > global.Game.State.lastAttack)
         {
             sound_volume(GBreathe, 1); // Play breathing sound at full volume
         } else {
@@ -448,8 +471,20 @@ function load_json_datafile(_datafile, _default = undefined) {
 /// @return {Real} Number of rogue enemies to spawn
 function nRogueEnemies() {
     // Get spawn count for current rogue level and wave
-    var rogue_level_data = rogue_config.ROGUE_LEVELS[global.rogue];
-    return rogue_level_data.SPAWN_COUNT[global.wave];
+    // Add bounds checking to prevent crashes from invalid indices
+    if (global.Game.Rogue.level < 0 || global.Game.Rogue.level >= array_length(rogue_config.ROGUE_LEVELS)) {
+        log_error("Invalid rogue level index: " + string(global.Game.Rogue.level), "nRogueEnemies", 2);
+        return 0;
+    }
+
+    var rogue_level_data = rogue_config.ROGUE_LEVELS[global.Game.Rogue.level];
+
+    if (global.Game.Level.wave < 0 || global.Game.Level.wave >= array_length(rogue_level_data.SPAWN_COUNT)) {
+        log_error("Invalid wave index: " + string(global.Game.Level.wave), "nRogueEnemies", 2);
+        return 0;
+    }
+
+    return rogue_level_data.SPAWN_COUNT[global.Game.Level.wave];
 }
 
 /// @function spawnRogueEnemy
@@ -459,7 +494,7 @@ function nRogueEnemies() {
 /// @return {undefined}
 function spawnRogueEnemy(_spawn) {
 	// Get the enemy data from a specific SPAWN instance
-	var enemy_data = spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN[_spawn];
+	var enemy_data = spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN[_spawn];
 	
 	
 	// SPAWN a ROGUE Enemy, create path using the STANDARD path and prefix "ROGUE_"
@@ -487,7 +522,7 @@ function spawnRogueEnemies(_nRogues) {
 
 	// loop to SPAWN _nRogues (and check for a COMBINATION SPAWN)
 	for (var i=0; i < _nRogues; i++ ) {
-		spawnRogueEnemy(global.spawnCounter-2);
+		spawnRogueEnemy(global.Game.Spawn.counter-2);
 	}
 }
 
@@ -497,7 +532,7 @@ function spawnRogueEnemies(_nRogues) {
 ///              Increments the global spawn counter after spawning
 /// @return {undefined}
 function spawnEnemy() {
-	var enemy_data = spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN[global.spawnCounter];
+	var enemy_data = spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN[global.Game.Spawn.counter];
 				
 	// enemy_data: eg
 	// ENEMY		"oTieFighter"
@@ -517,7 +552,7 @@ function spawnEnemy() {
 	}
 	
 	// advance the enemy spawn counter
-	global.spawnCounter++;
+	global.Game.Spawn.counter++;
 	
 	// is this a comination spawn, ie 2 enemies side by side?
 	if (enemy_data.COMBINE) {
@@ -531,7 +566,7 @@ function spawnEnemy() {
 /// @return {Bool} True if all spawn indices have been processed
 function waveComplete() {
 
-	return (global.spawnCounter == array_length(spawn_data.PATTERN[global.pattern].WAVE[global.wave].SPAWN));
+	return (global.Game.Spawn.counter == array_length(spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN));
 }
 
 /// @function patternComplete
@@ -539,17 +574,17 @@ function waveComplete() {
 /// @return {Bool} True if all waves in pattern are done
 function patternComplete() {
 
-	return (global.wave == array_length(spawn_data.PATTERN[global.pattern].WAVE));
+	return (global.Game.Level.wave == array_length(spawn_data.PATTERN[global.Game.Level.pattern].WAVE));
 }
 
 /// @function getChallengeData
 /// @description Retrieves challenge stage data for the current challenge number
-///              Note: global.chall is 1-indexed (1-8), array is 0-indexed
+///              Note: global.Game.Challenge.current is 1-indexed (1-8), array is 0-indexed
 /// @return {Struct} Challenge data structure with paths and wave information
 function getChallengeData() {
-	// Get the challenge data for the current challenge (global.chall is 1-8)
+	// Get the challenge data for the current challenge (global.Game.Challenge.current is 1-8)
 	// Array is 0-indexed, so subtract 1
-	return challenge_data.CHALLENGES[global.chall - 1];
+	return challenge_data.CHALLENGES[global.Game.Challenge.current - 1];
 }
 
 /// @function getChallengeWaveData
@@ -558,7 +593,7 @@ function getChallengeData() {
 function getChallengeWaveData() {
 	// Get the wave data for the current wave in the current challenge
 	var chall_data = getChallengeData();
-	return chall_data.WAVES[global.wave];
+	return chall_data.WAVES[global.Game.Level.wave];
 }
 
 /// @function spawnChallengeEnemy
@@ -583,9 +618,9 @@ function spawnChallengeEnemy() {
 	var spawn_y = 0;
 
 	// Wave 0, 3, 4 use path1/path1flip
-	if (global.wave == 0 ||
-	    (global.wave == 3 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
-	    (global.wave == 4 && (global.chall == 1 || global.chall == 6 || global.chall == 7))) {
+	if (global.Game.Level.wave == 0 ||
+	    (global.Game.Level.wave == 3 && global.Game.Challenge.current != 1 && global.Game.Challenge.current != 6 && global.Game.Challenge.current != 7) ||
+	    (global.Game.Level.wave == 4 && (global.Game.Challenge.current == 1 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 7))) {
 		path_name = chall_data.PATH1;
 		var path_id = safe_get_asset(path_name);
 		if (path_id != -1) {
@@ -596,7 +631,7 @@ function spawnChallengeEnemy() {
 		}
 	}
 	// Wave 1 uses path2 (alternating enemy types handled below)
-	else if (global.wave == 1) {
+	else if (global.Game.Level.wave == 1) {
 		path_name = chall_data.PATH2;
 		var path_id = safe_get_asset(path_name);
 		if (path_id != -1) {
@@ -607,7 +642,7 @@ function spawnChallengeEnemy() {
 		}
 	}
 	// Wave 2 uses path2flip
-	else if (global.wave == 2) {
+	else if (global.Game.Level.wave == 2) {
 		path_name = chall_data.PATH2_FLIP;
 		var path_id = safe_get_asset(path_name);
 		if (path_id != -1) {
@@ -618,8 +653,8 @@ function spawnChallengeEnemy() {
 		}
 	}
 	// Wave 4 or 3 (depending on challenge) use path1flip
-	else if ((global.wave == 4 && global.chall != 1 && global.chall != 6 && global.chall != 7) ||
-	         (global.wave == 3 && (global.chall == 1 || global.chall == 6 || global.chall == 7))) {
+	else if ((global.Game.Level.wave == 4 && global.Game.Challenge.current != 1 && global.Game.Challenge.current != 6 && global.Game.Challenge.current != 7) ||
+	         (global.Game.Level.wave == 3 && (global.Game.Challenge.current == 1 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 7))) {
 		path_name = chall_data.PATH1_FLIP;
 		var path_id = safe_get_asset(path_name);
 		if (path_id != -1) {
@@ -631,7 +666,7 @@ function spawnChallengeEnemy() {
 	}
 
 	// For wave 1, alternate between primary enemy and TieFighter based on count
-	if (global.wave == 1) {
+	if (global.Game.Level.wave == 1) {
 		if (count == 1 || count == 3 || count == 5 || count == 7) {
 			// Use TieFighter instead of the wave's enemy for odd counts
 			enemy_id = asset_get_index("oTieFighter");
@@ -672,7 +707,7 @@ function Game_Loop_Standard() {
 				spawnEnemy();
 			}
 			// === PHASE 2: ADD ROGUE ENEMIES ===
-			else if (!global.checkRoguePerWave) {
+			else if (!global.Game.Rogue.checkPerWave) {
 				// Wave spawning complete, now check for rogue enemies
 				// Rogues are special enemies that don't join formation
 				// They target the player directly after entrance path
@@ -682,7 +717,7 @@ function Game_Loop_Standard() {
 					spawnRogueEnemies(nRogue);
 				}
 
-				global.checkRoguePerWave = true; // Mark rogues as spawned for this wave
+				global.Game.Rogue.checkPerWave = true; // Mark rogues as spawned for this wave
 			}
 
 			// === PHASE 3: WAVE TRANSITION CHECK ===
@@ -692,16 +727,16 @@ function Game_Loop_Standard() {
 			//
 			// The divecap check ensures enemies aren't still entering
 			// when we start the next wave
-			if (waveComplete() && (global.divecap == global.divecapstart)) {
+			if (waveComplete() && (global.Game.Enemy.diveCapacity == global.Game.Enemy.diveCapacityStart)) {
 			    // Wave fully spawned AND enemies in formation
 				// Advance to next wave
 
 				// Reset spawn counter for next wave
-				global.spawnCounter = 0;
+				global.Game.Spawn.counter = 0;
 
 				// Advance to the next WAVE within this pattern
-	            global.wave += 1;
-				global.checkRoguePerWave = false; // Reset rogue flag for next wave
+	            global.Game.Level.wave += 1;
+				global.Game.Rogue.checkPerWave = false; // Reset rogue flag for next wave
             }
 			else {
 				// Still spawning OR enemies still moving into formation
@@ -714,7 +749,8 @@ function Game_Loop_Standard() {
 		// === PATTERN COMPLETE ===
 		// All waves in current pattern have been spawned
 		// Stop spawning until next level
-		global.open = 0;
+		//global.open = 0;
+		global.Game.State.spawnOpen = 0;
 	}
 }
 
@@ -803,12 +839,12 @@ function Game_Loop_Challenge() {
 	// ====================================================================
 	// CHALLENGE MODE: Challenge Stage Spawning Logic
 	// ====================================================================
-	// Challenge stages occur every 4 levels (when global.challcount reaches 0)
+	// Challenge stages occur every 4 levels (when global.Game.Challenge.count reaches 0)
 	// Different spawning logic: 8 enemies per wave, 5 waves total = 40 enemies
 	// Enemies follow looping paths and don't form into grid
 
 	// Only proceed if we're within valid wave range, alarm is inactive, and not transitioning to next level
-    if (global.wave < CHALLENGE_TOTAL_WAVES && alarm[AlarmIndex.SPAWN_DELAY] == -1 && nextlevel == 0) {
+    if (global.Game.Level.wave < CHALLENGE_TOTAL_WAVES && alarm[AlarmIndex.SPAWN_DELAY] == -1 && nextlevel == 0) {
 
         if (count < CHALLENGE_ENEMIES_PER_WAVE) {  // Only spawn if current wave hasn't reached full enemy count
 
@@ -817,14 +853,14 @@ function Game_Loop_Challenge() {
 
             // === PATH SHIFTING FOR CHALLENGE 4 ===
             // Special case: Challenge 4, Wave 4 shifts paths right for visual variety
-            if (global.chall == 4 && global.wave == 4) {
+            if (global.Game.Challenge.current == 4 && global.Game.Level.wave == 4) {
                 var path1_id = safe_get_asset(chall_data.PATH1, -1);
                 if (path1_id != -1 && path_get_x(path1_id, 0) == 192) {
                     var path1flip_id = safe_get_asset(chall_data.PATH1_FLIP, -1);
                     if (path1flip_id != -1) {
                         // Shift paths right by 64 pixels
-                        path_shift(path1_id, 64*global.scale, 0);
-                        path_shift(path1flip_id, 64*global.scale, 0);
+                        path_shift(path1_id, 64*global.Game.Display.scale, 0);
+                        path_shift(path1flip_id, 64*global.Game.Display.scale, 0);
                     } else {
                         log_error("Challenge 4 flipped path not found: " + chall_data.PATH1_FLIP, "Game_Loop_Challenge", 1);
                     }
@@ -835,11 +871,11 @@ function Game_Loop_Challenge() {
             if (wave_data.DOUBLED) {
                 // This wave spawns mirrored pairs of enemies
 
-                if (global.wave == 0 || global.wave == 3 || global.wave == 4) {
+                if (global.Game.Level.wave == 0 || global.Game.Level.wave == 3 || global.Game.Level.wave == 4) {
 					spawnChallengeWave_0_3_4(chall_data, wave_data);
-                } else if (global.wave == 1) {
+                } else if (global.Game.Level.wave == 1) {
 					spawnChallengeWave_1(chall_data, wave_data);
-                } else if (global.wave == 2) {
+                } else if (global.Game.Level.wave == 2) {
 					spawnChallengeWave_2(chall_data, wave_data);
                 }
 
@@ -857,12 +893,12 @@ function Game_Loop_Challenge() {
         // === ADVANCE WAVE ===
         if (count == CHALLENGE_ENEMIES_PER_WAVE) {
             // If max enemies spawned and all cleared, reset for next wave
-            if (nOfEnemies() == 0) {
+            if (global.Game.Enemy.count == 0) {
                 alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_WAVE_DELAY;  // Delay before next wave starts
-                global.wave += 1;
+                global.Game.Level.wave += 1;
                 count = 0;
-                global.shottotal += global.shotcount;
-                global.shotcount = 0;
+                global.Game.Player.shotTotal += global.Game.Player.shotCount;
+                global.Game.Player.shotCount = 0;
             }
         }
     }
@@ -874,12 +910,12 @@ function Game_Loop_Challenge() {
 ///
 /// ARCHITECTURE:
 /// This function handles TWO distinct game modes:
-///   1. STANDARD MODE (global.challcount > 0): Regular wave-based gameplay
+///   1. STANDARD MODE (global.Game.Challenge.count > 0): Regular wave-based gameplay
 ///      - Spawns 40 enemies per wave from wave_spawn.json
 ///      - Enemies form into 5x8 grid formation
 ///      - Includes rogue enemy spawning between waves
 ///
-///   2. CHALLENGE MODE (global.challcount == 0): Bonus stages every 4 levels
+///   2. CHALLENGE MODE (global.Game.Challenge.count == 0): Bonus stages every 4 levels
 ///      - Spawns 8 enemies per wave (5 waves = 40 total)
 ///      - Enemies follow looping paths (no formation)
 ///      - Uses challenge_spawn.json for patterns
@@ -895,7 +931,7 @@ function Game_Loop(){
 
 	// === EARLY EXITS ===
 	// Skip processing if game is paused or transitioning to next level
-	if (global.isGamePaused) return;
+	if (global.Game.State.isPaused) return;
 	if (readyForNextLevel()) return;
 
 	// === EXTRA LIVES ===
@@ -915,11 +951,11 @@ function Game_Loop(){
 	// ====================================================================
 	// GAME MODE ROUTING: Standard Wave Gameplay vs Challenge Stage
 	// ====================================================================
-	// global.challcount tracks progress toward challenge stages
+	// global.Game.Challenge.count tracks progress toward challenge stages
 	// When > 0: Normal gameplay with formations
 	// When == 0: Challenge stage (every 4th level)
 
-	if (global.challcount > 0) {
+	if (global.Game.Challenge.count > 0) {
 		Game_Loop_Standard();
 	} else {
 		Game_Loop_Challenge();
@@ -941,7 +977,7 @@ function Set_Nebula_Color() {
 			if (fx_get_name(layer_fx) == "_filter_hue")
 			{
 				// background color based on Level, wrap around array length of pre-set colors
-			    fx_set_parameter(layer_fx, "g_HueShift", global.lvl % array_length(hue_value));
+			    fx_set_parameter(layer_fx, "g_HueShift", global.Game.Level.current % array_length(hue_value));
 			}
 		}		
 		// make the nebula visible
@@ -973,42 +1009,47 @@ function Show_Instructions() {
 		}
 		
         // === INITIALIZE GAME STATE ===
-        global.lvl           = 0;
+        global.Game.Level.current = 0;
+        global.Game.Challenge.current         = 0;
 		
-        global.chall         = 0;
 		// start the counter at 1, as the 1st challenge stage is Stage 3, then +4 after that, ie 7, 11, 15, ...
-        global.challcount    = 2;
-		global.isChallengeStage = false;
-		
-        global.divecapstart  = 2;
-        global.lastattack    = 4;
-        global.beamtime      = 300;
-        global.shotnumber    = 2;
-        global.open          = 0;
-        global.fastenter     = 0;
-        global.entershot     = 0;
-        global.rogue         = 0;
-        global.fast          = 0;
-        global.transnum      = 0;
-        global.divecap       = global.divecapstart;
-        global.pattern       = 0;
-        global.hold          = 15;
-        global.bosscap       = 2;
-        global.wave          = 0;
-        global.flip          = 0;
-        global.breathing     = 1;
+        global.Game.Challenge.count    = 1;
+		global.Game.Challenge.isActive = false;
+
+        global.Game.Enemy.diveCapacityStart  = 2;
+        global.Game.Enemy.diveCapacity = global.Game.Enemy.diveCapacityStart;
+        global.Game.State.lastAttack    = 4;
+       // global.Game.Enemy.beamDuration      = 300;
+        global.Game.Enemy.beamDuration = 300;
+        global.Game.Enemy.shotNumber    = 2;
+        //global.open          = 0;
+        global.Game.State.spawnOpen = 0;
+        global.Game.State.fastEnter     = 0;
+        global.Game.State.enterShot     = 0;
+        global.Game.Rogue.level         = 0;
+        global.Game.State.fast          = 0;
+        global.Game.Enemy.transformNum      = 0;
+        global.Game.Enemy.transformTokens = 0;
+
+        global.Game.Level.pattern = 0;
+        global.Game.State.hold          = 15;
+        global.Game.Enemy.bossCap       = 2;
+
+        global.Game.Level.wave = 0;
+        global.Game.Spawn.flip          = 0;
+        global.Game.State.breathing     = 1;
         global.breathe       = 0;
         exhale               = 0;
-        global.bosscount     = 1;
-        global.prohib        = 0;
+        global.Game.Enemy.bossCount     = 1;
+        global.Game.State.prohibitDive        = 0;
         global.transform     = 0;
-        global.beamcheck     = 0;
-        global.transcount    = 0;
-        global.escortcount   = 0;
-        global.fighterstore  = 0;
+        global.Game.Enemy.beamCheck     = 0;
+        global.Game.Enemy.transformCount    = 0;
+        global.Game.Enemy.escortCount   = 0;
+        global.Game.Enemy.fighterStore  = 0;
 
         // === PLAYER INITIAL VALUES ===
-        global.p1score = 0;
+        global.Game.Player.score = 0;
         global.p1lives = get_config_value("PLAYER", "STARTING_LIVES", 3);
 
         firstlife   = get_config_value("PLAYER", "EXTRA_LIFE_FIRST", EXTRA_LIFE_FIRST_THRESHOLD);
@@ -1018,7 +1059,7 @@ function Show_Instructions() {
 		instance_create_layer(0, 0, "DeathStar", oDeathStar);
 		Set_Nebula_Color();
 		
-		global.gameMode = GameMode.GAME_PLAYER_MESSAGE;
+		global.Game.State.mode = GameMode.GAME_PLAYER_MESSAGE;
 
         sound_play(GStart);  // Play game start sound
 

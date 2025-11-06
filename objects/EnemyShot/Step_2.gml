@@ -6,7 +6,7 @@
 /// and consuming resources/collision checks.
 ///
 /// Destruction Threshold:
-///   • Y > 576 * global.scale (bottom of screen + buffer)
+///   • Y > 576 * global.Game.Display.scale (bottom of screen + buffer)
 ///   • Also destroyed on collision with player (see Collision events)
 ///
 /// This is checked in End Step (Step_2) to ensure it runs after all
@@ -18,4 +18,4 @@
 // === OFF-SCREEN CHECK ===
 // Destroy shot when it travels past bottom of visible screen
 // 576 * scale = bottom boundary (below player starting position)
-if y > 576*global.scale{instance_destroy()}
+if y > 576*global.Game.Display.scale{instance_destroy()}

@@ -1,10 +1,13 @@
+// Initialize global.Game struct first (must happen before accessing any struct fields)
+init_globals();
+
 // room name
 global.roomname = "GalagaWars"; //room_get_name(room);
 
 // scale the system based on the mode ...
-global.scale = 1;
+global.Game.Display.scale = 1;
 if (global.roomname == "GalagaWars") {
-	global.scale = 2;
+	global.Game.Display.scale = 2;
 }
 
 /// @section Game Mode Enum
@@ -50,7 +53,7 @@ global.p1lives = 3;
 
 // Player 1's current score, initialized to 0.
 // Incremented based on enemy hits or other scoring events.
-global.p1score = 0;
+global.Game.Player.score = 0;
 
 // Displayed high score, initialized to 0.
 // Likely used to show the current high score on the UI, updated if p1score exceeds it.
@@ -74,13 +77,14 @@ global.init5 = "EE"; // Initials for fifth place;
 /// @section Wave Progression
 // Current wave or level of the game, initialized to 0.
 // Incremented as the player progresses through enemy waves or stages.
-global.wave = 0;
+global.Game.Level.wave = 0;
 global.spawnCounter = 0;
 
 /// @section Game State Flags
 // Open flag, initialized to 0.
 // Purpose unclear; possibly controls access to a menu, level, or mechanic.
-global.open = 0;
+//global.open = 0;
+global.Game.State.spawnOpen = 0;
 
 global.ArcadeSprites = true;
 global.ArcadeSpritesPrefix = "OG_";
@@ -92,9 +96,9 @@ global.stage = 0;
 
 // Initial game mode, set to attract mode (demo mode).
 // Controls whether the game is in gameplay, instructions, or demo state.
-global.gameMode = GameMode.INITIALIZE;
+global.Game.State.mode = GameMode.INITIALIZE;
 
-global.speedMultiplier = 1.0;  // Base multiplier
+global.Game.Difficulty.speedMultiplier = 1.0;  // Base multiplier
 
 /// @section Game Over
 // Flag indicating game over state (0 = game active, 1 = game over).
@@ -106,4 +110,4 @@ global.screen_width = view_get_wport(view_current);
 global.screen_height = view_get_hport(view_current);
 
 // is the Game Paused?
-global.isGamePaused = false;
+global.Game.State.isPaused = false;

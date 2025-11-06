@@ -28,17 +28,23 @@ else if (enemyMode == EnemyMode.ROGUE) {
 		// not yet, check if we've completed the PATH
 		if (path_position >= 1) {
 			path_end(); speed = entranceSpeed;
-			
+
 			// set the x coordinate target to the PLAYER
-			targx = oPlayer.x;
-			targy = oPlayer.y;
+			if (instance_exists(oPlayer)) {
+				targx = oPlayer.x;
+				targy = oPlayer.y;
+			} else {
+				// Player doesn't exist, target center screen
+				targx = global.screen_width / 2;
+				targy = global.screen_height / 2;
+			}
 		}
 	}
-	else if (y > 462 * global.scale) {
+	else if (y > ROGUE_TRANSITION_Y * global.Game.Display.scale) {
 		// shift to straight down
-		
+
 		// have we left the bottom of the screen?
-		if (y > 592 * global.scale) {
+		if (y > SCREEN_BOTTOM_Y * global.Game.Display.scale) {
 			// ROGUE enemy has left the bottom of the screen
 			instance_destroy();
 		}
@@ -61,7 +67,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		if (alarm[1] == ENEMY_SHOT_TIMING_2) {
 			instance_create_layer(x, y, "GameSprites", EnemyShot);
 		}
-		if (global.shotnumber > 2 && alarm[1] == ENEMY_SHOT_TIMING_3) {
+		if (global.Game.Enemy.shotNumber > 2 && alarm[1] == ENEMY_SHOT_TIMING_3) {
 			instance_create_layer(x, y, "GameSprites", EnemyShot);
 		}
 	}
@@ -71,11 +77,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	/// ================================================================
 	/// Creates a smooth wave-like motion for enemies in formation.
 	/// The breathing effect occurs around the formation position and syncs
-	/// with global.breathe variable which cycles 0-BREATHING_CYCLE_MAX.
+	/// with global.Game.Enemy.breathePhase variable which cycles 0-BREATHING_CYCLE_MAX.
 	/// breathing provides visual feedback that enemies are "alive"
 	/// ================================================================
-	breathex = xstart + ((global.breathe / BREATHING_CYCLE_MAX) * (48 * ((xstart - 448) / 368))) + floor(oGameManager.x);
-	breathey = ystart + ((global.breathe / BREATHING_CYCLE_MAX) * (48 * ((ystart - 128) / 288)));
+	var manager_x_offset = instance_exists(oGameManager) ? floor(oGameManager.x) : 0;
+	breathex = xstart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((xstart - FORMATION_CENTER_X) / FORMATION_WIDTH))) + manager_x_offset;
+	breathey = ystart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((ystart - FORMATION_TOP_Y) / FORMATION_HEIGHT)));
 
 	/// ================================================================
 	/// TRANSFORMATION LOGIC - Enemy morphing into special types
@@ -92,10 +99,10 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	///   • Less than 21 enemies on screen
 	///   • Player is not firing
 	/// ================================================================
-	if (global.transnum > 0 && canTransform()) {
+	if (global.Game.Enemy.transformTokens > 0 && canTransform()) {
 		// Trigger transformation animation
 		alarm[EnemyAlarmIndex.DIVE_ATTACK] = TRANSFORM_ALARM_DELAY;
-		global.transform = 1;
+		global.Game.Enemy.transformActive = 1;
 		sound_play(GTransform);
 	}
 
@@ -118,14 +125,21 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		if (path_position >= 1) {
 			/// Path entry is complete, now move into grid formation
 			/// Look up the formation grid position using enemy's INDEX (1-40)
-			xstart = formation.POSITION[INDEX]._x;
-			ystart = formation.POSITION[INDEX]._y;
+			/// Add bounds checking to prevent crash if INDEX is invalid
+			if (INDEX >= 0 && INDEX < array_length(formation.POSITION)) {
+				xstart = formation.POSITION[INDEX]._x;
+				ystart = formation.POSITION[INDEX]._y;
 
-			/// Set speed for this movement phase
-			speed = entranceSpeed;
+				/// Set speed for this movement phase
+				speed = entranceSpeed;
 
-			/// Transition to next state: moving into grid formation
-			enemyState = EnemyState.MOVE_INTO_FORMATION;
+				/// Transition to next state: moving into grid formation
+				enemyState = EnemyState.MOVE_INTO_FORMATION;
+			} else {
+				// Invalid INDEX - log error and destroy enemy to prevent further issues
+				log_error("Invalid formation INDEX: " + string(INDEX), "oEnemyBase ENTER_SCREEN", 3);
+				instance_destroy();
+			}
 		}
 	}
 	else if (enemyState == EnemyState.RETURN_PATH) {
@@ -141,7 +155,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
 		// Have we reached the formation position?
 		// enemy can come in from bottom or top of screen, so use ABS()
-		if (abs (y - breathey) < 6) {
+		if (abs (y - breathey) < FORMATION_POSITION_THRESHOLD) {
 			x = breathex;
 			y = breathey;
 
@@ -181,13 +195,13 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		///   180° = facing left
 		///   270° = facing down (dive direction)
 
-		if ((alarm[0] == -1) && direction != 270) {
+		if ((alarm[0] == -1) && direction != TARGET_DIRECTION_DOWN) {
 			// Rotation alarm expired, set direction to down
-			direction = 270;
+			direction = TARGET_DIRECTION_DOWN;
 		}
-		else if (abs(direction - 270) > 6) {
-			// Smoothly rotate toward down direction (6 degrees per frame)
-			direction += 6;
+		else if (abs(direction - TARGET_DIRECTION_DOWN) > DIRECTION_ROTATION_THRESHOLD) {
+			// Smoothly rotate toward down direction
+			direction += FORMATION_ROTATION_ANGLE_STEP;
 		}
 
 		/// === BREATHING OSCILLATION ===
@@ -200,25 +214,27 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// Monitor conditions to initiate dive attack when safe
 		///
 		/// Global conditions (prevent inopportune attacks):
-		///   • global.divecap > 0 : Dive slots available
-		///   • global.open == 0 : Not spawning new enemies
+		///   • global.Game.Enemy.diveCapacity > 0 : Dive slots available
+		///   • global.Game.State.spawnOpen == 0 : Not spawning new enemies
 		///   • oPlayer.alarm[4] == -1 : Player is not invulnerable (cooldown)
 		///
 		/// Dive trigger probability: ~10% per frame (irandom(10) == 0)
 
-		if (global.divecap > 0 and global.open == 0 and oPlayer.alarm[4] == -1) {
+		if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 and global.Game.State.spawnOpen == 0 and oPlayer.alarm[4] == -1) {
 			if (
-				irandom(10) == 0 && global.prohib == 0 &&
+				irandom(10) == 0 && global.Game.State.prohibitDive == 0 &&
 				alarm[2] == -1 && oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0
 			) {
 				/// All conditions met - initiate dive attack
 
 				// Set global flags to prevent concurrent dives
-				global.prohib = 1;
-				oGameManager.alarm[0] = 15;
+				global.Game.State.prohibitDive = 1;
+				if (instance_exists(oGameManager)) {
+					oGameManager.alarm[0] = PROHIBIT_RESET_DELAY;
+				}
 
 				// Set shooting timer (shots during dive)
-				alarm[1] = 90;
+				alarm[1] = ENEMY_SHOT_ALARM;
 
 				// Play dive sound effect
 				sound_stop(GDive);
@@ -228,7 +244,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				/// Choose appropriate dive path based on starting formation position
 				/// This creates asymmetric dives that depend on initial position
 
-				if (xstart > 224 * global.scale) {
+				if (xstart > SCREEN_CENTER_X * global.Game.Display.scale) {
 					// Enemy on right side of formation → use right dive path
 					if (attributes.STANDARD.DIVE_PATH1 != noone) {
 						var path_id = safe_get_asset(attributes.STANDARD.DIVE_PATH1, -1);
@@ -258,7 +274,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		///
 		/// Beam activation occurs when:
 		/// • beam flag is enabled for this enemy
-		/// • Enemy reaches activation position (y > 368 * global.scale)
+		/// • Enemy reaches activation position (y > 368 * global.Game.Display.scale)
 		/// • Player is vulnerable (not invulnerable, not in dual mode)
 		///
 		/// Beam phases:
@@ -266,14 +282,14 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// • loop = -1: Beam is active, charging animation playing
 		/// • loop = -2: Beam charging complete, beginning dive away
 		/// ================================================================
-		if (beam_weapon.available && (oPlayer.shotMode == _ShotMode.SINGLE)) {
+		if (beam_weapon.available && instance_exists(oPlayer) && (oPlayer.shotMode == _ShotMode.SINGLE)) {
 			
-			if ((y > 368 * global.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
+			if ((y > 368 * global.Game.Display.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
 				
 				if (beam_weapon.state == BEAM_STATE.READY) {
 					// BEAM ACTIVATION POSITION REACHED 
 					// Check if PLAYER is in single mode && use a random one-in-three chance to activate
-					if (!global.isPlayerCaptured && (irandom(0) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
+					if (!global.Game.Enemy.capturedPlayer && (irandom(0) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
 					else beam_weapon.state = BEAM_STATE.FAILED;
 				}
 				else { 
@@ -284,10 +300,10 @@ else if (enemyMode == EnemyMode.STANDARD) {
 									
 						/// First frame at beam position: Stop movement and start charge sequence
 						speed = 0;
-						direction = 270;
+						direction = TARGET_DIRECTION_DOWN;
 
 						/// Set beam duration timer (alarm[3] controls beam animation timing)
-						alarm[3] = global.beamtime;
+						alarm[3] = global.Game.Enemy.beamDuration;
 
 						/// Mark loop state as firing
 						beam_weapon.state = BEAM_STATE.FIRE;
@@ -298,43 +314,49 @@ else if (enemyMode == EnemyMode.STANDARD) {
 					}
 					/// === PLAYER CAPTURE ZONE ===
 					/// During beam FIRE phase, check if player is in capture zone
-					/// Capture zone: Circular radius around beam center (48 pixels * global.scale)
-					else if (beam_weapon.state == BEAM_STATE.FIRE) {
-						/// Calculate distance from beam center to player
-						//var distance_to_player = distance_to_point(oPlayer.x, oPlayer.y);
-						//var capture_radius = 48 * global.scale;
+					///
+					/// DESIGN NOTE: Using rectangular bounds check instead of circular distance
+					/// Rectangular check: 2 comparisons (fast)
+					/// Circular check: sqrt(dx² + dy²) = expensive, ~10x slower
+					///
+					/// Capture zone: 64 pixels wide (x-32 to x+32), centered on beam
+					/// Visual beam width matches this hitbox for accurate feel
+					else if (beam_weapon.state == BEAM_STATE.FIRE && instance_exists(oPlayer)) {
+						// Original circular implementation (kept for reference):
+						// var distance_to_player = distance_to_point(oPlayer.x, oPlayer.y);
+						// var capture_radius = 48 * global.Game.Display.scale;
 
-						// check if player is 'within the tracker beam'
-						var withinBem = (oPlayer.x > x-32 && oPlayer.x < x+32);
-						
+						// Optimized: Check if player X is within tracker beam's horizontal bounds
+						var withinBem = (oPlayer.x > x-BEAM_CAPTURE_WIDTH && oPlayer.x < x+BEAM_CAPTURE_WIDTH);
+
 						/// Check if player is within capture zone and is vulnerable
 						if (withinBem && oPlayer.shipStatus == _ShipState.ACTIVE) {
-							
+
 							// check if we're within the BEAM period
-							if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3) {
+							if (alarm[3] < ((2 * global.Game.Enemy.beamDuration) / 3) && alarm[3] > global.Game.Enemy.beamDuration / 3) {
 								beam_weapon.state = BEAM_STATE.CAPTURE_PLAYER;
-							
+
 								/// Player is captured by beam!
 								oPlayer.shipStatus = _ShipState.CAPTURED;
 								oPlayer.alarm[5] = 240;
-								
+
 								// grab the player x location
 								beam_weapon.player_x = oPlayer.x;
 								beam_weapon.player_y = 1024;
-								
-								/// Store the capturing enemy reference
-								oPlayer.captor = id;					
 
-								global.isPlayerCaptured = true;
-								
+								/// Store the capturing enemy reference
+								oPlayer.captor = id;
+
+								global.Game.Enemy.capturedPlayer = true;
+
 								sound_stop(GBeam);			// Stop beam sound
 						        sound_loop(GCaptured);		// Play captured sound
-							
+
 								// delay the RESPAWN of the PLAYER
 								oPlayer.alarm[0] = 420;
-								
+
 								// extend the beam to cover the period to CAPTURE the player
-						        alarm[3] = ((global.beamtime / 3) / (90 / alarm[3])) + 20; 
+						        alarm[3] = ((global.Game.Enemy.beamDuration / 3) / (90 / alarm[3])) + 20;
 							}
 						}
 					}
@@ -344,7 +366,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						// player is at 1024, Enemy is at 736
 						// 90 seconds to move 288 pixels					
 						// Move ship vertically towards boss
-						beam_weapon.player_y = 736 + floor((alarm[3] * 288) / global.beamtime);
+						beam_weapon.player_y = 736 + floor((alarm[3] * 288) / global.Game.Enemy.beamDuration);
 						// align the PLAYER x with the centre of the Enemy 
 						if (beam_weapon.player_x < x) { beam_weapon.player_x += 3; }
 						else if (beam_weapon.player_x > x) { beam_weapon.player_x -= 3; }
@@ -359,16 +381,16 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 
 		// follow DIVE path until a certain Y location ...
-		if (y <= 480 * global.scale) {
+		if (y <= DIVE_Y_THRESHOLD * global.Game.Display.scale) {
 			// do nothing ... execute DIVE PATH
 		}
-		else if ((y > 480 * global.scale)) {
+		else if ((y > DIVE_Y_THRESHOLD * global.Game.Display.scale)) {
 		
 			if (attributes.CAN_LOOP) {
 	
 				path_end();
 			
-				if (x > 224 * global.scale) {				
+				if (x > SCREEN_CENTER_X * global.Game.Display.scale) {				
 					if (attributes.LOOP_PATH != noone) {
 						var path_id = asset_get_index(attributes.LOOP_PATH);
 						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
@@ -383,12 +405,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 					
 				enemyState = EnemyState.IN_LOOP_ATTACK;				
 			}
-			else if (y < 592 * global.scale) {
-				// Adjust direction towards 270 (downwards)
-				if (direction < 270) {
+			else if (y < SCREEN_BOTTOM_Y * global.Game.Display.scale) {
+				// Adjust direction towards down
+				if (direction < TARGET_DIRECTION_DOWN) {
 					direction += 1;
 				}
-				if (direction > 270) {
+				if (direction > TARGET_DIRECTION_DOWN) {
 					direction -= 1;
 				}		
 			}
@@ -398,7 +420,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				speed = entranceSpeed;
 		
 				x = breathex;
-				y = -16;
+				y = SPAWN_TOP_Y;
 
 				// reset beam state
 				if (beam_weapon.available) { beam_weapon.state = BEAM_STATE.READY; }
@@ -407,7 +429,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				// the enemy has a one-time crazy path then resets ...
 				
 				// check if we're the last two enemies left ...
-				if (nOfEnemies() < 3) enemyState = EnemyState.IN_FINAL_ATTACK;
+				if (global.Game.Enemy.count < 3) enemyState = EnemyState.IN_FINAL_ATTACK;
 				else enemyState = EnemyState.MOVE_INTO_FORMATION;
 			}
 		}
@@ -423,24 +445,24 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 	}
 	else if (enemyState == EnemyState.IN_FINAL_ATTACK) {
-		if (y > 592 * global.scale) {
+		if (y > SCREEN_BOTTOM_Y * global.Game.Display.scale) {
 			// reset to the top of screen and move into formation
 			path_end();
-		
+
 			// randomize the x location of where the enemy will drop in ...
 			// don't spawn near the edges of the screen
-			x = 64 + irandom(global.screen_width-128);
-			y = -16;
-		
+			x = SPAWN_EDGE_MARGIN + irandom(global.screen_width-SPAWN_EDGE_BUFFER);
+			y = SPAWN_TOP_Y;
+
 			// spawn enemy bullets ...
-			alarm[1] = 90;
+			alarm[1] = ENEMY_SHOT_ALARM;
 		
 			// dive sound ...
 			sound_stop(GDive);
 			sound_play(GDive);
 
 			// Choose path based on starting position
-			if (x > 224 * global.scale) {
+			if (x > SCREEN_CENTER_X * global.Game.Display.scale) {
 				if (attributes.STANDARD.DIVE_PATH2 != noone) {
 					var path_id = asset_get_index(attributes.STANDARD.DIVE_PATH2);
 					if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);

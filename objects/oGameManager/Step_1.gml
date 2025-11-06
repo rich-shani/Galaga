@@ -1,7 +1,10 @@
 /// @description FRAME TIMER & DEBUG
+///
+/// MIGRATION NOTE:
+///   Migrated to use global.Game.State for pause checking and mode transitions
 
 // === FRAME CONTROL ===
-if (!global.isGamePaused) {
+if (!global.Game.State.isPaused) {
 	// Increment the global 'flip' variable, used for animation timing or cyclic events
 	global.flip = global.flip + 1;
 	global.animationIndex += 1;
@@ -10,14 +13,14 @@ if (!global.isGamePaused) {
 	if global.flip == 60 {
 	    global.flip = 0;
 	}
-	
+
 	if (global.animationIndex == 24*4) {
 		// animated sprites have 24 frames of animation
 		global.animationIndex = 0;
 	}
 }
 
-if (global.gameMode == GameMode.INITIALIZE) {
+if (global.Game.State.mode == GameMode.INITIALIZE) {
 	// Stops all currently playing sounds to ensure a clean audio state at initialization.
 	// Prevents audio overlap from previous game states or sessions.
 	sound_stop_all();
@@ -26,10 +29,10 @@ if (global.gameMode == GameMode.INITIALIZE) {
 
 	// NOTE: Most global variables are already initialized in init_globals() called from Create_0
 	// Only reset variables that need to be reset specifically for game start
-	global.wave = 0;
+	global.Game.Level.wave = 0;
 	global.checkRoguePerWave = false;
-	global.pattern = 0;
-	global.open = 0;
+	global.Game.Level.pattern = 0;
+	//global.open = 0;
 
 	// Reset animation counters
 	global.flip = 0;
@@ -38,14 +41,14 @@ if (global.gameMode == GameMode.INITIALIZE) {
 	exhale = 0;
 
 	// Score thresholds for extra lives
-	firstlife = 20000;  // Score threshold for first extra life
-	additional = 70000;  // Score threshold for each subsequent extra life
+	firstlife = EXTRA_LIFE_FIRST_THRESHOLD;
+	additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;
 
 	// create the death star on the DeathStar layer (ie behind the game sprites)
 	instance_create_layer(0, 0, "DeathStar", oDeathStar);
 	Set_Nebula_Color();
 
-	global.gameMode = GameMode.GAME_PLAYER_MESSAGE;
+	global.Game.State.mode = GameMode.GAME_PLAYER_MESSAGE;
 
 	sound_play(GStart);  // Play game start sound
 

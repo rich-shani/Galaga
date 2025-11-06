@@ -4,7 +4,7 @@
 
 /// @section Rank Display Logic
 // Check if the game level is greater than 0 and the rank is positive to display the ranking
-if (global.lvl > 0 && rank > 0) {
+if (global.Game.Level.current > 0 && rank > 0) {
 
     /// @subsection Ones Digit
     // Handle the ones digit of the rank when rank equals onerank (the ones component of the rank)
@@ -16,8 +16,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 32,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (32 * rank),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (32 * rank),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
         // Otherwise, use the default sprite section (0,0) for digits 0-4
@@ -27,8 +27,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 32,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (32 * rank),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (32 * rank),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
     }
@@ -41,8 +41,8 @@ if (global.lvl > 0 && rank > 0) {
             sprite_y: 0,
             sprite_width: 32,
             sprite_height: 64,
-            x_pos: 440 * global.scale - (32 * rank),
-            y_pos: 544 * global.scale
+            x_pos: 440 * global.Game.Display.scale - (32 * rank),
+            y_pos: 544 * global.Game.Display.scale
         });
     }
     if (rank == onerank - 2) {
@@ -51,8 +51,8 @@ if (global.lvl > 0 && rank > 0) {
             sprite_y: 0,
             sprite_width: 32,
             sprite_height: 64,
-            x_pos: 440 * global.scale - (32 * rank),
-            y_pos: 544 * global.scale
+            x_pos: 440 * global.Game.Display.scale - (32 * rank),
+            y_pos: 544 * global.Game.Display.scale
         });
     }
     if (rank == onerank - 3) {
@@ -61,8 +61,8 @@ if (global.lvl > 0 && rank > 0) {
             sprite_y: 0,
             sprite_width: 32,
             sprite_height: 64,
-            x_pos: 440 * global.scale - (32 * rank),
-            y_pos: 544 * global.scale
+            x_pos: 440 * global.Game.Display.scale - (32 * rank),
+            y_pos: 544 * global.Game.Display.scale
         });
     }
     if (rank == onerank - 4) {
@@ -71,8 +71,8 @@ if (global.lvl > 0 && rank > 0) {
             sprite_y: 0,
             sprite_width: 32,
             sprite_height: 64,
-            x_pos: 440 * global.scale - (32 * rank),
-            y_pos: 544 * global.scale
+            x_pos: 440 * global.Game.Display.scale - (32 * rank),
+            y_pos: 544 * global.Game.Display.scale
         });
     }
 
@@ -87,8 +87,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 3 or 4, use sprite section at (96,0)
@@ -98,8 +98,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 2, use sprite section at (64,0)
@@ -109,8 +109,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 1, use sprite section at (32,0)
@@ -120,8 +120,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
     }
@@ -135,8 +135,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 7, use sprite section at (64,0)
@@ -146,8 +146,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 4 or 6, use sprite section at (32,0)
@@ -157,8 +157,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
     }
@@ -172,8 +172,8 @@ if (global.lvl > 0 && rank > 0) {
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-                y_pos: 544 * global.scale
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                y_pos: 544 * global.Game.Display.scale
             });
         }
     }
@@ -187,8 +187,8 @@ if (global.lvl > 0 && rank > 0) {
             sprite_y: 0,
             sprite_width: 64,
             sprite_height: 64,
-            x_pos: 440 * global.scale - (64 * rank) + (onerank * 32),
-            y_pos: 544 * global.scale
+            x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+            y_pos: 544 * global.Game.Display.scale
         });
     }
 
@@ -197,7 +197,7 @@ if (global.lvl > 0 && rank > 0) {
     rank -= 1;
 
     // Play a ranking sound (GRank) if a challenge mode is active
-    if (global.challcount > 0) {
+    if (global.Game.Challenge.count > 0) {
         sound_play(GRank);
     }
 

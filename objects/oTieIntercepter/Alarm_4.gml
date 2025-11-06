@@ -1,4 +1,4 @@
-if (x > 224*global.scale) {
+if (x > 224*global.Game.Display.scale) {
 	path_start(TI_RETURN, entranceSpeed, 0, false);
 }
 else{

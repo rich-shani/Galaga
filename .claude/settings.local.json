@@ -9,7 +9,8 @@
       "Bash(if [ -f \"C:\\Users\\shani\\OneDrive\\Documents\\GitHub\\Galaga\\IMPLEMENTATION_SUMMARY.md\" ])",
       "Bash(then echo \"exists\")",
       "Bash(else echo \"not exists\")",
-      "Bash(fi)"
+      "Bash(fi)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []

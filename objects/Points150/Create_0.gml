@@ -1,3 +1,3 @@
-alarm[1] = 10;
-alarm[0] = 70;
+alarm[1] = 10;
+alarm[0] = 70;
 

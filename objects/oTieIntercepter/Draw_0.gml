@@ -12,27 +12,27 @@ if (alarm[3] > -1) {
 
 	/// BEAM CHARGE-UP PHASE: Scales from small to full size
 	/// Visible when alarm[3] is in upper 2/3 of timer duration
-	if (alarm[3] > ((2 * global.beamtime) / 3) - 1) {		
+	if (alarm[3] > ((2 * global.Game.Enemy.beamDuration) / 3) - 1) {		
 		draw_sprite_ext(spr_beam, floor(beam_weapon.animation / 2), round(x), round(y),
-			((abs(global.beamtime - alarm[3]) * global.scale) / (global.beamtime / 3)),
-			((abs(global.beamtime - alarm[3]) * global.scale) / (global.beamtime / 3)),
-			0, c_white, ((abs(global.beamtime - alarm[3])) / (global.beamtime / 3)));
+			((abs(global.Game.Enemy.beamDuration - alarm[3]) * global.Game.Display.scale) / (global.Game.Enemy.beamDuration / 3)),
+			((abs(global.Game.Enemy.beamDuration - alarm[3]) * global.Game.Display.scale) / (global.Game.Enemy.beamDuration / 3)),
+			0, c_white, ((abs(global.Game.Enemy.beamDuration - alarm[3])) / (global.Game.Enemy.beamDuration / 3)));
 	}
 
 	/// BEAM SUSTAIN PHASE: Full size, full opacity
 	/// Visible in the middle 1/3 of timer duration
-	else if (alarm[3] < ((2 * global.beamtime) / 3) && alarm[3] > global.beamtime / 3) {
+	else if (alarm[3] < ((2 * global.Game.Enemy.beamDuration) / 3) && alarm[3] > global.Game.Enemy.beamDuration / 3) {
 		draw_sprite_ext(spr_beam, floor(beam_weapon.animation / 2), round(x), round(y),
-			1 * global.scale, 1 * global.scale, 0, c_white, 1);
+			1 * global.Game.Display.scale, 1 * global.Game.Display.scale, 0, c_white, 1);
 	}
 
 	/// BEAM POWER-DOWN PHASE: Scales from full to small size
 	/// Visible when alarm[3] is in lower 1/3 of timer duration
-	else if (alarm[3] < (global.beamtime / 3) + 1) {
+	else if (alarm[3] < (global.Game.Enemy.beamDuration / 3) + 1) {
 		draw_sprite_ext(spr_beam, floor(beam_weapon.animation / 2), round(x), round(y),
-			((alarm[3] * global.scale) / (global.beamtime / 3)),
-			((alarm[3] * global.scale) / (global.beamtime / 3)),
-			0, c_white, ((alarm[3]) / (global.beamtime / 3)));
+			((alarm[3] * global.Game.Display.scale) / (global.Game.Enemy.beamDuration / 3)),
+			((alarm[3] * global.Game.Display.scale) / (global.Game.Enemy.beamDuration / 3)),
+			0, c_white, ((alarm[3]) / (global.Game.Enemy.beamDuration / 3)));
 	}
 }
 
@@ -56,7 +56,7 @@ if (hitCount == 2) {
 /// "top" relative to the intercepter's current orientation.
 /// ================================================================
 /// If player is captured by this enemy's beam, render player sprite above enemy
-if (oPlayer.captor == id) {	
+if (instance_exists(oPlayer) && oPlayer.captor == id) {	
 	var player_rotation = beam_weapon.animation * 30;
 
 	/// Calculate X-Wing rotation to align with the top of the intercepter
@@ -88,10 +88,10 @@ if (oPlayer.captor == id) {
 if (global.debug) {
 	// Draw collision bounding box for debugging
 	draw_set_alpha(0.5);
-	
+
 	draw_rectangle_colour(bbox_left, bbox_top, bbox_right, bbox_bottom, c_red, c_red, c_red, c_red, false);
-	if (oPlayer.captor == id) {
-		draw_rectangle_colour(beam_weapon.player_x-25, beam_weapon.player_y-25, 
+	if (instance_exists(oPlayer) && oPlayer.captor == id) {
+		draw_rectangle_colour(beam_weapon.player_x-25, beam_weapon.player_y-25,
 								beam_weapon.player_x+25, beam_weapon.player_y+25, c_red, c_red, c_red, c_red, false);
 	}
 

@@ -1,7 +1,7 @@
 //global.roomname = "GalagaWars";
-//global.gameMode = GameMode.ATTRACT_MODE;
-//global.isGamePaused = false;
-//global.scale = 2;
+//global.Game.State.mode = GameMode.ATTRACT_MODE;
+//global.Game.State.isPaused = false;
+//global.Game.Display.scale = 2;
 //global.animationIndex = 0;
 
 // Blip counter, initialized to 0.

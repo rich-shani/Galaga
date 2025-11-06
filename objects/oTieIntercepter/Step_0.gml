@@ -19,9 +19,9 @@ beam_weapon.animation += 1; if (beam_weapon.animation == 12) beam_weapon.animati
 			
 // additional collision detection ... did the oMissile hit the CAPTURED PLAYER?
 /// If player is captured by this enemy's beam, render player sprite above enemy
-// wait until the BEAM STATE is READY, as it will have to CAPTURE_PLAYER, then FIRE_COMPLETE first 
+// wait until the BEAM STATE is READY, as it will have to CAPTURE_PLAYER, then FIRE_COMPLETE first
 
-if (oPlayer.captor == id && beam_weapon.state != BEAM_STATE.CAPTURE_PLAYER) {
+if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEAM_STATE.CAPTURE_PLAYER) {
 	// player CAPTURED, update the beam_weapon.player_x/y to be the captured coordinates
 	beam_weapon.player_x = x - (CIRCLE_RADIUS * cos(degtorad(-direction)));
 	beam_weapon.player_y = y - (CIRCLE_RADIUS * sin(degtorad(-direction)));
@@ -56,7 +56,7 @@ if (oPlayer.captor == id && beam_weapon.state != BEAM_STATE.CAPTURE_PLAYER) {
 				instance_create(round(beam_weapon.player_x), round(beam_weapon.player_y), oExplosion2);
 			}	
 			
-			global.isPlayerCaptured = false;
+			global.Game.Enemy.capturedPlayer = false;
 		}
 	}
 }

@@ -8,21 +8,24 @@
 ///   • Game must be in GAME_ACTIVE state
 ///   • Player must be ACTIVE (not dead, captured, or respawning)
 ///   • Maximum 8 enemy shots on screen (prevents bullet spam)
-///   • Shot difficulty level (global.shotnumber) must be > 3
+///   • Shot difficulty level (global.Game.Enemy.shotNumber) must be > 3
 ///
-/// Shot difficulty (global.shotnumber) increases as game progresses:
+/// Shot difficulty (global.Game.Enemy.shotNumber) increases as game progresses:
 ///   • Higher values = more frequent shots
 ///   • Value checked multiple times per alarm cycle in Step_0.gml
 ///
-/// @related oEnemyBase/Step_0.gml:69-81 - Where this alarm is set
+/// MIGRATION NOTE:
+///   Migrated to use global.Game.State.mode and MAX_ENEMY_SHOTS constant
+///
+/// @related oEnemyBase/Step_0.gml:56-67 - Where this alarm is set
 /// @related EnemyShot object - The projectile created by this event
 
-if (global.gameMode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == _ShipState.ACTIVE) {
-	// Check if we can spawn more shots (limit 8 concurrent enemy shots)
-	if instance_number(EnemyShot) < 8{
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == _ShipState.ACTIVE) {
+	// Check if we can spawn more shots (limit MAX_ENEMY_SHOTS concurrent enemy shots)
+	if instance_number(EnemyShot) < MAX_ENEMY_SHOTS{
 		// Only shoot if difficulty level is high enough
-		if global.shotnumber > 3 {
-			instance_create(x,y,EnemyShot);
+		if global.Game.Enemy.shotNumber > 3 {
+			instance_create_layer(x, y, "GameSprites", EnemyShot);
 		}
 	}
 }

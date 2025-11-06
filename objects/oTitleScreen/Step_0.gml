@@ -22,7 +22,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	        if alarm[1] == 30 {
 	            attshot = 1;
 	            attshotx = player_x;
-	            attshoty = player_y-16*global.scale;
+	            attshoty = player_y-16*global.Game.Display.scale;
 	        }
 	    }
 	   
@@ -31,7 +31,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 		    if alarm[1] == 27 || alarm[1] == 12 {
 		        attshot = 1;
 		        attshotx = player_x;
-		        attshoty = player_y-16*global.scale;
+		        attshoty = player_y-16*global.Game.Display.scale;
 			}
 		}
 		
@@ -39,16 +39,16 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	    if alarm[1] == 10 {
 	        attshot = 1;
 	        attshotx = player_x;
-	        attshoty = player_y-16*global.scale;
+	        attshoty = player_y-16*global.Game.Display.scale;
 	    }
 	}
 	
 	// === GameMode SHOT MOVEMENT ===
 	// if GameMode shot has reached the enemy row (relative to player ship's y position)
-	if (attshot && attshoty < 336*global.scale+y) {
+	if (attshot && attshoty < 336*global.Game.Display.scale+y) {
 	    attshot = 0;  // Reset gameMode shot flag
 	    hitFlag = 1;     // Trigger sound or visual effect
 	} else if (attshot) {
-	    attshoty -= 16*global.scale;  // Move the shot upward by 16 pixels
+	    attshoty -= 16*global.Game.Display.scale;  // Move the shot upward by 16 pixels
 	}
 }

@@ -6,7 +6,7 @@ if (scrolling_nebula_bg != -1)
     {
         if (fx_get_name(layer_fx) == "_filter_hue")
         {
-            fx_set_parameter(layer_fx, "g_HueShift", global.lvl % array_length(hue_value));
+            fx_set_parameter(layer_fx, "g_HueShift", global.Game.Level.current % array_length(hue_value));
         }
     }		
 }

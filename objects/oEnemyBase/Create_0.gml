@@ -36,8 +36,8 @@ enemyMode = EnemyMode.STANDARD;
 escort = 0;
 
 baseSpeed = 6;
-moveSpeed = baseSpeed * global.speedMultiplier;
-entranceSpeed = baseSpeed  + (baseSpeed * global.speedMultiplier);
+moveSpeed = baseSpeed * global.Game.Difficulty.speedMultiplier;
+entranceSpeed = baseSpeed  + (baseSpeed * global.Game.Difficulty.speedMultiplier);
 
 // Flag for transformation state, initialized to 0 (0 = normal, 1 = transformed).
 // Used for enemies that change form or behavior (e.g., Butterfly transforming).
@@ -160,9 +160,9 @@ if (MODE == "STANDARD") {
 	///
 	/// This stagger prevents all enemies shooting simultaneously
 
-	if (global.wave == 1 || global.wave == 2) {
+	if (global.Game.Level.wave == 1 || global.Game.Level.wave == 2) {
 		alarm[5] = 75;
-		if (global.fastenter == 1) {
+		if (global.Game.State.fastEnter == 1) {
 			alarm[5] = 63;  // Faster intervals during fast entry mode
 		}
 	} else {
@@ -177,9 +177,9 @@ else if (MODE == "ROGUE") {
 }
 
 /// @section Fast Entry Adjustment
-// If global.fastenter == 1, adjust timing variables for faster enemy entry.
+// If global.Game.State.fastEnter == 1, adjust timing variables for faster enemy entry.
 // fasty set to 50 steps to speed up entry animations.
-if (global.fastenter == 1) fasty = 50;
+if (global.Game.State.fastEnter == 1) fasty = 50;
 
 /// ================================================================
 /// BEAM WEAPON SYSTEM - Special Ability

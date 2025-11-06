@@ -3,25 +3,25 @@ draw_set_font(fAtari24);
 draw_set_color(c_aqua);
 
 // GALAGA WARS logo
-draw_sprite_ext(galagawars_logo, -1, 224*global.scale, 5*global.scale,0.55,0.55,0,c_white,1);
+draw_sprite_ext(galagawars_logo, -1, 224*global.Game.Display.scale, 5*global.Game.Display.scale,0.55,0.55,0,c_white,1);
 
 switch (ScreenShown) {
 	case TITLE_SCREEN.TITLE:
 	
 		if sequence > 1 {
-			draw_text((176 - 48)*global.scale, 132*global.scale, string_hash_to_newline("-- SCORE --"));
-			draw_text((176 - 40)*global.scale, 132*global.scale, string_hash_to_newline("-        -"));
+			draw_text((176 - 48)*global.Game.Display.scale, 132*global.Game.Display.scale, string_hash_to_newline("-- SCORE --"));
+			draw_text((176 - 40)*global.Game.Display.scale, 132*global.Game.Display.scale, string_hash_to_newline("-        -"));
 
 			if sequence > 2 {
-				draw_text((176 - 48)*global.scale, 176*global.scale, string_hash_to_newline("    50    100"));
-				draw_sprite_ext(sTieFighter, animationIndex/4, 104*global.scale, (168+16)*global.scale, 1, 1, 0, c_white, 1);
+				draw_text((176 - 48)*global.Game.Display.scale, 176*global.Game.Display.scale, string_hash_to_newline("    50    100"));
+				draw_sprite_ext(sTieFighter, animationIndex/4, 104*global.Game.Display.scale, (168+16)*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 						
 				if sequence > 3 {
-					draw_text((176 - 48)*global.scale, 224*global.scale, string_hash_to_newline("    80    160"));
-					draw_sprite_ext(sImperialShuttle, animationIndex/4, 104*global.scale, (168+48+16)*global.scale, 1, 1, 0, c_white, 1);
+					draw_text((176 - 48)*global.Game.Display.scale, 224*global.Game.Display.scale, string_hash_to_newline("    80    160"));
+					draw_sprite_ext(sImperialShuttle, animationIndex/4, 104*global.Game.Display.scale, (168+48+16)*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 						
 					if sequence > 4 {											
-						draw_sprite_ext(sTieIntercepter, 18, 224*global.scale, (168 + 48 + 48 + 24)*global.scale, 1, 1, 0, c_white, 1);										
+						draw_sprite_ext(sTieIntercepter, 18, 224*global.Game.Display.scale, (168 + 48 + 48 + 24)*global.Game.Display.scale, 1, 1, 0, c_white, 1);										
 					} // sequence > 4
 				} // sequence > 3
 			} // sequence > 2
@@ -33,12 +33,12 @@ switch (ScreenShown) {
 			// Draw initial enemy postiion for block #1
 			if (sequence < 8) {
 				// INTERCEPTER
-				draw_sprite_ext(sTieIntercepter, 18, 364*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sTieIntercepter, 18, 364*global.Game.Display.scale, 336*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 					
 				// IMPERIAL SHUTTLE 1
-				draw_sprite_ext(sImperialShuttle, 18, (364 + 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sImperialShuttle, 18, (364 + 24)*global.Game.Display.scale, 368*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 				// IMPERIAL SHUTTLE 2
-				draw_sprite_ext(sImperialShuttle, 18, (364 - 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sImperialShuttle, 18, (364 - 24)*global.Game.Display.scale, 368*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 			}
 
 			// Animate enemy block #1
@@ -46,21 +46,21 @@ switch (ScreenShown) {
 				var i = round(direction/15);
 					
 				var color = (hitFlag ? c_maroon : c_white);
-				draw_sprite_ext(sTieIntercepter, i, 364*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
+				draw_sprite_ext(sTieIntercepter, i, 364*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 1, 1, 0, color, 1);
 					
 				// IMPERIAL SHUTTLE 1
-				draw_sprite_ext(sImperialShuttle, i, (364 + 24)*global.scale+x, 368*global.scale+y, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sImperialShuttle, i, (364 + 24)*global.Game.Display.scale+x, 368*global.Game.Display.scale+y, 1, 1, 0, c_white, 1);
 				// IMPERIAL SHUTTLE 2
-				draw_sprite_ext(sImperialShuttle, i, (364 - 24)*global.scale+x, 368*global.scale+y, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sImperialShuttle, i, (364 - 24)*global.Game.Display.scale+x, 368*global.Game.Display.scale+y, 1, 1, 0, c_white, 1);
 			}
 
 			// Draw initial enemy postiion for block #2
 			if sequence < 11 {
 				// BOSS
-				draw_sprite_ext(sTieIntercepter, 18, 268*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sTieIntercepter, 18, 268*global.Game.Display.scale, 336*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 					
 				// IMPERIAL SHUTTLE 1
-				draw_sprite_ext(sImperialShuttle, 18, (268 + 24)*global.scale, 368*global.scale, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sImperialShuttle, 18, (268 + 24)*global.Game.Display.scale, 368*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 			}
 
 			// Animate enemy block #2
@@ -69,16 +69,16 @@ switch (ScreenShown) {
 				var i = round(direction/15);
 				
 				var color = (hitFlag ? c_maroon : c_white);
-				draw_sprite_ext(sTieIntercepter, i, 268*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
+				draw_sprite_ext(sTieIntercepter, i, 268*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 1, 1, 0, color, 1);
 					
 				// IMPERIAL SHUTTLE 1
-				draw_sprite_ext(sImperialShuttle, i, (268 + 24)*global.scale+x, 368*global.scale+y, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sImperialShuttle, i, (268 + 24)*global.Game.Display.scale+x, 368*global.Game.Display.scale+y, 1, 1, 0, c_white, 1);
 			}
 			
 			// Draw initial enemy postiion for block #3
 			if sequence < 14 {
 				
-				draw_sprite_ext(sTieIntercepter, 18, 172*global.scale, 336*global.scale, 1, 1, 0, c_white, 1);
+				draw_sprite_ext(sTieIntercepter, 18, 172*global.Game.Display.scale, 336*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 			}
 
 			// Animate enemy block #3
@@ -87,7 +87,7 @@ switch (ScreenShown) {
 				var i = round(direction/15);
 					
 				var color = (hitFlag ? c_maroon : c_white);
-				draw_sprite_ext(sTieIntercepter, i, 172*global.scale+x, 336*global.scale+y, 1, 1, 0, color, 1);
+				draw_sprite_ext(sTieIntercepter, i, 172*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 1, 1, 0, color, 1);
 			}
 
 			// DRAW ship & final BOSS
@@ -95,7 +95,7 @@ switch (ScreenShown) {
 				
 				// note - ignore the hit flag until we get to sequence 16
 				var color = (floor(sequence / 16) * hitFlag ? c_maroon : c_white);
-				draw_sprite_ext(sTieIntercepter, 18, 76*global.scale, 336*global.scale, 1, 1, 0, color, 1);
+				draw_sprite_ext(sTieIntercepter, 18, 76*global.Game.Display.scale, 336*global.Game.Display.scale, 1, 1, 0, color, 1);
 			
 
 				// SHIP
@@ -113,16 +113,16 @@ switch (ScreenShown) {
 
 				draw_set_color(c_white)
 
-				draw_text(224*global.scale, (416 + 32)*global.scale,
+				draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale,
 					string_hash_to_newline("© 1981-2024 BANDAI"))
 
-				draw_text(224*global.scale, (448 + 32)*global.scale,
+				draw_text(224*global.Game.Display.scale, (448 + 32)*global.Game.Display.scale,
 					string_hash_to_newline(
 						"  NAMCO ENTERTAINMENT, INC. "))
 
 				draw_set_color(c_red)
 
-				draw_text(224*global.scale, (480 + 32)*global.scale,
+				draw_text(224*global.Game.Display.scale, (480 + 32)*global.Game.Display.scale,
 					string_hash_to_newline(
 						"2025 Richard Shannon"))
 						
@@ -135,14 +135,14 @@ switch (ScreenShown) {
 		
 		draw_set_halign(fa_left);
 		draw_set_color(c_blue);
-		draw_text(68*global.scale, 150*global.scale, string_hash_to_newline("THE GALACTIC HEROES"))
+		draw_text(68*global.Game.Display.scale, 150*global.Game.Display.scale, string_hash_to_newline("THE GALACTIC HEROES"))
 
 		draw_set_color(c_red);
-		draw_text(122*global.scale, 224*global.scale, string_hash_to_newline("-- BEST 5 --"));
-		draw_text((122 + 8)*global.scale, 224*global.scale, string_hash_to_newline("-         -"));
+		draw_text(122*global.Game.Display.scale, 224*global.Game.Display.scale, string_hash_to_newline("-- BEST 5 --"));
+		draw_text((122 + 8)*global.Game.Display.scale, 224*global.Game.Display.scale, string_hash_to_newline("-         -"));
 
 		draw_set_color(c_aqua);
-		draw_text(160*global.scale, 320*global.scale, string_hash_to_newline("SCORE     NAME"));
+		draw_text(160*global.Game.Display.scale, 320*global.Game.Display.scale, string_hash_to_newline("SCORE     NAME"));
 
 		if !ds_list_empty(global.gmscoreboard_scores) {
 			var num = ds_list_size(global.gmscoreboard_scores);
@@ -161,11 +161,11 @@ switch (ScreenShown) {
 				
 				draw_set_color(colors[min(i,4)]);
 				
-				draw_text(64*global.scale, (352 + 32*i)*global.scale, TITLE[i]);
+				draw_text(64*global.Game.Display.scale, (352 + 32*i)*global.Game.Display.scale, TITLE[i]);
 				draw_set_halign(fa_right);
-				draw_text(240*global.scale, (352+ 32*i)*global.scale, player_score);
+				draw_text(240*global.Game.Display.scale, (352+ 32*i)*global.Game.Display.scale, player_score);
 				draw_set_halign(fa_left);
-				draw_text(336*global.scale, (352+ 32*i)*global.scale, player);	
+				draw_text(336*global.Game.Display.scale, (352+ 32*i)*global.Game.Display.scale, player);	
 				
 				//if (global.disp < player_score) {
 				//	// set the high score to the highest score from the online high score table
@@ -192,29 +192,29 @@ switch (ScreenShown) {
 	case TITLE_SCREEN.INSTRUCTIONS:
 		draw_set_color(c_aqua);
 
-		draw_text(96*global.scale, 208*global.scale, string_hash_to_newline("PUSH START BUTTON"));
+		draw_text(96*global.Game.Display.scale, 208*global.Game.Display.scale, string_hash_to_newline("PUSH START BUTTON"));
 
 		draw_set_color(c_yellow);
 
-		draw_text(64*global.scale, (208 + 64)*global.scale, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
+		draw_text(64*global.Game.Display.scale, (208 + 64)*global.Game.Display.scale, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
 
-		draw_text(64*global.scale, (208 + 64 + 48)*global.scale, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
+		draw_text(64*global.Game.Display.scale, (208 + 64 + 48)*global.Game.Display.scale, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
 
-		draw_text(64*global.scale, (208 + 64 + 48 + 48)*global.scale, string_hash_to_newline("AND FOR EVERY 70000 PTS"));
+		draw_text(64*global.Game.Display.scale, (208 + 64 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("AND FOR EVERY 70000 PTS"));
 
-		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 64)*global.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(xwing_sprite_sheet,2,32*global.scale, (8 + 208 + 48 + 48 + 64)*global.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 48 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
+		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 48 + 48 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
 
 		draw_set_halign(fa_center);
 		draw_set_color(c_white);
 
-		draw_text(224*global.scale, (416 + 32)*global.scale, string_hash_to_newline("© 1981-2024 BANDAI"));
-		draw_text(224*global.scale, (448 + 32)*global.scale,
+		draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale, string_hash_to_newline("© 1981-2024 BANDAI"));
+		draw_text(224*global.Game.Display.scale, (448 + 32)*global.Game.Display.scale,
 		string_hash_to_newline("  NAMCO ENTERTAINMENT, INC. "));
 
 		draw_set_color(c_red)
-		draw_text(224*global.scale, (480 + 32)*global.scale,
+		draw_text(224*global.Game.Display.scale, (480 + 32)*global.Game.Display.scale,
 		string_hash_to_newline("2025 Richard Shannon"));
 		draw_set_halign(fa_left);	
 	

@@ -1,4 +1,9 @@
-if (global.isGameOver) {
+/// @description Game Over Cleanup
+///
+/// MIGRATION NOTE:
+///   Migrated to use global.Game.State for isGameOver and mode
+
+if (global.Game.State.isGameOver) {
 
 	// clean up all enemies that are still alive ...
 	with oTieFighter{instance_destroy();}
@@ -7,14 +12,14 @@ if (global.isGameOver) {
 
 	// set the GAME MANAGER to show the results screen
     with oGameManager{
-		global.gameMode = GameMode.SHOW_RESULTS; 
-		global.results = 1; 
+		global.Game.State.mode = GameMode.SHOW_RESULTS;
+		global.results = 1;
 		// trigger GAME MANAGER alarm[9] ... ie enter Initials (if score is top 5)
 		oGameManager.alarm[9] = 450;
 	}
 
 	// reset the game over flag
-	global.isGameOver = false;
+	global.Game.State.isGameOver = false;
 
     //instance_destroy();
 }

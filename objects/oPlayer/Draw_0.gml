@@ -3,21 +3,24 @@
 /// ================================================================
 /// Renders the player ship sprite when in gameplay mode.
 /// Different rendering for ACTIVE vs CAPTURED states.
+///
+/// MIGRATION NOTE:
+///   Migrated to use global.Game.State.mode and isPaused
 /// ================================================================
 
-if (global.gameMode == GameMode.GAME_ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 	if (shipStatus == _ShipState.ACTIVE) {
 		/// === ACTIVE STATE RENDERING ===
 		/// Draw normal ship sprite with thrusters when player is active and flying
 		draw_sprite_ext(xwing_sprite_sheet, shipImage, x, y, 0.8, 0.8, 0, c_white, 1);
-		
+
 		// DUAL Mode; draw second fighter
 		if (shotMode == _ShotMode.DOUBLE) {
 			// Draw docked dual fighter (positioned to right of main fighter)
-			draw_sprite_ext(xwing_sprite_sheet, shipImage, x + 72, y, 0.8, 0.8, 0, c_white, 1);
+			draw_sprite_ext(xwing_sprite_sheet, shipImage, x + DUAL_FIGHTER_OFFSET_X, y, 0.8, 0.8, 0, c_white, 1);
 		}
-		
+
 		if (global.debug) {
 			// draw collision mask
 			draw_set_alpha(0.5);
@@ -25,16 +28,16 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			draw_set_alpha(1);
 		}
 
-		if (!global.isGamePaused) {
+		if (!global.Game.State.isPaused) {
 			// if we're not paused, then animate the thrusters
-			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x-(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
-			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
+			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x-(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
+			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
 
 			// DUAL Mode; draw second fighter thrusters
 			if (shotMode == _ShotMode.DOUBLE) {
 				// Draw docked dual fighter (positioned to right of main fighter)
-				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+72-(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
-				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+72+(8*global.scale), y+(32*global.scale), global.scale, global.scale, 0, c_white, 1);
+				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+DUAL_FIGHTER_OFFSET_X-(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
+				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+DUAL_FIGHTER_OFFSET_X+(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
 			}
 		}
 	}

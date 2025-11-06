@@ -16,11 +16,11 @@
 
 // === PAUSE CHECK ===
 // If game is paused, skip all player logic this frame
-if (global.isGamePaused) return;
+if (global.Game.State.isPaused) return;
 
 // === GAME MODE CHECK ===
 // Only process player logic during active gameplay
-if (global.gameMode == GameMode.GAME_ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 	// === SHIP STATE MACHINE ===
 	// Process player behavior based on current state
@@ -82,7 +82,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 			// === MOVEMENT CALCULATION ===
 			// Calculate pixel displacement this frame
-			// movespeed is set in Create_0.gml (typically 6 * global.scale)
+			// movespeed is set in Create_0.gml (typically 6 * global.Game.Display.scale)
 			dx = xDirection * movespeed;
 
 			// Apply movement to x position
@@ -161,26 +161,26 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 			// === LIFE LOSS AND RESPAWN LOGIC ===
 			// Only process if game isn't already over
-			if (!global.isGameOver) {
+			if (!global.Game.State.isGameOver) {
 				// === DEDUCT LIFE ===
 				// Remove one life from player
-				global.p1lives -= 1;
+				global.Game.Player.lives -= 1;
 
 				// === CHECK FOR REMAINING LIVES ===
-				if (global.p1lives > 0) {
+				if (global.Game.Player.lives > 0) {
 					// === RESPAWN ===
 					// Player has lives remaining, prepare to respawn
 				    shipStatus = _ShipState.RESPAWN;
 					shotMode = _ShotMode.SINGLE;
-					
-					// Set respawn timer to 180 frames (1.5 seconds at 60 FPS)
+
+					// Set respawn timer to PLAYER_RESPAWN_DELAY_FRAMES
 					// Gives player brief moment to prepare
-					alarm[1] = 180;
+					alarm[1] = PLAYER_RESPAWN_DELAY_FRAMES;
 				}
 				else {
 					// === GAME OVER ===
 					// No lives remaining, end the game
-					global.isGameOver = true;
+					global.Game.State.isGameOver = true;
 
 					// just incase there's a sound running in a loop, clear ...
 					audio_stop_all();
@@ -221,7 +221,7 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 			captor = noone;
 				
 			// no longer captured ...
-			global.isPlayerCaptured = false;
+			global.Game.Enemy.capturedPlayer = false;
 		
 			// Reset rescued fighter tracking
 			rescued_fighter_x = 0;
@@ -246,8 +246,8 @@ if (global.gameMode == GameMode.GAME_ACTIVE) {
 
 				// === RESET POSITION ===
 				// Place player at starting position (center-bottom of screen)
-				x = 224*global.scale;  // Horizontal center
-				y = 528*global.scale;  // Near bottom of screen
+				x = 224*global.Game.Display.scale;  // Horizontal center
+				y = 528*global.Game.Display.scale;  // Near bottom of screen
 			}
 
 			break;

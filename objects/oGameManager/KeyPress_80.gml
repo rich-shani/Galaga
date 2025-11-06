@@ -1,19 +1,20 @@
+/// @description Pause Toggle (P key)
+/// Pauses/unpauses the game, affecting audio and visual effects
+
 // only allow Pause during the Game
-if (global.gameMode == GameMode.GAME_ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 	// toggle the Game Pause setting
-	global.isGamePaused = !global.isGamePaused;
-	
-	//global.gameMode = (global.isGamePaused) ? GameMode.GAME_PAUSED :  GameMode.GAME_ACTIVE;
-	
+	global.Game.State.isPaused = !global.Game.State.isPaused;
+
 	var inst = instance_find(oStarfieldGenerator, 0);
 	if (inst != noone) {
 		// trigger an alarm (to check and set the speed)
 		inst.alarm[0] = 10;
 	}
-	
+
 	// pause or un-pause any sounds ...
-	if (global.isGamePaused) {
+	if (global.Game.State.isPaused) {
 		
 		// PAUSE game, suspend the sounds and set screen effect to black and white
 		audio_pause_all();

@@ -15,35 +15,35 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	}
 
 	if sequence == 6 {
-		shipXPosTarget = 380*global.scale;
+		shipXPosTarget = 380*global.Game.Display.scale;
 	}
 
 	if sequence == 9{
-		shipXPosTarget = 280*global.scale; 
+		shipXPosTarget = 280*global.Game.Display.scale; 
 		attpause = 30; 
 		
-		instance_create(360*global.scale+x,336*global.scale+y,oExplosion); 
-		instance_create(360*global.scale+x,336*global.scale+y,Points1600);
+		instance_create(360*global.Game.Display.scale+x,336*global.Game.Display.scale+y,oExplosion); 
+		instance_create(360*global.Game.Display.scale+x,336*global.Game.Display.scale+y,Points1600);
 	}
 
 	if (sequence == 12) {
-		shipXPosTarget = 160*global.scale; 
+		shipXPosTarget = 160*global.Game.Display.scale; 
 		
 		// need to add offset of the moving enemy sprite from the original coords
-		instance_create(260*global.scale+x,336*global.scale+y,oExplosion); 
-		instance_create(260*global.scale+x,336*global.scale+y,Points800);
+		instance_create(260*global.Game.Display.scale+x,336*global.Game.Display.scale+y,oExplosion); 
+		instance_create(260*global.Game.Display.scale+x,336*global.Game.Display.scale+y,Points800);
 	}
 
 	if sequence == 15 {
-		shipXPosTarget = 80*global.scale; 
+		shipXPosTarget = 80*global.Game.Display.scale; 
 		
-		instance_create(180*global.scale+x,336*global.scale+y,oExplosion); 
-		instance_create(180*global.scale+x,336*global.scale+y,Points400);
+		instance_create(180*global.Game.Display.scale+x,336*global.Game.Display.scale+y,oExplosion); 
+		instance_create(180*global.Game.Display.scale+x,336*global.Game.Display.scale+y,Points400);
 	}
 
 	if sequence == 17{
-		instance_create(80*global.scale,336*global.scale,oExplosion); 
-		instance_create(80*global.scale,336*global.scale,Points150); 
+		instance_create(80*global.Game.Display.scale,336*global.Game.Display.scale,oExplosion); 
+		instance_create(80*global.Game.Display.scale,336*global.Game.Display.scale,Points150); 
 		alarm[1] = 70;
 	}
 
@@ -51,14 +51,14 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	if (sequence == 8 or sequence == 11) {
 		x=0; y=0; 
 		
-		path_start(AttractMode_PATH,3*global.scale,0,0);
+		path_start(AttractMode_PATH,3*global.Game.Display.scale,0,0);
 	}
 
 	if (sequence == 14) {
 		path_end(); 
 		x=0; y=0;
 		
-		path_start(AttractMode_PATH_FLIP,3*global.scale,0,0);
+		path_start(AttractMode_PATH_FLIP,3*global.Game.Display.scale,0,0);
 	}
 
 	if (sequence == 16) {

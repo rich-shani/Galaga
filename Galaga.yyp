@@ -274,7 +274,6 @@
     {"id":{"name":"SplashScreen","path":"rooms/SplashScreen/SplashScreen.yy",},},
     {"id":{"name":"TitleScreen","path":"rooms/TitleScreen/TitleScreen.yy",},},
     {"id":{"name":"action_move_point","path":"scripts/action_move_point/action_move_point.yy",},},
-    {"id":{"name":"AtractMode","path":"scripts/AtractMode/AtractMode.yy",},},
     {"id":{"name":"challenging","path":"scripts/challenging/challenging.yy",},},
     {"id":{"name":"Controller_draw_fns","path":"scripts/Controller_draw_fns/Controller_draw_fns.yy",},},
     {"id":{"name":"CRTFunctions","path":"scripts/CRTFunctions/CRTFunctions.yy",},},

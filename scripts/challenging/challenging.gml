@@ -1,7 +1,7 @@
 /// @function challenging
 /// @description Initialize challenge stage data and paths
 ///
-/// Challenge stages are special bonus rounds that occur every 4 levels (when global.challcount reaches 4).
+/// Challenge stages are special bonus rounds that occur every 4 levels (when global.Game.Challenge.count reaches 4).
 /// Unlike normal stages, enemies don't form up - they follow looping paths across the screen.
 /// This function loads the challenge pattern data from JSON and sets up path references for spawning.
 ///
@@ -37,9 +37,9 @@ function challenging() {
 
 	// === LOAD CHALLENGE DATA ===
 	// Get challenge data for current challenge pattern
-	// global.chall ranges from 1-8, corresponding to 8 different challenge patterns
+	// global.Game.Challenge.current ranges from 1-8, corresponding to 8 different challenge patterns
 	// Array is 0-indexed, so subtract 1 to get correct pattern
-	var chall_data = challenge_data.CHALLENGES[global.chall - 1];
+	var chall_data = challenge_data.CHALLENGES[global.Game.Challenge.current - 1];
 
 	// === SET PATH VARIABLES ===
 	// Convert path names (strings) to path asset IDs (numbers)
@@ -63,10 +63,10 @@ function challenging() {
 		var wave = chall_data.WAVES[i];
 		if (wave.DOUBLED) {
 			// Doubled mode: enemies spawn in mirrored pairs
-			ds_list_add(list, 2);
+			ds_list_add(oGameManager.list, 2);
 		} else {
 			// Single mode: enemies spawn individually
-			ds_list_add(list, 1);
+			ds_list_add(oGameManager.list, 1);
 		}
 	}
 }

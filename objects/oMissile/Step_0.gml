@@ -22,7 +22,7 @@
 
 // === PAUSE CHECK ===
 // Skip movement when game is paused
-if (global.isGamePaused) return;
+if (global.Game.State.isPaused) return;
 
 // === UPWARD MOVEMENT ===
 // Move missile up the screen at constant speed

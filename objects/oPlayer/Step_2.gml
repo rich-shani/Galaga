@@ -1,7 +1,12 @@
-if (global.gameMode == GameMode.GAME_ACTIVE) {
+/// @description High Score Display Update
+///
+/// MIGRATION NOTE:
+///   Migrated to use global.Game.State.mode
+
+if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	/// @section Highscore
 	// Update highscore if current score is higher
-	if (global.p1score > global.disp) {
-		global.disp = global.p1score;
+	if (global.Game.Player.score > global.disp) {
+		global.disp = global.Game.Player.score;
 	}
 }

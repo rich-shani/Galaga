@@ -9,4 +9,4 @@
 ///                           0 = Enemies can act freely
 ///                           1 = Enemies are restricted from certain behaviors
 
-global.prohib = 0;
+global.Game.State.prohibitDive = 0;

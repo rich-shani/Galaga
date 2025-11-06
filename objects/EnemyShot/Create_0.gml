@@ -8,7 +8,7 @@
 /// Targeting System:
 ///   • Aims at player's current X position (with slight offset for dual shot mode)
 ///   • Aims at player's Y position
-///   • Speed: 5 pixels/frame * global.scale
+///   • Speed: 5 pixels/frame * global.Game.Display.scale
 ///
 /// Shot Mode Offset:
 ///   When player has dual fighters (shotMode != 0), shots aim slightly
@@ -30,7 +30,12 @@
 // Calculate target position: player's current location + shot mode offset
 // action_move_point(target_x, target_y, speed) sets movement direction
 // Shot will travel toward this point at 5*scale pixels per frame
-move_towards_point(oPlayer.x + (32*(oPlayer.shotMode)), oPlayer.y, 5*global.scale);
+if (instance_exists(oPlayer)) {
+	move_towards_point(oPlayer.x + (32*(oPlayer.shotMode)), oPlayer.y, 5*global.Game.Display.scale);
+} else {
+	// Player doesn't exist, aim downward toward center screen
+	move_towards_point(global.screen_width / 2, global.screen_height, 5*global.Game.Display.scale);
+}
 	
 // === COMMENTED OUT: DIRECTION CLAMPING ===
 // Original code limited shot angles to prevent too-steep trajectories

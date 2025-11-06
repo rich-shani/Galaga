@@ -1,39 +1,20 @@
-/// @section Macros for Game Constants
-// Minimum X-coordinate for ship movement (left boundary, 16 pixels from room edge).
-SHIP_MIN_X = 16;
-	// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
-	// 432 is derived from the room width minus the ship's sprite width.
-SHIP_MAX_X = 432;
-	// Off-screen coordinate for shots (-32 ensures shots are not visible/processed).
-SHOT_OFFSCREEN = -32;
-	// Speed of shots in pixels per step (12 pixels for consistent movement).
-SHOT_SPEED = 12;
-	// Horizontal offset for double ship mode (28 pixels between left and right ships).
-SHIP_SPACE = 28;
-	
-SHIP_MOVE_INCREMENT = 3;
-	
+/// @section Ship Configuration - Use constants from GameConstants.gml
+// Set ship boundaries and parameters based on room type (Galaga vs GalagaWars)
 if (global.roomname == "GalagaWars") {
-	SHIP_MIN_X = 32;
-	// Maximum X-coordinate for ship movement (right boundary, adjusted for double mode).
-	// 432 is derived from the room width minus the ship's sprite width.
-	SHIP_MAX_X = 832;
-	// Off-screen coordinate for shots (-32 ensures shots are not visible/processed).
-	SHOT_OFFSCREEN = -32;
-	// Speed of shots in pixels per step (12 pixels for consistent movement).
-	SHOT_SPEED = 24;
-	// Horizontal offset for double ship mode (28 pixels between left and right ships).
-	SHIP_SPACE = 64;
-	SHIP_MOVE_INCREMENT = 6;
+	SHIP_MIN_X = PLAYER_SHIP_MIN_X_WARS;
+	SHIP_MAX_X = PLAYER_SHIP_MAX_X_WARS;
+	SHOT_OFFSCREEN = PLAYER_SHOT_OFFSCREEN;
+	SHOT_SPEED = PLAYER_SHOT_SPEED_WARS;
+	SHIP_SPACE = PLAYER_SHIP_SPACE_WARS;
+	SHIP_MOVE_INCREMENT = PLAYER_SHIP_MOVE_INCREMENT_WARS;
+} else {
+	SHIP_MIN_X = PLAYER_SHIP_MIN_X_GALAGA;
+	SHIP_MAX_X = PLAYER_SHIP_MAX_X_GALAGA;
+	SHOT_OFFSCREEN = PLAYER_SHOT_OFFSCREEN;
+	SHOT_SPEED = PLAYER_SHOT_SPEED_GALAGA;
+	SHIP_SPACE = PLAYER_SHIP_SPACE_GALAGA;
+	SHIP_MOVE_INCREMENT = PLAYER_SHIP_MOVE_INCREMENT_GALAGA;
 }
-
-//enum _ShipState {
-//	ACTIVE,
-//	CAPTURED,
-//	RELEASING,
-//	DEAD,
-//	RESPAWN
-//}
 
 /// @section Ship State
 // Indicates the ship's life state (0 = alive, 1 = dead, 2 = respawning).
@@ -46,9 +27,6 @@ enum _ShotMode {
 	DOUBLE 
 }
 
-//// Affects movement boundaries, shooting, and collision detection.
-//shotMode = ShotMode.SINGLE;
-
 // 0 is level, 1 is left, 11 is right
 //shipDirection = 0;
 xDirection = 0;
@@ -57,8 +35,8 @@ shipImage = xDirection;
 // increment of x steps to take
 dx = 0;
 
-// 
-movespeed = 5;
+// Base movement speed for player physics calculations
+movespeed = PLAYER_BASE_MOVE_SPEED;
 
 missileInterval = 0;
 
