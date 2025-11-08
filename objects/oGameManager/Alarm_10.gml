@@ -23,14 +23,16 @@ if (nextlevel == 1) {
             /// Set stage to 1 to indicate the start of a new level or wave.
             global.Game.Level.stage = 1;
 
-            /// Reset global.results flag to 0, likely to clear any previous level-end global.results display.
-            global.results = 0;
+            /// Reset global.Game.State.results flag to 0, likely to clear any previous level-end global.Game.State.results display.
+            global.Game.State.results = 0;
 
             /// Increment the global level counter (global.Game.Level.current) to advance to the next level or wave.
 			global.Game.Level.current += 1; 
-
+			
+			// reset the position to the center and show READY
+			oPlayer.shipStatus = _ShipState.RESPAWN;
+			
 		    /// Reset global wave counter to 0 to start a new wave cycle.
-//		    global.Game.Level.wave = 0;
 		    global.Game.Level.wave = 0;
 			global.spawnCounter = 0;
 		
@@ -118,10 +120,11 @@ if (nextlevel == 2) {
     count2 = 0;
     count = 0;
 
-    /// Set shot counters (shotcount, global.shottotal) to 0 if LEVEL 1
+    /// Set shot counters (shotcount, global.Game.Player.shotTotal) to 0 if LEVEL 1
     if (global.Game.Level.current == 1) {
-		global.shotcount = 0;
-		global.shottotal = 0;
+		global.Game.Player.score = 0;
+		global.Game.Player.shotCount = 0;
+		global.Game.Player.shotTotal = 0;
 	}
            
 	Set_Nebula_Color();
@@ -139,10 +142,10 @@ if (nextlevel == 2) {
     /// Reset global.flip to 0, disabling any sprite or screen flipping effects.
     global.flip = 0;
     
-    /// Reset breathing-related variables (global.breathing, global.breathe, exhale) to 0.
+    /// Reset breathing-related variables (global.Game.State.breathing, global.Game.Enemy.breathePhase, exhale) to 0.
     /// Likely related to visual or sound effects for enemies (e.g., boss animations).
-    global.breathing = 0;
-    global.breathe = 0;
+    global.Game.State.breathing = 0;
+    global.Game.Enemy.breathePhase = 0;
     exhale = 0;
     
     /// Reset global.transform to 0, disabling any transformation mechanics (e.g., enemy transformations).

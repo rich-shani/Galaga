@@ -6,7 +6,7 @@ if (oPlayer.captor == id) {
 	alarm[4] = 60; 
 	
 	sound_stop(GCaptured); 
-	sound_loop(GFighterCaptured);
+	sound_play(GFighterCaptured);
 	
 	enemyState = EnemyState.RETURN_PATH;
 	beam_weapon.state = BEAM_STATE.READY; 

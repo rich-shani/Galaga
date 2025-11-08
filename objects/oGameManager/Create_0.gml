@@ -7,11 +7,6 @@
 
 init_globals();
 
-/// @section Data Structures
-// Creates a data structure list to store dynamic game data.
-// Likely used for tracking enemies, scores, or other temporary game elements.
-list = ds_list_create();
-
 /// @section Counters
 // General-purpose counter, initialized to 0.
 // Could be used for timing, animation frames, or tracking events (context-dependent).

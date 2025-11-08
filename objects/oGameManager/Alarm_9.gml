@@ -12,7 +12,7 @@ if (global.Game.Player.score > global.galaga5) {
     global.Game.State.mode = GameMode.ENTER_INITIALS;
 
     // Set results flag, stop all sounds, and initialize cycle variable
-    global.results = 2;
+    global.Game.State.results = 2;
     sound_stop_all();
     cyc = 1;
 
@@ -89,6 +89,7 @@ if (global.Game.Player.score > global.galaga5) {
 }
 // If the player's score is not high enough, goto TITLE SCREEN
 else {
+	global.Game.State.mode = GameMode.INITIALIZE;
     room_goto(TitleScreen);
 }
 

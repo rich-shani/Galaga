@@ -11,31 +11,38 @@ event_inherited();
 // advance the animation counter (used in Draw)
 beam_weapon.animation += 1; if (beam_weapon.animation == 12) beam_weapon.animation = 0;
 
-/// Calculate X-Wing position on circle circumference
-/// The X-Wing orbits around the intercepter (x, y) with a fixed radius.
-/// It stays positioned at the "top" (270°) relative to the intercepter's direction.
-/// Circle formula: x_pos = center_x + radius * cos(angle)
-///                 y_pos = center_y + radius * sin(angle)
-			
-// additional collision detection ... did the oMissile hit the CAPTURED PLAYER?
-/// If player is captured by this enemy's beam, render player sprite above enemy
-// wait until the BEAM STATE is READY, as it will have to CAPTURE_PLAYER, then FIRE_COMPLETE first
+/// ================================================================                                            
+/// CAPTURED PLAYER POSITION CALCULATION                                                                       
+/// ================================================================                                             
+/// Positions the captured X-Wing on a circular orbit around the intercepter.                              
+/// Uses standard circle formula with consistent angle handling.                                            
+///                                                                                                        
+/// CRITICAL: Both calculations must use the same angle convention                                         
+/// to ensure circular (not elliptical) orbital motion.                                                     
+///                                                                                                   
+/// Circle Formula:                                                                                                  
+///   x_pos = center_x + radius * cos(angle_radians)                                                    
+///   y_pos = center_y + radius * sin(angle_radians)                                                               
+///                                                                                                         
+/// Orbit Positioning:                                                                                          
+/// • CIRCLE_RADIUS = 72 pixels (fixed distance from intercepter center)                                         
+/// • Angle = direction + offset (keeps captured player at consistent position)                                  
+/// ================================================================                                              
+#macro CAPTURED_PLAYER_COLLISION_RADIUS 25  // Half of 50x50 box  
 
-if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEAM_STATE.CAPTURE_PLAYER) {
-	// player CAPTURED, update the beam_weapon.player_x/y to be the captured coordinates
-	beam_weapon.player_x = x - (CIRCLE_RADIUS * cos(degtorad(-direction)));
-	beam_weapon.player_y = y - (CIRCLE_RADIUS * sin(degtorad(-direction)));
+if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEAM_STATE.CAPTURE_PLAYER) {         
+	// OPTION A: Both using positive direction (recommended for clarity)                                          
+	var orbit_angle_radians = degtorad(direction);  // 90° offset = "top" of circle                           
+	beam_weapon.player_x = x - (CIRCLE_RADIUS * cos(orbit_angle_radians));                                        
+	beam_weapon.player_y = y - (CIRCLE_RADIUS * sin(-orbit_angle_radians));    
 	
-	// collision box is for the ENEMY (only), and hence we need to do a custom check
-	// rotate around the oMissile instances that are active (should be limited to 2 MAX)
-	// check each oMissile against the boundary of where the CAPTURED player is located
 	for (var i = 0; i < instance_number(oMissile); i++)
 	{
-	    var missile = instance_find(oMissile, i);
-		
-		// check if the missile has 'hit' the CAPTURED PLAYER
-		// boundry is a 50x50 area around the center of the CAPTURED PLAYER
-		if (abs(missile.x - beam_weapon.player_x) < 25 && (abs(missile.y - beam_weapon.player_y) < 25)) {
+		var missile = instance_find(oMissile, i);
+ 
+		if (abs(missile.x - beam_weapon.player_x) < CAPTURED_PLAYER_COLLISION_RADIUS && 
+						(abs(missile.y - beam_weapon.player_y) < CAPTURED_PLAYER_COLLISION_RADIUS)) {
+
 			// Destroy the Missile
 			instance_destroy(missile);
 			
@@ -54,9 +61,8 @@ if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEA
 			}
 			else {
 				instance_create(round(beam_weapon.player_x), round(beam_weapon.player_y), oExplosion2);
-			}	
-			
-			global.Game.Enemy.capturedPlayer = false;
-		}
+			}			
+			global.Game.Enemy.capturedPlayer = false;  
+		}                                             
 	}
 }

@@ -64,10 +64,10 @@ if (!global.Game.State.isGameOver) {
 		/// === NORMAL MODE COMBO TRACKING ===
 		/// Track regular enemy kills for TransPoints bonus
 		if global.Game.Challenge.count == 0 {
-			global.shotcount += 1;
+			global.Game.Player.shotCount += 1;
 
 			/// Every 8 consecutive kills in normal mode creates a bonus
-			if global.shotcount == 8 {
+			if global.Game.Player.shotCount == 8 {
 				instance_create_layer(round(x), round(y), "GameSprites", TransPoints);
 			}
 		}
@@ -145,6 +145,20 @@ if (!global.Game.State.isGameOver) {
 		oPlayer.rescued_fighter_y = beam_weapon.player_y;
 
 		// Play rescue sound effect
-		sound_play(GRescue); 
+		sound_loop(GRescue); 
+		
+		// instruct all enemies to return to FORMATION
+		with (oEnemyBase) {
+			if (enemyState != EnemyState.IN_FORMATION) {
+				// end current path and return to FORMATION
+				path_end();
+				enemyState = EnemyState.MOVE_INTO_FORMATION;
+			}
+		}	
+		
+		// remove any enemy missiles in flight
+		with (EnemyShot) {
+			instance_destroy();
+		}
 	}
 }

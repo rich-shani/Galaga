@@ -1,9 +1,3 @@
-//global.roomname = "GalagaWars";
-//global.Game.State.mode = GameMode.ATTRACT_MODE;
-//global.Game.State.isPaused = false;
-//global.Game.Display.scale = 2;
-//global.animationIndex = 0;
-
 // Blip counter, initialized to 0.
 // Likely used for short visual or audio effects, such as UI blinking or sound triggers.
 hitFlag = 0;

@@ -49,7 +49,7 @@ global.animationIndex = 0;
 
 // Number of lives for Player 1, initialized to 3.
 // Decremented when the player ship is destroyed; game over when it reaches 0.
-global.p1lives = 3;
+global.Game.Player.lives = 3;
 
 // Player 1's current score, initialized to 0.
 // Incremented based on enemy hits or other scoring events.
@@ -62,8 +62,8 @@ global.disp = 0;
 // number of game credits (coins entered)
 global.credits = 0;
 
-global.shotcount = 0;
-global.shottotal = 0;
+global.Game.Player.shotCount = 0;
+global.Game.Player.shotTotal = 0;
 
 /// @section High Score Initials
 // Initials for the top 5 high scores, defaulting to two-letter placeholders.
@@ -92,7 +92,7 @@ global.enemy_animation_speed = 0;
 
 // Current stage or level, initialized to 0.
 // May track sub-levels within a wave or specific game phases.
-global.stage = 0;
+global.Game.Level.stage = 0;
 
 // Initial game mode, set to attract mode (demo mode).
 // Controls whether the game is in gameplay, instructions, or demo state.

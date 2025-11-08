@@ -53,7 +53,7 @@ function newlevel() {
 		global.Game.Challenge.isActive = true;
 
 		// reset shot counter for challenge stage(s)
-		global.shottotal = 0;
+		global.Game.Player.shotTotal = 0;
 
 		global.Game.State.mode = GameMode.CHALLENGE_STAGE_MESSAGE;
 		
@@ -64,8 +64,8 @@ function newlevel() {
 		///divecapstart
 		if global.Game.Enemy.diveCapacityStart < 6{global.Game.Enemy.diveCapacityStart = global.Game.Enemy.diveCapacityStart + 1};
 		///last attack
-		if global.lastattack < 8{global.lastattack = global.lastattack + 1};
-		///beamtime
+		if global.Game.State.lastAttack < 8{global.Game.State.lastAttack = global.Game.State.lastAttack + 1};
+		///beamtime - reduce as we advance per challenge stage, ie makes it harder to be captured as the BEAM time will reduce from 300, to 250, to 200, to 150
 		if global.Game.Enemy.beamDuration > 150{global.Game.Enemy.beamDuration = global.Game.Enemy.beamDuration - 50};
 	}
 
@@ -82,7 +82,7 @@ function newlevel() {
 	///if keyboard_check_pressed(ord("6")) = true{global.Game.State.fastEnter = global.Game.State.fastEnter + 1; if global.Game.State.fastEnter = 2{global.Game.State.fastEnter = 0}};
 	///if keyboard_check_pressed(ord("7")) = true{global.shotnumber = global.shotnumber + 1; if global.shotnumber = 5{global.shotnumber = 2}}; //stage 6, stage 16,
 	///if keyboard_check_pressed(ord("8")) = true{global.Game.Enemy.diveCapacityStart = global.Game.Enemy.diveCapacityStart + 1; if global.Game.Enemy.diveCapacityStart = 7{global.Game.Enemy.diveCapacityStart = 2}};
-	///if keyboard_check_pressed(ord("9")) = true{global.lastattack = global.lastattack + 1; if global.lastattack = 9{global.lastattack = 4}};
+	///if keyboard_check_pressed(ord("9")) = true{global.Game.State.lastAttack = global.Game.State.lastAttack + 1; if global.Game.State.lastAttack = 9{global.Game.State.lastAttack = 4}};
 	///if keyboard_check_pressed(ord("0")) = true{global.Game.Enemy.beamDuration = global.Game.Enemy.beamDuration - 50; if global.Game.Enemy.beamDuration = 100{global.Game.Enemy.beamDuration = 350}};
 	///rogue = 
 	///1 for 1 bee per side (stage 3), 

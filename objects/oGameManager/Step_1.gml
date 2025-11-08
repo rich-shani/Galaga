@@ -36,8 +36,8 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 
 	// Reset animation counters
 	global.flip = 0;
-	global.breathing = 1;
-	global.breathe = 0;
+	global.Game.State.breathing = 1;
+	global.Game.Enemy.breathePhase = 0;
 	exhale = 0;
 
 	// Score thresholds for extra lives

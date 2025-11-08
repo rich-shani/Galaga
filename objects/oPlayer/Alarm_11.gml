@@ -11,7 +11,7 @@ if (shotMode == _ShotMode.DOUBLE) {
 	/// not just the one on the right 
 	
 	// Create explosion for lost fighter
-	instance_create(x + 72, y, oExplosion);
+	instance_create(x + 96, y, oExplosion);
 
 	// Don't deduct life - just lose the dual fighter bonus
 }

@@ -113,7 +113,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 					// Spawned on "GameSprites" layer (same as enemies)
 					instance_create_layer(x, y-48, "GameSprites", oMissile);
 					if (shotMode == _ShotMode.DOUBLE) {
-						instance_create_layer(x+72, y-48, "GameSprites", oMissile);
+						instance_create_layer(x + DUAL_FIGHTER_OFFSET_X, y-48, "GameSprites", oMissile);
 					}
 					
 					// === AUDIO FEEDBACK ===
@@ -201,31 +201,47 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	      /// descends from the captor's position to dock with main player
 	      /// ================================================================
 
-	      // === DESCENT ANIMATION ===
-	      // Move rescued fighter downward toward player position
-	      if (rescued_fighter_y < y - 64) {
-	          // Still above player - continue descending
-	          rescued_fighter_y += 4; // Descent speed
+			// center player ...
+			if (x < 448) {
+				x += 2;
+			}
+			else if (x > 448) {
+				x -= 2;
+			}
+			
+			// === DESCENT ANIMATION ===
+			// Move rescued fighter downward toward player position
+			if (rescued_fighter_y < y - 64) {
+				// Still above player - continue descending
+				rescued_fighter_y += 4; // Descent speed
 
-	          // Gradually move horizontally toward player's right side
-	          var target_x = x + 72; // Position to right of player
-	          if (rescued_fighter_x < target_x) rescued_fighter_x += 2;
-	          else if (rescued_fighter_x > target_x) rescued_fighter_x -= 2;
-	      }
-	      else {
-			// === DOCKING COMPLETE ===
-			// Rescued fighter has reached player position
-			shipStatus = _ShipState.ACTIVE;
-			shotMode = _ShotMode.DOUBLE; // Enable dual fighter mode!
-
-			captor = noone;
-				
+				// Gradually move horizontally toward player's right side
+				var target_x = x + DUAL_FIGHTER_OFFSET_X; // Position to right of player
+				if (rescued_fighter_x < target_x) rescued_fighter_x += 2;
+				else if (rescued_fighter_x > target_x) rescued_fighter_x -= 2;
+			}
+	      else {		
 			// no longer captured ...
 			global.Game.Enemy.capturedPlayer = false;
-		
+			captor = noone;
+
 			// Reset rescued fighter tracking
 			rescued_fighter_x = 0;
 			rescued_fighter_y = 0;
+			
+			// === DOCKING COMPLETE ===
+			sound_stop(GRescue); 
+		
+			// Rescued fighter has reached player position
+			shotMode = _ShotMode.DOUBLE; // Enable dual fighter mode!
+			shipStatus = _ShipState.RESPAWN;	
+			
+			// draw the ship facing up
+			shipImage = 2
+			
+			// Set respawn timer to PLAYER_RESPAWN_DELAY_FRAMES
+			// Gives player brief moment to prepare
+			alarm[1] = PLAYER_RESPAWN_DELAY_FRAMES;
 		}
 		break;			
 

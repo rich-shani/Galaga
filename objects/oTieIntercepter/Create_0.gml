@@ -24,5 +24,3 @@ event_inherited();
 /// TIE Intercepters are equipped with a special beam weapon
 /// that can be fired during dive attack sequences
 beam_weapon.available = true;
-
-#macro CIRCLE_RADIUS  72  // Distance from intercepter center to X-Wing

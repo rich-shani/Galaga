@@ -80,7 +80,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	/// with global.Game.Enemy.breathePhase variable which cycles 0-BREATHING_CYCLE_MAX.
 	/// breathing provides visual feedback that enemies are "alive"
 	/// ================================================================
-	var manager_x_offset = instance_exists(oGameManager) ? floor(oGameManager.x) : 0;
+	
+	var manager_x_offset = 0;//instance_exists(oGameManager) ? floor(oGameManager.x) : 0;
 	breathex = xstart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((xstart - FORMATION_CENTER_X) / FORMATION_WIDTH))) + manager_x_offset;
 	breathey = ystart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((ystart - FORMATION_TOP_Y) / FORMATION_HEIGHT)));
 
@@ -159,7 +160,6 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			x = breathex;
 			y = breathey;
 
-			sound_stop(GFighterCaptured);
 			enemyState = EnemyState.IN_FORMATION;
 					
 			// set alarm : to give time for the Draw function to ROTATE the ship to down direction
@@ -332,12 +332,13 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						/// Check if player is within capture zone and is vulnerable
 						if (withinBem && oPlayer.shipStatus == _ShipState.ACTIVE) {
 
-							// check if we're within the BEAM period
-							if (alarm[3] < ((2 * global.Game.Enemy.beamDuration) / 3) && alarm[3] > global.Game.Enemy.beamDuration / 3) {
+							// check if we're within the BEAM period, ie 1/3 to 2/3 of the BEAM time period
+							if ( (alarm[3] < (2 * global.Game.Enemy.beamDuration) / 3) && (alarm[3] > global.Game.Enemy.beamDuration / 3) ) {
 								beam_weapon.state = BEAM_STATE.CAPTURE_PLAYER;
 
 								/// Player is captured by beam!
 								oPlayer.shipStatus = _ShipState.CAPTURED;
+								// FIGTHER CAPTURED MESSAGE
 								oPlayer.alarm[5] = 240;
 
 								// grab the player x location
@@ -353,10 +354,10 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						        sound_loop(GCaptured);		// Play captured sound
 
 								// delay the RESPAWN of the PLAYER
-								oPlayer.alarm[0] = 420;
+								oPlayer.alarm[0] = 180;
 
 								// extend the beam to cover the period to CAPTURE the player
-						        alarm[3] = ((global.Game.Enemy.beamDuration / 3) / (90 / alarm[3])) + 20;
+						       // alarm[3] = ((global.Game.Enemy.beamDuration / 3) / (90 / alarm[3])) + 20;
 							}
 						}
 					}

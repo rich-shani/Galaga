@@ -141,6 +141,15 @@ enum PlayerAlarmIndex {
 ///// @macro FINAL_ATTACK_ENEMY_COUNT
 ///// @description Number of enemies remaining to trigger final attack mode
 #macro FINAL_ATTACK_ENEMY_COUNT 3
+                                      
+#macro CIRCLE_RADIUS 72                  // Captured player orbit radius                                           
+#macro CAPTURED_PLAYER_COLLISION_BOX 50  // Collision detection size     
+
+// ================================================================                                                
+// COLLISION DETECTION CONSTANTS                                                                                    
+// ================================================================                                                
+#macro MISSILE_PLAYER_COLLISION_RADIUS 25 // Radius for missile hits                                               
+#macro ENEMY_MISSILE_COLLISION_RADIUS 8    // Enemy collision box    
 
 //// ====================================================================================
 //// MACROS - TIMING CONSTANTS
@@ -383,7 +392,7 @@ enum PlayerAlarmIndex {
 
 /// @macro DUAL_FIGHTER_OFFSET_X
 /// @description Horizontal spacing between dual fighters (pixels)
-#macro DUAL_FIGHTER_OFFSET_X 72
+#macro DUAL_FIGHTER_OFFSET_X 84
 
 /// @macro RESCUED_FIGHTER_DOCK_OFFSET_Y
 /// @description Vertical offset for rescued fighter docking position (pixels)
@@ -440,7 +449,7 @@ enum PlayerAlarmIndex {
 
 /// @macro BEAM_TIME_DEFAULT
 /// @description Default duration of tractor beam animation (frames)
-#macro BEAM_TIME_DEFAULT 90
+#macro BEAM_TIME_DEFAULT 300
 
 /// @macro BEAM_CAPTURE_WIDTH
 /// @description Horizontal width of beam capture zone (pixels, half-width from center)

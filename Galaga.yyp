@@ -105,7 +105,6 @@
     {"id":{"name":"oGameManager","path":"objects/oGameManager/oGameManager.yy",},},
     {"id":{"name":"oGameMGR","path":"objects/oGameMGR/oGameMGR.yy",},},
     {"id":{"name":"oGlobal","path":"objects/oGlobal/oGlobal.yy",},},
-    {"id":{"name":"oHUD","path":"objects/oHUD/oHUD.yy",},},
     {"id":{"name":"oImperialShuttle","path":"objects/oImperialShuttle/oImperialShuttle.yy",},},
     {"id":{"name":"oLaserEmit","path":"objects/oLaserEmit/oLaserEmit.yy",},},
     {"id":{"name":"oMissile","path":"objects/oMissile/oMissile.yy",},},

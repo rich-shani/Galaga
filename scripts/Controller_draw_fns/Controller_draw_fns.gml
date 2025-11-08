@@ -217,7 +217,7 @@ function Draw_Enter_Initials() {
 	draw_set_color(c_aqua);
 	if scored = 5 { draw_text(304*global.Game.Display.scale, 176*global.Game.Display.scale, string_hash_to_newline(global.init5)) }
 
-	if global.results < 5 {
+	if global.Game.State.results < 5 {
 		draw_set_color(c_aqua);
 		draw_text((304 + (16 * char))*global.Game.Display.scale, 176*global.Game.Display.scale,
 		string_hash_to_newline(string_char_at(cycle, cyc)));
@@ -301,26 +301,26 @@ function Draw_Credits() {
 function Draw_ChallengeStage_Results() {		
 	
 	/// challenging stage end
-	if global.results > 1{ 
+	if global.Game.State.results > 1{ 
 		draw_set_color(c_aqua); 
 		draw_text(80*global.Game.Display.scale,288*global.Game.Display.scale,"NUMBER OF HITS");
 	
-		if global.results > 2 { ///display shottotal
-		    draw_text(340*global.Game.Display.scale,288*global.Game.Display.scale, global.shottotal);
-		    if global.results > 3 { ///display "PERFECT!" or "BONUS"
-		        if global.shottotal = 40 {
+		if global.Game.State.results > 2 { ///display shottotal
+		    draw_text(340*global.Game.Display.scale,288*global.Game.Display.scale, global.Game.Player.shotTotal);
+		    if global.Game.State.results > 3 { ///display "PERFECT!" or "BONUS"
+		        if global.Game.Player.shotTotal = 40 {
 		            draw_set_color(c_red); 
-		            if global.results > 4 or (alarm[2] > 84 or (alarm[2] < 68 and alarm[2] > 50) or (alarm[2] < 34 and alarm[2] > 16)) {
+		            if global.Game.State.results > 4 or (alarm[2] > 84 or (alarm[2] < 68 and alarm[2] > 50) or (alarm[2] < 34 and alarm[2] > 16)) {
 		                draw_text(160*global.Game.Display.scale,240*global.Game.Display.scale,"PERFECT"); draw_sprite_ext(spr_exc,0,304-16,240*global.Game.Display.scale,1,1,0,c_red,1);
 		            }
 		        }
 		        else { draw_text(144*global.Game.Display.scale,336*global.Game.Display.scale,"BONUS"); }
-		        if global.results > 4 {///display "SPECIAL BONUS 10000 PTS" or custom multiplied number;
-		            if global.shottotal = 40 {
+		        if global.Game.State.results > 4 {///display "SPECIAL BONUS 10000 PTS" or custom multiplied number;
+		            if global.Game.Player.shotTotal = 40 {
 		                draw_set_color(c_yellow);
 		                draw_text(32*global.Game.Display.scale,336*global.Game.Display.scale,"SPECIAL BONUS 10000 PTS");
 		            }
-		            else{draw_text(240*global.Game.Display.scale,336*global.Game.Display.scale, global.shottotal*100);}
+		            else{draw_text(240*global.Game.Display.scale,336*global.Game.Display.scale, global.Game.Player.shotTotal*100);}
 		        }
 		    }
 		}

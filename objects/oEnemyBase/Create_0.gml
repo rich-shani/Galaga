@@ -75,12 +75,20 @@ targy = 0;
 ///   • global.enemy_attributes: Stats (health, points, etc.) by type
 /// ================================================================
 
-// Validate formation data exists
+// === SAFE DATA INITIALIZATION - Validate Formation Grid ===
+// Validate formation data exists and contains required structure
 if (!is_struct(global.formation_data)) {
 	log_error("global.formation_data is not initialized", "oEnemyBase Create_0", 3);
-	global.formation_data = {};  // Fallback to empty structure
+	global.formation_data = { POSITION: [] };  // Fallback with empty POSITION array
 }
 
+// Additional check: Ensure POSITION array exists within formation struct
+if (!variable_struct_exists(global.formation_data, "POSITION")) {
+	log_error("global.formation_data missing POSITION array", "oEnemyBase Create_0", 3);
+	global.formation_data.POSITION = [];  // Add empty array as fallback
+}
+
+// === SAFE DATA INITIALIZATION - Validate Enemy Attributes ===
 // Validate enemy attributes map exists
 if (!is_struct(global.enemy_attributes)) {
 	log_error("global.enemy_attributes is not initialized", "oEnemyBase Create_0", 3);
@@ -161,12 +169,12 @@ if (MODE == "STANDARD") {
 	/// This stagger prevents all enemies shooting simultaneously
 
 	if (global.Game.Level.wave == 1 || global.Game.Level.wave == 2) {
-		alarm[5] = 75;
+		alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_STANDARD;
 		if (global.Game.State.fastEnter == 1) {
-			alarm[5] = 63;  // Faster intervals during fast entry mode
+			alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_FAST;  // Faster intervals during fast entry mode
 		}
 	} else {
-		alarm[5] = 10;  // Wave 0: shorter delay
+		alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_INITIAL;  // Wave 0: shorter delay
 	}
 }
 else if (MODE == "CHALLENGE") {
@@ -178,8 +186,8 @@ else if (MODE == "ROGUE") {
 
 /// @section Fast Entry Adjustment
 // If global.Game.State.fastEnter == 1, adjust timing variables for faster enemy entry.
-// fasty set to 50 steps to speed up entry animations.
-if (global.Game.State.fastEnter == 1) fasty = 50;
+// fasty set to TRANSFORM_ALARM_DELAY steps to speed up entry animations.
+if (global.Game.State.fastEnter == 1) fasty = TRANSFORM_ALARM_DELAY;
 
 /// ================================================================
 /// BEAM WEAPON SYSTEM - Special Ability

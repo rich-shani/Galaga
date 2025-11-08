@@ -131,7 +131,7 @@ function Draw_Hud(){
 			case GameMode.GAME_ACTIVE:
 				/// During active gameplay, show "READY" during player respawn
 				/// Displays only when player is respawning (alarm[1] active) and has lives
-				if ((oPlayer.alarm[1] > -1) && (global.p1lives > 0)) {
+				if ((oPlayer.alarm[1] > -1) && (global.Game.Player.lives > 0)) {
 					draw_text(170*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("READY"));
 		        }
 				else if (oPlayer.alarm[5] > -1) {
