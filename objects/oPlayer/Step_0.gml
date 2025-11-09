@@ -194,19 +194,19 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			break;
 
 		case _ShipState.RELEASING:
-	      /// ================================================================
-	      /// RELEASING STATE - Rescued fighter descending to join player
-	      /// ================================================================
-	      /// After captor is destroyed, the rescued fighter smoothly
-	      /// descends from the captor's position to dock with main player
-	      /// ================================================================
+			/// ================================================================
+			/// RELEASING STATE - Rescued fighter descending to join player
+			/// ================================================================
+			/// After captor is destroyed, the rescued fighter smoothly
+			/// descends from the captor's position to dock with main player
+			/// ================================================================
 
 			// center player ...
 			if (x < 448) {
-				x += 2;
+				x += 3;
 			}
 			else if (x > 448) {
-				x -= 2;
+				x -= 3;
 			}
 			
 			// === DESCENT ANIMATION ===
@@ -241,7 +241,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			
 			// Set respawn timer to PLAYER_RESPAWN_DELAY_FRAMES
 			// Gives player brief moment to prepare
-			alarm[1] = PLAYER_RESPAWN_DELAY_FRAMES;
+			alarm[1] = PLAYER_RESPAWN_DELAY_FRAMES/2;
 		}
 		break;			
 
