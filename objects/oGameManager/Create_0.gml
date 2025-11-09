@@ -5,7 +5,7 @@
 /// This script sets up the core game state, including scoring, lives, high scores, game modes, and other mechanics.
 /// It is assumed to run in the Create event of a controller object that manages global game logic.
 
-init_globals();
+//init_globals();
 
 /// @section Counters
 // General-purpose counter, initialized to 0.
@@ -136,7 +136,7 @@ layer_pause_fx = layer_get_fx("PauseEffect");
 scrolling_nebula_bg = layer_get_id("ScrollingNebula");
 hue_value = [0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 0.8, 0.97];
 
-attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.Game.Display.scale, "GameSprites", oAttractMode);
+//attractMode = instance_create_layer(global.screen_width/2, global.screen_height - 48*global.Game.Display.scale, "GameSprites", oAttractMode);
 
 // Load game data files
 spawn_data = load_json_datafile("Patterns/wave_spawn.json");

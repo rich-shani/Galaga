@@ -1,96 +1,44 @@
-/// @description High Score Initials
+/// @description High Score Entry Initialization
+///
+/// Triggered when level ends. Checks if player's score qualifies for high score table.
+/// If so, initiates Enter_Initials mode and shifts scores as needed.
 
-// This code manages the process of updating a high score table when a player achieves a new high score in a game. 
-// It checks if the player's score (global.Game.Player.score) is higher than the lowest score on the high score list (global.galaga5). 
-// If so, it initiates the process for the player to enter their initials by setting the game mode to ENTER_INITIALS 
-// and prepares various variables for the high score entry sequence, such as stopping all sounds, starting a new sound loop, and setting alarms.
+// Get high score status
+var high_score_result = is_new_high_score(global.Game.Player.score);
 
-// Check if the player's score is higher than the lowest high score
-if (global.Game.Player.score > global.galaga5) {
-					
-    // Set the game mode to allow the player to enter their initials
+if (high_score_result.is_high_score) {
+    // === PLAYER ACHIEVED A HIGH SCORE ===
+
+    // Set game mode to enter initials
     global.Game.State.mode = GameMode.ENTER_INITIALS;
+    global.Game.State.results = 2;  // Start at character position 2 (0-indexed is 1)
 
-    // Set results flag, stop all sounds, and initialize cycle variable
-    global.Game.State.results = 2;
+    // Stop all sounds and prepare audio
     sound_stop_all();
+	
     cyc = 1;
+    loop = 0; // Reset loop counter
+    scored = high_score_result.position;  // Store which position they scored in (1-5)
 
-    // Place the player's score in the 5th (lowest) high score slot
-    global.galaga5 = global.Game.Player.score;
+    // === SHIFT SCORES DOWN THE TABLE ===
+    // Shift all scores below the new score down by one position
+    shift_scores_for_new_high_score(high_score_result.position, global.Game.Player.score);
 
-    // Prepare the initials slot for the new score (blank for now)
-    global.init5 = "   ";
-
-    // Start the secondary sound loop, reset loop variable, set alarm for next step, and mark scored position
-    sound_loop(G2nd);
-    loop = 0;
-    alarm[7] = 15;
-    scored = 5;
-
-    // Check if the player's score is higher than the 4th high score
-    if (global.Game.Player.score > global.galaga4) {
-
-        // Move the 4th score down to 5th, and place the new score in 4th
-        global.galaga5 = global.galaga4;
-        global.galaga4 = global.Game.Player.score;
-
-        // Shift initials accordingly
-        global.init5 = global.init4;
-        global.init4 = "   ";
-        scored = 4;
-
-        // Check if the player's score is higher than the 3rd high score
-        if (global.Game.Player.score > global.galaga3) {
-
-            // Move the 3rd score down to 4th, and place the new score in 3rd
-            global.galaga4 = global.galaga3;
-            global.galaga3 = global.Game.Player.score;
-
-            // Shift initials accordingly
-            global.init4 = global.init3;
-            global.init3 = "   ";
-            scored = 3;
-
-            // Check if the player's score is higher than the 2nd high score
-            if (global.Game.Player.score > global.galaga2) {
-
-                // Move the 2nd score down to 3rd, and place the new score in 2nd
-                global.galaga3 = global.galaga2;
-                global.galaga2 = global.Game.Player.score;
-
-                // Shift initials accordingly
-                global.init3 = global.init2;
-                global.init2 = "   ";
-                scored = 2;
-
-                // Check if the player's score is higher than the top high score
-                if (global.Game.Player.score > global.galaga1) {
-
-                    // Move the top score down to 2nd, and place the new score at the top
-                    global.galaga2 = global.galaga1;
-                    global.galaga1 = global.Game.Player.score;
-
-                    // Shift initials accordingly
-                    global.init2 = global.init1;
-                    global.init1 = "   ";
-                    scored = 1;
-
-                    // Play special sound for new top score, reset loop, and mark scored position
-                    sound_stop_all();
-                    sound_play(G1st15);
-                    loop = 0;
-					
-
-                }
-            }
-        }
+    // === START AUDIO SEQUENCE ===
+    if (high_score_result.position == 1) {
+        // New #1 score - special fanfare
+        sound_play(G1st15);
+    } else {
+        // Top 5 but not #1
+        sound_loop(G2nd);
     }
-}
-// If the player's score is not high enough, goto TITLE SCREEN
-else {
-	global.Game.State.mode = GameMode.INITIALIZE;
+
+    alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] = 15;  // Timer for next phase
+
+} else {
+    // === NO HIGH SCORE ===
+    // Return to title/attract mode
+
     room_goto(TitleScreen);
 }
-
 

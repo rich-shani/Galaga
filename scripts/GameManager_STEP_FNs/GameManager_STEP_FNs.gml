@@ -134,13 +134,20 @@ function init_globals() {
             screenHeight: global.screen_height,
             animationIndex: 0
         },
-        HighScores: {
-            first: global.galaga1,
-            second: global.galaga2,
-            third: global.galaga3,
-            fourth: global.galaga4,
-            fifth: global.galaga5
-        },
+		HighScores: {
+		    scores: [20000, 10000, 5000, 2000, 1000],	// [score1, score2, score3, score4, score5]
+		    initials: ["AA", "BB", "CC", "DD", "EE"],	// [init1, init2, init3, init4, init5]
+			initials_idx: 0,							// track which character is being added (Enter_initials())
+		    display: 0,									// Currently displayed high score
+		    position: -1								// position player (1-5 or -1 if none)
+		},
+        //HighScores: {
+        //    first: global.galaga1,
+        //    second: global.galaga2,
+        //    third: global.galaga3,
+        //    fourth: global.galaga4,
+        //    fifth: global.galaga5
+        //},
         Difficulty: {
             speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
             gameSpeed: 60
@@ -158,90 +165,107 @@ function init_globals() {
     show_debug_message("[init_globals] All game state managed through global.Game namespace");
 }
 
+/// @function shift_scores_for_new_high_score
+/// @description Shifts existing high scores down when a new score qualifies
+///              Updates both scores and initials arrays
+/// @param {number} position - Where new score ranks (1-5)
+/// @param {number} new_score - The new score value
+/// @return {undefined}
+function shift_scores_for_new_high_score(position, new_score) {
+    var idx = position - 1;  // Convert 1-based to 0-based
+
+    // === SHIFT SCORES DOWN ===
+    // Move positions (idx+1) through 4 down by one
+    for (var i = 4; i > idx; i--) {
+        global.Game.HighScores.scores[i] = global.Game.HighScores.scores[i - 1];
+        global.Game.HighScores.initials[i] = global.Game.HighScores.initials[i - 1];
+    }
+
+    // === INSERT NEW SCORE ===
+    global.Game.HighScores.scores[idx] = new_score;
+    global.Game.HighScores.initials[idx] = "   ";  // Blank for entry
+
+    // === SYNC DISPLAY ===
+    global.Game.HighScores.display = global.Game.HighScores.scores[0];
+}
+
 /// @function Enter_Initials
 /// @description Handles player input for entering initials on the high score screen
 ///              Allows navigation through character cycle and selection of characters
-///              for high score name entry
+///              for high score name entry (3 characters per initial slot)
 /// @return {undefined}
-function Enter_Initials(){
+function Enter_Initials() {
+
     // === NAVIGATE LEFT THROUGH CHARACTER CYCLE ===
     if keyboard_check(vk_left) and alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
-        cyc -= 1;  // Move to previous character in the 'cycle' string
-        if cyc == 0 {
-            cyc = string_length(cycle); // Wrap around to last character if we go before the first
+        cyc -= 1;  // Move to previous character
+        if cyc <= 0 {
+            cyc = string_length(cycle); // Wrap to last character
         }
-        alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Cooldown to prevent rapid input (10 frames)
+        alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Input cooldown
     }
 
     // === NAVIGATE RIGHT THROUGH CHARACTER CYCLE ===
     if keyboard_check(vk_right) and alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
-        cyc += 1; // Move to next character in the 'cycle' string
-        if cyc == string_length(cycle) + 1 {
-            cyc = 1; // Wrap around to first character if we go past the end
+        cyc += 1; // Move to next character
+        if cyc > string_length(cycle) {
+            cyc = 1; // Wrap to first character
         }
-        alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Cooldown to prevent rapid input
+        alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Input cooldown
     }
 
-    // === SELECT CURRENT CHARACTER ===
-    if keyboard_check_pressed(vk_space) and loop > 0 and global.Game.State.results < 5 {
+    // === SELECT CHARACTER (SPACE KEY) ===
+    if (keyboard_check_pressed(vk_space) and loop > 0 and global.Game.State.results < 5) {
 
-        // The 'scored' variable determines which player's initials are being entered (1 to 5)
-		var _initials = "";
-		var _score = 0;
-		var _new_char = string_char_at(cycle, cyc);
+        // Get new character from cycle string
+        var _new_char = string_char_at(cycle, cyc);
 
-		// === UPDATE APPROPRIATE INITIALS STRING ===
-		// Use arrays to eliminate code duplication
-		// Build arrays of current initials and scores for indexed access
-		var initials_array = [global.init1, global.init2, global.init3, global.init4, global.init5];
-		var scores_array = [global.galaga1, global.galaga2, global.galaga3, global.galaga4, global.galaga5];
+        // Get the array index (scored is 1-based position, convert to 0-based)
+        var pos_idx = scored - 1;
 
-		// Get the array index (scored is 1-based, arrays are 0-based)
-		var idx = scored - 1;
+        // Get current initials string for this position
+        var current_initials = global.Game.HighScores.initials[pos_idx];
 
-		// Update the initials string at the current character position
-		var current_initials = initials_array[idx];
-		current_initials = string_delete(current_initials, char + 1, 1);
-		current_initials = string_insert(_new_char, current_initials, char + 1);
+        // Update character at current position (global.Game.HighScores.initials_idx tracks which of 3 characters we're editing)
+        global.Game.HighScores.initials_idx = global.Game.State.results - 2;  // 0-based index (0, 1, or 2)
+        current_initials = string_delete(current_initials, global.Game.HighScores.initials_idx + 1, 1);
+        current_initials = string_insert(_new_char, current_initials, global.Game.HighScores.initials_idx + 1);
 
-		// Store for later use
-		_initials = current_initials;
-		_score = scores_array[idx];
+        // === UPDATE STRUCT ARRAY ===
+        global.Game.HighScores.initials[pos_idx] = current_initials;
 
-		// Write the updated initials back to the appropriate global variable
-		switch(scored) {
-			case 1: global.init1 = current_initials; break;
-			case 2: global.init2 = current_initials; break;
-			case 3: global.init3 = current_initials; break;
-			case 4: global.init4 = current_initials; break;
-			case 5: global.init5 = current_initials; break;
-		}
+        // === MOVE TO NEXT CHARACTER OR FINALIZE ===
+        global.Game.State.results += 1;
+        cyc = 1;  // Reset character cycle
 
-        global.Game.State.results += 1; // Move to the next character position or scorer
-        cyc = 1;      // Reset cycle index to first character
-
-        // === FINALIZE NAME ENTRY ===
         if global.Game.State.results == 5 {
-			// save score in the GM scoreboard
-			set_score(_initials, _score);
-	
-            // Adjust timer to move to next screen or scorer
+            // === ALL 3 CHARACTERS ENTERED ===
+
+            // Get finalized initials and score for this position
+            var final_initials = global.Game.HighScores.initials[pos_idx];
+            var final_score = global.Game.HighScores.scores[pos_idx];
+
+            // === SAVE TO GMSCOREBOARD ===
+            // This persists the score to GMScoreboard backend
+            set_score(final_initials, final_score);
+
+            // === ADJUST TIMING ===
+            // Speed up transitions if multiple players entered scores
             if loop == 1 {
                 alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] -= 2;
             }
             if loop == 2 {
                 alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] -= 1;
             }
-            loop = 3; // Set to end loop state (post-entry phase)
 
+            loop = 3; // Mark as post-entry phase
+
+            // Longer delay before returning if multiple scorers
             if scored > 1 {
-                alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] = 120; // Longer delay if more than one player is entering initials
+                alarm[AlarmIndex.SCORE_ENTRY_ADVANCE] = 120;
             }
         }
     }
-
-    // Track which character in the name is currently being edited
-    char = global.Game.State.results - 2;
 }
 
 /// @function nOfEnemies
