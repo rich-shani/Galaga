@@ -45,7 +45,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	
 	// === GameMode SHOT MOVEMENT ===
 	// if GameMode shot has reached the enemy row (relative to player ship's y position)
-	if (attshot && attshoty < 336*global.Game.Display.scale+y) {
+	if (attshot && attshoty < 360*global.Game.Display.scale+y) {
 	    attshot = 0;  // Reset gameMode shot flag
 	    hitFlag = 1;     // Trigger sound or visual effect
 	} else if (attshot) {

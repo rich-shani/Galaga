@@ -86,8 +86,6 @@ global.spawnCounter = 0;
 //global.open = 0;
 global.Game.State.spawnOpen = 0;
 
-global.ArcadeSprites = true;
-global.ArcadeSpritesPrefix = "OG_";
 global.enemy_animation_speed = 0;
 
 // Current stage or level, initialized to 0.

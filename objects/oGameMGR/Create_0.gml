@@ -7,8 +7,10 @@ enum GameState {
 
 state = GameState.TITLE_SCREEN;
 
+// Setup the GM Scoreboard using the unique game tag (loaded from config)
+var game_tag = get_config_value("HIGH_SCORES", "GAME_TAG", "fd0828983a329a0be9e26c34d892769b");
 // setup the GM Scoreboard using the unique game tag
-setup_gmscoreboard("fd0828983a329a0be9e26c34d892769b");
+setup_gmscoreboard(game_tag);
 
 // get the current set of high-scores
 get_scores(5);

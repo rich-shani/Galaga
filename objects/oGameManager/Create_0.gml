@@ -156,17 +156,17 @@ global.enemy_attributes = {
 // Load game configuration
 global.game_config = load_game_config();
 
-// Setup the GM Scoreboard using the unique game tag (loaded from config)
-var game_tag = get_config_value("HIGH_SCORES", "GAME_TAG", "fd0828983a329a0be9e26c34d892769b");
-setup_gmscoreboard(game_tag);
+//// Setup the GM Scoreboard using the unique game tag (loaded from config)
+//var game_tag = get_config_value("HIGH_SCORES", "GAME_TAG", "fd0828983a329a0be9e26c34d892769b");
+//setup_gmscoreboard(game_tag);
 
-// get the current set of high-scores
-get_scores(5);
+//// get the current set of high-scores
+//get_scores(5);
 
-// Setup an alarm to refresh the high score table (using AlarmIndex enum)
-// Default: refresh every 5 minutes (300 seconds * 60 frames/second)
-var refresh_seconds = get_config_value("HIGH_SCORES", "REFRESH_INTERVAL_SECONDS", 300);
-alarm[AlarmIndex.HIGH_SCORE_REFRESH] = refresh_seconds * 60;
+//// Setup an alarm to refresh the high score table (using AlarmIndex enum)
+//// Default: refresh every 5 minutes (300 seconds * 60 frames/second)
+//var refresh_seconds = get_config_value("HIGH_SCORES", "REFRESH_INTERVAL_SECONDS", 300);
+//alarm[AlarmIndex.HIGH_SCORE_REFRESH] = refresh_seconds * 60;
 
 // check if we have a gamepad connected
 useGamepad = false;

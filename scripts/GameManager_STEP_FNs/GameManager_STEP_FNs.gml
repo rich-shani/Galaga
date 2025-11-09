@@ -35,27 +35,6 @@ function init_globals() {
     global.screen_width = view_get_wport(view_current);
     global.screen_height = view_get_hport(view_current);
 
-    // Global variable to determine if we have applied the path scaler already
-    // ie on a game restart, we don't want to re-scale again all the path data
-    global.scalePath = false;
-
-    // === HIGH SCORES ===
-    // Top 5 high scores, initialized to 0
-    global.galaga1 = 0;
-    global.galaga2 = 0;
-    global.galaga3 = 0;
-    global.galaga4 = 0;
-    global.galaga5 = 0;
-    global.init1 = "AA ";
-    global.init2 = "BB ";
-    global.init3 = "CC ";
-    global.init4 = "DD ";
-    global.init5 = "EE ";
-
-    // === LEGACY GLOBALS (To be migrated to global.Game) ===
-    // Temporary during migration - will be removed
-    global.ArcadeSprites = true;
-    global.ArcadeSpritesPrefix = "OG_";
     // ========================================================================
     // NEW STRUCT-BASED SYSTEM INITIALIZATION
     // ========================================================================
@@ -78,7 +57,6 @@ function init_globals() {
             isPaused: false,
             prohibitDive: 0,
             spawnOpen: 0,
-            useArcadeSprites: global.ArcadeSprites,
             breathing: 1,
             results: 0,
             fast: 0,
