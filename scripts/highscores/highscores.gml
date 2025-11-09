@@ -1,5 +1,48 @@
 function load_highscores() {
 	
+	if !ds_list_empty(global.gmscoreboard_scores) {
+		var num = ds_list_size(global.gmscoreboard_scores);
+			
+		var item = ds_list_find_value(global.gmscoreboard_scores, 0);
+		var player = item[? "player"];
+		var player_score = item[? "score"];
+
+		global.galaga1 = player_score;
+		global.init1 = player;
+		
+		//// set the highscore display to the top score
+		//global.disp = global.galaga1;
+		global.Game.HighScores.first = player;
+		global.disp = player_score;	
+		
+		item = ds_list_find_value(global.gmscoreboard_scores, 1);
+		player = item[? "player"];
+		player_score = item[? "score"];
+		
+		global.galaga2 = player_score;
+		global.init2 = player;
+		
+		item = ds_list_find_value(global.gmscoreboard_scores, 2);
+		player = item[? "player"];
+		player_score = item[? "score"];
+
+		global.galaga3 = player_score;
+		global.init3 = player;
+		
+		item = ds_list_find_value(global.gmscoreboard_scores, 3);
+		player = item[? "player"];
+		player_score = item[? "score"];
+
+		global.galaga4 = player_score;
+		global.init4 = player;
+		
+		item = ds_list_find_value(global.gmscoreboard_scores, 4);
+		player = item[? "player"];
+		player_score = item[? "score"];
+
+		global.galaga5 = player_score;
+		global.init5 = player;
+	}
 	
 	/// @description Load High Scores
 	//ini_open("highscores.ini");
