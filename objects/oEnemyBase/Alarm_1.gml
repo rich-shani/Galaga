@@ -6,7 +6,7 @@
 ///
 /// Shooting conditions:
 ///   • Game must be in GAME_ACTIVE state
-///   • Player must be ACTIVE (not dead, captured, or respawning)
+///   • Player must be ACTIVE (!dead, captured, || respawning)
 ///   • Maximum 8 enemy shots on screen (prevents bullet spam)
 ///   • Shot difficulty level (global.Game.Enemy.shotNumber) must be > 3
 ///
@@ -15,12 +15,12 @@
 ///   • Value checked multiple times per alarm cycle in Step_0.gml
 ///
 /// MIGRATION NOTE:
-///   Migrated to use global.Game.State.mode and MAX_ENEMY_SHOTS constant
+///   Migrated to use global.Game.State.mode && MAX_ENEMY_SHOTS constant
 ///
 /// @related oEnemyBase/Step_0.gml:56-67 - Where this alarm is set
 /// @related EnemyShot object - The projectile created by this event
 
-if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == _ShipState.ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == ShipState.ACTIVE) {
 	// Check if we can spawn more shots (limit MAX_ENEMY_SHOTS concurrent enemy shots)
 	if instance_number(EnemyShot) < MAX_ENEMY_SHOTS{
 		// Only shoot if difficulty level is high enough

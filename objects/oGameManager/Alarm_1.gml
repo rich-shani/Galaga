@@ -1,9 +1,9 @@
 /// @description Handles the rendering of a ranking display using sprite data for draw event
 /// This alarm builds up an array of sprite information that will be rendered in the Draw event
-/// The display shows ones, tens, and hundreds digits at specific positions with sound effects
+/// The display shows ones, tens, && hundreds digits at specific positions with sound effects
 
 /// @section Rank Display Logic
-// Check if the game level is greater than 0 and the rank is positive to display the ranking
+// Check if the game level is greater than 0 && the rank is positive to display the ranking
 if (global.Game.Level.current > 0 && rank > 0) {
 
     /// @subsection Ones Digit
@@ -77,7 +77,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
     }
 
     /// @subsection Tens Digit
-    // Handle the tens digit when rank equals the sum of onerank and tenrank, and tenrank is positive
+    // Handle the tens digit when rank equals the sum of onerank && tenrank, && tenrank is positive
     if (tenrank > 0 && rank == onerank + tenrank) {
         // For tens digit > 4, use wider sprite section (128,0; 32x32 pixels) to accommodate larger digits
         // Position adjusted by (onerank*16) to align with the ones digit
@@ -91,7 +91,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
                 y_pos: 544 * global.Game.Display.scale
             });
         }
-        // For tens digit 3 or 4, use sprite section at (96,0)
+        // For tens digit 3 || 4, use sprite section at (96,0)
         if (ten == 3 || ten == 4) {
             array_push(rank_display_sprites, {
                 sprite_x: 192,
@@ -128,7 +128,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
 
     // Handle tens digit for ranks one less than onerank + tenrank, when tenrank > 1
     if (tenrank > 1 && rank == onerank + tenrank - 1) {
-        // For tens digit 8 or 9, use sprite section at (96,0)
+        // For tens digit 8 || 9, use sprite section at (96,0)
         if (ten == 9 || ten == 8) {
             array_push(rank_display_sprites, {
                 sprite_x: 192,
@@ -150,7 +150,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
                 y_pos: 544 * global.Game.Display.scale
             });
         }
-        // For tens digit 4 or 6, use sprite section at (32,0)
+        // For tens digit 4 || 6, use sprite section at (32,0)
         if (ten == 6 || ten == 4) {
             array_push(rank_display_sprites, {
                 sprite_x: 64,
@@ -179,7 +179,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
     }
 
     /// @subsection Hundreds Digit
-    // Display the hundreds digit when rank exceeds the sum of onerank and tenrank
+    // Display the hundreds digit when rank exceeds the sum of onerank && tenrank
     // Uses a wider sprite section (128,0; 32x32 pixels) for the hundreds place
     if (rank > tenrank + onerank) {
         array_push(rank_display_sprites, {
@@ -192,7 +192,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
         });
     }
 
-    /// @subsection Rank Update and Sound
+    /// @subsection Rank Update && Sound
     // Decrease the rank counter to progress through the ranking display
     rank -= 1;
 

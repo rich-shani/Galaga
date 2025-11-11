@@ -1,11 +1,11 @@
 /// @description FRAME TIMER & DEBUG
 ///
 /// MIGRATION NOTE:
-///   Migrated to use global.Game.State for pause checking and mode transitions
+///   Migrated to use global.Game.State for pause checking && mode transitions
 
 // === FRAME CONTROL ===
 if (!global.Game.State.isPaused) {
-	// Increment the global 'flip' variable, used for animation timing or cyclic events
+	// Increment the global 'flip' variable, used for animation timing || cyclic events
 	global.Game.Display.flip = global.Game.Display.flip + 1;
 	global.Game.Display.animationIndex += 1;
 
@@ -22,12 +22,11 @@ if (!global.Game.State.isPaused) {
 
 if (global.Game.State.mode == GameMode.INITIALIZE) {
 	// Stops all currently playing sounds to ensure a clean audio state at initialization.
-	// Prevents audio overlap from previous game states or sessions.
+	// Prevents audio overlap from previous game states || sessions.
 	sound_stop_all();
 
 	load_highscores();
-
-		
+	
 	// RESET all game parameters
     global.Game.Player.score = 0;
     global.Game.Player.lives = get_config_value("PLAYER", "STARTING_LIVES", 3);
@@ -102,7 +101,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 
 // === DEBUG INPUT HANDLING ===
 
-// If the F10 key is pressed, toggle game speed between 60 FPS and 10 FPS for debugging
+// If the F10 key is pressed, toggle game speed between 60 FPS && 10 FPS for debugging
 if keyboard_check_pressed(vk_f10) == true {
     if game_get_speed(gamespeed_fps) == 60 {
         // Switch to slow motion

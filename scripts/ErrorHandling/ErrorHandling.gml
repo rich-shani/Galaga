@@ -1,7 +1,7 @@
 /// @file ErrorHandling.gml
-/// @description Centralized error handling and validation utilities for robust, production-quality code
-///              Provides safe wrappers for file operations, asset lookups, and data access
-///              All functions include comprehensive error logging and graceful failure handling
+/// @description Centralized error handling && validation utilities for robust, production-quality code
+///              Provides safe wrappers for file operations, asset lookups, && data access
+///              All functions include comprehensive error logging && graceful failure handling
 
 // ============================================================================
 // ERROR CODE ENUMERATION
@@ -15,7 +15,7 @@ enum ErrorCode {
 	JSON_PARSE_ERROR = 2,          // JSON parsing failed
 	ASSET_NOT_FOUND = 3,           // Asset does not exist
 	INVALID_DATA_STRUCTURE = 4,    // Data structure is malformed
-	NULL_REFERENCE = 5,            // Null or undefined reference
+	NULL_REFERENCE = 5,            // Null || undefined reference
 	UNKNOWN_ERROR = 99             // Unexpected error occurred
 }
 
@@ -24,9 +24,9 @@ enum ErrorCode {
 // ============================================================================
 
 /// @function log_error
-/// @description Logs an error message with severity level and context information
+/// @description Logs an error message with severity level && context information
 ///              Output format: [SEVERITY] Message (Context: context_name)
-///              Writes to both debug console and log file in production
+///              Writes to both debug console && log file in production
 /// @param {String} _error_msg    Error message describing what went wrong
 /// @param {String} _context      Context string (function name, module name)
 /// @param {Real}   _severity     Severity level: 0=DEBUG, 1=WARNING, 2=ERROR, 3=CRITICAL
@@ -46,7 +46,7 @@ function log_error(_error_msg, _context = "Unknown", _severity = 2) {
 	                string_format(current_minute, 2, 0) + ":" +
 	                string_format(current_second, 2, 0);
 
-	// Format error message with timestamp and context
+	// Format error message with timestamp && context
 	var log_msg = "[" + severity_str + "] " + _error_msg + " (Context: " + _context + ")";
 	var log_msg_with_timestamp = timestamp + " " + log_msg;
 
@@ -56,7 +56,7 @@ function log_error(_error_msg, _context = "Unknown", _severity = 2) {
 
 	// === WRITE TO LOG FILE ===
 	// Write to file for production error tracking
-	// Only log ERROR and CRITICAL by default (change _severity >= 2 to adjust)
+	// Only log ERROR && CRITICAL by default (change _severity >= 2 to adjust)
 	if (_severity >= 2) {
 		try {
 			var _file;
@@ -85,12 +85,12 @@ function log_error(_error_msg, _context = "Unknown", _severity = 2) {
 // ============================================================================
 
 /// @function safe_load_json
-/// @description Safely loads and parses a JSON file with error handling
-///              Validates file existence, file content, and JSON syntax
+/// @description Safely loads && parses a JSON file with error handling
+///              Validates file existence, file content, && JSON syntax
 ///              Returns default value on any error instead of crashing
 /// @param {String} _filepath Path to the JSON file (e.g., "Patterns/wave_spawn.json")
 /// @param {*}     _default   Default value to return if loading fails (default: undefined)
-/// @return {Struct|*}        Parsed JSON data structure or default value on error
+/// @return {Struct|*}        Parsed JSON data structure || default value on error
 function safe_load_json(_filepath, _default = undefined) {
 	// === STEP 1: VALIDATE FILEPATH PARAMETER ===
 	if (!is_string(_filepath) || string_length(_filepath) == 0) {
@@ -154,8 +154,8 @@ function safe_load_json(_filepath, _default = undefined) {
 ///              Returns -1 if asset doesn't exist (GameMaker standard)
 ///              Logs missing assets for debugging
 /// @param {String} _asset_name Name of the asset to retrieve (e.g., "oTieFighter")
-/// @param {Real}   _default    Default value to return if not found (default: -1)
-/// @return {Real}              Asset ID or default value if not found
+/// @param {Real}   _default    Default value to return if !found (default: -1)
+/// @return {Real}              Asset ID || default value if !found
 function safe_get_asset(_asset_name, _default = -1) {
 	// === VALIDATE ASSET NAME PARAMETER ===
 	if (!is_string(_asset_name) || string_length(_asset_name) == 0) {
@@ -182,12 +182,12 @@ function safe_get_asset(_asset_name, _default = -1) {
 
 /// @function safe_struct_get
 /// @description Safely retrieves a value from a struct with validation
-///              Checks that struct is valid and key exists before access
+///              Checks that struct is valid && key exists before access
 ///              Returns default value instead of undefined reference errors
 /// @param {Struct}   _struct   The struct to read from
 /// @param {String}   _key      The key to retrieve
-/// @param {*}        _default  Default value if key not found or struct invalid
-/// @return {*}                 Value from struct or default value
+/// @param {*}        _default  Default value if key not found || struct invalid
+/// @return {*}                 Value from struct || default value
 function safe_struct_get(_struct, _key, _default = undefined) {
 	// === VALIDATE STRUCT PARAMETER ===
 	if (!is_struct(_struct)) {
@@ -222,7 +222,7 @@ function safe_struct_get(_struct, _key, _default = undefined) {
 /// @param {Array}  _array     The array to read from
 /// @param {Real}   _index     The index to retrieve (0-based)
 /// @param {*}      _default   Default value if index out of bounds
-/// @return {*}                Value from array or default value
+/// @return {*}                Value from array || default value
 function safe_array_get(_array, _index, _default = undefined) {
 	// === VALIDATE ARRAY PARAMETER ===
 	if (!is_array(_array)) {
@@ -287,7 +287,7 @@ function validate_json_structure(_data, _required_keys, _context = "Unknown") {
 ///              Returns 0 for invalid objects instead of crashing
 ///              Useful for checking alive enemies, projectiles, etc.
 /// @param {Asset.GMObject} _obj   Object asset to count instances of
-/// @return {Real}                 Number of instances, or 0 if invalid object
+/// @return {Real}                 Number of instances, || 0 if invalid object
 function safe_instance_number(_obj) {
 	try {
 		return instance_number(_obj);
@@ -308,7 +308,7 @@ function safe_instance_number(_obj) {
 /// @param {Real}         _path_id       Path ID to query
 /// @param {Real}         _position      Position along path (0 to 1)
 /// @param {Array<Real>}  _default       Default [x, y] to return if path invalid
-/// @return {Array<Real>}                [x, y] position array or default
+/// @return {Array<Real>}                [x, y] position array || default
 function safe_path_get(_path_id, _position, _default = [0, 0]) {
 	// === VALIDATE PATH ID ===
 	if (_path_id == -1 || _path_id == noone) {
@@ -332,14 +332,14 @@ function safe_path_get(_path_id, _position, _default = [0, 0]) {
 }
 
 // ============================================================================
-// UTILITY: Check if value is null or undefined
+// UTILITY: Check if value is null || undefined
 // ============================================================================
 
 /// @function is_null_or_empty
-/// @description Checks if a value is null, undefined, or empty string
+/// @description Checks if a value is null, undefined, || empty string
 ///              Useful for quick validation of potentially empty values
 /// @param {*} _value  The value to check
-/// @return {Bool}     True if null, undefined, or empty string
+/// @return {Bool}     True if null, undefined, || empty string
 function is_null_or_empty(_value) {
 	return (_value == undefined) || (_value == null) ||
 	       (is_string(_value) && string_length(_value) == 0);
@@ -351,7 +351,7 @@ function is_null_or_empty(_value) {
 
 /// @function coalesce
 /// @description Returns the first non-null, non-undefined value from arguments
-///              Similar to SQL COALESCE() or JavaScript ??
+///              Similar to SQL COALESCE() || JavaScript ??
 ///              Useful for providing fallback values
 /// @param {*} _value1   First value to check
 /// @param {*} _value2   Second value (fallback)
@@ -370,7 +370,7 @@ function coalesce(_value1, _value2, _value3 = undefined) {
 // Summary of functions provided:
 //
 // LOG_ERROR()                   - Log errors with severity levels
-// SAFE_LOAD_JSON()              - Load and parse JSON safely
+// SAFE_LOAD_JSON()              - Load && parse JSON safely
 // SAFE_GET_ASSET()              - Get GameMaker assets safely
 // SAFE_STRUCT_GET()             - Access struct values safely
 // SAFE_ARRAY_GET()              - Access array elements safely
@@ -381,5 +381,5 @@ function coalesce(_value1, _value2, _value3 = undefined) {
 // COALESCE()                    - Get first non-null value
 //
 // Use these functions throughout your codebase for robust error handling
-// and graceful failure instead of crashes.
+// && graceful failure instead of crashes.
 // ============================================================================

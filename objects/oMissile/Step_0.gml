@@ -1,14 +1,14 @@
 /// @description PLAYER MISSILE MOVEMENT
-/// Handles upward movement and off-screen destruction of player missiles.
+/// Handles upward movement && off-screen destruction of player missiles.
 ///
 /// Player missiles travel straight up at constant speed (MISSILE_SPEED).
 /// When they reach the top of the screen, they're automatically destroyed
-/// to prevent memory leaks and unnecessary collision checks.
+/// to prevent memory leaks && unnecessary collision checks.
 ///
 /// Movement:
 ///   • Constant vertical velocity (negative Y direction = up)
 ///   • No horizontal movement (straight shot)
-///   • Speed: 12 pixels/frame (Galaga) or 24 pixels/frame (GalagaWars)
+///   • Speed: 12 pixels/frame (Galaga) || 24 pixels/frame (GalagaWars)
 ///
 /// Destruction:
 ///   • Destroyed when y < -32 (off top of screen)
@@ -31,5 +31,5 @@ y -= MISSILE_SPEED;
 
 // === OFF-SCREEN CHECK ===
 // Destroy missile when it travels past top of visible screen
-// This prevents missiles from existing indefinitely and wasting resources
+// This prevents missiles from existing indefinitely && wasting resources
 if (y < MISSILE_OFFSCREEN) instance_destroy();

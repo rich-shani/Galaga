@@ -1,6 +1,6 @@
 /// @file GameManager_STEP_FNs.gml
 /// @description Helper functions for game manager operations including initial entry,
-///              enemy counting, extra lives, level progression, wave spawning, and formation control
+///              enemy counting, extra lives, level progression, wave spawning, && formation control
 
 /// @function init_globals
 /// @description Initializes all global game variables used throughout the application
@@ -11,7 +11,7 @@
 ///   This function now performs DUAL INITIALIZATION:
 ///   1. Initializes legacy global variables (for backward compatibility)
 ///   2. Initializes new global.Game struct system (for better organization)
-///   3. Syncs values between old and new systems
+///   3. Syncs values between old && new systems
 ///
 ///   During migration, code can use EITHER old globals OR new structs.
 ///   Eventually, all code will migrate to struct-based access.
@@ -19,7 +19,7 @@
 
 /// @function shift_scores_for_new_high_score
 /// @description Shifts existing high scores down when a new score qualifies
-///              Updates both scores and initials arrays
+///              Updates both scores && initials arrays
 /// @param {number} position - Where new score ranks (1-5)
 /// @param {number} new_score - The new score value
 /// @return {undefined}
@@ -43,13 +43,13 @@ function shift_scores_for_new_high_score(position, new_score) {
 
 /// @function Enter_Initials
 /// @description Handles player input for entering initials on the high score screen
-///              Allows navigation through character cycle and selection of characters
+///              Allows navigation through character cycle && selection of characters
 ///              for high score name entry (3 characters per initial slot)
 /// @return {undefined}
 function Enter_Initials() {
 
     // === NAVIGATE LEFT THROUGH CHARACTER CYCLE ===
-    if keyboard_check(vk_left) and alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
+    if keyboard_check(vk_left) && alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
         cyc -= 1;  // Move to previous character
         if cyc <= 0 {
             cyc = string_length(cycle); // Wrap to last character
@@ -58,7 +58,7 @@ function Enter_Initials() {
     }
 
     // === NAVIGATE RIGHT THROUGH CHARACTER CYCLE ===
-    if keyboard_check(vk_right) and alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
+    if keyboard_check(vk_right) && alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
         cyc += 1; // Move to next character
         if cyc > string_length(cycle) {
             cyc = 1; // Wrap to first character
@@ -67,7 +67,7 @@ function Enter_Initials() {
     }
 
     // === SELECT CHARACTER (SPACE KEY) ===
-    if (keyboard_check_pressed(vk_space) and loop > 0 and global.Game.State.results < 5) {
+    if (keyboard_check_pressed(vk_space) && loop > 0 && global.Game.State.results < 5) {
 
         // Get new character from cycle string
         var _new_char = string_char_at(cycle, cyc);
@@ -79,7 +79,7 @@ function Enter_Initials() {
         var current_initials = global.Game.HighScores.initials[pos_idx];
 
         // Update character at current position (global.Game.HighScores.initials_idx tracks which of 3 characters we're editing)
-        global.Game.HighScores.initials_idx = global.Game.State.results - 2;  // 0-based index (0, 1, or 2)
+        global.Game.HighScores.initials_idx = global.Game.State.results - 2;  // 0-based index (0, 1, || 2)
         current_initials = string_delete(current_initials, global.Game.HighScores.initials_idx + 1, 1);
         current_initials = string_insert(_new_char, current_initials, global.Game.HighScores.initials_idx + 1);
 
@@ -93,7 +93,7 @@ function Enter_Initials() {
         if global.Game.State.results == 5 {
             // === ALL 3 CHARACTERS ENTERED ===
 
-            // Get finalized initials and score for this position
+            // Get finalized initials && score for this position
             var final_initials = global.Game.HighScores.initials[pos_idx];
             var final_score = global.Game.HighScores.scores[pos_idx];
 
@@ -138,7 +138,7 @@ function nOfEnemies() {
 function checkForExtraLives() {
 	// Award extra lives based on score thresholds
 	var max_score = get_config_value("SCORE", "MAX_SCORE_FOR_EXTRA_LIVES", MAX_SCORE_FOR_EXTRA_LIVES);
-	if global.Game.Player.score > global.Game.Player.firstlife and global.Game.Player.score < max_score {
+	if global.Game.Player.score > global.Game.Player.firstlife && global.Game.Player.score < max_score {
 	    if global.Game.Player.firstlife == EXTRA_LIFE_FIRST_THRESHOLD {
 	        global.Game.Player.firstlife = 0; // Reset first life marker
 	    }
@@ -153,7 +153,7 @@ function checkForExtraLives() {
 ///              Requires: no enemies, nextlevel==0, no open flag, player active
 /// @return {Bool} True if transitioning to next level, false otherwise
 function readyForNextLevel() {
-	//// If no enemies are present and all game conditions are met,
+	//// If no enemies are present && all game conditions are met,
 	//// initiate transition to the next level.
 	if (alarm[AlarmIndex.LEVEL_ADVANCE] != -1) return true;
 
@@ -161,7 +161,7 @@ function readyForNextLevel() {
 	    nextlevel == 0 &&
 	    global.Game.State.spawnOpen == 0 &&
 	    instance_exists(oPlayer) &&
-	    oPlayer.shipStatus == _ShipState.ACTIVE &&
+	    oPlayer.shipStatus == ShipState.ACTIVE &&
 		global.Game.State.mode == GameMode.GAME_ACTIVE {
 		
 		
@@ -187,7 +187,7 @@ function readyForNextLevel() {
 /// TRANSFORMATION CONDITIONS:
 ///   1. Enemy State: Must be in formation
 ///   2. Game State: Dive capacity available, no prohibitions, spawning complete
-///   3. Player State: Active and vulnerable (not invulnerable or firing)
+///   3. Player State: Active && vulnerable (!invulnerable || firing)
 ///   4. Enemy Count: Less than 21 enemies on screen
 ///   5. Random Chance: 1 in 6 probability
 ///
@@ -198,15 +198,15 @@ function canTransform() {
 	var inValidState = (enemyState == EnemyState.IN_FORMATION);
 
 	// === GAME STATE CHECKS ===
-	// Game must allow transformations (capacity and no active prohibitions)
+	// Game must allow transformations (capacity && no active prohibitions)
 	var gameReady = (global.Game.Enemy.diveCapacity > 0) &&
 	                (global.Game.State.prohibitDive == 0) &&
 	                (global.Game.State.spawnOpen == 0);
 
 	// === PLAYER STATE CHECKS ===
-	// Player must be active and vulnerable for transformation to make sense
+	// Player must be active && vulnerable for transformation to make sense
 	var playerVulnerable = instance_exists(oPlayer) &&
-	                       (oPlayer.shipStatus == _ShipState.ACTIVE) &&
+	                       (oPlayer.shipStatus == ShipState.ACTIVE) &&
 	                       (oPlayer.regain == 0) &&
 	                       (oPlayer.alarm[4] == -1);
 
@@ -223,9 +223,9 @@ function canTransform() {
 }
 
 /// @function checkDiveCapacity
-/// @description Calculates and updates the available dive capacity for enemies
-///              Limits how many enemies can be diving or attacking simultaneously
-///              Checks all enemy types and reduces capacity for active divers
+/// @description Calculates && updates the available dive capacity for enemies
+///              Limits how many enemies can be diving || attacking simultaneously
+///              Checks all enemy types && reduces capacity for active divers
 ///
 /// OPTIMIZATION: Uses loop-based approach to check all enemy types
 ///               Makes it easy to add new enemy types without code duplication
@@ -257,12 +257,12 @@ function checkDiveCapacity() {
 }
 
 /// @function controlEnemyFormation
-/// @description Controls the breathing animation and sound for enemy formation
-///              Manages the oscillating motion of enemies in formation and syncs
+/// @description Controls the breathing animation && sound for enemy formation
+///              Manages the oscillating motion of enemies in formation && syncs
 ///              the breathing sound effect with visual animation
 /// @return {undefined}
 function controlEnemyFormation() {
-	// Controls breathing motion of a visual/background element and audio
+	// Controls breathing motion of a visual/background element && audio
 
     if global.Game.State.breathing == 0 {
         // Not breathing yet; run animation to transition to breathing
@@ -275,7 +275,7 @@ function controlEnemyFormation() {
             }
         }
 
-        if exhale == 1 and skip == 0 {
+        if exhale == 1 && skip == 0 {
             x += 0.5; // Exhale motion (move object right)
             if x == 80 {
                 exhale = 0; // Loop back to inhale
@@ -295,7 +295,7 @@ function controlEnemyFormation() {
     }
 
     if global.Game.State.breathing == 1 {
-        // Active breathing animation and audio logic
+        // Active breathing animation && audio logic
 
         if exhale == 0 {
             global.Game.Enemy.breathePhase += BREATHING_RATE; // Simulate inhale rate
@@ -316,11 +316,11 @@ function controlEnemyFormation() {
         }
 
         // === BREATHING SOUND VOLUME CONTROL ===
-        // OPTIMIZATION: Only check sound state and enemy count periodically (every 10 frames)
+        // OPTIMIZATION: Only check sound state && enemy count periodically (every 10 frames)
         // This reduces expensive function calls from 8 per frame to ~0.8 per frame
         // (5 sound checks + 3 instance_number calls are costly)
         if (global.Game.Level.current % 10 == 0) {
-            // Check only critical action sounds (dive and beam) at full volume
+            // Check only critical action sounds (dive && beam) at full volume
             var actionSoundPlaying = sound_isplaying(GDive) || sound_isplaying(GBeam);
 
             // Use cached enemy count instead of 3 instance_number calls
@@ -339,18 +339,18 @@ function controlEnemyFormation() {
 /// @description Generic JSON file loader for game data files with error handling
 /// @param {String} _datafile Path to the JSON data file (relative to game directory)
 /// @param {Struct} _default Default value to return if loading fails (default: undefined)
-/// @return {Struct} Parsed JSON data structure, default value if file not found or parse error
+/// @return {Struct} Parsed JSON data structure, default value if file not found || parse error
 function load_json_datafile(_datafile, _default = undefined) {
 	// Use safe JSON loading utility
 	return safe_load_json(_datafile, _default);	
 }
 
 /// @function nRogueEnemies
-/// @description Returns the number of rogue enemies to spawn for current level and wave
+/// @description Returns the number of rogue enemies to spawn for current level && wave
 ///              Uses rogue_config data loaded from rogue_spawn.json
 /// @return {Real} Number of rogue enemies to spawn
 function nRogueEnemies() {
-    // Get spawn count for current rogue level and wave
+    // Get spawn count for current rogue level && wave
     // Add bounds checking to prevent crashes from invalid indices
     if (global.Game.Rogue.level < 0 || global.Game.Rogue.level >= array_length(rogue_config.ROGUE_LEVELS)) {
         log_error("Invalid rogue level index: " + string(global.Game.Rogue.level), "nRogueEnemies", 2);
@@ -395,7 +395,7 @@ function spawnRogueEnemy(_spawn, _depth = 0) {
 	// Get the enemy data from a specific SPAWN instance
 	var enemy_data = spawn_array[_spawn];
 
-	// SPAWN a ROGUE Enemy, create path using the STANDARD path and prefix "ROGUE_"
+	// SPAWN a ROGUE Enemy, create path using the STANDARD path && prefix "ROGUE_"
 	var path_name = "ROGUE_" + enemy_data.PATH;
 	var enemy_id = safe_get_asset(enemy_data.ENEMY, -1);
 	if (enemy_id != -1) {
@@ -479,7 +479,7 @@ function patternComplete() {
 /// @function getChallengeData
 /// @description Retrieves challenge stage data for the current challenge number
 ///              Note: global.Game.Challenge.current is 1-indexed (1-8), array is 0-indexed
-/// @return {Struct} Challenge data structure with paths and wave information
+/// @return {Struct} Challenge data structure with paths && wave information
 function getChallengeData() {
 	// Get the challenge data for the current challenge (global.Game.Challenge.current is 1-8)
 	// Array is 0-indexed, so subtract 1
@@ -488,7 +488,7 @@ function getChallengeData() {
 
 /// @function getChallengeWaveData
 /// @description Retrieves wave data for the current wave in the current challenge
-/// @return {Struct} Wave data structure with enemy type and spawn settings
+/// @return {Struct} Wave data structure with enemy type && spawn settings
 function getChallengeWaveData() {
 	// Get the wave data for the current wave in the current challenge
 	var chall_data = getChallengeData();
@@ -496,8 +496,8 @@ function getChallengeWaveData() {
 }
 
 /// @function spawnChallengeEnemy
-/// @description Spawns a challenge stage enemy based on current wave and challenge
-///              Handles wave-specific path selection and enemy alternation
+/// @description Spawns a challenge stage enemy based on current wave && challenge
+///              Handles wave-specific path selection && enemy alternation
 ///              Used for challenge stage-specific spawning logic
 /// @return {undefined}
 function spawnChallengeEnemy() {
@@ -511,7 +511,7 @@ function spawnChallengeEnemy() {
 		return;
 	}
 
-	// Determine which path to use based on wave and count
+	// Determine which path to use based on wave && count
 	var path_name = "";
 	var spawn_x = 0;
 	var spawn_y = 0;
@@ -551,7 +551,7 @@ function spawnChallengeEnemy() {
 			log_error("Challenge path not found: " + path_name, "spawnChallengeEnemy", 2);
 		}
 	}
-	// Wave 4 or 3 (depending on challenge) use path1flip
+	// Wave 4 || 3 (depending on challenge) use path1flip
 	else if ((global.Game.Level.wave == 4 && global.Game.Challenge.current != 1 && global.Game.Challenge.current != 6 && global.Game.Challenge.current != 7) ||
 	         (global.Game.Level.wave == 3 && (global.Game.Challenge.current == 1 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 7))) {
 		path_name = chall_data.PATH1_FLIP;
@@ -564,7 +564,7 @@ function spawnChallengeEnemy() {
 		}
 	}
 
-	// For wave 1, alternate between primary enemy and TieFighter based on count
+	// For wave 1, alternate between primary enemy && TieFighter based on count
 	if (global.Game.Level.wave == 1) {
 		if (count == 1 || count == 3 || count == 5 || count == 7) {
 			// Use TieFighter instead of the wave's enemy for odd counts
@@ -595,7 +595,7 @@ function Game_Loop_Standard() {
 
 		// === ENEMY SPAWNING TIMER ===
 		// alarm[2] controls delay between spawns (WAVE_SPAWN_DELAY = 9 frames)
-		// When alarm[2] == -1, spawn timer is inactive and we can spawn
+		// When alarm[2] == -1, spawn timer is inactive && we can spawn
 		if (alarm[2] == -1) {
 
 			// === PHASE 1: SPAWN STANDARD ENEMIES ===
@@ -654,7 +654,7 @@ function Game_Loop_Standard() {
 }
 
 /// @function spawnChallengeWave_0_3_4
-/// @description Spawns doubled enemies for challenge waves 0, 3, and 4 using PATH1/PATH1_FLIP
+/// @description Spawns doubled enemies for challenge waves 0, 3, && 4 using PATH1/PATH1_FLIP
 /// @param {Struct} chall_data Challenge pattern data with path names
 /// @param {Struct} wave_data Current wave data with enemy type
 /// @return {undefined}
@@ -684,7 +684,7 @@ function spawnChallengeWave_0_3_4(chall_data, wave_data) {
 /// @param {Struct} wave_data Current wave data with enemy type
 /// @return {undefined}
 function spawnChallengeWave_1(chall_data, wave_data) {
-	// Spawn primary enemy and a TieFighter on mirrored paths
+	// Spawn primary enemy && a TieFighter on mirrored paths
 	var path2_id = safe_get_asset(chall_data.PATH2, -1);
 	var path2flip_id = safe_get_asset(chall_data.PATH2_FLIP, -1);
 	var enemy1_id = safe_get_asset(wave_data.ENEMY, -1);
@@ -740,9 +740,9 @@ function Game_Loop_Challenge() {
 	// ====================================================================
 	// Challenge stages occur every 4 levels (when global.Game.Challenge.count reaches 0)
 	// Different spawning logic: 8 enemies per wave, 5 waves total = 40 enemies
-	// Enemies follow looping paths and don't form into grid
+	// Enemies follow looping paths && don't form into grid
 
-	// Only proceed if we're within valid wave range, alarm is inactive, and not transitioning to next level
+	// Only proceed if we're within valid wave range, alarm is inactive, && !transitioning to next level
     if (global.Game.Level.wave < CHALLENGE_TOTAL_WAVES && alarm[AlarmIndex.SPAWN_DELAY] == -1 && nextlevel == 0) {
 
         if (count < CHALLENGE_ENEMIES_PER_WAVE) {  // Only spawn if current wave hasn't reached full enemy count
@@ -791,7 +791,7 @@ function Game_Loop_Challenge() {
 
         // === ADVANCE WAVE ===
         if (count == CHALLENGE_ENEMIES_PER_WAVE) {
-            // If max enemies spawned and all cleared, reset for next wave
+            // If max enemies spawned && all cleared, reset for next wave
             if (global.Game.Enemy.count == 0) {
                 alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_WAVE_DELAY;  // Delay before next wave starts
                 global.Game.Level.wave += 1;
@@ -823,15 +823,15 @@ function Game_Loop_Challenge() {
 ///   1. Check for extra lives (score thresholds)
 ///   2. Update dive capacity (limits simultaneous attacks)
 ///   3. Control formation breathing animation
-///   4. Route to Game_Loop_Standard() or Game_Loop_Challenge()
+///   4. Route to Game_Loop_Standard() || Game_Loop_Challenge()
 ///
 /// @return {undefined}
 function Game_Loop(){
 
 	// === EARLY EXITS ===
-	// Skip processing if game is paused or transitioning to next level
+	// Skip processing if game is paused || transitioning to next level
 	// do not spawn a wave if the Ship isn't active (eg its RESPAWNING)
-	if (global.Game.State.isPaused || oPlayer.shipStatus != _ShipState.ACTIVE) return;
+	if (global.Game.State.isPaused || oPlayer.shipStatus != ShipState.ACTIVE) return;
 	if (readyForNextLevel()) return;
 
 	// === EXTRA LIVES ===
@@ -845,7 +845,7 @@ function Game_Loop(){
 
     // === BREATHING ANIMATION MECHANIC ===
 	// Update the oscillating "breathing" motion of the formation
-	// Creates the iconic Galaga wave effect and syncs audio
+	// Creates the iconic Galaga wave effect && syncs audio
 	controlEnemyFormation();
 
 	// ====================================================================
@@ -886,8 +886,8 @@ function Set_Nebula_Color() {
 }
 
 /// @function Show_Instructions
-/// @description Displays game instructions and handles start game input
-///              Supports both gamepad and keyboard input
+/// @description Displays game instructions && handles start game input
+///              Supports both gamepad && keyboard input
 ///              Initializes all game state when player starts game
 /// @return {undefined}
 function Show_Instructions() {

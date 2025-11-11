@@ -1,5 +1,5 @@
 /// @file GameConstants.gml
-/// @description Defines game-wide constants, enums, and configuration macros
+/// @description Defines game-wide constants, enums, && configuration macros
 /// @author Galaga Wars Team
 
 // ====================================================================================
@@ -48,8 +48,8 @@
 
 /// @enum ShipState
 /// @description Player ship states
-/// Already defined in oPlayer/Create_0.gml as _ShipState - reference only
- enum _ShipState {
+/// Already defined in oPlayer/Create_0.gml - reference only
+ enum ShipState {
      ACTIVE,
      CAPTURED,
      RELEASING,
@@ -59,7 +59,7 @@
 
 /// @enum AlarmIndex
 /// @description Named indices for alarm events in oGameManager
-/// Makes alarm usage more readable and maintainable
+/// Makes alarm usage more readable && maintainable
 enum AlarmIndex {
     PROHIBIT_RESET = 0,         // Resets global.prohib flag after dive attacks
     RANK_UPDATE = 1,            // Controls rank digit display timing
@@ -71,7 +71,7 @@ enum AlarmIndex {
     SCORE_ENTRY_ADVANCE = 7,    // Advances to next scorer in initial entry
     FORMATION_COUNTDOWN = 8,    // Formation setup countdown
     // UNUSED_9 = 9,            // Available
-    LEVEL_ADVANCE = 10,         // Level progression and cleanup
+    LEVEL_ADVANCE = 10,         // Level progression && cleanup
     SPAWN_FORMATION_TIMER = 11  // Initial spawn/formation setup timer
 }
 
@@ -516,6 +516,38 @@ enum PlayerAlarmIndex {
 /// @description Display scale for Galaga Wars mode
 #macro SCALE_GALAGA_WARS 2
 
+/// @macro NEBULA_HUE_BLUE
+/// @description Nebula background hue shift value for deep blue
+#macro NEBULA_HUE_BLUE 0.05
+
+/// @macro NEBULA_HUE_CYAN
+/// @description Nebula background hue shift value for cyan
+#macro NEBULA_HUE_CYAN 0.1
+
+/// @macro NEBULA_HUE_GREEN
+/// @description Nebula background hue shift value for green
+#macro NEBULA_HUE_GREEN 0.2
+
+/// @macro NEBULA_HUE_YELLOW_GREEN
+/// @description Nebula background hue shift value for yellow-green
+#macro NEBULA_HUE_YELLOW_GREEN 0.3
+
+/// @macro NEBULA_HUE_YELLOW
+/// @description Nebula background hue shift value for yellow
+#macro NEBULA_HUE_YELLOW 0.5
+
+/// @macro NEBULA_HUE_ORANGE
+/// @description Nebula background hue shift value for orange
+#macro NEBULA_HUE_ORANGE 0.75
+
+/// @macro NEBULA_HUE_RED
+/// @description Nebula background hue shift value for red
+#macro NEBULA_HUE_RED 0.8
+
+/// @macro NEBULA_HUE_MAGENTA
+/// @description Nebula background hue shift value for magenta
+#macro NEBULA_HUE_MAGENTA 0.97
+
 // ====================================================================================
 // MACROS - ATTRACT MODE CONSTANTS
 // ====================================================================================
@@ -558,7 +590,7 @@ global.game_config = undefined;
 
 /// @function load_game_config
 /// @description Loads the game configuration from JSON file
-/// @return {Struct} Configuration data structure or undefined on failure
+/// @return {Struct} Configuration data structure || undefined on failure
 function load_game_config() {
     var config_file = "Patterns/game_config.json";
 
@@ -590,7 +622,7 @@ function load_game_config() {
 /// @param {String} section The configuration section (e.g., "PLAYER", "ENEMIES")
 /// @param {String} key The configuration key within the section
 /// @param {Any} default_value The value to return if config is not available
-/// @return {Any} The configuration value or default
+/// @return {Any} The configuration value || default
 function get_config_value(section, key, default_value) {
     if (global.game_config == undefined) {
         return default_value;

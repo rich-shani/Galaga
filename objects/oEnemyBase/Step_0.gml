@@ -9,8 +9,8 @@
 ///   • Dive attack coordination
 ///   • State machine progression
 ///
-/// The code uses alarms, global variables, and path following to create
-/// dynamic and varied enemy actions for challenging gameplay.
+/// The code uses alarms, global variables, && path following to create
+/// dynamic && varied enemy actions for challenging gameplay.
 /// ================================================================
 	
 // CHALLENGE enemy are killed if they leave the screen
@@ -76,7 +76,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	/// BREATHING ANIMATION - Formation oscillation effect
 	/// ================================================================
 	/// Creates a smooth wave-like motion for enemies in formation.
-	/// The breathing effect occurs around the formation position and syncs
+	/// The breathing effect occurs around the formation position && syncs
 	/// with global.Game.Enemy.breathePhase variable which cycles 0-BREATHING_CYCLE_MAX.
 	/// breathing provides visual feedback that enemies are "alive"
 	/// ================================================================
@@ -89,14 +89,14 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	/// TRANSFORMATION LOGIC - Enemy morphing into special types
 	/// ================================================================
 	/// Triggers random enemy transformations when specific conditions met.
-	/// This adds variety and challenge to later waves.
+	/// This adds variety && challenge to later waves.
 	///
 	/// Requirements (see canTransform() helper for details):
 	///   • Transformation tokens available
-	///   • Enemy is in formation and alive
+	///   • Enemy is in formation && alive
 	///   • Random chance (1 in 6) passes
 	///   • Dive capacity available
-	///   • Player is active and not invulnerable
+	///   • Player is active && !invulnerable
 	///   • Less than 21 enemies on screen
 	///   • Player is not firing
 	/// ================================================================
@@ -114,7 +114,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	///   1. ENTER_SCREEN       → Following entrance path
 	///   2. MOVE_INTO_FORMATION → Transitioning to grid position
 	///   3. IN_FORMATION       → Stationary, breathing, awaiting dive chance
-	///   4. IN_DIVE_ATTACK     → Diving at player (can loop or go final)
+	///   4. IN_DIVE_ATTACK     → Diving at player (can loop || go final)
 	///   5. IN_LOOP_ATTACK     → Looping back to formation
 	///   6. IN_FINAL_ATTACK    → Last two enemies - aggressive attack
 	/// ================================================================
@@ -137,7 +137,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				/// Transition to next state: moving into grid formation
 				enemyState = EnemyState.MOVE_INTO_FORMATION;
 			} else {
-				// Invalid INDEX - log error and destroy enemy to prevent further issues
+				// Invalid INDEX - log error && destroy enemy to prevent further issues
 				log_error("Invalid formation INDEX: " + string(INDEX), "oEnemyBase ENTER_SCREEN", 3);
 				instance_destroy();
 			}
@@ -155,7 +155,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	}
 	else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
 		// Have we reached the formation position?
-		// enemy can come in from bottom or top of screen, so use ABS()
+		// enemy can come in from bottom || top of screen, so use ABS()
 		if (abs (y - breathey) < FORMATION_POSITION_THRESHOLD) {
 			x = breathex;
 			y = breathey;
@@ -174,7 +174,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// ================================================================
 		/// IN_FORMATION STATE - Enemy is in grid, awaiting attack command
 		/// ================================================================
-		/// This is the "calm" state where enemies breathe and look for
+		/// This is the "calm" state where enemies breathe && look for
 		/// opportunities to dive at the player. It's the majority state.
 		///
 		/// Activities:
@@ -220,10 +220,10 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		///
 		/// Dive trigger probability: ~10% per frame (irandom(10) == 0)
 
-		if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 and global.Game.State.spawnOpen == 0 and oPlayer.alarm[4] == -1) {
+		if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && global.Game.State.spawnOpen == 0 && oPlayer.alarm[4] == -1) {
 			if (
 				irandom(10) == 0 && global.Game.State.prohibitDive == 0 &&
-				alarm[2] == -1 && oPlayer.shipStatus == _ShipState.ACTIVE && oPlayer.regain == 0
+				alarm[2] == -1 && oPlayer.shipStatus == ShipState.ACTIVE && oPlayer.regain == 0
 			) {
 				/// All conditions met - initiate dive attack
 
@@ -267,7 +267,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	else if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 
 		/// ================================================================
-		/// BEAM WEAPON LOGIC - Special charge and firing system
+		/// BEAM WEAPON LOGIC - Special charge && firing system
 		/// ================================================================
 		/// Allows beam-capable enemies (like TIE Intercepters) to activate
 		/// a special beam weapon during the dive attack phase.
@@ -275,14 +275,14 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// Beam activation occurs when:
 		/// • beam flag is enabled for this enemy
 		/// • Enemy reaches activation position (y > 368 * global.Game.Display.scale)
-		/// • Player is vulnerable (not invulnerable, not in dual mode)
+		/// • Player is vulnerable (!invulnerable, not in dual mode)
 		///
 		/// Beam phases:
 		/// • loop = 0: Normal charging phase, moving to beam position
 		/// • loop = -1: Beam is active, charging animation playing
 		/// • loop = -2: Beam charging complete, beginning dive away
 		/// ================================================================
-		if (beam_weapon.available && instance_exists(oPlayer) && (oPlayer.shotMode == _ShotMode.SINGLE)) {
+		if (beam_weapon.available && instance_exists(oPlayer) && (oPlayer.shotMode == ShotMode.SINGLE)) {
 			
 			if ((y > 368 * global.Game.Display.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
 				
@@ -298,7 +298,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 					if (beam_weapon.state == BEAM_STATE.CHARGING) {
 						path_end();
 									
-						/// First frame at beam position: Stop movement and start charge sequence
+						/// First frame at beam position: Stop movement && start charge sequence
 						speed = 0;
 						direction = TARGET_DIRECTION_DOWN;
 
@@ -308,7 +308,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						/// Mark loop state as firing
 						beam_weapon.state = BEAM_STATE.FIRE;
 
-						/// Stop dive sound and play beam sound effect
+						/// Stop dive sound && play beam sound effect
 						sound_stop(GBeam);
 						sound_loop(GBeam);
 					}
@@ -329,15 +329,15 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						// Optimized: Check if player X is within tracker beam's horizontal bounds
 						var withinBem = (oPlayer.x > x-BEAM_CAPTURE_WIDTH && oPlayer.x < x+BEAM_CAPTURE_WIDTH);
 
-						/// Check if player is within capture zone and is vulnerable
-						if (withinBem && oPlayer.shipStatus == _ShipState.ACTIVE) {
+						/// Check if player is within capture zone && is vulnerable
+						if (withinBem && oPlayer.shipStatus == ShipState.ACTIVE) {
 
 							// check if we're within the BEAM period, ie 1/3 to 2/3 of the BEAM time period
 							if ( (alarm[3] < (2 * global.Game.Enemy.beamDuration) / 3) && (alarm[3] > global.Game.Enemy.beamDuration / 3) ) {
 								beam_weapon.state = BEAM_STATE.CAPTURE_PLAYER;
 
 								/// Player is captured by beam!
-								oPlayer.shipStatus = _ShipState.CAPTURED;
+								oPlayer.shipStatus = ShipState.CAPTURED;
 								// FIGTHER CAPTURED MESSAGE
 								oPlayer.alarm[5] = 240;
 
@@ -388,23 +388,23 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		else if ((y > DIVE_Y_THRESHOLD * global.Game.Display.scale)) {
 		
 			if (attributes.CAN_LOOP) {
-	
+
 				path_end();
-			
-				if (x > SCREEN_CENTER_X * global.Game.Display.scale) {				
+
+				if (x > SCREEN_CENTER_X * global.Game.Display.scale) {
 					if (attributes.LOOP_PATH != noone) {
-						var path_id = asset_get_index(attributes.LOOP_PATH);
+						var path_id = safe_get_asset(attributes.LOOP_PATH, -1);
 						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 					}
 				}
 				else {
 					if (attributes.LOOP_ALT_PATH != noone) {
-						var path_id = asset_get_index(attributes.LOOP_ALT_PATH);
+						var path_id = safe_get_asset(attributes.LOOP_ALT_PATH, -1);
 						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 					}
 				}
-					
-				enemyState = EnemyState.IN_LOOP_ATTACK;				
+
+				enemyState = EnemyState.IN_LOOP_ATTACK;
 			}
 			else if (y < SCREEN_BOTTOM_Y * global.Game.Display.scale) {
 				// Adjust direction towards down
@@ -416,7 +416,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				}		
 			}
 			else {
-				// reset to the top of screen and move into formation
+				// reset to the top of screen && move into formation
 				path_end();
 				speed = entranceSpeed;
 		
@@ -447,7 +447,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	}
 	else if (enemyState == EnemyState.IN_FINAL_ATTACK) {
 		if (y > SCREEN_BOTTOM_Y * global.Game.Display.scale) {
-			// reset to the top of screen and move into formation
+			// reset to the top of screen && move into formation
 			path_end();
 
 			// randomize the x location of where the enemy will drop in ...
@@ -465,14 +465,14 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			// Choose path based on starting position
 			if (x > SCREEN_CENTER_X * global.Game.Display.scale) {
 				if (attributes.STANDARD.DIVE_PATH2 != noone) {
-					var path_id = asset_get_index(attributes.STANDARD.DIVE_PATH2);
+					var path_id = safe_get_asset(attributes.STANDARD.DIVE_PATH2, -1);
 					if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
 				}
 			} else {
 				if (attributes.STANDARD.DIVE_ALT_PATH2 != noone) {
-					var path_id = asset_get_index(attributes.STANDARD.DIVE_ALT_PATH2);
+					var path_id = safe_get_asset(attributes.STANDARD.DIVE_ALT_PATH2, -1);
 					if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
-				}				
+				}
 			}
 		}
 	}

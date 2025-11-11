@@ -1,7 +1,7 @@
 /// @description Game Over Cleanup
 ///
 /// MIGRATION NOTE:
-///   Migrated to use global.Game.State for isGameOver and mode
+///   Migrated to use global.Game.State for isGameOver && mode
 
 if (global.Game.State.isGameOver) {
 

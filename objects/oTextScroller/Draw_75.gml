@@ -32,7 +32,7 @@ if (!window_get_fullscreen()) {
     
 	    // Only draw visible characters
 	    if (char_x > -char_spacing && char_x < global.Game.Display.screenWidth) {
-	        // Sine wave offset (apply during scrolling and holding)
+	        // Sine wave offset (apply during scrolling && holding)
 	        var wave_y = sin((char_x * frequency) + (i * phase_offset) + (current_time / 1000)) * amplitude;
 	        draw_text_color(char_x, center_y + wave_y, msg[i], c_red, c_red, c_yellow, c_yellow, 1);
 	    }

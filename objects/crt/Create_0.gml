@@ -32,7 +32,7 @@ update_uniforms = function() {
 	shader_set_uniform_f(shader_get_uniform(shader, "u_do_mask_mirror"), mask_do_mirror);
 	shader_set_uniform_f(shader_get_uniform(shader, "u_mask_strength"), mask_strength);
 	shader_set_uniform_f(shader_get_uniform(shader, "u_mask_scale"), mask_scale);
-	shader_set_uniform_f(shader_get_uniform(shader, "u_mask_repeat_on_three"), (mask_rgbx_repeat_on_threes and (mask_type == spr_mask_rgbx)));
+	shader_set_uniform_f(shader_get_uniform(shader, "u_mask_repeat_on_three"), (mask_rgbx_repeat_on_threes && (mask_type == spr_mask_rgbx)));
 	shader_set_uniform_f(shader_get_uniform(shader, "u_mask_tex_width"), sprite_get_width(mask_type));
 	shader_set_uniform_f(shader_get_uniform(shader, "u_mask_do_shadow"), mask_convert_to_shadow);
 	shader_set_uniform_f(shader_get_uniform(shader, "u_slot_strength"), mask_slot_strength);
@@ -56,7 +56,7 @@ update_uniforms = function() {
 crt_apply = function() {
 	
 	if is_array(gui_user_event) {
-		if (not array_contains(gui_user_event, noone)) and (array_length(gui_user_event) == 2) {
+		if (!array_contains(gui_user_event, noone)) && (array_length(gui_user_event) == 2) {
 			surface_set_target(game_surface);
 	
 			with all {
@@ -69,7 +69,7 @@ crt_apply = function() {
 		}
 	}
 	
-	if do_overlay and not overlay_over_screen {
+	if do_overlay && !overlay_over_screen {
 		draw_sprite_stretched(overlay_image, 0, 0, 0, output_width, output_height);
 	}
 
@@ -94,7 +94,7 @@ crt_apply = function() {
 	draw_surface_stretched(game_surface, 0, 0, output_width, output_height);
 	shader_reset();
 	
-	if do_overlay and overlay_over_screen {
+	if do_overlay && overlay_over_screen {
 		draw_sprite_stretched(overlay_image, 0, 0, 0, output_width, output_height);
 	}
 

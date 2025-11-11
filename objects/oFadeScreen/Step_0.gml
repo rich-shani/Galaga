@@ -17,5 +17,5 @@ switch (state) {
 		break;
 }
 
-// set alpha based on the timer (ie between 0, and 1)
+// set alpha based on the timer (ie between 0, && 1)
 alpha = (duration-timer)/duration;

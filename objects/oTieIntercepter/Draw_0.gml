@@ -51,7 +51,7 @@ if (hitCount == 2) {
 /// === CAPTURED PLAYER RENDERING ===
 /// ================================================================
 /// Draw captured player sprite when player is held by this enemy's beam
-/// Sprite position orbits around the TIE Intercepter and rotates based on
+/// Sprite position orbits around the TIE Intercepter && rotates based on
 /// the TIE Intercepter's direction. The X-Wing is always positioned at the
 /// "top" relative to the intercepter's current orientation.
 /// ================================================================

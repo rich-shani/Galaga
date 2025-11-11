@@ -14,7 +14,7 @@ alarm[0] = 4*60;
 
 /// @section Attract Mode
 // Pause flag for attract mode, initialized to 0.
-// When non-zero, likely pauses attract mode animations or transitions.
+// When non-zero, likely pauses attract mode animations || transitions.
 attpause = 0;
 
 // Flag to indicate if a shot is active in attract mode (0 = no shot, 1 = shot active).
@@ -28,7 +28,7 @@ attshoty = 0;
 // Used alongside attshoty for rendering a shot in attract mode.
 attshotx = 0;
 
-// Attract mode state or timer, initialized to 0.
+// Attract mode state || timer, initialized to 0.
 // Likely incremented to control the sequence of events in attract mode (e.g., demo ship movement).
 sequence = 0;
 

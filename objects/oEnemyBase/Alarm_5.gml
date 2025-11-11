@@ -1,9 +1,9 @@
 /// @description enemy shooting logic
-// Handles enemy shooting logic based on level and shot number
+// Handles enemy shooting logic based on level && shot number
 // check PLAYER STATUS - as the player may be RESPAWNING ...
-if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == _ShipState.ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == ShipState.ACTIVE) {
 	
-	// Only allow shooting if not on levels 1, 10, or 18
+	// Only allow shooting if !on levels 1, 10, || 18
 	if (global.Game.Level.current == 1 || global.Game.Level.current == 10 || global.Game.Level.current == 18) {
 	    // No shooting on these levels
 	} else {

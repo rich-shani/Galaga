@@ -18,7 +18,7 @@ for (var i = 0; i < msg_length; i++) {
 
 scroll_x = global.Game.Display.screenWidth;
 
-// Parameters for scrolling and wave
+// Parameters for scrolling && wave
 scroll_speed = 3;          // Pixels per step
 char_spacing = 24;        // Spacing between characters (match font width)
 amplitude = 2;           // Wave height

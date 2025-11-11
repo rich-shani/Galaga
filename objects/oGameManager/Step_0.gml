@@ -10,7 +10,7 @@
 /// Key States:
 ///   • GAME_ACTIVE: Main gameplay loop (enemies spawning, player controls, scoring)
 ///   • ENTER_INITIALS: High score name entry screen
-///   • (Commented out: ATTRACT_MODE and INSTRUCTIONS - may be managed elsewhere)
+///   • (Commented out: ATTRACT_MODE && INSTRUCTIONS - may be managed elsewhere)
 ///
 /// MIGRATION NOTE:
 ///   Migrated to use global.Game.State.mode (struct-based access)

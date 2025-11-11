@@ -82,7 +82,7 @@ global.Game = {
 		initials: ["AA", "BB", "CC", "DD", "EE"],	// [init1, init2, init3, init4, init5]
 		initials_idx: 0,							// track which character is being added (Enter_initials())
 		display: 0,									// Currently displayed high score
-		position: -1								// position player (1-5 or -1 if none)
+		position: -1								// position player (1-5 || -1 if none)
 	},
     Difficulty: {
         speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),

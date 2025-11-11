@@ -1,6 +1,6 @@
 /// @description Challenge Stage RESULT
-/// Handles the results and scoring for the challenge stage in wave 5.
-/// Plays sounds and awards bonus points based on player performance.
+/// Handles the results && scoring for the challenge stage in wave 5.
+/// Plays sounds && awards bonus points based on player performance.
 
 if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
 
@@ -9,7 +9,7 @@ if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
     switch (global.Game.State.results) {
 
         case 1:
-            // Play perfect or regular results sound based on shots fired
+            // Play perfect || regular results sound based on shots fired
             if (global.Game.Player.shotTotal == 40) {
                 sound_play(GPerfect);
             } else {
@@ -18,7 +18,7 @@ if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
             break;
 
         case 5:
-            // Award special bonus or multiplied score
+            // Award special bonus || multiplied score
             if (global.Game.Player.shotTotal == 40) {
                 global.Game.Player.score += 10000; // Perfect bonus
             } else {
@@ -27,7 +27,7 @@ if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
             break;
     }
 
-    // Set up next alarm or proceed to next level
+    // Set up next alarm || proceed to next level
     if (global.Game.State.results < 5) {
         alarm[2] = 102; // Continue results sequence
     }

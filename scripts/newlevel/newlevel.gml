@@ -17,7 +17,7 @@ function newlevel() {
 		if global.Game.Level.current > 7{global.Game.Rogue.level = 2}
 		if global.Game.Level.current > 11{global.Game.Rogue.level = 3}
 		if global.Game.Level.current > 15{global.Game.Rogue.level = 4}
-		if global.Game.Level.current = 10 or global.Game.Level.current = 18{global.Game.Rogue.level = 0};
+		if global.Game.Level.current = 10 || global.Game.Level.current = 18{global.Game.Rogue.level = 0};
 		
 		// Calculate progressive speed multiplier based on level
 		
@@ -72,7 +72,7 @@ function newlevel() {
 	///hold
 	global.Game.State.hold -= 3; if global.Game.State.hold < 1{global.Game.State.hold = 1};
 	///starspeed
-	if global.Game.Level.current = 4 or global.Game.Level.current = 8 or global.Game.Level.current = 12{};
+	if global.Game.Level.current = 4 || global.Game.Level.current = 8 || global.Game.Level.current = 12{};
 
 	///if keyboard_check_pressed(ord("1")) = true{global.Game.Enemy.transformNum = global.Game.Enemy.transformNum + 1; if global.Game.Enemy.transformNum = 4{global.Game.Enemy.transformNum = 0}};
 	///if keyboard_check_pressed(ord("2")) = true{global.Game.Level.pattern = global.Game.Level.pattern + 1; if global.Game.Level.pattern = 3{global.Game.Level.pattern = 0}; room_restart();}
@@ -86,9 +86,9 @@ function newlevel() {
 	///if keyboard_check_pressed(ord("0")) = true{global.Game.Enemy.beamDuration = global.Game.Enemy.beamDuration - 50; if global.Game.Enemy.beamDuration = 100{global.Game.Enemy.beamDuration = 350}};
 	///rogue = 
 	///1 for 1 bee per side (stage 3), 
-	///2 for 1 bee and 1 butterfly (stage 9),
-	///3 for 2 bees and 1 butterfly (stage 12),
-	///4 for 2 bees and 2 butterflies (stage 16)
+	///2 for 1 bee && 1 butterfly (stage 9),
+	///3 for 2 bees && 1 butterfly (stage 12),
+	///4 for 2 bees && 2 butterflies (stage 16)
 
 
 

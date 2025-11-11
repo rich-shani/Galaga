@@ -10,7 +10,8 @@
       "Bash(then echo \"exists\")",
       "Bash(else echo \"not exists\")",
       "Bash(fi)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git log:*)"
     ],
     "deny": [],
     "ask": []

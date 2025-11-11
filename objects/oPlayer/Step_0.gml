@@ -1,17 +1,17 @@
 /// @description PLAYER MOVEMENT AND INPUT HANDLING
-/// Main player control logic - handles input, movement, shooting, and state transitions.
+/// Main player control logic - handles input, movement, shooting, && state transitions.
 ///
-/// This event only runs during GAME_ACTIVE mode and processes different behaviors
-/// based on the current shipStatus (_ShipState enum).
+/// This event only runs during GAME_ACTIVE mode && processes different behaviors
+/// based on the current shipStatus (ShipState enum).
 ///
 /// Ship States:
 ///   • ACTIVE     - Normal gameplay, full player control
 ///   • CAPTURED   - Player is held by enemy tractor beam
-///   • DEAD       - Player destroyed, waiting to respawn or game over
+///   • DEAD       - Player destroyed, waiting to respawn || game over
 ///   • RESPAWN    - Respawn animation in progress
 ///   • RELEASING  - Player is being released from capture
 ///
-/// @related oPlayer/Create_0.gml - Where shipStatus and variables are initialized
+/// @related oPlayer/Create_0.gml - Where shipStatus && variables are initialized
 /// @related objects/oEnemyBase/Step_0.gml:320-360 - Enemy capture logic
 
 // === PAUSE CHECK ===
@@ -25,18 +25,18 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	// === SHIP STATE MACHINE ===
 	// Process player behavior based on current state
 	switch (shipStatus) {
-		case _ShipState.ACTIVE:
+		case ShipState.ACTIVE:
 			/// ================================================================
 			/// ACTIVE STATE - Normal player control
 			/// ================================================================
-			/// Player has full control: movement left/right and shooting
-			/// Supports both gamepad and keyboard input
+			/// Player has full control: movement left/right && shooting
+			/// Supports both gamepad && keyboard input
 			/// ================================================================
 
 			var fireIsPressed = false;
 
 			// === GAMEPAD INPUT ===
-			// Check if gamepad is connected and active
+			// Check if gamepad is connected && active
 			if (oGameManager.useGamepad) {
 				// === HORIZONTAL MOVEMENT ===
 				// Read analog stick value (-1.0 to 1.0)
@@ -66,7 +66,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// === KEYBOARD INPUT ===
 				// Alternative control scheme using A/D keys
 				// keyboard_check returns 1 if pressed, 0 if not
-				// Subtraction creates -1 (left), 0 (none), or 1 (right)
+				// Subtraction creates -1 (left), 0 (none), || 1 (right)
 				xDirection = keyboard_check(ord("D")) - keyboard_check(ord("A"));
 
 				// === SHIP SPRITE SELECTION ===
@@ -90,10 +90,10 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 			// === BOUNDARY CHECK ===
 			// Clamp player position to stay within playable area
-			// SHIP_MIN_X and SHIP_MAX_X defined in Create_0.gml
+			// SHIP_MIN_X && SHIP_MAX_X defined in Create_0.gml
 			// Prevents player from leaving screen boundaries
-			if (shotMode == _ShotMode.SINGLE) x = clamp(x, SHIP_MIN_X, SHIP_MAX_X);
-			else if (shotMode == _ShotMode.DOUBLE) x = clamp(x, SHIP_MIN_X, SHIP_MAX_X-SHIP_SPACE);
+			if (shotMode == ShotMode.SINGLE) x = clamp(x, SHIP_MIN_X, SHIP_MAX_X);
+			else if (shotMode == ShotMode.DOUBLE) x = clamp(x, SHIP_MIN_X, SHIP_MAX_X-SHIP_SPACE);
 
 			// === SHOOTING LOGIC ===
 			// Handle missile firing with rate limiting
@@ -105,15 +105,15 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				//   2. Less than 2 missiles on screen (prevents spam)
 				//
 				// This creates a fair shooting system that rewards timing
-				// and prevents overwhelming the enemies with bullets
-				var maxBullets = (shotMode == _ShotMode.DOUBLE) ? 4 : 2;
+				// && prevents overwhelming the enemies with bullets
+				var maxBullets = (shotMode == ShotMode.DOUBLE) ? 4 : 2;
 				if (missileInterval <= 0 && instance_number(oMissile) < maxBullets) {
 					// === SPAWN MISSILE ===
-					// Create missile 48 pixels above player ship
+					// Create missile above player ship (offset defined in GameConstants)
 					// Spawned on "GameSprites" layer (same as enemies)
-					instance_create_layer(x, y-48, "GameSprites", oMissile);
-					if (shotMode == _ShotMode.DOUBLE) {
-						instance_create_layer(x + DUAL_FIGHTER_OFFSET_X, y-48, "GameSprites", oMissile);
+					instance_create_layer(x, y - PLAYER_MISSILE_SPAWN_OFFSET_Y, "GameSprites", oMissile);
+					if (shotMode == ShotMode.DOUBLE) {
+						instance_create_layer(x + DUAL_FIGHTER_OFFSET_X, y - PLAYER_MISSILE_SPAWN_OFFSET_Y, "GameSprites", oMissile);
 					}
 					
 					// === AUDIO FEEDBACK ===
@@ -137,13 +137,13 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			// When it reaches 0, player can fire again
 			missileInterval -= 1;
 			break;
-		case _ShipState.CAPTURED:
-		case _ShipState.DEAD:
+		case ShipState.CAPTURED:
+		case ShipState.DEAD:
 			/// ================================================================
-			/// DEAD/CAPTURED STATE - Player is destroyed or captured
+			/// DEAD/CAPTURED STATE - Player is destroyed || captured
 			/// ================================================================
-			/// Handles death animation, life loss, and respawn/game over logic
-			/// Both CAPTURED and DEAD states use similar logic initially
+			/// Handles death animation, life loss, && respawn/game over logic
+			/// Both CAPTURED && DEAD states use similar logic initially
 			/// ================================================================
 
 			// === DEATH ANIMATION DELAY ===
@@ -170,8 +170,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				if (global.Game.Player.lives > 0) {
 					// === RESPAWN ===
 					// Player has lives remaining, prepare to respawn
-				    shipStatus = _ShipState.RESPAWN;
-					shotMode = _ShotMode.SINGLE;
+				    shipStatus = ShipState.RESPAWN;
+					shotMode = ShotMode.SINGLE;
 
 					// Set respawn timer to PLAYER_RESPAWN_DELAY_FRAMES
 					// Gives player brief moment to prepare
@@ -186,14 +186,14 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 					audio_stop_all();
 					
 					// Set cleanup/game over sequence timer (2 seconds)
-					// Triggers high score check and return to title
+					// Triggers high score check && return to title
 					alarm[10] = 120;
 				}
 			}
 
 			break;
 
-		case _ShipState.RELEASING:
+		case ShipState.RELEASING:
 			/// ================================================================
 			/// RELEASING STATE - Rescued fighter descending to join player
 			/// ================================================================
@@ -233,8 +233,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			sound_stop(GRescue); 
 		
 			// Rescued fighter has reached player position
-			shotMode = _ShotMode.DOUBLE; // Enable dual fighter mode!
-			shipStatus = _ShipState.RESPAWN;	
+			shotMode = ShotMode.DOUBLE; // Enable dual fighter mode!
+			shipStatus = ShipState.RESPAWN;	
 			
 			// draw the ship facing up
 			shipImage = 2
@@ -245,7 +245,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 		}
 		break;			
 
-		case _ShipState.RESPAWN:
+		case ShipState.RESPAWN:
 			/// ================================================================
 			/// RESPAWN STATE - Player ship reappearing
 			/// ================================================================
@@ -258,7 +258,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			if (alarm[1] ==-1) {
 				// === REACTIVATE PLAYER ===
 				// Return to normal gameplay state
-				shipStatus = _ShipState.ACTIVE;
+				shipStatus = ShipState.ACTIVE;
 
 				// === RESET POSITION ===
 				// Place player at starting position (center-bottom of screen)

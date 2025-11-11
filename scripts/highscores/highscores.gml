@@ -1,7 +1,7 @@
 /// @function get_high_score_at_position
 /// @description Retrieves a specific high score by position
 /// @param {number} position - Position 1-5 (1 = highest score)
-/// @return {number} Score value at position, or 0 if invalid position
+/// @return {number} Score value at position, || 0 if invalid position
 function get_high_score_at_position(position) {
     if (position < 1 || position > 5) return 0;
     return global.Game.HighScores.scores[position - 1];  // Convert 1-based to 0-based
@@ -10,7 +10,7 @@ function get_high_score_at_position(position) {
 /// @function get_high_score_initials_at_position
 /// @description Retrieves initials for a specific high score position
 /// @param {number} position - Position 1-5 (1 = highest score)
-/// @return {string} Initials at position, or "???" if invalid
+/// @return {string} Initials at position, || "???" if invalid
 function get_high_score_initials_at_position(position) {
     if (position < 1 || position > 5) return "???";
     return global.Game.HighScores.initials[position - 1];  // Convert 1-based to 0-based
@@ -19,7 +19,7 @@ function get_high_score_initials_at_position(position) {
 /// @function is_new_high_score
 /// @description Checks if current player score qualifies for high score table
 /// @param {number} player_score - Score to check
-/// @return {object} { is_high_score: bool, position: 1-5 or -1 }
+/// @return {object} { is_high_score: bool, position: 1-5 || -1 }
 function is_new_high_score(player_score) {
     var result = {
         is_high_score: false,

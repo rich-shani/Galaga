@@ -30,7 +30,7 @@ function Draw_Scores() {
 	draw_set_halign(fa_right);
 
 	// === LABEL STYLING ===
-	// Red text with slight transparency for "1UP" and "HIGH SCORE" labels
+	// Red text with slight transparency for "1UP" && "HIGH SCORE" labels
 	draw_set_color(c_red);
 	draw_set_alpha(0.6);
 
@@ -49,7 +49,7 @@ function Draw_Scores() {
 
 	// === PLAYER SCORE ===
 	// Only show player score once gameplay has started
-	// Hidden during attract mode and instructions
+	// Hidden during attract mode && instructions
 	if (global.Game.State.mode >= GameMode.GAME_PLAYER_MESSAGE) {
 		draw_text(96*global.Game.Display.scale, 26*global.Game.Display.scale, string_hash_to_newline(global.Game.Player.score));
 	}
@@ -60,7 +60,7 @@ function Draw_Scores() {
 	draw_text(272*global.Game.Display.scale, 26*global.Game.Display.scale, string_hash_to_newline(global.Game.HighScores.display));
 
 	// === RESET DRAWING STATE ===
-	// Restore default text alignment and opacity
+	// Restore default text alignment && opacity
 	draw_set_halign(fa_left);
 	draw_set_alpha(1);
 
@@ -82,10 +82,10 @@ function Draw_Scores() {
 /// Visual Layout:
 ///   • Red "-RESULTS-" header
 ///   • Yellow labels for statistics
-///   • White values and percentage
+///   • White values && percentage
 ///
 /// Special Cases:
-///   • If no shots fired or no hits, displays "0.0%" instead of dividing by zero
+///   • If no shots fired || no hits, displays "0.0%" instead of dividing by zero
 ///   • Percentage formatted to 1 decimal place (e.g., "85.7%")
 ///
 /// @variable {number} fire - Total shots fired this stage (from oGameManager)
@@ -102,7 +102,7 @@ function Draw_Results() {
 	draw_text(144*global.Game.Display.scale, 272*global.Game.Display.scale, string_hash_to_newline("-RESULTS-"));
 
 	// === STATISTICS LABELS ===
-	// Yellow text for "SHOTS FIRED" and "NUMBER OF HITS" labels
+	// Yellow text for "SHOTS FIRED" && "NUMBER OF HITS" labels
 	draw_set_color(c_yellow);
 
 	// === SHOTS FIRED ===
@@ -116,14 +116,14 @@ function Draw_Results() {
 	draw_text(320*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline(hits))
 
 	// === ACCURACY RATIO ===
-	// White text for hit-miss ratio label and percentage
+	// White text for hit-miss ratio label && percentage
 	draw_set_color(c_white);
 	draw_text(64*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("HIT-MISS RATIO"));
 
 	// === CALCULATE AND DISPLAY PERCENTAGE ===
-	// Check for division by zero or zero hits
-	if (fire = 0 or hits = 0) {
-		// No shots or no hits = 0.0%
+	// Check for division by zero || zero hits
+	if (fire = 0 || hits = 0) {
+		// No shots || no hits = 0.0%
 		draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("0.0"))
 	}
 	else {
@@ -268,15 +268,15 @@ function Draw_ChallengeStage_Results() {
 	
 		if global.Game.State.results > 2 { ///display shottotal
 		    draw_text(340*global.Game.Display.scale,288*global.Game.Display.scale, global.Game.Player.shotTotal);
-		    if global.Game.State.results > 3 { ///display "PERFECT!" or "BONUS"
+		    if global.Game.State.results > 3 { ///display "PERFECT!" || "BONUS"
 		        if global.Game.Player.shotTotal = 40 {
 		            draw_set_color(c_red); 
-		            if global.Game.State.results > 4 or (alarm[2] > 84 or (alarm[2] < 68 and alarm[2] > 50) or (alarm[2] < 34 and alarm[2] > 16)) {
+		            if global.Game.State.results > 4 || (alarm[2] > 84 || (alarm[2] < 68 && alarm[2] > 50) || (alarm[2] < 34 && alarm[2] > 16)) {
 		                draw_text(160*global.Game.Display.scale,240*global.Game.Display.scale,"PERFECT"); draw_sprite_ext(spr_exc,0,304-16,240*global.Game.Display.scale,1,1,0,c_red,1);
 		            }
 		        }
 		        else { draw_text(144*global.Game.Display.scale,336*global.Game.Display.scale,"BONUS"); }
-		        if global.Game.State.results > 4 {///display "SPECIAL BONUS 10000 PTS" or custom multiplied number;
+		        if global.Game.State.results > 4 {///display "SPECIAL BONUS 10000 PTS" || custom multiplied number;
 		            if global.Game.Player.shotTotal = 40 {
 		                draw_set_color(c_yellow);
 		                draw_text(32*global.Game.Display.scale,336*global.Game.Display.scale,"SPECIAL BONUS 10000 PTS");

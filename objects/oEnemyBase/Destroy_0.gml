@@ -3,20 +3,20 @@
 /// ENEMY DESTRUCTION AND SCORING SYSTEM
 /// ================================================================
 /// Handles all effects when an enemy is destroyed, including:
-/// • Awarding player score (based on enemy state and mode)
+/// • Awarding player score (based on enemy state && mode)
 /// • Managing transformation counters
 /// • Playing appropriate sound effects
 /// • Tracking special achievement conditions
 ///
-/// Only applies scoring and effects if the enemy dies within the
+/// Only applies scoring && effects if the enemy dies within the
 /// visible play area, preventing score exploitation from off-screen kills.
 /// ================================================================
 
 if (!global.Game.State.isGameOver) {
 	/// === BOUNDARY CHECK ===
-	/// Only award points and play effects for on-screen kills
+	/// Only award points && play effects for on-screen kills
 	/// This prevents exploiting off-screen enemy kills for free points
-	/// Boundaries: Y between -64 and 592, X between -64 and 464 (scaled)
+	/// Boundaries: Y between -64 && 592, X between -64 && 464 (scaled)
 	if (y > -64 * global.Game.Display.scale && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > -64 && x < 464 * global.Game.Display.scale) {
 
 		/// ================================================================
@@ -44,7 +44,7 @@ if (!global.Game.State.isGameOver) {
 				}
 			}
 		} else {
-			/// Enemy is in formation or other non-dive state - standard points
+			/// Enemy is in formation || other non-dive state - standard points
 			global.Game.Player.score += attributes.POINT_VALUE;
 		}
 
@@ -74,7 +74,7 @@ if (!global.Game.State.isGameOver) {
 
 		/// === TRANSFORMATION MODE COMBO TRACKING ===
 		if trans == 1 {
-			/// Increment transformation counter and award transformation bonus
+			/// Increment transformation counter && award transformation bonus
 			global.transcount += 1;
 			global.Game.Player.score += 160;  // Fixed bonus per transformed enemy
 
@@ -140,7 +140,7 @@ if (!global.Game.State.isGameOver) {
 	if (oPlayer.captor == id) {
 		
 		// Player was captured - initiate rescue sequence!
-		oPlayer.shipStatus = _ShipState.RELEASING;
+		oPlayer.shipStatus = ShipState.RELEASING;
 		oPlayer.rescued_fighter_x = beam_weapon.player_x;
 		oPlayer.rescued_fighter_y = beam_weapon.player_y;
 
@@ -150,7 +150,7 @@ if (!global.Game.State.isGameOver) {
 		// instruct all enemies to return to FORMATION
 		with (oEnemyBase) {
 			if (enemyState != EnemyState.IN_FORMATION) {
-				// end current path and return to FORMATION
+				// end current path && return to FORMATION
 				path_end();
 				enemyState = EnemyState.MOVE_INTO_FORMATION;
 			}

@@ -2,10 +2,10 @@
 event_inherited();
 
 /// ================================================================
-/// BEAM ANIMATION - beam and captured player effect
+/// BEAM ANIMATION - beam && captured player effect
 /// ================================================================
 /// if this enemy has a BEAM weapon, then advance the animation counter
-/// the animation is used in the Draw() routine for the BEAM and CAPTURED player
+/// the animation is used in the Draw() routine for the BEAM && CAPTURED player
 /// ================================================================
 
 // advance the animation counter (used in Draw)
@@ -18,7 +18,7 @@ beam_weapon.animation += 1; if (beam_weapon.animation == 12) beam_weapon.animati
 /// Uses standard circle formula with consistent angle handling.                                            
 ///                                                                                                        
 /// CRITICAL: Both calculations must use the same angle convention                                         
-/// to ensure circular (not elliptical) orbital motion.                                                     
+/// to ensure circular (!elliptical) orbital motion.                                                     
 ///                                                                                                   
 /// Circle Formula:                                                                                                  
 ///   x_pos = center_x + radius * cos(angle_radians)                                                    
@@ -54,7 +54,7 @@ if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEA
 			
 			// === EXPLOSION ANIMATION ===
 			// Randomly choose between two explosion types for variety
-			// 50/50 chance of oExplosion or oExplosion2
+			// 50/50 chance of oExplosion || oExplosion2
 			// Explosions are spawned at enemy's current position (rounded to nearest pixel)
 			if (irandom(1)) {
 				instance_create(round(beam_weapon.player_x), round(beam_weapon.player_y), oExplosion);

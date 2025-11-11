@@ -7,7 +7,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 		animationIndex = 0;
 	}
 
-	// Countdown timer to slow down or pause gameMode activity temporarily
+	// Countdown timer to slow down || pause gameMode activity temporarily
 	if attpause > 0 {
 	    attpause -= 1;
 	}
@@ -23,9 +23,9 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	}
 
 	// Between sequence values 8 to 16, the ship will simulate shooting
-	if sequence > 7 and sequence < 17 {
+	if sequence > 7 && sequence < 17 {
 		
-		// (sequence between 8 and 12), shoot when alarm[1] hits 30
+		// (sequence between 8 && 12), shoot when alarm[1] hits 30
 		if (sequence > 7 && sequence < 13) { 
 	        if alarm[1] == 30 {
 	            attshot = 1;
@@ -55,7 +55,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	// if GameMode shot has reached the enemy row (relative to player ship's y position)
 	if (attshot && attshoty < 360*global.Game.Display.scale+y) {
 	    attshot = 0;  // Reset gameMode shot flag
-	    hitFlag = 1;     // Trigger sound or visual effect
+	    hitFlag = 1;     // Trigger sound || visual effect
 	} else if (attshot) {
 	    attshoty -= 16*global.Game.Display.scale;  // Move the shot upward by 16 pixels
 	}

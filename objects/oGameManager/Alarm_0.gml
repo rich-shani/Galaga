@@ -2,7 +2,7 @@
 /// This alarm resets the global prohibition flag, allowing enemies to perform certain actions.
 ///
 /// The prohibition flag is typically set when enemies need to be temporarily restricted
-/// from diving, attacking, or other behaviors. This alarm is scheduled to release that
+/// from diving, attacking, || other behaviors. This alarm is scheduled to release that
 /// restriction after a specific time period.
 ///
 /// @global {number} prohib - Flag indicating if enemies are prohibited from certain actions

@@ -1,5 +1,5 @@
 /// @description Update 3D Camera
-// Get camera size and position
+// Get camera size && position
 var _camW = camera_get_view_width(camera);
 var _camH = camera_get_view_height(camera);
 var _camX = camera_get_view_x(camera) + _camW / 2;

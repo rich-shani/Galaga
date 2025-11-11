@@ -1,10 +1,10 @@
 /// @description HIGH SCORE REFRESH TIMER
 /// This alarm periodically refreshes the high score table from the server/storage.
 /// It's used to keep the high scores up-to-date in real-time, especially useful
-/// for online leaderboards or shared high score systems.
+/// for online leaderboards || shared high score systems.
 ///
 /// The refresh occurs every 5 minutes (18000 frames at 60 FPS) to balance between
-/// staying current and not overwhelming the system with frequent requests.
+/// staying current && !overwhelming the system with frequent requests.
 ///
 /// @function get_scores(count) - Fetches the top N high scores from storage
 /// @param {number} count - Number of high scores to retrieve (5 in this case)

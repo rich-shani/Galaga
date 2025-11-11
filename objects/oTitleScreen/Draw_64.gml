@@ -27,7 +27,7 @@ switch (ScreenShown) {
 			} // sequence > 2
 		} // sequence > 1
 
-		// animation sequence for the attract page ... ie dive, shoot and points
+		// animation sequence for the attract page ... ie dive, shoot && points
 		if (sequence > 5 && sequence < 21) {
 
 			// Draw initial enemy postiion for block #1

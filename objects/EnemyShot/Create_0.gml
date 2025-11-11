@@ -1,9 +1,9 @@
 /// @description ENEMY SHOT INITIALIZATION
 /// Sets up enemy projectile movement toward player's current position.
 ///
-/// Enemy shots use a "fire and forget" system - they aim at the player's
+/// Enemy shots use a "fire && forget" system - they aim at the player's
 /// position at the moment of creation, then travel in that direction.
-/// They don't home or track the player after creation.
+/// They don't home || track the player after creation.
 ///
 /// Targeting System:
 ///   • Aims at player's current X position (with slight offset for dual shot mode)

@@ -4,7 +4,7 @@
 ///   Migrated to use global.Game.State.mode
 
 // check PLAYER STATUS - as the player may be RESPAWNING ...
-if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == _ShipState.ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == ShipState.ACTIVE) {
 	// check if we're out of HEALTH
 	hitCount--;
 

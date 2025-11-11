@@ -1,8 +1,8 @@
 /// @description
 /// 
-/// This script is triggered by alarm[7]. On the first loop, it checks if the player has scored and plays a sound if so.
+/// This script is triggered by alarm[7]. On the first loop, it checks if the player has scored && plays a sound if so.
 /// The alarm is then reset to trigger again after 633 steps. On subsequent loops, it increments the loop counter,
-/// and restarts the room on the 4th loop. Otherwise, it continues resetting the alarm for the next cycle.
+/// && restarts the room on the 4th loop. Otherwise, it continues resetting the alarm for the next cycle.
 /// 
 /// @global {number} loop - Tracks the current loop count for alarm[7].
 /// @global {number} scored - Indicates if the player has scored (1 if true).

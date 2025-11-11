@@ -3,11 +3,11 @@
 // PLAYER explosion sound
 sound_stop(GDie); sound_play(GDie); 
 
-if (shotMode == _ShotMode.DOUBLE) {
+if (shotMode == ShotMode.DOUBLE) {
 	// Lose dual fighter, revert to single
-	shotMode = _ShotMode.SINGLE;
+	shotMode = ShotMode.SINGLE;
 
-	// need to remove the fighter that was HIT, ie the left or right ...
+	// need to remove the fighter that was HIT, ie the left || right ...
 	/// not just the one on the right 
 	
 	// Create explosion for lost fighter
@@ -20,12 +20,12 @@ else {
 	instance_create(round(x), round(y), oExplosion3);
 		
 		
-	// screem shake ON when PLAYER is DEAD, and we need to RESPAWN
+	// screem shake ON when PLAYER is DEAD, && we need to RESPAWN
 	layer_set_visible("ScreenShake", true);
 
 	// Update ship status to DEAD
-	shipStatus = _ShipState.DEAD;	
+	shipStatus = ShipState.DEAD;	
 
-	// set timer (to pause before respawn, or game over)
+	// set timer (to pause before respawn, || game over)
 	alarm[0] = 120;
 }

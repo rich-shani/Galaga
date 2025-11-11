@@ -3,7 +3,7 @@
 ///
 /// This is the master HUD function called from oGameManager's Draw event.
 /// It orchestrates the display of all UI elements based on game mode:
-///   • Scores (1UP and HIGH SCORE)
+///   • Scores (1UP && HIGH SCORE)
 ///   • Lives/Credits counter
 ///   • Game state messages (PLAYER 1, STAGE #, READY, etc.)
 ///   • Results screen
@@ -31,15 +31,15 @@ function Draw_Hud(){
 	draw_set_font(fAtari24);
 
 	// === SCORE DISPLAY ===
-	// Show scores (1UP and HIGH SCORE) once past attract mode
+	// Show scores (1UP && HIGH SCORE) once past attract mode
 	// Attract mode (demo) doesn't show scores
 	if (global.Game.State.mode > GameMode.ATTRACT_MODE) {
-		// Draw the score header and values at top of screen
+		// Draw the score header && values at top of screen
 		Draw_Scores();
 	}
 
 	// === GAME OVER CHECK ===
-	// If game over flag is set, display GAME OVER message and exit
+	// If game over flag is set, display GAME OVER message && exit
 	// No other UI elements are drawn in game over state
 	if (global.Game.State.isGameOver)
 	{
@@ -68,7 +68,7 @@ function Draw_Hud(){
 
 		draw_text(100*global.Game.Display.scale,265*global.Game.Display.scale, "GAME PAUSED");
 
-		// Reset font and color for other UI elements
+		// Reset font && color for other UI elements
 		draw_set_color(c_white);
 		draw_set_font(fAtari24);
 	}
@@ -115,7 +115,7 @@ function Draw_Hud(){
 
 			case GameMode.GAME_READY:
 				/// Display stage indicator just before gameplay begins
-				/// Shows either "CHALLENGING STAGE" or "STAGE #"
+				/// Shows either "CHALLENGING STAGE" || "STAGE #"
 				if (global.Game.Challenge.isActive) {
 					draw_text(100*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("CHALLENGING STAGE"));
 				}
@@ -127,7 +127,7 @@ function Draw_Hud(){
 
 			case GameMode.GAME_ACTIVE:
 				/// During active gameplay, show "READY" during player respawn
-				/// Displays only when player is respawning (alarm[1] active) and has lives
+				/// Displays only when player is respawning (alarm[1] active) && has lives
 				if ((oPlayer.alarm[1] > -1) && (global.Game.Player.lives > 0)) {
 					draw_text(170*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("READY"));
 		        }
@@ -141,7 +141,7 @@ function Draw_Hud(){
 
 	// === CHALLENGE STAGE RESULTS ===
 	// If in a challenge stage, overlay challenge-specific results
-	// Shows perfect clear bonus and enemy count
+	// Shows perfect clear bonus && enemy count
 	if (global.Game.Challenge.isActive) {
 		Draw_ChallengeStage_Results();
 	}

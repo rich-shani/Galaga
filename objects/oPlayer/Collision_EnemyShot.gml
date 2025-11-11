@@ -6,8 +6,8 @@
 // destroy Enemy missile
 instance_destroy(other);
 
-// check if the Game and Player are ACTIVE
-if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == _ShipState.ACTIVE) {
+// check if the Game && Player are ACTIVE
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == ShipState.ACTIVE) {
 
 	// Notify the PLAYER that it was HIT
 	if (alarm[11] < 0) {

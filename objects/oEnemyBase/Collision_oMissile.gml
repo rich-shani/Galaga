@@ -1,20 +1,20 @@
 /// @description ENEMY HIT BY PLAYER MISSILE
-/// Handles collision between enemy and player missile.
+/// Handles collision between enemy && player missile.
 ///
 /// This event is triggered when oMissile (player projectile) collides with an enemy.
-/// The collision system uses hitCount to determine if enemy is destroyed or just damaged.
+/// The collision system uses hitCount to determine if enemy is destroyed || just damaged.
 ///
 /// Process:
 ///   1. Destroy the colliding missile
 ///   2. Increment the game's hit counter (for accuracy stats)
 ///   3. Decrement enemy's health (hitCount)
-///   4. If health reaches 0, create explosion and destroy enemy
+///   4. If health reaches 0, create explosion && destroy enemy
 ///
 /// @variable {number} hitCount - Enemy's remaining health points (set from JSON attributes)
 /// @variable {number} oGameManager.hits - Global counter of successful hits (used for accuracy stats)
 ///
 /// @related oEnemyBase/Create_0.gml - Where hitCount is initialized from JSON attributes
-/// @related oEnemyBase/Destroy_0.gml - Where scoring and cleanup occurs
+/// @related oEnemyBase/Destroy_0.gml - Where scoring && cleanup occurs
 
 // === MISSILE DESTRUCTION ===
 // Destroy the missile that hit this enemy
@@ -33,12 +33,12 @@ oGameManager.hits += 1;
 hitCount--;
 
 // === DEATH CHECK ===
-// If health depleted, create explosion effect and destroy enemy
+// If health depleted, create explosion effect && destroy enemy
 if (hitCount == 0) {
 
 	// === EXPLOSION ANIMATION ===
 	// Randomly choose between two explosion types for variety
-	// 50/50 chance of oExplosion or oExplosion2
+	// 50/50 chance of oExplosion || oExplosion2
 	// Explosions are spawned at enemy's current position (rounded to nearest pixel)
 	if (irandom(1)) {
 		instance_create(round(x), round(y), oExplosion);
@@ -50,7 +50,7 @@ if (hitCount == 0) {
 	// === ENEMY DESTRUCTION ===
 	// Destroy this enemy instance
 	// This triggers the Destroy_0.gml event which handles:
-	//   • Score award (based on enemy type and game state)
+	//   • Score award (based on enemy type && game state)
 	//   • Sound effects
 	//   • Formation slot cleanup
 	//   • Bonus enemy spawn checks

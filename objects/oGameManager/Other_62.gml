@@ -1,4 +1,4 @@
-//this event is required to get the results of http requests made to gmscoreboard.com and check if they are successful.
+//this event is required to get the results of http requests made to gmscoreboard.com && check if they are successful.
 //you can run code based on the success of http request, when a score is set a message will show.
 //when get_scores is run, this script will create a ds_list of score data in the global.gmscoreboard_scores variable.
 

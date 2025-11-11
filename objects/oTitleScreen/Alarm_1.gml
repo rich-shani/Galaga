@@ -2,7 +2,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	
 	hitFlag = 0;
 	
-	// advance the attract mode sequence counter and reset the alarm timer
+	// advance the attract mode sequence counter && reset the alarm timer
 	sequence += 1;
 	
 	if (sequence == 15) {
@@ -23,7 +23,8 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 		attpause = 30; 
 		
 		instance_create(360*global.Game.Display.scale+x,336*global.Game.Display.scale+y,oExplosion); 
-		instance_create(360*global.Game.Display.scale+x,336*global.Game.Display.scale+y,Points1600);
+		instance_create_layer(360*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 
+									"GameSprites", oPointsDisplay, { spriteFrame: 4 });  // 1600 points
 	}
 
 	if (sequence == 12) {
@@ -31,24 +32,27 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 		
 		// need to add offset of the moving enemy sprite from the original coords
 		instance_create(260*global.Game.Display.scale+x,336*global.Game.Display.scale+y,oExplosion); 
-		instance_create(260*global.Game.Display.scale+x,336*global.Game.Display.scale+y,Points800);
+		instance_create_layer(260*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 
+									"GameSprites", oPointsDisplay, { spriteFrame: 2 });  // 800 points
 	}
 
 	if sequence == 15 {
 		shipXPosTarget = 80*global.Game.Display.scale; 
 		
 		instance_create(180*global.Game.Display.scale+x,336*global.Game.Display.scale+y,oExplosion); 
-		instance_create(180*global.Game.Display.scale+x,336*global.Game.Display.scale+y,Points400);
+		instance_create_layer(180*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 
+									"GameSprites", oPointsDisplay, { spriteFrame: 1 });  // 400 points
 	}
 
 	if sequence == 17{
 		instance_create(80*global.Game.Display.scale,336*global.Game.Display.scale,oExplosion); 
-		instance_create(80*global.Game.Display.scale,336*global.Game.Display.scale,Points150); 
+		instance_create_layer(80*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 
+									"GameSprites", oPointsDisplay, { spriteFrame: 0 });  // 150 points
 		alarm[1] = 70;
 	}
 
 	// set the path - to animate the BOSS/BUTTERFLY blocks
-	if (sequence == 8 or sequence == 11) {
+	if (sequence == 8 || sequence == 11) {
 		x=0; y=0; 
 		
 		path_start(AttractMode_PATH,3*global.Game.Display.scale,0,0);

@@ -1,7 +1,7 @@
 /// ================================================================
 /// TIE INTERCEPTER CREATION EVENT
 /// ================================================================
-/// Initializes TIE Intercepter-specific attributes and enables the
+/// Initializes TIE Intercepter-specific attributes && enables the
 /// beam weapon capability that differentiates this enemy type from
 /// standard TIE Fighters.
 ///

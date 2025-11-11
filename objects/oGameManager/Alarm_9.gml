@@ -1,7 +1,7 @@
 /// @description High Score Entry Initialization
 ///
 /// Triggered when level ends. Checks if player's score qualifies for high score table.
-/// If so, initiates Enter_Initials mode and shifts scores as needed.
+/// If so, initiates Enter_Initials mode && shifts scores as needed.
 
 // Get high score status
 var high_score_result = is_new_high_score(global.Game.Player.score);
@@ -13,7 +13,7 @@ if (high_score_result.is_high_score) {
     global.Game.State.mode = GameMode.ENTER_INITIALS;
     global.Game.State.results = 2;  // Start at character position 2 (0-indexed is 1)
 
-    // Stop all sounds and prepare audio
+    // Stop all sounds && prepare audio
     sound_stop_all();
 	
     cyc = 1;

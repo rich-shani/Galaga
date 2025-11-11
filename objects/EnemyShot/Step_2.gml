@@ -1,16 +1,16 @@
 /// @description ENEMY SHOT OFF-SCREEN CHECK
 /// Destroys enemy shots that travel past bottom of screen.
 ///
-/// Enemy shots are destroyed when they pass the player's zone and leave
+/// Enemy shots are destroyed when they pass the player's zone && leave
 /// the visible playfield. This prevents shots from existing indefinitely
-/// and consuming resources/collision checks.
+/// && consuming resources/collision checks.
 ///
 /// Destruction Threshold:
 ///   • Y > 576 * global.Game.Display.scale (bottom of screen + buffer)
 ///   • Also destroyed on collision with player (see Collision events)
 ///
 /// This is checked in End Step (Step_2) to ensure it runs after all
-/// movement and collision checks have completed for this frame.
+/// movement && collision checks have completed for this frame.
 ///
 /// @related EnemyShot/Create_0.gml - Where shot movement is initialized
 /// @related oPlayer/Collision_EnemyShot.gml - Player hit detection

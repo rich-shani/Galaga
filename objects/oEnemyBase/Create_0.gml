@@ -3,7 +3,7 @@
 /// ================================================================
 /// ENEMY STATE MACHINE INITIALIZATION
 /// ================================================================
-/// All enemies begin in ENTER_SCREEN state and progress through:
+/// All enemies begin in ENTER_SCREEN state && progress through:
 ///
 /// STATE FLOW (Standard Mode):
 ///   ENTER_SCREEN ──> MOVE_INTO_FORMATION ──> IN_FORMATION ──┐
@@ -32,7 +32,7 @@ enemyState = EnemyState.ENTER_SCREEN;
 enemyMode = EnemyMode.STANDARD;
 	
 // Flag indicating if the enemy is an escort, initialized to 0 (0 = not escort, 1 = escort).
-// Escorts may have special behaviors, such as accompanying a boss or following unique paths.
+// Escorts may have special behaviors, such as accompanying a boss || following unique paths.
 escort = 0;
 
 baseSpeed = 6;
@@ -40,15 +40,15 @@ moveSpeed = baseSpeed * global.Game.Difficulty.speedMultiplier;
 entranceSpeed = baseSpeed  + (baseSpeed * global.Game.Difficulty.speedMultiplier);
 
 // Flag for transformation state, initialized to 0 (0 = normal, 1 = transformed).
-// Used for enemies that change form or behavior (e.g., Butterfly transforming).
+// Used for enemies that change form || behavior (e.g., Butterfly transforming).
 trans = 0;
 
 // Flag indicating if the enemy is a rogue, initialized to 0 (0 = normal, 1 = rogue).
-// Rogue enemies may follow unique paths or behaviors compared to standard enemies.
+// Rogue enemies may follow unique paths || behaviors compared to standard enemies.
 rogue = 0;
 
 // X-coordinate offset for a breathing animation, initialized to 0.
-// Used for visual effects, such as pulsating or moving enemies (e.g., boss-related).
+// Used for visual effects, such as pulsating || moving enemies (e.g., boss-related).
 breathex = 0;
 
 // Y-coordinate offset for a breathing animation, initialized to 0.
@@ -56,11 +56,11 @@ breathex = 0;
 breathey = 0;
 
 // Target X-coordinate for movement, initialized to 0.
-// Used to guide the enemy toward a specific point (e.g., during a dive or goto behavior).
+// Used to guide the enemy toward a specific point (e.g., during a dive || goto behavior).
 targx = 0;
 
 // Target Y-coordinate for movement, initialized to 0.
-// Complements targx for navigation or attack patterns.
+// Complements targx for navigation || attack patterns.
 targy = 0;
 
 /// ================================================================
@@ -76,7 +76,7 @@ targy = 0;
 /// ================================================================
 
 // === SAFE DATA INITIALIZATION - Validate Formation Grid ===
-// Validate formation data exists and contains required structure
+// Validate formation data exists && contains required structure
 if (!is_struct(global.formation_data)) {
 	log_error("global.formation_data is not initialized", "oEnemyBase Create_0", 3);
 	global.formation_data = { POSITION: [] };  // Fallback with empty POSITION array
@@ -193,17 +193,17 @@ if (global.Game.State.fastEnter == 1) fasty = TRANSFORM_ALARM_DELAY;
 /// BEAM WEAPON SYSTEM - Special Ability
 /// ================================================================
 /// The beam weapon system allows special enemy types (like TIE Intercepters)
-/// to charge and fire a powerful energy beam at the player ship.
+/// to charge && fire a powerful energy beam at the player ship.
 ///
 /// Beam mechanics:
 /// • beam: Flag indicating if this enemy can use beam weapon (0 = no, 1 = yes)
 /// • beamsignal: Tracks beam charging state during activation
-/// • loop: State machine for beam charging and firing phases
+/// • loop: State machine for beam charging && firing phases
 /// • anim: Animation frame counter for beam sprite cycling
 ///
 /// Beam can only activate once per dive attack when:
 /// • No other beam currently active
-/// • Player is in single-ship mode (not dual/doubled)
+/// • Player is in single-ship mode (!dual/doubled)
 /// • No fighters are captured
 /// • Global beam check flag is clear
 /// ================================================================

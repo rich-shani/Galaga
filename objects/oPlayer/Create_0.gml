@@ -1,5 +1,5 @@
 /// @section Ship Configuration - Use constants from GameConstants.gml
-// Set ship boundaries and parameters based on room type (Galaga vs GalagaWars)
+// Set ship boundaries && parameters based on room type (Galaga vs GalagaWars)
 SHIP_MIN_X = PLAYER_SHIP_MIN_X_WARS;
 SHIP_MAX_X = PLAYER_SHIP_MAX_X_WARS;
 SHOT_OFFSCREEN = PLAYER_SHOT_OFFSCREEN;
@@ -9,17 +9,16 @@ SHIP_MOVE_INCREMENT = PLAYER_SHIP_MOVE_INCREMENT_WARS;
 
 /// @section Ship State
 // Indicates the ship's life state (0 = alive, 1 = dead, 2 = respawning).
-// Used to control movement, shooting, and collision behavior.
-shipStatus = _ShipState.ACTIVE;
+// Used to control movement, shooting, && collision behavior.
+shipStatus = ShipState.ACTIVE;
 
-// Shot Mode; SINGLE or DOUBLE
-enum _ShotMode {
+// Shot Mode; SINGLE || DOUBLE
+enum ShotMode {
 	SINGLE,
-	DOUBLE 
+	DOUBLE
 }
 
-// 0 is level, 1 is left, 11 is right
-//shipDirection = 0;
+// Player horizontal direction: -1 (left), 0 (center), 1 (right)
 xDirection = 0;
 shipImage = xDirection;
 
@@ -33,8 +32,8 @@ missileInterval = 0;
 
 /// @section Double Ship Mode
 // Indicates if the ship is in double mode (0 = single ship, 1 = two ships).
-// Affects movement boundaries, shooting, and collision detection.
-shotMode = _ShotMode.SINGLE;
+// Affects movement boundaries, shooting, && collision detection.
+shotMode = ShotMode.SINGLE;
 
 /// @section Ship Regain Logic
 // Flag for regaining a ship after rescue (0 = not regaining, 1 = regaining).
@@ -45,7 +44,7 @@ regain = 0;
 /// BEAM CAPTURE SYSTEM - Player Capture Mechanics
 /// ================================================================
 /// When a player is captured by a beam weapon (from enemies like TIE Intercepters),
-/// the player follows the enemy until rescued or the beam sequence completes.
+/// the player follows the enemy until rescued || the beam sequence completes.
 ///
 /// Capture mechanics:
 /// • captor: Reference to the enemy that captured the player

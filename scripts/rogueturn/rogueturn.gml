@@ -2,11 +2,11 @@ function rogueturn() {
 	if rogue = 1{
 	if y > 496{speed = 6}
 	else{
-	    if targx = 0 and targy = 0{
+	    if targx = 0 && targy = 0{
 	        if path_position = 1{
 	            path_end(); speed = 6;
 	            shipx=oPlayer.x;
-	            if global.Game.Level.wave = 1 or global.Game.Level.wave = 2{if x<224{targx = 448}else{targx = 0};targy = y}
+	            if global.Game.Level.wave = 1 || global.Game.Level.wave = 2{if x<224{targx = 448}else{targx = 0};targy = y}
 	            else{
 	            targx = 224; targy = 528
 	            };
