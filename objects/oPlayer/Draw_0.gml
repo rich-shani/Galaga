@@ -30,14 +30,14 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 		if (!global.Game.State.isPaused) {
 			// if we're not paused, then animate the thrusters
-			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x-(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
-			draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
+			draw_sprite_ext(sLaserEmit, global.Game.Display.animationIndex/24*2, x-(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
+			draw_sprite_ext(sLaserEmit, global.Game.Display.animationIndex/24*2, x+(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
 
 			// DUAL Mode; draw second fighter thrusters
 			if (shotMode == _ShotMode.DOUBLE) {
 				// Draw docked dual fighter (positioned to right of main fighter)
-				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+DUAL_FIGHTER_OFFSET_X-(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
-				draw_sprite_ext(sLaserEmit, global.animationIndex/24*2, x+DUAL_FIGHTER_OFFSET_X+(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
+				draw_sprite_ext(sLaserEmit, global.Game.Display.animationIndex/24*2, x+DUAL_FIGHTER_OFFSET_X-(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
+				draw_sprite_ext(sLaserEmit, global.Game.Display.animationIndex/24*2, x+DUAL_FIGHTER_OFFSET_X+(8*global.Game.Display.scale), y+(32*global.Game.Display.scale), global.Game.Display.scale, global.Game.Display.scale, 0, c_white, 1);
 			}
 		}
 	}

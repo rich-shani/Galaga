@@ -13,7 +13,6 @@
 ///
 /// The HUD adapts dynamically based on:
 ///   • global.Game.State.mode - Current game state
-///   • global.isGameOver - Game over flag
 ///   • global.Game.State.isPaused - Pause flag
 ///   • global.isChallengeStage - Challenge stage flag
 ///
@@ -28,10 +27,8 @@ function Draw_Hud(){
 	// === FONT SETUP ===
 	// Select appropriate retro Atari font based on room scale
 	// GalagaWars uses 2x scale (24pt), original Galaga uses 1x scale (12pt)
-	if (global.roomname == "GalagaWars") {
-		draw_set_font(fAtari24);
-	}
-	else draw_set_font(fAtari12);
+
+	draw_set_font(fAtari24);
 
 	// === SCORE DISPLAY ===
 	// Show scores (1UP and HIGH SCORE) once past attract mode

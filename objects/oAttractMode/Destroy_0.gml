@@ -1,1 +1,0 @@
-path_end(); // terminate all active paths that were created in alarm[3]

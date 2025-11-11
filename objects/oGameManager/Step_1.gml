@@ -6,17 +6,17 @@
 // === FRAME CONTROL ===
 if (!global.Game.State.isPaused) {
 	// Increment the global 'flip' variable, used for animation timing or cyclic events
-	global.flip = global.flip + 1;
-	global.animationIndex += 1;
+	global.Game.Display.flip = global.Game.Display.flip + 1;
+	global.Game.Display.animationIndex += 1;
 
 	// Reset 'flip' after 60 frames (i.e., once per second if the game runs at 60 FPS)
-	if global.flip == 60 {
-	    global.flip = 0;
+	if global.Game.Display.flip == 60 {
+	    global.Game.Display.flip = 0;
 	}
 
-	if (global.animationIndex == 24*4) {
+	if (global.Game.Display.animationIndex == 24*4) {
 		// animated sprites have 24 frames of animation
-		global.animationIndex = 0;
+		global.Game.Display.animationIndex = 0;
 	}
 }
 
@@ -27,22 +27,63 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 
 	load_highscores();
 
+		
+	// RESET all game parameters
+    global.Game.Player.score = 0;
+    global.Game.Player.lives = get_config_value("PLAYER", "STARTING_LIVES", 3);
+		
 	// NOTE: Most global variables are already initialized in init_globals() called from Create_0
 	// Only reset variables that need to be reset specifically for game start
 	global.Game.Level.wave = 0;
 	global.checkRoguePerWave = false;
 	global.Game.Level.pattern = 0;
-	//global.open = 0;
 
 	// Reset animation counters
-	global.flip = 0;
+	global.Game.Display.flip = 0;
 	global.Game.State.breathing = 1;
 	global.Game.Enemy.breathePhase = 0;
 	exhale = 0;
+		global.Game.State.isGameOver = false;
+		global.Game.State.isPaused = false;
+		global.Game.State.prohibitDive = 0;
+		global.Game.State.spawnOpen = 0;
+		global.Game.State.breathing = 1;
+		global.Game.State.results = 0;
+		global.Game.State.fast = 0;
+		global.Game.State.fastEnter = 0;
+		global.Game.State.enterShot = 0;
+		global.Game.State.hold = 15;
+		global.Game.State.lastAttack = 4;
+		
+        global.Game.Level.current = 0;
+        global.Game.Level.wave = 0;
+		global.Game.Level.stage = 0;
+		global.Game.Level.pattern = 0;
 
+		global.Game.Challenge.isActive = false;
+		global.Game.Challenge.current = 0;
+		global.Game.Challenge.count = 1;
+		global.Game.Challenge.intervalsToNext = get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS);
+
+        global.Game.Enemy.diveCapacityStart  = 2;
+        global.Game.Enemy.diveCapacity = global.Game.Enemy.diveCapacityStart;
+		global.Game.Enemy.beamDuration = BEAM_TIME_DEFAULT;
+        global.Game.Enemy.shotNumber    = 2;
+        global.Game.Enemy.transformNum      = 0;
+        global.Game.Enemy.transformTokens = 0;
+        global.Game.Enemy.bossCap       = 2;
+        global.Game.Enemy.bossCount     = 1;
+        global.Game.Enemy.beamCheck     = 0;
+        global.Game.Enemy.transformCount    = 0;
+        global.Game.Enemy.escortCount   = 0;
+        global.Game.Enemy.fighterStore  = 0;
+        global.Game.Enemy.breathePhase       = 0;
+
+
+		global.Game.Rogue.level         = 0;
 	// Score thresholds for extra lives
-	firstlife = EXTRA_LIFE_FIRST_THRESHOLD;
-	additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;
+	global.Game.Player.firstlife = EXTRA_LIFE_FIRST_THRESHOLD;
+	global.Game.Player.additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;
 
 	// create the death star on the DeathStar layer (ie behind the game sprites)
 	instance_create_layer(0, 0, "DeathStar", oDeathStar);

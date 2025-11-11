@@ -25,13 +25,13 @@ if (!window_get_fullscreen()) {
 	draw_set_valign(fa_middle);
 	draw_set_color(c_white);
 
-	var center_y = global.screen_height - 48;
+	var center_y = global.Game.Display.screenHeight - 48;
 
 	for (var i = 0; i < msg_length; i++) {
 	    var char_x = scroll_x + (i * char_spacing);
     
 	    // Only draw visible characters
-	    if (char_x > -char_spacing && char_x < global.screen_width) {
+	    if (char_x > -char_spacing && char_x < global.Game.Display.screenWidth) {
 	        // Sine wave offset (apply during scrolling and holding)
 	        var wave_y = sin((char_x * frequency) + (i * phase_offset) + (current_time / 1000)) * amplitude;
 	        draw_text_color(char_x, center_y + wave_y, msg[i], c_red, c_red, c_yellow, c_yellow, 1);

@@ -219,16 +219,10 @@ function Draw_Instructions() {
 	draw_text(64*global.Game.Display.scale, (208 + 64 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("AND FOR EVERY 70000 PTS"));
 
 	// which ship to draw ... 
-	if (global.roomname == "GalagaWars") {
-		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 48 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
-		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 48 + 48 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
-	}
-	else {
-		draw_sprite(spr_ship, 0, 32*global.Game.Display.scale, (8 + 208 + 64)*global.Game.Display.scale);
-		draw_sprite(spr_ship, 0, 32*global.Game.Display.scale, (8 + 208 + 48 + 64)*global.Game.Display.scale);
-		draw_sprite(spr_ship, 0, 32*global.Game.Display.scale, (8 + 208 + 48 + 48 + 64)*global.Game.Display.scale);
-	}
+	draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
+	draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 48 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
+	draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 48 + 48 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
+
 	
 	draw_set_halign(fa_center);
 	draw_set_color(c_white);
@@ -250,12 +244,7 @@ function Draw_Lives() {
 	lifecount = global.Game.Player.lives - 1;
 	repeat(lifecount)
 	{
-		if (global.Game.Display.roomName == "GalagaWars") {
-			draw_sprite_ext(sXWing, 0, (20 + 34 * (lifecount - 1))*global.Game.Display.scale, 560*global.Game.Display.scale, 0.6, 0.6, 0, c_white, 1);
-		}
-		else {
-			draw_sprite(spr_ship, 0, 16 + (32 * (lifecount - 1))*global.Game.Display.scale, 560*global.Game.Display.scale);
-		}
+		draw_sprite_ext(sXWing, 0, (20 + 34 * (lifecount - 1))*global.Game.Display.scale, 560*global.Game.Display.scale, 0.6, 0.6, 0, c_white, 1);
 
 		lifecount = lifecount - 1
 	};
@@ -265,7 +254,7 @@ function Draw_Lives() {
 
 function Draw_Credits() {
 	draw_set_color(c_white);
-	draw_text(16*global.Game.Display.scale, 550*global.Game.Display.scale, "CREDIT " + string(global.credits));
+	draw_text(16*global.Game.Display.scale, 550*global.Game.Display.scale, "CREDIT " + string(global.Game.Player.credits));
 	
 	return;
 }

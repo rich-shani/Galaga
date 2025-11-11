@@ -319,7 +319,7 @@ enum PlayerAlarmIndex {
 /// @macro FORMATION_POSITION_THRESHOLD
 /// @description Pixel threshold for determining if enemy has reached formation position
 ///              Used with abs() to check vertical alignment
-#macro FORMATION_POSITION_THRESHOLD 6
+#macro FORMATION_POSITION_THRESHOLD 12
 
 /// @macro DIRECTION_ROTATION_THRESHOLD
 /// @description Degree threshold for direction alignment checking

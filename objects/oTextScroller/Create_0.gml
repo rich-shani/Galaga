@@ -16,7 +16,7 @@ for (var i = 0; i < msg_length; i++) {
     msg[i] = string_char_at(message_text, i + 1);
 }
 
-scroll_x = global.screen_width;
+scroll_x = global.Game.Display.screenWidth;
 
 // Parameters for scrolling and wave
 scroll_speed = 3;          // Pixels per step
@@ -24,7 +24,7 @@ char_spacing = 24;        // Spacing between characters (match font width)
 amplitude = 2;           // Wave height
 frequency = 0.1;          // Wave tightness
 phase_offset = 0.2;       // Wave progression per character
-center_x = global.screen_width / 2; // Where text centers during hold
+center_x = global.Game.Display.screenWidth / 2; // Where text centers during hold
 
 // State machine
 state = "scrolling";      // States: "scrolling", "holding", "advancing"

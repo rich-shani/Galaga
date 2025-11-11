@@ -1,111 +1,97 @@
-// Initialize global.Game struct first (must happen before accessing any struct fields)
-init_globals();
+// ========================================================================
+// NEW STRUCT-BASED SYSTEM INITIALIZATION
+// ========================================================================
+// Initialize the new global.Game struct hierarchy
+// This provides organized, type-safe access to game state
 
-// room name
-global.roomname = "GalagaWars"; //room_get_name(room);
+global.Game = {
+    Player: {
+        score: 0,
+        lives: get_config_value("PLAYER", "STARTING_LIVES", 3),
+		firstlife: get_config_value("PLAYER", "EXTRA_LIFE_FIRST", EXTRA_LIFE_FIRST_THRESHOLD),
+        additional: get_config_value("PLAYER", "EXTRA_LIFE_ADDITIONAL", EXTRA_LIFE_ADDITIONAL_THRESHOLD),
+        credits: 0,
+        hits: 0,
+        shotsFired: 0,
+        shotCount: 0,
+        shotTotal: 0,
+        extraLifeThreshold: EXTRA_LIFE_FIRST_THRESHOLD
+    },
+    State: {
+        mode: GameMode.INITIALIZE,
+        isGameOver: false,
+        isPaused: false,
+        prohibitDive: 0,
+        spawnOpen: 0,
+        breathing: 1,
+        results: 0,
+        fast: 0,
+        fastEnter: 0,
+        enterShot: 0,
+        hold: 15,
+        lastAttack: 4
+    },
+    Level: {
+        current: 0,
+        wave: 0,
+        stage: 0,
+        pattern: 0
+    },
+    Challenge: {
+        isActive: false,
+        current: 0,
+        count: 1,
+        intervalsToNext: get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS)
+    },
+    Spawn: {
+        counter: 0
+    },
+    Enemy: {
+        diveCapacity: get_config_value("ENEMIES", "MAX_DIVE_CAP", 2),
+        diveCapacityStart: get_config_value("ENEMIES", "DIVE_CAP_START", 2),
+        breathePhase: 0,
+        transformActive: 0,
+        transformTokens: 0,
+        transformCount: 0,
+        transformNum: 0,
+        transformSide: 0,
+        beamDuration: BEAM_TIME_DEFAULT,
+        beamCheck: 0,
+        capturedPlayer: false,
+        count: 0,  // Cached enemy count (updated each frame in oGameManager Step)
+        shotNumber: 2,
+        animationSpeed: 0,
+        escortCount: 0,
+        fighterStore: 0,
+        bossCount: 1,
+        bossCap: get_config_value("ENEMIES", "MAX_BOSS_DIVE_CAP", 2)
+    },
+    Rogue: {
+        level: 0,
+        checkPerWave: false
+    },
+    Display: {
+        scale: 2,
+        screenWidth: view_get_wport(view_current),
+        screenHeight: view_get_hport(view_current),
+        animationIndex: 0,
+		flip: 0
+    },
+	HighScores: {
+		scores: [20000, 10000, 5000, 2000, 1000],	// [score1, score2, score3, score4, score5]
+		initials: ["AA", "BB", "CC", "DD", "EE"],	// [init1, init2, init3, init4, init5]
+		initials_idx: 0,							// track which character is being added (Enter_initials())
+		display: 0,									// Currently displayed high score
+		position: -1								// position player (1-5 or -1 if none)
+	},
+    Difficulty: {
+        speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
+        gameSpeed: 60
+    }
+};
 
-// scale the system based on the mode ...
-global.Game.Display.scale = 1;
-if (global.roomname == "GalagaWars") {
-	global.Game.Display.scale = 2;
-}
-
-/// @section Game Mode Enum
-// Enum defining the possible game modes for state management.
-// Used to control whether the game is in attract mode (demo), showing instructions, or active gameplay.
-//enum GameMode {
-//	INITIALIZE = 0,
-//    ATTRACT_MODE,    // Demo mode, likely displaying AI-controlled gameplay or title screen.
-//    INSTRUCTIONS,    // Mode for showing game instructions or tutorial.
-//	GAME_PLAYER_MESSAGE,
-//	GAME_STAGE_MESSAGE,
-//	SPAWN_ENEMY_WAVES,
-//	GAME_READY,
-//    GAME_ACTIVE,        // Active gameplay mode where the player controls the ship.
-//	SHOW_RESULTS,
-//	ENTER_INITIALS,
-//	CHALLENGE_STAGE_MESSAGE,
-//	GAME_PAUSED
-//}
-
-// global variable to determine if we have applied the path scaler already
-// ie on a game restart, we don't want to re-scale again all the path data
-global.scalePath = false;
-
-/// @section High Scores
-// Global variables to store the top 5 high scores, initialized to 0.
-// These are likely used to track and display the highest scores achieved by players.
-global.galaga1 = 0; // First place high score.
-global.galaga2 = 0; // Second place high score.
-global.galaga3 = 0; // Third place high score.
-global.galaga4 = 0; // Fourth place high score.
-global.galaga5 = 0; // Fifth place high score.
-
-/// @section Game Mechanics
-// Flag to control sprite or screen flipping (0 = no flip, likely 1 = flip).
-// Possibly used for visual effects or mirroring game elements (e.g., ship or enemy sprites).
-global.flip = 0;
-global.animationIndex = 0;
-
-// Number of lives for Player 1, initialized to 3.
-// Decremented when the player ship is destroyed; game over when it reaches 0.
-global.Game.Player.lives = 3;
-
-// Player 1's current score, initialized to 0.
-// Incremented based on enemy hits or other scoring events.
-global.Game.Player.score = 0;
-
-// Displayed high score, initialized to 0.
-// Likely used to show the current high score on the UI, updated if p1score exceeds it.
-global.disp = 0;
-
-// number of game credits (coins entered)
-global.credits = 0;
-
-global.Game.Player.shotCount = 0;
-global.Game.Player.shotTotal = 0;
-
-/// @section High Score Initials
-// Initials for the top 5 high scores, defaulting to two-letter placeholders.
-// Used to display player initials alongside high scores in the high-score table.
-global.init1 = "AA"; // Initials for first place.
-global.init2 = "BB"; // Initials for second place.
-global.init3 = "CC"; // Initials for third place.
-global.init4 = "DD"; // Initials for fourth place.
-global.init5 = "EE"; // Initials for fifth place;
-
-/// @section Wave Progression
-// Current wave or level of the game, initialized to 0.
-// Incremented as the player progresses through enemy waves or stages.
-global.Game.Level.wave = 0;
-global.spawnCounter = 0;
-
-/// @section Game State Flags
-// Open flag, initialized to 0.
-// Purpose unclear; possibly controls access to a menu, level, or mechanic.
-//global.open = 0;
-global.Game.State.spawnOpen = 0;
-
-global.enemy_animation_speed = 0;
-
-// Current stage or level, initialized to 0.
-// May track sub-levels within a wave or specific game phases.
-global.Game.Level.stage = 0;
-
-// Initial game mode, set to attract mode (demo mode).
-// Controls whether the game is in gameplay, instructions, or demo state.
-global.Game.State.mode = GameMode.INITIALIZE;
-
-global.Game.Difficulty.speedMultiplier = 1.0;  // Base multiplier
-
-/// @section Game Over
-// Flag indicating game over state (0 = game active, 1 = game over).
-// Set when the player's lives reach 0 and no regain is possible.
-global.isGameOver = false;
-
-// Initial position (off-screen to the right)
-global.screen_width = view_get_wport(view_current);
-global.screen_height = view_get_hport(view_current);
-
-// is the Game Paused?
-global.Game.State.isPaused = false;
+// === DEBUG MODE ===
+global.debug = false; // Debug mode flag (set to true for debug output)
+	
+show_debug_message("[init_globals] Struct-based global system initialized");
+show_debug_message("[init_globals] All game state managed through global.Game namespace");

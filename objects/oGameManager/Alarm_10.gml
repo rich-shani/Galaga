@@ -34,7 +34,6 @@ if (nextlevel == 1) {
 			
 		    /// Reset global wave counter to 0 to start a new wave cycle.
 		    global.Game.Level.wave = 0;
-			global.spawnCounter = 0;
 		
             /// Execute the newlevel script to set up the new level (e.g., spawn enemies, reset timers).
             script_execute(newlevel);
@@ -139,17 +138,14 @@ if (nextlevel == 2) {
     /// Reset rogueyes flag to 0, disabling any rogue-related mechanics.
     rogueyes = 0;
     
-    /// Reset global.flip to 0, disabling any sprite or screen flipping effects.
-    global.flip = 0;
+    /// Reset global.Game.Display.flip to 0, disabling any sprite or screen flipping effects.
+    global.Game.Display.flip = 0;
     
     /// Reset breathing-related variables (global.Game.State.breathing, global.Game.Enemy.breathePhase, exhale) to 0.
     /// Likely related to visual or sound effects for enemies (e.g., boss animations).
     global.Game.State.breathing = 0;
     global.Game.Enemy.breathePhase = 0;
     exhale = 0;
-    
-    /// Reset global.transform to 0, disabling any transformation mechanics (e.g., enemy transformations).
-    global.transform = 0;
     
     /// Reset global.beamcheck to 0, indicating no active boss beam mechanics.
     global.beamcheck = 0;

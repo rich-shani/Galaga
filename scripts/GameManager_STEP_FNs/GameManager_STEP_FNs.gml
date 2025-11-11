@@ -16,132 +16,6 @@
 ///   During migration, code can use EITHER old globals OR new structs.
 ///   Eventually, all code will migrate to struct-based access.
 ///
-/// @return {undefined}
-function init_globals() {
-    // === PREVENT DOUBLE INITIALIZATION ===
-    // If global.Game already exists, skip re-initialization
-    // This allows the function to be safely called from multiple objects
-    //if (variable_global_exists("Game")) {
-    //    return;
-    //}
-
-    // === DEBUG MODE ===
-    global.debug = false; // Debug mode flag (set to true for debug output)
-
-    // === ROOM AND DISPLAY SETTINGS ===
-    global.roomname = "GalagaWars"; // Current room name (can be "GalagaWars", "Galaga", "Galaga2")
-
-    // Screen dimensions
-    global.screen_width = view_get_wport(view_current);
-    global.screen_height = view_get_hport(view_current);
-
-    // ========================================================================
-    // NEW STRUCT-BASED SYSTEM INITIALIZATION
-    // ========================================================================
-    // Initialize the new global.Game struct hierarchy
-    // This provides organized, type-safe access to game state
-    global.Game = {
-        Player: {
-            score: 0,
-            lives: get_config_value("PLAYER", "STARTING_LIVES", 3),
-            credits: 0,
-            hits: 0,
-            shotsFired: 0,
-            shotCount: 0,
-            shotTotal: 0,
-            extraLifeThreshold: EXTRA_LIFE_FIRST_THRESHOLD
-        },
-        State: {
-            mode: GameMode.INITIALIZE,
-            isGameOver: false,
-            isPaused: false,
-            prohibitDive: 0,
-            spawnOpen: 0,
-            breathing: 1,
-            results: 0,
-            fast: 0,
-            fastEnter: 0,
-            enterShot: 0,
-            hold: 15,
-            lastAttack: 4
-        },
-        Level: {
-            current: 0,
-            wave: 0,
-            stage: 0,
-            pattern: 0
-        },
-        Challenge: {
-            isActive: false,
-            current: 0,
-            count: 1,
-            intervalsToNext: get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS)
-        },
-        Spawn: {
-            counter: 0,
-            flip: 0
-        },
-        Enemy: {
-            diveCapacity: get_config_value("ENEMIES", "MAX_DIVE_CAP", 2),
-            diveCapacityStart: get_config_value("ENEMIES", "DIVE_CAP_START", 2),
-            breathePhase: 0,
-            transformActive: 0,
-            transformTokens: 0,
-            transformCount: 0,
-            transformNum: 0,
-            transformSide: 0,
-            beamDuration: BEAM_TIME_DEFAULT,
-            beamCheck: 0,
-            capturedPlayer: false,
-            count: 0,  // Cached enemy count (updated each frame in oGameManager Step)
-            shotNumber: 2,
-            animationSpeed: 0,
-            escortCount: 0,
-            fighterStore: 0,
-            bossCount: 1,
-            bossCap: get_config_value("ENEMIES", "MAX_BOSS_DIVE_CAP", 2)
-        },
-        Rogue: {
-            level: 0,
-            checkPerWave: false
-        },
-        Display: {
-            roomName: global.roomname,
-            scale: 1,
-            screenWidth: global.screen_width,
-            screenHeight: global.screen_height,
-            animationIndex: 0
-        },
-		HighScores: {
-		    scores: [20000, 10000, 5000, 2000, 1000],	// [score1, score2, score3, score4, score5]
-		    initials: ["AA", "BB", "CC", "DD", "EE"],	// [init1, init2, init3, init4, init5]
-			initials_idx: 0,							// track which character is being added (Enter_initials())
-		    display: 0,									// Currently displayed high score
-		    position: -1								// position player (1-5 or -1 if none)
-		},
-        //HighScores: {
-        //    first: global.galaga1,
-        //    second: global.galaga2,
-        //    third: global.galaga3,
-        //    fourth: global.galaga4,
-        //    fifth: global.galaga5
-        //},
-        Difficulty: {
-            speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
-            gameSpeed: 60
-        }
-    };
-
-    // Scale the system based on the room mode
-    if (global.roomname == "GalagaWars") {
-        global.Game.Display.scale = 2; //SCALE_GALAGA_WARS; // 2x scale for Star Wars theme
-    } else {
-        global.Game.Display.scale = 1; //SCALE_GALAGA_ORIGINAL; // 1x scale for original Galaga
-    }
-	
-    show_debug_message("[init_globals] Struct-based global system initialized");
-    show_debug_message("[init_globals] All game state managed through global.Game namespace");
-}
 
 /// @function shift_scores_for_new_high_score
 /// @description Shifts existing high scores down when a new score qualifies
@@ -264,11 +138,11 @@ function nOfEnemies() {
 function checkForExtraLives() {
 	// Award extra lives based on score thresholds
 	var max_score = get_config_value("SCORE", "MAX_SCORE_FOR_EXTRA_LIVES", MAX_SCORE_FOR_EXTRA_LIVES);
-	if global.Game.Player.score > firstlife and global.Game.Player.score < max_score {
-	    if firstlife == EXTRA_LIFE_FIRST_THRESHOLD {
-	        firstlife = 0; // Reset first life marker
+	if global.Game.Player.score > global.Game.Player.firstlife and global.Game.Player.score < max_score {
+	    if global.Game.Player.firstlife == EXTRA_LIFE_FIRST_THRESHOLD {
+	        global.Game.Player.firstlife = 0; // Reset first life marker
 	    }
-	    firstlife += additional; // Set next life threshold
+	    global.Game.Player.firstlife += global.Game.Player.additional; // Set next life threshold
 	    sound_play(GLife);       // Play life gained sound
 	    global.Game.Player.lives += 1;     // Add a life
 	}
@@ -321,8 +195,7 @@ function readyForNextLevel() {
 function canTransform() {
 	// === BASIC STATE CHECKS ===
 	// Enemy must be in formation to transform
-	var inValidState = (enemyState == EnemyState.IN_FORMATION) &&
-	                   (global.transform == 0);
+	var inValidState = (enemyState == EnemyState.IN_FORMATION);
 
 	// === GAME STATE CHECKS ===
 	// Game must allow transformations (capacity and no active prohibitions)
@@ -1018,83 +891,6 @@ function Set_Nebula_Color() {
 ///              Initializes all game state when player starts game
 /// @return {undefined}
 function Show_Instructions() {
-	var startGame = false;
-	// check if we have a gamepad
-	if (oGameManager.useGamepad) {
-			// A button on the XBOX Controller
-			if (gamepad_button_check_pressed(0,gp_face1)) startGame = true;
-	}
-	else  if (keyboard_check_pressed(vk_space)) startGame = true;
-	
-	// if player presses space, start the actual game
-    if (startGame) {
-		// 'use' credit to enter game mode
-		global.credits--;
-		
-		if (audio_is_playing(Galaga_Theme_Remix_Short)) {
-			audio_stop_sound(Galaga_Theme_Remix_Short);
-		}
-		
-        // === INITIALIZE GAME STATE ===
-        global.Game.Level.current = 0;
-        global.Game.Challenge.current         = 0;
-		
-		// start the counter at 1, as the 1st challenge stage is Stage 3, then +4 after that, ie 7, 11, 15, ...
-        global.Game.Challenge.count    = 1;
-		global.Game.Challenge.isActive = false;
 
-        global.Game.Enemy.diveCapacityStart  = 2;
-        global.Game.Enemy.diveCapacity = global.Game.Enemy.diveCapacityStart;
-        global.Game.State.lastAttack    = 4;
-
-        global.Game.Enemy.beamDuration = BEAM_TIME_DEFAULT;
-        global.Game.Enemy.shotNumber    = 2;
-
-        global.Game.State.spawnOpen = 0;
-        global.Game.State.fastEnter     = 0;
-        global.Game.State.enterShot     = 0;
-        global.Game.Rogue.level         = 0;
-        global.Game.State.fast          = 0;
-        global.Game.Enemy.transformNum      = 0;
-        global.Game.Enemy.transformTokens = 0;
-
-        global.Game.Level.pattern = 0;
-        global.Game.State.hold          = 15;
-        global.Game.Enemy.bossCap       = 2;
-
-        global.Game.Level.wave = 0;
-        global.Game.Spawn.flip          = 0;
-        global.Game.State.breathing     = 1;
-        global.Game.Enemy.breathePhase       = 0;
-        exhale               = 0;
-        global.Game.Enemy.bossCount     = 1;
-        global.Game.State.prohibitDive        = 0;
-        global.transform     = 0;
-        global.Game.Enemy.beamCheck     = 0;
-        global.Game.Enemy.transformCount    = 0;
-        global.Game.Enemy.escortCount   = 0;
-        global.Game.Enemy.fighterStore  = 0;
-
-        // === PLAYER INITIAL VALUES ===
-        global.Game.Player.score = 0;
-        global.Game.Player.lives = get_config_value("PLAYER", "STARTING_LIVES", 3);
-
-        firstlife   = get_config_value("PLAYER", "EXTRA_LIFE_FIRST", EXTRA_LIFE_FIRST_THRESHOLD);
-        additional  = get_config_value("PLAYER", "EXTRA_LIFE_ADDITIONAL", EXTRA_LIFE_ADDITIONAL_THRESHOLD);
-
-		// create the death star on the DeathStar layer (ie behind the game sprites)
-		instance_create_layer(0, 0, "DeathStar", oDeathStar);
-		Set_Nebula_Color();
-		
-		global.Game.State.mode = GameMode.GAME_PLAYER_MESSAGE;
-
-        sound_play(GStart);  // Play game start sound
-
-        alarm[AlarmIndex.SPAWN_FORMATION_TIMER] = 250;  // Start spawn / formation timer
-        alarm[AlarmIndex.FORMATION_COUNTDOWN]  = 14;   // Start formation countdown
-
-        fire = 0;   // Reset fire state
-        hits = 0;   // Reset hit count
-    }
 }
 

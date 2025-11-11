@@ -155,8 +155,8 @@ switch (ScreenShown) {
 				var player_score = item[? "score"];
 
 				// update high-score counter
-				if (player_score > global.disp) {
-					global.disp = player_score;	
+				if (player_score > global.Game.HighScores.display) {
+					global.Game.HighScores.display = player_score;	
 				}
 				
 				draw_set_color(colors[min(i,4)]);
@@ -166,11 +166,6 @@ switch (ScreenShown) {
 				draw_text(240*global.Game.Display.scale, (352+ 32*i)*global.Game.Display.scale, player_score);
 				draw_set_halign(fa_left);
 				draw_text(336*global.Game.Display.scale, (352+ 32*i)*global.Game.Display.scale, player);	
-				
-				//if (global.disp < player_score) {
-				//	// set the high score to the highest score from the online high score table
-				//	global.disp = player_score;
-				//}
 			}
 	
 			// reset the color to white

@@ -34,7 +34,7 @@ if (instance_exists(oPlayer)) {
 	move_towards_point(oPlayer.x + (32*(oPlayer.shotMode)), oPlayer.y, 5*global.Game.Display.scale);
 } else {
 	// Player doesn't exist, aim downward toward center screen
-	move_towards_point(global.screen_width / 2, global.screen_height, 5*global.Game.Display.scale);
+	move_towards_point(global.Game.Display.screenWidth / 2, global.Game.Display.screenHeight, 5*global.Game.Display.scale);
 }
 	
 // === COMMENTED OUT: DIRECTION CLAMPING ===

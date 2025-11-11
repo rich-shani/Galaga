@@ -1,4 +1,12 @@
 if (ScreenShown == TITLE_SCREEN.TITLE) {
+	
+	animationIndex += 1;
+
+	if (animationIndex == 24*4) {
+		// animated sprites have 24 frames of animation
+		animationIndex = 0;
+	}
+
 	// Countdown timer to slow down or pause gameMode activity temporarily
 	if attpause > 0 {
 	    attpause -= 1;
@@ -51,4 +59,24 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 	} else if (attshot) {
 	    attshoty -= 16*global.Game.Display.scale;  // Move the shot upward by 16 pixels
 	}
+}
+else if (ScreenShown == TITLE_SCREEN.INSTRUCTIONS) {
+	// check if START has been pressed ...
+	var startGame = false;
+	
+	if (keyboard_check_pressed(vk_space)) startGame = true;
+	
+	// if player presses space, start the actual game
+    if (startGame) {
+		// 'use' credit to enter game mode
+		global.Game.Player.credits--;
+		
+		if (audio_is_playing(Galaga_Theme_Remix_Short)) {
+			audio_stop_sound(Galaga_Theme_Remix_Short);
+		}
+	
+		global.Game.State.mode = GameMode.INITIALIZE;
+		
+		room_goto(GalagaWars);
+    }	
 }

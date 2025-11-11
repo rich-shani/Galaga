@@ -35,8 +35,8 @@ else if (enemyMode == EnemyMode.ROGUE) {
 				targy = oPlayer.y;
 			} else {
 				// Player doesn't exist, target center screen
-				targx = global.screen_width / 2;
-				targy = global.screen_height / 2;
+				targx = global.Game.Display.screenWidth / 2;
+				targy = global.Game.Display.screenHeight / 2;
 			}
 		}
 	}
@@ -452,7 +452,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 			// randomize the x location of where the enemy will drop in ...
 			// don't spawn near the edges of the screen
-			x = SPAWN_EDGE_MARGIN + irandom(global.screen_width-SPAWN_EDGE_BUFFER);
+			x = SPAWN_EDGE_MARGIN + irandom(global.Game.Display.screenWidth-SPAWN_EDGE_BUFFER);
 			y = SPAWN_TOP_Y;
 
 			// spawn enemy bullets ...

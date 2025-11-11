@@ -1,6 +1,6 @@
 // Press Enter to start the Game (from the Title screen)
-if (state == GameState.TITLE_SCREEN) {
+if (screen == ScreenMode.TITLE_SCREEN) {
 
-	state = GameState.PLAY_GAME;
+	screen = ScreenMode.PLAY_GAME;
 	room_goto(GalagaWars);
 }

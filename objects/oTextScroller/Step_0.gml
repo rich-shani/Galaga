@@ -41,7 +41,7 @@ if (!window_get_fullscreen()) {
 	            for (var i = 0; i < msg_length; i++) {
 	                msg[i] = string_char_at(message_text, i + 1);
 	            }
-	            scroll_x = global.screen_width; // Reset to right
+	            scroll_x = global.Game.Display.screenWidth; // Reset to right
 	            state = "scrolling";
 	        }
 	        break;
