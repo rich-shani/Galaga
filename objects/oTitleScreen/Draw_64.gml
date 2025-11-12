@@ -42,7 +42,7 @@ switch (ScreenShown) {
 			}
 
 			// Animate enemy block #1
-			if (sequence = 8) {
+			if (sequence == 8) {
 				var i = round(direction/15);
 					
 				var color = (hitFlag ? c_maroon : c_white);

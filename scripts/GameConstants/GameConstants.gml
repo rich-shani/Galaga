@@ -640,3 +640,27 @@ function get_config_value(section, key, default_value) {
 
     return section_data[$ key];
 }
+
+// ========================================================================
+// BEAM WEAPON CONSTANTS
+// ========================================================================
+// Configuration for the beam weapon capture system used by TIE Interceptors
+
+/// Beam Activation
+#macro BEAM_ACTIVATION_Y_POSITION 368           // Y coordinate where beam can activate
+#macro BEAM_ACTIVATION_PROBABILITY 0.33         // Chance to activate beam (1 in 3)
+
+/// Beam Capture Timing
+#macro BEAM_CAPTURE_WINDOW_START 0.33          // Capture zone active from 33% of beam duration
+#macro BEAM_CAPTURE_WINDOW_END 0.67            // Capture zone ends at 67% of beam duration
+
+/// Player Capture Positions (Y coordinates)
+#macro BEAM_BOSS_Y_POSITION 736                // Boss Y position (where player is pulled to)
+#macro BEAM_PULL_DISTANCE 288                  // Total distance player travels during capture (1024 - 736)
+
+/// Player Capture Movement
+#macro BEAM_HORIZONTAL_ALIGN_SPEED 3           // Pixels per frame to center player horizontally under boss
+
+/// Beam Capture Alarms (in frames at 60 FPS)
+#macro BEAM_FIGHTER_CAPTURED_MESSAGE_DELAY 240 // Delay before showing "FIGHTER CAPTURED" (4 seconds)
+#macro BEAM_PLAYER_RESPAWN_DELAY 180           // Delay before player can respawn after capture (3 seconds)

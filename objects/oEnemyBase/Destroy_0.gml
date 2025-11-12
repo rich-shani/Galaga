@@ -75,11 +75,11 @@ if (!global.Game.State.isGameOver) {
 		/// === TRANSFORMATION MODE COMBO TRACKING ===
 		if trans == 1 {
 			/// Increment transformation counter && award transformation bonus
-			global.transcount += 1;
+			global.Game.Enemy.transformCount += 1;
 			global.Game.Player.score += 160;  // Fixed bonus per transformed enemy
 
 			/// After 3 transformation kills, spawn TransPoints bonus
-			if global.transcount == 3 {
+			if global.Game.Enemy.transformCount == 3 {
 				instance_create_layer(round(x), round(y), "GameSprites", TransPoints);
 			}
 

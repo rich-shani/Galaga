@@ -122,7 +122,7 @@ function Draw_Results() {
 
 	// === CALCULATE AND DISPLAY PERCENTAGE ===
 	// Check for division by zero || zero hits
-	if (fire = 0 || hits = 0) {
+	if (fire == 0 || hits == 0) {
 		// No shots || no hits = 0.0%
 		draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("0.0"))
 	}
@@ -184,7 +184,7 @@ function Draw_Enter_Initials() {
 		
 		draw_set_color(c_aqua);
 	
-		if (scored = i) { 
+		if (scored == i) { 
 			draw_text(304*global.Game.Display.scale, 176*global.Game.Display.scale, player_initials);
 		}
 	}

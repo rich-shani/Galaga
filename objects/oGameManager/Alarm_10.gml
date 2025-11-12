@@ -150,8 +150,8 @@ if (nextlevel == 2) {
     /// Reset global.beamcheck to 0, indicating no active boss beam mechanics.
     global.beamcheck = 0;
     
-    /// Reset global.transcount to 0, likely tracking transformation events || counters.
-    global.transcount = 0;
+    /// Reset global.Game.Enemy.transformCount to 0, likely tracking transformation events || counters.
+    global.Game.Enemy.transformCount = 0;
     
     /// Reset global.escortcount to 0, likely tracking escort enemy behaviors || counts.
     global.escortcount = 0;

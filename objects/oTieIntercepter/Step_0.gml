@@ -36,15 +36,17 @@ if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEA
 	beam_weapon.player_x = x - (CIRCLE_RADIUS * cos(orbit_angle_radians));                                        
 	beam_weapon.player_y = y - (CIRCLE_RADIUS * sin(-orbit_angle_radians));    
 	
-	for (var i = 0; i < instance_number(oMissile); i++)
-	{
-		var missile = instance_find(oMissile, i);
- 
-		if (abs(missile.x - beam_weapon.player_x) < CAPTURED_PLAYER_COLLISION_RADIUS && 
-						(abs(missile.y - beam_weapon.player_y) < CAPTURED_PLAYER_COLLISION_RADIUS)) {
+	// use built-in collision detection to check if any missile has hit the CAPTURED player
+	var missileHit = collision_rectangle(beam_weapon.player_x - CAPTURED_PLAYER_COLLISION_RADIUS,
+											beam_weapon.player_y - CAPTURED_PLAYER_COLLISION_RADIUS,
+											beam_weapon.player_x + CAPTURED_PLAYER_COLLISION_RADIUS,
+											beam_weapon.player_y + CAPTURED_PLAYER_COLLISION_RADIUS,
+											oMissile, false, true);
+											
+	if (missileHit != noone) {
 
 			// Destroy the Missile
-			instance_destroy(missile);
+			instance_destroy(missileHit);
 			
 			// Oops, we've hit the PLAYER instead of the Enemy
 			sound_play(GFighter);
@@ -61,8 +63,8 @@ if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEA
 			}
 			else {
 				instance_create(round(beam_weapon.player_x), round(beam_weapon.player_y), oExplosion2);
-			}			
-			global.Game.Enemy.capturedPlayer = false;  
-		}                                             
+			}		
+			
+			global.Game.Enemy.capturedPlayer = false;                                            
 	}
 }
