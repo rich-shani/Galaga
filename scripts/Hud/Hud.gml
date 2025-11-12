@@ -14,7 +14,7 @@
 /// The HUD adapts dynamically based on:
 ///   • global.Game.State.mode - Current game state
 ///   • global.Game.State.isPaused - Pause flag
-///   • global.isChallengeStage - Challenge stage flag
+///   • global.Game.Challenge.isActive - Challenge stage flag
 ///
 /// Font Selection:
 ///   • GalagaWars room: fAtari24 (2x scale)

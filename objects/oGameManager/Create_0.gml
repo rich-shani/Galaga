@@ -122,12 +122,6 @@ hundrank = 0;
 // used for blinking UI elements, such as score || lives display.
 blink = 1;
 
-/// @section Legacy Global Variables
-/// NOTE: These globals are being migrated to global.Game struct
-/// TODO: Complete migration && remove these legacy variables
-global.isChallengeStage = false;  // True when current stage is a challenge/bonus stage
-global.nLvls2ChallengeStage = 2;  // Number of levels until next challenge stage
-
 // Grab handles to visual effects layers
 layer_pause_fx = layer_get_fx("PauseEffect");
 if (layer_pause_fx == -1) {
@@ -181,6 +175,38 @@ global.enemy_attributes = {
 
 // Central game configuration (lives, extra life thresholds, difficulty settings)
 global.game_config = load_game_config();
+
+/// @section JSON Schema Validation
+// Validate all loaded JSON data to catch configuration errors early
+// If validation fails, game will show error but continue with loaded data
+
+if (spawn_data != undefined && !validate_wave_spawn_json(spawn_data)) {
+	log_error("Wave spawn data failed validation - check wave_spawn.json structure", "oGameManager Create", 3);
+}
+
+if (challenge_data != undefined && !validate_challenge_spawn_json(challenge_data)) {
+	log_error("Challenge spawn data failed validation - check challenge_spawn.json structure", "oGameManager Create", 3);
+}
+
+if (global.formation_data != undefined && !validate_formation_coordinates_json(global.formation_data)) {
+	log_error("Formation coordinates failed validation - check formation_coordinates.json structure", "oGameManager Create", 3);
+}
+
+if (global.enemy_attributes.oTieFighter != undefined && !validate_enemy_attributes_json(global.enemy_attributes.oTieFighter, "oTieFighter")) {
+	log_error("TIE Fighter attributes failed validation", "oGameManager Create", 3);
+}
+
+if (global.enemy_attributes.oTieIntercepter != undefined && !validate_enemy_attributes_json(global.enemy_attributes.oTieIntercepter, "oTieIntercepter")) {
+	log_error("TIE Interceptor attributes failed validation", "oGameManager Create", 3);
+}
+
+if (global.enemy_attributes.oImperialShuttle != undefined && !validate_enemy_attributes_json(global.enemy_attributes.oImperialShuttle, "oImperialShuttle")) {
+	log_error("Imperial Shuttle attributes failed validation", "oGameManager Create", 3);
+}
+
+if (global.game_config != undefined && !validate_game_config_json(global.game_config)) {
+	log_error("Game configuration failed validation - check game_config.json structure", "oGameManager Create", 3);
+}
 
 // TODO: GMScoreboard integration is currently disabled
 // To re-enable cloud-based high scores:

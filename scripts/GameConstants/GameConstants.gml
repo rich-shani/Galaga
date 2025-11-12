@@ -195,6 +195,10 @@ enum PlayerAlarmIndex {
 /// @description Frames to wait for formation rotation alignment
 #macro FORMATION_ALARM_DELAY 60
 
+/// @macro LEVEL_SPAWN_DELAY
+/// @description Frames delay before enemies start spawning in new level (90 frames = 1.5 seconds at 60fps)
+#macro LEVEL_SPAWN_DELAY 90
+
 /// @macro PROHIBIT_RESET_DELAY
 /// @description Frames to wait before resetting dive prohibit flag
 #macro PROHIBIT_RESET_DELAY 15

@@ -274,7 +274,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		///
 		/// Beam activation occurs when:
 		/// • beam flag is enabled for this enemy
-		/// • Enemy reaches activation position (y > 368 * global.Game.Display.scale)
+		/// • Enemy reaches activation position (y > BEAM_ACTIVATION_Y * scale)
 		/// • Player is vulnerable (!invulnerable, not in dual mode)
 		///
 		/// Beam phases:
@@ -283,8 +283,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// • loop = -2: Beam charging complete, beginning dive away
 		/// ================================================================
 		if (beam_weapon.available && instance_exists(oPlayer) && (oPlayer.shotMode == ShotMode.SINGLE)) {
-			
-			if ((y > 368 * global.Game.Display.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
+
+			if ((y > BEAM_ACTIVATION_Y * global.Game.Display.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
 				
 				if (beam_weapon.state == BEAM_STATE.READY) {
 					// BEAM ACTIVATION POSITION REACHED 
@@ -425,10 +425,33 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 				// reset beam state
 				if (beam_weapon.available) { beam_weapon.state = BEAM_STATE.READY; }
-				
-				// BUG: weird issue when we get down to last 2 enemies, ...
-				// the enemy has a one-time crazy path then resets ...
-				
+
+				// ================================================================
+				// BUG #GW-001: Erratic Path Behavior with Final Enemies
+				// ================================================================
+				// Severity: LOW (visual glitch, does not affect gameplay)
+				// Status: OPEN
+				//
+				// Description:
+				//   When 2 enemies remain, one enemy occasionally exhibits erratic
+				//   path behavior on its first dive attack before normalizing.
+				//
+				// Reproduction:
+				//   1. Clear all enemies except 2
+				//   2. Wait for one enemy to initiate dive attack
+				//   3. Observe: Enemy may follow unexpected path briefly
+				//   4. Subsequent dives behave normally
+				//
+				// Expected Behavior:
+				//   Final 2 enemies should follow standard dive patterns
+				//
+				// Root Cause Hypothesis:
+				//   Possible state transition issue when entering IN_FINAL_ATTACK
+				//   mode. Path may not be properly set before first dive.
+				//
+				// Priority: P3 (Low) - Rare edge case, minimal player impact
+				// ================================================================
+
 				// check if we're the last two enemies left ...
 				if (global.Game.Enemy.count < 3) enemyState = EnemyState.IN_FINAL_ATTACK;
 				else enemyState = EnemyState.MOVE_INTO_FORMATION;

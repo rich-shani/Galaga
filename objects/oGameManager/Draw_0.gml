@@ -18,3 +18,10 @@ for (var i = 0; i < array_length(rank_display_sprites); i++) {
         sprite_data.y_pos           // Y position to draw at
     );
 }
+
+/// @section Debug Mode Overlay
+// Draw debug information when global.debug is enabled
+// Toggle with F3 key (see KeyPress_114.gml)
+if (global.debug) {
+	Draw_Debug_Overlay();
+}

@@ -66,21 +66,23 @@ function checkForExtraLives() {
 ///   5. Player exists and is in ACTIVE state
 ///   6. Game is in GAME_ACTIVE mode
 ///
-/// NOTE: Must be called from oGameManager context where alarm[] and nextlevel exist
+/// REFACTORED: Now accepts manager state as parameters for testability
 ///
-/// @return {Bool} True if transitioning to next level, false otherwise
-function readyForNextLevel() {
+/// @param {Real} _alarm_level_advance Current value of alarm[AlarmIndex.LEVEL_ADVANCE]
+/// @param {Real} _nextlevel Current value of nextlevel flag
+/// @return {Struct|undefined} Struct with {shouldAdvance, alarmLevelAdvance, alarmSpawnTimer, nextlevel} or undefined if not ready
+function readyForNextLevel(_alarm_level_advance, _nextlevel) {
 	// === EARLY EXIT: ALREADY TRANSITIONING ===
 	// If alarm[LEVEL_ADVANCE] is already set, we're transitioning
-	if (alarm[AlarmIndex.LEVEL_ADVANCE] != -1) {
-		return true;
+	if (_alarm_level_advance != -1) {
+		return { shouldAdvance: true, alarmLevelAdvance: _alarm_level_advance, alarmSpawnTimer: -1, nextlevel: _nextlevel };
 	}
 
 	// === CONDITION 1: ALL ENEMIES CLEARED ===
 	var allEnemiesCleared = (global.Game.Enemy.count == 0);
 
 	// === CONDITION 2: NOT ALREADY TRANSITIONING ===
-	var notTransitioning = (nextlevel == 0);
+	var notTransitioning = (_nextlevel == 0);
 
 	// === CONDITION 3: SPAWN WINDOW CLOSED ===
 	var spawnComplete = (global.Game.State.spawnOpen == 0);
@@ -96,20 +98,14 @@ function readyForNextLevel() {
 	if (allEnemiesCleared && notTransitioning && spawnComplete && playerReady && gameActive) {
 
 		// === TRIGGER LEVEL TRANSITION ===
-		// Set nextlevel flag to 1 to indicate transition starting
-		// This skips the 'PLAYER 1' message above STAGE 1 on subsequent levels
-		nextlevel = 1;
-
-		// === SET ALARM FOR LEVEL ADVANCE ===
-		// Alarm[LEVEL_ADVANCE] handles the actual level increment and setup
-		alarm[AlarmIndex.LEVEL_ADVANCE] = 1;
-
-		// === SET FORMATION SPAWN TIMER ===
-		// 90 frames delay before enemies start spawning in new level
-		alarm[AlarmIndex.SPAWN_FORMATION_TIMER] = 90;
-
-		return true;
+		// Return struct with values to set in caller
+		return {
+			shouldAdvance: true,
+			alarmLevelAdvance: 1,                    // Alarm[LEVEL_ADVANCE] handles the actual level increment
+			alarmSpawnTimer: LEVEL_SPAWN_DELAY,      // Frames delay before enemies start spawning
+			nextlevel: 1                              // Flag to indicate transition starting
+		};
 	}
 
-	return false;
+	return undefined;  // Not ready to advance
 }

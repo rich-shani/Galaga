@@ -519,7 +519,19 @@ function Game_Loop(){
 	// Skip processing if game is paused || transitioning to next level
 	// do not spawn a wave if the Ship isn't active (eg its RESPAWNING)
 	if (global.Game.State.isPaused || oPlayer.shipStatus != ShipState.ACTIVE) return;
-	if (readyForNextLevel()) return;
+
+	// === CHECK LEVEL ADVANCE CONDITIONS ===
+	// Pass current state to readyForNextLevel() for context-independent validation
+	var levelAdvanceResult = readyForNextLevel(alarm[AlarmIndex.LEVEL_ADVANCE], nextlevel);
+	if (levelAdvanceResult != undefined && levelAdvanceResult.shouldAdvance) {
+		// Apply the state changes returned by the function
+		nextlevel = levelAdvanceResult.nextlevel;
+		alarm[AlarmIndex.LEVEL_ADVANCE] = levelAdvanceResult.alarmLevelAdvance;
+		if (levelAdvanceResult.alarmSpawnTimer != -1) {
+			alarm[AlarmIndex.SPAWN_FORMATION_TIMER] = levelAdvanceResult.alarmSpawnTimer;
+		}
+		return;
+	}
 
 	// === EXTRA LIVES ===
 	// Award extra lives at score milestones (20k, then every 70k)

@@ -365,6 +365,170 @@ function coalesce(_value1, _value2, _value3 = undefined) {
 }
 
 // ============================================================================
+// JSON SCHEMA VALIDATORS - Specific validation for game data files
+// ============================================================================
+
+/// @function validate_wave_spawn_json
+/// @description Validates the structure of wave_spawn.json
+/// @param {Struct} _data The parsed wave spawn data
+/// @return {Bool} True if valid, false otherwise
+function validate_wave_spawn_json(_data) {
+	// Check top-level PATTERN array exists
+	if (!validate_json_structure(_data, ["PATTERN"], "wave_spawn.json")) {
+		return false;
+	}
+
+	var patterns = _data.PATTERN;
+	if (!is_array(patterns) || array_length(patterns) == 0) {
+		log_error("PATTERN must be a non-empty array", "validate_wave_spawn_json", 2);
+		return false;
+	}
+
+	// Validate first pattern structure
+	var pattern = patterns[0];
+	if (!validate_json_structure(pattern, ["WAVE"], "wave_spawn.json pattern")) {
+		return false;
+	}
+
+	// Validate first wave structure
+	if (!is_array(pattern.WAVE) || array_length(pattern.WAVE) == 0) {
+		log_error("WAVE must be a non-empty array", "validate_wave_spawn_json", 2);
+		return false;
+	}
+
+	var wave = pattern.WAVE[0];
+	if (!validate_json_structure(wave, ["SPAWN"], "wave_spawn.json wave")) {
+		return false;
+	}
+
+	// Validate spawn entry structure
+	if (!is_array(wave.SPAWN) || array_length(wave.SPAWN) == 0) {
+		log_error("SPAWN must be a non-empty array", "validate_wave_spawn_json", 2);
+		return false;
+	}
+
+	var spawn = wave.SPAWN[0];
+	var required_keys = ["ENEMY", "PATH", "SPAWN_XPOS", "SPAWN_YPOS", "INDEX", "COMBINE"];
+	if (!validate_json_structure(spawn, required_keys, "wave_spawn.json spawn entry")) {
+		return false;
+	}
+
+	return true;
+}
+
+/// @function validate_challenge_spawn_json
+/// @description Validates the structure of challenge_spawn.json
+/// @param {Struct} _data The parsed challenge spawn data
+/// @return {Bool} True if valid, false otherwise
+function validate_challenge_spawn_json(_data) {
+	// Check top-level CHALLENGES array exists
+	if (!validate_json_structure(_data, ["CHALLENGES"], "challenge_spawn.json")) {
+		return false;
+	}
+
+	var challenges = _data.CHALLENGES;
+	if (!is_array(challenges) || array_length(challenges) == 0) {
+		log_error("CHALLENGES must be a non-empty array", "validate_challenge_spawn_json", 2);
+		return false;
+	}
+
+	// Validate first challenge structure
+	var challenge = challenges[0];
+	var required_keys = ["CHALLENGE_ID", "PATH1", "PATH1_FLIP", "PATH2", "PATH2_FLIP", "WAVES"];
+	if (!validate_json_structure(challenge, required_keys, "challenge_spawn.json challenge")) {
+		return false;
+	}
+
+	// Validate waves array
+	if (!is_array(challenge.WAVES) || array_length(challenge.WAVES) == 0) {
+		log_error("WAVES must be a non-empty array", "validate_challenge_spawn_json", 2);
+		return false;
+	}
+
+	// Validate wave entry
+	var wave = challenge.WAVES[0];
+	if (!validate_json_structure(wave, ["ENEMY", "DOUBLED"], "challenge_spawn.json wave")) {
+		return false;
+	}
+
+	return true;
+}
+
+/// @function validate_enemy_attributes_json
+/// @description Validates the structure of enemy attribute JSON files
+/// @param {Struct} _data The parsed enemy attributes
+/// @param {String} _enemy_name Enemy name for error messages
+/// @return {Bool} True if valid, false otherwise
+function validate_enemy_attributes_json(_data, _enemy_name = "enemy") {
+	var required_keys = ["HEALTH", "POINTS_BASE", "STANDARD"];
+	if (!validate_json_structure(_data, required_keys, _enemy_name + " attributes")) {
+		return false;
+	}
+
+	// Validate STANDARD section
+	var standard_keys = ["DIVE_PATH1", "DIVE_ALT_PATH1", "DIVE_PATH2", "DIVE_ALT_PATH2"];
+	if (!validate_json_structure(_data.STANDARD, standard_keys, _enemy_name + " STANDARD paths")) {
+		return false;
+	}
+
+	return true;
+}
+
+/// @function validate_formation_coordinates_json
+/// @description Validates the structure of formation_coordinates.json
+/// @param {Struct} _data The parsed formation coordinates
+/// @return {Bool} True if valid, false otherwise
+function validate_formation_coordinates_json(_data) {
+	if (!validate_json_structure(_data, ["POSITION"], "formation_coordinates.json")) {
+		return false;
+	}
+
+	var positions = _data.POSITION;
+	if (!is_array(positions) || array_length(positions) != 40) {
+		log_error("POSITION array must have exactly 40 entries (found: " + string(array_length(positions)) + ")", "validate_formation_coordinates_json", 2);
+		return false;
+	}
+
+	// Validate first position structure
+	var pos = positions[0];
+	if (!validate_json_structure(pos, ["_x", "_y"], "formation_coordinates.json position")) {
+		return false;
+	}
+
+	return true;
+}
+
+/// @function validate_game_config_json
+/// @description Validates the structure of game_config.json
+/// @param {Struct} _data The parsed game configuration
+/// @return {Bool} True if valid, false otherwise
+function validate_game_config_json(_data) {
+	var required_sections = ["PLAYER", "ENEMIES", "CHALLENGE_STAGES", "HIGH_SCORES", "DIFFICULTY"];
+
+	// Check all required sections exist
+	for (var i = 0; i < array_length(required_sections); i++) {
+		if (!struct_exists(_data, required_sections[i])) {
+			log_error("Missing required section: " + required_sections[i], "validate_game_config_json", 2);
+			return false;
+		}
+	}
+
+	// Validate PLAYER section
+	var player_keys = ["STARTING_LIVES", "EXTRA_LIFE_FIRST", "EXTRA_LIFE_ADDITIONAL"];
+	if (!validate_json_structure(_data.PLAYER, player_keys, "game_config.json PLAYER")) {
+		return false;
+	}
+
+	// Validate ENEMIES section
+	var enemy_keys = ["MAX_DIVE_CAP", "DIVE_CAP_START", "MAX_BOSS_DIVE_CAP"];
+	if (!validate_json_structure(_data.ENEMIES, enemy_keys, "game_config.json ENEMIES")) {
+		return false;
+	}
+
+	return true;
+}
+
+// ============================================================================
 // END OF ERROR HANDLING SCRIPT
 // ============================================================================
 // Summary of functions provided:

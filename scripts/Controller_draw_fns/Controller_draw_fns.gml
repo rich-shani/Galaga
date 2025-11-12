@@ -287,3 +287,149 @@ function Draw_ChallengeStage_Results() {
 		}
 	}
 }
+
+/// @function Draw_Debug_Overlay
+/// @description Renders debug information overlay when debug mode is enabled
+///
+/// Displays comprehensive game state information including:
+///   • Game mode and state flags
+///   • Player stats (score, lives, shot mode)
+///   • Enemy counts and dive capacity
+///   • Level and wave progression
+///   • Performance metrics (FPS)
+///   • Formation state
+///
+/// Visual Details:
+///   • Semi-transparent black background
+///   • Green text for readability
+///   • Positioned in top-right corner
+///   • Multi-line display with organized sections
+///
+/// Toggle debug mode with F3 key (see oGameManager KeyPress_114)
+///
+/// @related oGameManager/Draw_0.gml - Calls this when global.debug is true
+///
+function Draw_Debug_Overlay() {
+	// === SETUP DRAWING PROPERTIES ===
+	var _x = 10;
+	var _y = 80;
+	var _line_height = 18;
+	var _current_y = _y;
+
+	// Draw semi-transparent background
+	draw_set_alpha(0.7);
+	draw_set_color(c_black);
+	draw_rectangle(_x - 5, _y - 5, _x + 280, _y + 340, false);
+	draw_set_alpha(1);
+
+	// Set text properties
+	draw_set_color(c_lime);
+	draw_set_halign(fa_left);
+	draw_set_valign(fa_top);
+	draw_set_font(fAtari6);
+
+	// === HEADER ===
+	draw_text(_x, _current_y, "=== DEBUG MODE (F3 to toggle) ===");
+	_current_y += _line_height * 1.5;
+
+	// === GAME STATE SECTION ===
+	draw_text(_x, _current_y, "Game Mode: " + GetGameModeName(global.Game.State.mode));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Paused: " + (global.Game.State.isPaused ? "YES" : "NO"));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Game Over: " + (global.Game.State.isGameOver ? "YES" : "NO"));
+	_current_y += _line_height;
+
+	_current_y += _line_height * 0.5;
+
+	// === PLAYER SECTION ===
+	draw_text(_x, _current_y, "Player Score: " + string(global.Game.Player.score));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Player Lives: " + string(global.Game.Player.lives));
+	_current_y += _line_height;
+
+	var shotMode = instance_exists(oPlayer) ? (oPlayer.shotMode == ShotMode.SINGLE ? "SINGLE" : "DUAL") : "N/A";
+	draw_text(_x, _current_y, "Shot Mode: " + shotMode);
+	_current_y += _line_height;
+
+	var shipState = instance_exists(oPlayer) ? GetShipStateName(oPlayer.shipStatus) : "N/A";
+	draw_text(_x, _current_y, "Ship State: " + shipState);
+	_current_y += _line_height;
+
+	_current_y += _line_height * 0.5;
+
+	// === ENEMY SECTION ===
+	draw_text(_x, _current_y, "Enemy Count: " + string(global.Game.Enemy.count));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Dive Capacity: " + string(global.Game.Enemy.diveCapacity) + " / " + string(global.Game.Enemy.diveCapacityStart));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Captured: " + (global.Game.Enemy.capturedPlayer ? "YES" : "NO"));
+	_current_y += _line_height;
+
+	_current_y += _line_height * 0.5;
+
+	// === LEVEL SECTION ===
+	draw_text(_x, _current_y, "Level: " + string(global.Game.Level.current) + " Wave: " + string(global.Game.Level.wave));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Challenge Stage: " + (global.Game.Challenge.isActive ? "YES" : "NO"));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Challenge Count: " + string(global.Game.Challenge.count) + " / " + string(global.Game.Challenge.intervalsToNext));
+	_current_y += _line_height;
+
+	_current_y += _line_height * 0.5;
+
+	// === PERFORMANCE SECTION ===
+	draw_text(_x, _current_y, "FPS: " + string(fps) + " / " + string(fps_real));
+	_current_y += _line_height;
+
+	draw_text(_x, _current_y, "Instances: " + string(instance_count));
+	_current_y += _line_height;
+
+	// Reset draw properties
+	draw_set_color(c_white);
+	draw_set_alpha(1);
+}
+
+/// @function GetGameModeName
+/// @description Returns a human-readable name for a GameMode enum value
+/// @param {Real} _mode The GameMode enum value
+/// @return {String} The mode name
+function GetGameModeName(_mode) {
+	switch(_mode) {
+		case GameMode.INITIALIZE: return "INITIALIZE";
+		case GameMode.ATTRACT_MODE: return "ATTRACT_MODE";
+		case GameMode.INSTRUCTIONS: return "INSTRUCTIONS";
+		case GameMode.GAME_PLAYER_MESSAGE: return "PLAYER_MESSAGE";
+		case GameMode.GAME_STAGE_MESSAGE: return "STAGE_MESSAGE";
+		case GameMode.SPAWN_ENEMY_WAVES: return "SPAWN_WAVES";
+		case GameMode.GAME_READY: return "READY";
+		case GameMode.GAME_ACTIVE: return "ACTIVE";
+		case GameMode.SHOW_RESULTS: return "RESULTS";
+		case GameMode.ENTER_INITIALS: return "ENTER_INITIALS";
+		case GameMode.CHALLENGE_STAGE_MESSAGE: return "CHALLENGE_MESSAGE";
+		case GameMode.GAME_PAUSED: return "PAUSED";
+		default: return "UNKNOWN";
+	}
+}
+
+/// @function GetShipStateName
+/// @description Returns a human-readable name for a ShipState enum value
+/// @param {Real} _state The ShipState enum value
+/// @return {String} The state name
+function GetShipStateName(_state) {
+	switch(_state) {
+		case ShipState.ACTIVE: return "ACTIVE";
+		case ShipState.CAPTURED: return "CAPTURED";
+		case ShipState.RELEASING: return "RELEASING";
+		case ShipState.DEAD: return "DEAD";
+		case ShipState.RESPAWN: return "RESPAWN";
+		default: return "UNKNOWN";
+	}
+}

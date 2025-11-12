@@ -116,14 +116,13 @@ Scripts are organized into logical groups:
 
 ### Global Variables
 
-Key globals defined in `oGameManager/Create_0.gml`:
-- **global.gameMode**: Current GameMode state
-- **global.p1score**, **global.p1lives**: Player score and lives
-- **global.wave**: Current wave number
-- **global.scale**: Display scale (1 for original Galaga rooms, 2 for GalagaWars)
-- **global.roomname**: Current room name
-- **global.isChallengeStage**: Whether current stage is a challenge stage
-- **global.isGameOver**, **global.isGamePaused**: Game state flags
+Key globals defined in `oGlobal/Create_0.gml` (global.Game struct):
+- **global.Game.State.mode**: Current GameMode state
+- **global.Game.Player.score**, **global.Game.Player.lives**: Player score and lives
+- **global.Game.Level.wave**: Current wave number
+- **global.Game.Display.scale**: Display scale (1 for original Galaga rooms, 2 for GalagaWars)
+- **global.Game.Challenge.isActive**: Whether current stage is a challenge stage
+- **global.Game.State.isGameOver**, **global.Game.State.isPaused**: Game state flags
 
 ### Rooms
 
