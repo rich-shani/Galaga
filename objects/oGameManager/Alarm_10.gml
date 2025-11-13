@@ -169,12 +169,5 @@ if (nextlevel == 2) {
 	if (global.Game.Challenge.count == 0) alarm[2] = 70;
 
     /// @subsection Challenge Mode Path Adjustment
-    /// If in challenge mode 4 (global.Game.Challenge.current == 4), adjust enemy paths (path1, path1flip) if their starting X position is 256.
-    /// Shifts both paths by -64 pixels horizontally to reposition enemies for the challenge mode.
-    //if (global.Game.Challenge.current == 4) {
-    //    if (path_get_x(path1, 0) == 256) {
-    //        path_shift(path1, -64, 0);
-    //        path_shift(path1flip, -64, 0);
-    //    }
-    //}
+    // Challenge mode path adjustments are handled by individual enemy paths
 }

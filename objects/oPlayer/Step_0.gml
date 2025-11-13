@@ -107,8 +107,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// This creates a fair shooting system that rewards timing
 				// && prevents overwhelming the enemies with bullets
 				var maxBullets = (shotMode == ShotMode.DOUBLE) ? 4 : 2;
-//				if (missileInterval <= 0 && instance_number(oMissile) < maxBullets) {
-					if (missileInterval <= 0) {
+				if (missileInterval <= 0) {
 					// === SPAWN MISSILE ===
 					// Use object pool if available for better performance
 					// Falls back to instance_create_layer if pool not initialized

@@ -1,0 +1,262 @@
+@startuml Controller Architecture
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam class {
+  BackgroundColor<<Coordinator>> #FFE4B5
+  BackgroundColor<<Controller>> #87CEEB
+  BackgroundColor<<System>> #90EE90
+  BackgroundColor<<Pool>> #DDA0DD
+  BorderColor #000000
+  FontSize 11
+}
+
+title Galaga Wars - Controller Architecture
+
+package "Game Manager (Coordinator)" <<Coordinator>> {
+  class oGameManager {
+    ==State Management==
+    +global.Game.State.mode : GameMode
+    +global.Game.State.isPaused : bool
+    +global.Game.State.isGameOver : bool
+    --
+    ==Specialized Controllers==
+    +waveSpawner : WaveSpawner
+    +scoreManager : ScoreManager
+    +challengeManager : ChallengeStageManager
+    +highScoreSystem : HighScoreSystem
+    --
+    ==Core Methods==
+    +Create_0() : Initialize game
+    +Step_0() : Main state machine
+    +Game_Loop() : Gameplay coordinator
+    +Enter_Initials() : High score entry
+    --
+    ==Alarm Events==
+    +Alarm_0() : Enemy spawn timing
+    +Alarm_1() : Level transitions
+    +Alarm_2() : Game ready delay
+    +Alarm_10() : Challenge stages
+  }
+}
+
+package "Specialized Controllers" <<Controller>> {
+  class WaveSpawner <<Controller>> {
+    ==Responsibilities==
+    - Wave pattern management
+    - Enemy spawning logic
+    - Formation coordination
+    --
+    ==Data Sources==
+    +wave_spawn.json
+    +formation_coordinates.json
+    +enemy_attributes/*.json
+    --
+    ==Methods==
+    +constructor(dataPath)
+    +resetSpawnCounter()
+    +getSpawnCounter() : int
+    +spawnWave(waveNum)
+    +spawnEnemy(type, path, index)
+    --
+    ==State==
+    -currentWave : int
+    -spawnCounter : int
+    -spawnDelay : int
+  }
+
+  class ScoreManager <<Controller>> {
+    ==Responsibilities==
+    - Score calculation
+    - Combo tracking
+    - Bonus multipliers
+    - Extra life awards
+    --
+    ==Data Sources==
+    +game_config.json
+    +enemy_attributes/*.json
+    --
+    ==Methods==
+    +constructor()
+    +addScore(points, enemyType)
+    +checkExtraLife()
+    +getHitRatio() : float
+    +calculateBonus() : int
+    --
+    ==State==
+    -totalScore : int
+    -shotsHit : int
+    -shotsFired : int
+    -comboMultiplier : float
+  }
+
+  class ChallengeStageManager <<Controller>> {
+    ==Responsibilities==
+    - Challenge stage detection
+    - Challenge pattern selection
+    - Bonus scoring
+    - Perfect clear detection
+    --
+    ==Data Sources==
+    +challenge_spawn.json
+    --
+    ==Methods==
+    +constructor(dataPath)
+    +isChallenge() : bool
+    +getChallengePattern() : int
+    +spawnChallenge(id)
+    +checkPerfect() : bool
+    --
+    ==State==
+    -challengeCount : int
+    -currentChallenge : int
+    -enemiesDestroyed : int
+    -perfectClear : bool
+  }
+
+  class HighScoreSystem <<Controller>> {
+    ==Responsibilities==
+    - High score storage
+    - Initials entry UI
+    - Leaderboard display
+    - Save/load persistence
+    --
+    ==Data Sources==
+    +high_scores.json (local)
+    +Firebase API (optional)
+    --
+    ==Methods==
+    +constructor()
+    +isHighScore(score) : bool
+    +addEntry(initials, score)
+    +getTopScores(limit) : array
+    +saveToFile()
+    +loadFromFile()
+    --
+    ==State==
+    -scores : array<{name, score}>
+    -maxEntries : int = 10
+  }
+}
+
+package "Object Pooling System" <<Pool>> {
+  class ObjectPool <<Pool>> {
+    ==Responsibilities==
+    - Instance reuse
+    - Memory optimization
+    - Performance tuning
+    --
+    ==Methods==
+    +constructor(objectType, layer, initial, max)
+    +acquire(x, y) : instance
+    +release(instance)
+    +clear()
+    --
+    ==Pools==
+    +global.missile_pool
+    +global.shot_pool
+    +global.explosion_pool
+    +global.explosion2_pool
+    --
+    ==Stats==
+    -total_created : int
+    -total_acquired : int
+    -total_released : int
+    -peak_active : int
+  }
+}
+
+package "Game Objects" <<System>> {
+  class oPlayer <<System>> {
+    +x, y : float
+    +shipState : ShipState
+    +shotMode : ShotMode
+    +health : int
+    --
+    +fireMissile()
+    +move(direction)
+    +takeDamage()
+  }
+
+  class oEnemyBase <<System>> {
+    +INDEX : int (1-40)
+    +state : EnemyState
+    +HEALTH : int
+    +PATH_NAME : string
+    --
+    +followPath()
+    +moveToFormation()
+    +divePath()
+    +fireShot()
+  }
+
+  class oMissile <<System>> {
+    +speed : float
+    +poolReset()
+  }
+
+  class oEnemyShot <<System>> {
+    +target_x, target_y : float
+    +initialized : bool
+    +poolReset()
+  }
+}
+
+' Relationships
+oGameManager "1" *-- "1" WaveSpawner : coordinates
+oGameManager "1" *-- "1" ScoreManager : coordinates
+oGameManager "1" *-- "1" ChallengeStageManager : coordinates
+oGameManager "1" *-- "1" HighScoreSystem : coordinates
+
+WaveSpawner ..> oEnemyBase : spawns
+WaveSpawner ..> ObjectPool : uses
+ChallengeStageManager ..> oEnemyBase : spawns
+ChallengeStageManager ..> ObjectPool : uses
+
+oPlayer ..> ObjectPool : acquires missiles
+oEnemyBase ..> ObjectPool : acquires shots
+oGameManager ..> ObjectPool : initializes
+
+ScoreManager <.. oEnemyBase : reports kills
+ScoreManager <.. oPlayer : reports shots
+HighScoreSystem <.. ScoreManager : final score
+
+note right of oGameManager
+  **Coordinator Pattern**
+
+  oGameManager doesn't implement
+  all game logic directly. Instead,
+  it delegates to specialized
+  controllers, acting as a
+  coordinator/orchestrator.
+
+  This keeps oGameManager lean
+  and maintainable while allowing
+  complex subsystems to be
+  independently tested.
+end note
+
+note bottom of WaveSpawner
+  **Data-Driven Design**
+
+  All wave patterns, enemy
+  attributes, and formations
+  are defined in JSON files,
+  not hardcoded. This allows
+  game designers to modify
+  gameplay without touching
+  code.
+end note
+
+note bottom of ObjectPool
+  **Performance Optimization**
+
+  Object pooling eliminates
+  garbage collection stutters
+  by reusing instances instead
+  of destroying/creating them.
+
+  Critical for smooth 60 FPS
+  gameplay with many projectiles.
+end note
+
+@enduml

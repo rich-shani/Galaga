@@ -1,0 +1,231 @@
+@startuml Data Flow Diagram
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam database {
+  BackgroundColor #FFE4B5
+  BorderColor #000000
+}
+skinparam storage {
+  BackgroundColor #87CEEB
+  BorderColor #000000
+}
+skinparam component {
+  BackgroundColor #90EE90
+  BorderColor #000000
+}
+skinparam actor {
+  BackgroundColor #FFB6C1
+  BorderColor #000000
+}
+
+title Galaga Wars - Data Flow Architecture
+
+actor Player
+
+database "JSON Data Files" {
+  storage wave_spawn.json [
+    **wave_spawn.json**
+    --
+    Wave patterns
+    Enemy spawn positions
+    Path assignments
+    Formation indices
+  ]
+
+  storage challenge_spawn.json [
+    **challenge_spawn.json**
+    --
+    Challenge patterns
+    Path pairs (PATH1/PATH2)
+    DOUBLED flag
+    8 challenges × 5 waves
+  ]
+
+  storage formation_coordinates.json [
+    **formation_coordinates.json**
+    --
+    40 formation positions
+    5×8 grid layout
+    X, Y coordinates
+  ]
+
+  storage "enemy_attributes/*.json" [
+    **Enemy Attributes**
+    --
+    oTieFighter.json
+    oTieIntercepter.json
+    oImperialShuttle.json
+    --
+    HEALTH
+    POINTS_BASE
+    DIVE_PATH1/2
+    LOOP_PATH
+  ]
+
+  storage game_config.json [
+    **game_config.json**
+    --
+    PLAYER config
+    ENEMIES config
+    CHALLENGE_STAGES
+    HIGH_SCORES
+    DIFFICULTY
+  ]
+
+  storage high_scores.json [
+    **high_scores.json**
+    --
+    Leaderboard data
+    {name, score}[]
+    Persisted locally
+  ]
+}
+
+component "Game Initialization" {
+  [oGlobalVars] as globals
+  [ObjectPool] as pools
+  [init_object_pools()] as init_pools
+}
+
+component "oGameManager\n(Coordinator)" as manager {
+  [WaveSpawner] as wave
+  [ScoreManager] as score
+  [ChallengeStageManager] as challenge
+  [HighScoreSystem] as highscore
+  [State Machine] as state
+}
+
+component "Game Objects" {
+  [oEnemyBase] as enemy_base
+  [oTieFighter] as tie_fighter
+  [oTieIntercepter] as tie_interceptor
+  [oImperialShuttle] as imperial
+  [oPlayer] as player_obj
+  [oMissile] as missile
+  [oEnemyShot] as shot
+}
+
+component "Visual Output" {
+  [HUD Display] as hud
+  [Game Screen] as screen
+  [High Score Entry] as entry_ui
+}
+
+' Data flow from JSON to Controllers
+wave_spawn.json --> wave : Load wave patterns
+challenge_spawn.json --> challenge : Load challenge patterns
+formation_coordinates.json --> wave : Load formation grid
+"enemy_attributes/*.json" --> enemy_base : Load attributes on Create
+game_config.json --> globals : Load at startup
+game_config.json --> score : Load scoring rules
+high_scores.json --> highscore : Load on startup
+
+' Initialization flow
+globals --> manager : Initialize global.Game struct
+init_pools --> pools : Create object pools
+pools --> missile : Pre-allocate instances
+pools --> shot : Pre-allocate instances
+
+' Controller to Game Object flow
+wave --> enemy_base : Spawn enemies
+wave --> tie_fighter : instance_create_layer()
+wave --> tie_interceptor : instance_create_layer()
+wave --> imperial : instance_create_layer()
+wave --> formation_coordinates.json : Read position\nfor INDEX
+
+challenge --> enemy_base : Spawn challenge enemies
+challenge --> tie_fighter : 8 enemies per wave
+
+' Game Object interactions
+enemy_base --> pools : Acquire shot\nglobal.shot_pool.acquire()
+player_obj --> pools : Acquire missile\nglobal.missile_pool.acquire()
+pools --> shot : Release/reuse instance
+pools --> missile : Release/reuse instance
+
+' Scoring flow
+enemy_base --> score : Report kill\naddScore(points, type)
+player_obj --> score : Report shot fired\nshotsFired++
+score --> globals : Update global.p1score
+
+' High score flow
+score --> highscore : Final score\ncheckHighScore()
+highscore --> entry_ui : Show if high score
+Player --> entry_ui : Input initials
+entry_ui --> highscore : Save entry
+highscore --> high_scores.json : Persist to disk
+
+' State machine flow
+state --> wave : GameMode.SPAWN_ENEMY_WAVES
+state --> challenge : isChallengeStage == true
+state --> score : GameMode.SHOW_RESULTS
+state --> highscore : GameMode.ENTER_INITIALS
+
+' Visual output
+manager --> hud : Draw score, lives, stage
+enemy_base --> screen : Draw enemy sprites
+player_obj --> screen : Draw player sprite
+missile --> screen : Draw missiles
+shot --> screen : Draw enemy shots
+highscore --> screen : Draw leaderboard
+
+note right of wave_spawn.json
+  **Data-Driven Design**
+
+  All gameplay configuration
+  is externalized to JSON files.
+
+  Benefits:
+  - No code changes for content
+  - Easy game balancing
+  - Level design workflow
+  - Moddability support
+end note
+
+note bottom of pools
+  **Object Pool Lifecycle**
+
+  1. init_object_pools():
+     Create pools at startup
+
+  2. acquire(x, y):
+     Get inactive instance
+     → activate → poolReset()
+     → position → return
+
+  3. release(instance):
+     Reset → move offscreen
+     → deactivate → store
+
+  This eliminates GC stutters
+  from constant create/destroy.
+end note
+
+note right of enemy_base
+  **Enemy Creation Flow**
+
+  1. WaveSpawner reads JSON
+  2. Calls instance_create_layer()
+  3. Enemy Create_0 runs:
+     - Loads JSON attributes
+     - Sets PATH_NAME
+     - Initializes state
+  4. Enemy follows path
+  5. Moves to formation
+  6. AI state machine active
+end note
+
+note bottom of highscore
+  **High Score Persistence**
+
+  Local: high_scores.json
+  - Read on startup
+  - Write on new entry
+  - Top 10 scores
+
+  Optional: Firebase
+  - Online leaderboard
+  - Cross-device sync
+  - Cheat protection
+end note
+
+@enduml

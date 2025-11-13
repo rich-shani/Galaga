@@ -1,0 +1,119 @@
+@startuml ShipState State Machine
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam state {
+  BackgroundColor<<Active>> #90EE90
+  BackgroundColor<<Captured>> #FFB6C1
+  BackgroundColor<<Transition>> #FFE4B5
+  BorderColor #000000
+  FontSize 12
+}
+
+title Galaga Wars - ShipState (Player) State Machine
+note as N1
+  Player state managed by oPlayer
+  State stored in: player.shipState
+  Defined in: ShipState enum
+end note
+
+[*] --> SPAWNING : Game starts / Respawn
+
+state SPAWNING <<Transition>> {
+  SPAWNING : Player ship created
+  SPAWNING : Position: Bottom center
+  SPAWNING : Invulnerability: Active
+  SPAWNING : Duration: Brief
+}
+
+SPAWNING --> RELEASING : Spawn complete
+
+state RELEASING <<Transition>> {
+  RELEASING : Ship "released" into play
+  RELEASING : Invulnerability: Active
+  RELEASING : Duration: ~2 seconds
+  RELEASING : Visual: Flashing/blinking
+}
+
+RELEASING --> NORMAL : Timer expires
+
+state NORMAL <<Active>> {
+  NORMAL : Full player control
+  NORMAL : Can move left/right
+  NORMAL : Can fire missiles
+  NORMAL : Collision detection: Active
+  --
+  NORMAL : Movement: Arrow keys / gamepad
+  NORMAL : Fire: Space / A button
+  NORMAL : Missile cooldown: 12 frames
+  NORMAL : Max missiles: 2 (single) / 4 (dual)
+}
+
+NORMAL --> CAPTURED : Hit by tractor beam\n(Not implemented)
+NORMAL --> DESTROYED : Hit by enemy/shot
+
+state CAPTURED <<Captured>> {
+  CAPTURED : Ship held by enemy
+  CAPTURED : No player control
+  CAPTURED : Can be rescued
+  --
+  CAPTURED : Feature: Not implemented
+  CAPTURED : (Reserved for future)
+}
+
+CAPTURED --> RESCUED : Destroy capturing enemy\n(Not implemented)
+CAPTURED --> DESTROYED : Player dies
+
+state RESCUED <<Transition>> {
+  RESCUED : Dual fighter mode
+  RESCUED : 2 ships fly together
+  RESCUED : Double firepower
+  --
+  RESCUED : Feature: Not implemented
+  RESCUED : (Reserved for future)
+}
+
+RESCUED --> NORMAL : Rescue complete
+
+state DESTROYED <<Transition>> {
+  DESTROYED : Explosion animation
+  DESTROYED : Spawn oExplosion
+  DESTROYED : Decrement lives
+  DESTROYED : Brief delay
+}
+
+DESTROYED --> SPAWNING : Lives remaining
+DESTROYED --> [*] : Lives = 0\n(Game over)
+
+note right of NORMAL
+  Shot modes (shotMode):
+  - ShotMode.SINGLE (0): One ship
+  - ShotMode.DOUBLE (1): Dual fighters
+
+  Missile pool:
+  global.missile_pool.acquire()
+
+  Fire rate: 12 frames cooldown
+  Max active: 2 single / 4 dual
+end note
+
+note right of RELEASING
+  Invulnerability period
+  prevents instant death
+  on respawn
+
+  Visual feedback:
+  - Sprite flashing
+  - Alpha blending
+end note
+
+note left of CAPTURED
+  Capture system reserved
+  for future implementation
+
+  Would add gameplay depth:
+  - Risk/reward mechanic
+  - Dual fighter bonus
+  - Strategic rescue timing
+end note
+
+@enduml

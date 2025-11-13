@@ -1,12 +1,3 @@
-//scroll_x -= scroll_speed;
-
-//// Loop the text seamlessly when it scrolls off-screen
-//if (scroll_x + (msg_length * char_spacing) < 0) {
-//	// set an alarm, as a pause to then start again ...
-	
-//    scroll_x = room_width; // Reset to right side
-//}
-
 // only display text messages in window-mode 
 if (!window_get_fullscreen()) {
 	switch (state) {

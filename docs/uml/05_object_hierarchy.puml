@@ -1,0 +1,305 @@
+@startuml Object Hierarchy
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam class {
+  BackgroundColor<<Base>> #FFE4B5
+  BackgroundColor<<Enemy>> #FF6B6B
+  BackgroundColor<<Projectile>> #87CEEB
+  BackgroundColor<<Manager>> #90EE90
+  BackgroundColor<<UI>> #DDA0DD
+  BackgroundColor<<Effect>> #FFD700
+  BorderColor #000000
+  FontSize 11
+}
+
+title Galaga Wars - Object Hierarchy
+
+package "Core Game Objects" {
+  class oEnemyBase <<Base>> {
+    ==Inherited by all enemies==
+    +INDEX : int
+    +state : EnemyState
+    +HEALTH : int
+    +ENEMY_NAME : string
+    +PATH_NAME : string
+    +COMBINE : bool
+    --
+    +spd : float
+    +formx, formy : float
+    +path1, path2 : asset
+    --
+    ==Methods==
+    +Create_0() : Load JSON attributes
+    +Step_0() : AI state machine
+    +Alarm_0() : Formation movement
+    +Alarm_1() : Fire shot
+    +Alarm_2() : Transform/combine
+    +takeDamage(amount)
+    +divePath()
+    +returnToFormation()
+  }
+
+  class oTieFighter <<Enemy>> {
+    ==TIE Fighter==
+    +ENEMY_NAME = "oTieFighter"
+    +sprite_index : sTieFighter
+    --
+    ==JSON Data (oTieFighter.json)==
+    HEALTH: 1
+    POINTS_BASE: 50
+    DIVE_PATH1: "TF_Dive1"
+    LOOP_PATH: "TF_Loop"
+    CAN_LOOP: true
+  }
+
+  class oTieIntercepter <<Enemy>> {
+    ==TIE Interceptor==
+    +ENEMY_NAME = "oTieIntercepter"
+    +sprite_index : sTieIntercepter
+    --
+    ==JSON Data (oTieIntercepter.json)==
+    HEALTH: 1
+    POINTS_BASE: 80
+    DIVE_PATH1: "TI_Dive1"
+    LOOP_PATH: "TI_Loop"
+    CAN_LOOP: true
+  }
+
+  class oImperialShuttle <<Enemy>> {
+    ==Imperial Shuttle (Boss)==
+    +ENEMY_NAME = "oImperialShuttle"
+    +sprite_index : sImperialShuttle
+    --
+    ==JSON Data (oImperialShuttle.json)==
+    HEALTH: 2
+    POINTS_BASE: 150
+    DIVE_PATH1: "IS_Dive1"
+    LOOP_PATH: "IS_Loop"
+    CAN_LOOP: true
+  }
+
+  oEnemyBase <|-- oTieFighter : inherits
+  oEnemyBase <|-- oTieIntercepter : inherits
+  oEnemyBase <|-- oImperialShuttle : inherits
+}
+
+package "Player & Projectiles" {
+  class oPlayer <<Base>> {
+    ==Player Ship (X-Wing)==
+    +x, y : float
+    +shipState : ShipState
+    +shotMode : ShotMode
+    +health : int
+    +missileInterval : int
+    --
+    ==Methods==
+    +Step_0() : Input & movement
+    +Draw_0() : Render ship
+    +fireMissile()
+    +takeDamage()
+    +respawn()
+  }
+
+  class oMissile <<Projectile>> {
+    ==Player Missile==
+    +speed : float = 24
+    +MISSILE_OFFSCREEN : int
+    --
+    ==Pooled Object==
+    +poolReset()
+    --
+    ==Events==
+    +Create_0() : Initialize
+    +Step_0() : Move upward
+    +Step_2() : Check bounds
+    +Collision : Hit detection
+  }
+
+  class oEnemyShot <<Projectile>> {
+    ==Enemy Projectile==
+    +target_x, target_y : float
+    +initialized : bool
+    +speed : float = 5
+    --
+    ==Fire-and-Forget System==
+    +poolReset()
+    --
+    ==Events==
+    +Create_0() : Initialize
+    +Step_2() : Lock target once
+    +Collision : Hit detection
+  }
+
+  oPlayer ..> oMissile : fires
+  oEnemyBase ..> oEnemyShot : fires
+}
+
+package "Visual Effects" {
+  class oExplosion <<Effect>> {
+    ==Standard Explosion==
+    +image_index : int
+    +image_speed : float
+    --
+    ==Pooled Object==
+    +poolReset()
+    --
+    ==Events==
+    +Create_0() : Initialize
+    +Animation_End() : Return to pool
+  }
+
+  class oExplosion2 <<Effect>> {
+    ==Alternate Explosion==
+    +image_index : int
+    +image_speed : float
+    --
+    ==Pooled Object==
+    +poolReset()
+    --
+    ==Events==
+    +Create_0() : Initialize
+    +Animation_End() : Return to pool
+  }
+
+  class oStarFieldEmitter <<Effect>> {
+    ==Scrolling Stars==
+    +particleSystem : ParticleSystem
+    +emitRate : int
+    +scrollSpeed : float
+    --
+    ==Methods==
+    +Create_0() : Setup particles
+    +Step_0() : Emit particles
+  }
+
+  oPlayer ..> oExplosion : spawns on death
+  oEnemyBase ..> oExplosion : spawns on death
+  oExplosion2 ..> oExplosion : variant
+}
+
+package "Game Management" {
+  class oGameManager <<Manager>> {
+    ==Central Game Controller==
+    +global.Game.State.mode : GameMode
+    --
+    ==Controllers==
+    +waveSpawner : WaveSpawner
+    +scoreManager : ScoreManager
+    +challengeManager : ChallengeStageManager
+    +highScoreSystem : HighScoreSystem
+    --
+    ==Methods==
+    +Create_0() : Initialize
+    +Step_0() : State machine
+    +Draw_64() : HUD rendering
+    +Game_Loop() : Gameplay coordinator
+  }
+
+  class oGlobalVars <<Manager>> {
+    ==Global Initialization==
+    --
+    ==Methods==
+    +Create_0() : Setup globals
+    --
+    ==Initializes==
+    global.Game struct
+    global.scale
+    global.roomname
+    Compatibility layers
+  }
+
+  class oGameCamera <<Manager>> {
+    ==Camera Controller==
+    +view_camera : int
+    +target : instance
+    --
+    ==Methods==
+    +Create_0() : Setup viewport
+    +Step_0() : Follow target
+  }
+
+  oGameManager ..> oGlobalVars : depends on
+  oGameManager ..> oGameCamera : uses
+}
+
+package "UI & Screens" {
+  class oSplashScreen <<UI>> {
+    ==Loading Screen==
+    +displayTime : int
+    --
+    ==Methods==
+    +Create_0() : Show splash
+    +Alarm_0() : Transition to game
+  }
+
+  class oTitleScreen <<UI>> {
+    ==Title/Demo Mode==
+    +demoMode : bool
+    +animState : string
+    --
+    ==Methods==
+    +Create_0() : Setup UI
+    +Step_0() : Handle input
+    +Draw_0() : Render title
+  }
+
+  class oTextScroller <<UI>> {
+    ==Scrolling Text Display==
+    +message_text : string
+    +scroll_x : float
+    +state : string
+    --
+    ==Methods==
+    +Create_0() : Initialize
+    +Step_0() : Update position
+    +Draw_75() : Render text
+  }
+
+  oSplashScreen ..> oTitleScreen : transitions to
+  oTitleScreen ..> oGameManager : starts game
+}
+
+note right of oEnemyBase
+  **Base Class Pattern**
+
+  All enemies inherit from oEnemyBase,
+  which provides:
+  - Common AI state machine
+  - Path following logic
+  - Formation management
+  - Collision handling
+
+  Enemy-specific behavior is
+  loaded from JSON files, not
+  hardcoded in child classes.
+end note
+
+note bottom of oMissile
+  **Object Pooling**
+
+  Missiles, shots, and explosions
+  use object pools for performance:
+
+  - Pre-allocated instances
+  - poolReset() clears state
+  - No GC stutters
+  - Smooth 60 FPS gameplay
+end note
+
+note right of oGameManager
+  **God Object Refactored**
+
+  Originally, oGameManager was a
+  "god object" with 1000+ lines.
+
+  Sprint 2-3 refactored it into
+  specialized controllers:
+  - WaveSpawner
+  - ScoreManager
+  - ChallengeStageManager
+  - HighScoreSystem
+
+  Now it's a lean coordinator.
+end note
+
+@enduml

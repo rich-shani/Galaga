@@ -207,9 +207,4 @@ if (global.Game.Level.current > 0 && rank > 0) {
 }
 
 /// @section Level Progression
-// When rank reaches 0, transition can be triggered
-// (Original code commented out - may be handled elsewhere)
-//if (rank == 0) {
-//    nextlevel = 2;
-//    alarm[10] = 50;
-//}
+// When rank reaches 0, transition is handled by game state manager

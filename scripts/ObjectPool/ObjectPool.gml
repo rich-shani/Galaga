@@ -88,7 +88,6 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 		}
 
 		// Activate and position instance
-	//	if (instance_exists(instance)) {
 		if (instance != noone) {
 			// CRITICAL: Reactivate BEFORE positioning to update collision mask properly
 			instance_activate_object(instance);

@@ -1,0 +1,107 @@
+@startuml EnemyState State Machine
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam state {
+  BackgroundColor<<Formation>> #87CEEB
+  BackgroundColor<<Attack>> #FF6B6B
+  BackgroundColor<<Transition>> #FFE4B5
+  BorderColor #000000
+  FontSize 12
+}
+
+title Galaga Wars - EnemyState State Machine
+note as N1
+  Enemy AI managed by oEnemyBase
+  State stored in: enemy.state
+  Defined in: EnemyState enum
+end note
+
+[*] --> ENTER_SCREEN : Enemy spawned from pool
+
+state ENTER_SCREEN <<Transition>> {
+  ENTER_SCREEN : Follow entrance path
+  ENTER_SCREEN : Path from wave_spawn.json
+  ENTER_SCREEN : Speed: enemy.spd * scale
+  --
+  ENTER_SCREEN : TIE Fighters: Ent_Top/Bot
+  ENTER_SCREEN : TIE Interceptors: Ent_Left/Right
+  ENTER_SCREEN : Imperial Shuttles: Various
+}
+
+ENTER_SCREEN --> MOVE_INTO_FORMATION : Path complete\n(INDEX 1-40)
+ENTER_SCREEN --> IN_DIVE_ATTACK : Path complete\n(INDEX -1, rogue)
+
+state MOVE_INTO_FORMATION <<Transition>> {
+  MOVE_INTO_FORMATION : Lerp to formation position
+  MOVE_INTO_FORMATION : Position from formation_coordinates.json
+  MOVE_INTO_FORMATION : Smooth movement over 60 frames
+}
+
+MOVE_INTO_FORMATION --> IN_FORMATION : Reached position
+
+state IN_FORMATION <<Formation>> {
+  IN_FORMATION : Stationary in grid (5x8)
+  IN_FORMATION : Breathing animation\n  (sin wave oscillation)
+  IN_FORMATION : Fire shots at player
+  --
+  IN_FORMATION : Wait for dive signal
+  IN_FORMATION : Dive cap: Max 2 at once
+}
+
+IN_FORMATION --> IN_DIVE_ATTACK : Dive triggered\n(global.Game.Enemy.diveCount < cap)
+
+state IN_DIVE_ATTACK <<Attack>> {
+  IN_DIVE_ATTACK : Follow dive path
+  IN_DIVE_ATTACK : Path: STANDARD.DIVE_PATH1/2
+  IN_DIVE_ATTACK : Fire shots at player
+  --
+  IN_DIVE_ATTACK : TIE Fighter: TF_Dive1/2
+  IN_DIVE_ATTACK : TIE Interceptor: TI_Dive1/2
+  IN_DIVE_ATTACK : Imperial Shuttle: IS_Dive1/2
+}
+
+IN_DIVE_ATTACK --> IN_LOOP_ATTACK : Path complete\n(CAN_LOOP = true)
+IN_DIVE_ATTACK --> IN_FINAL_ATTACK : Path complete\n(CAN_LOOP = false)
+
+state IN_LOOP_ATTACK <<Attack>> {
+  IN_LOOP_ATTACK : Follow loop return path
+  IN_LOOP_ATTACK : Path: LOOP_PATH/LOOP_ALT_PATH
+  IN_LOOP_ATTACK : Return to formation
+}
+
+IN_LOOP_ATTACK --> MOVE_INTO_FORMATION : Path complete
+
+state IN_FINAL_ATTACK <<Attack>> {
+  IN_FINAL_ATTACK : Straight down path
+  IN_FINAL_ATTACK : No return to formation
+  IN_FINAL_ATTACK : Exit at bottom
+}
+
+IN_FINAL_ATTACK --> [*] : Off screen\n(Released to pool)
+
+note right of IN_FORMATION
+  Formation positions defined in
+  formation_coordinates.json
+
+  Breathing animation:
+  y_offset = sin(time) * amplitude
+end note
+
+note right of IN_DIVE_ATTACK
+  Dive cap prevents too many
+  simultaneous attacks:
+
+  MAX_DIVE_CAP = 2
+  DIVE_CAP_START = 2
+  MAX_BOSS_DIVE_CAP = 2
+end note
+
+note bottom of IN_DIVE_ATTACK
+  Path selection based on
+  formation position:
+
+  Left side: DIVE_PATH1
+  Right side: DIVE_ALT_PATH1
+end note
+
+@enduml

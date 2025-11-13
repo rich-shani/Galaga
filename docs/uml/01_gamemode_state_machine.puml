@@ -1,0 +1,123 @@
+@startuml GameMode State Machine
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam state {
+  BackgroundColor<<Active>> #90EE90
+  BackgroundColor<<Transition>> #FFE4B5
+  BackgroundColor<<Paused>> #FFB6C1
+  BorderColor #000000
+  FontSize 12
+}
+
+title Galaga Wars - GameMode State Machine
+note as N1
+  Game state transitions are managed by oGameManager
+  State stored in: global.Game.State.mode
+  Transitions triggered by: Alarm events and Step events
+end note
+
+[*] --> INITIALIZE : Game starts
+
+state INITIALIZE <<Transition>> {
+  INITIALIZE : Load resources
+  INITIALIZE : Initialize global state
+  INITIALIZE : Setup object pools
+}
+
+INITIALIZE --> GAME_PLAYER_MESSAGE : Start game
+
+state GAME_PLAYER_MESSAGE <<Transition>> {
+  GAME_PLAYER_MESSAGE : Display "READY" message
+  GAME_PLAYER_MESSAGE : Show player lives
+  GAME_PLAYER_MESSAGE : Duration: ~2 seconds
+}
+
+GAME_PLAYER_MESSAGE --> GAME_STAGE_MESSAGE : After delay
+
+state GAME_STAGE_MESSAGE <<Transition>> {
+  GAME_STAGE_MESSAGE : Display "STAGE X"
+  GAME_STAGE_MESSAGE : Show wave number
+  GAME_STAGE_MESSAGE : Duration: ~2 seconds
+}
+
+GAME_STAGE_MESSAGE --> SPAWN_ENEMY_WAVES : After delay
+
+state SPAWN_ENEMY_WAVES <<Transition>> {
+  SPAWN_ENEMY_WAVES : Spawn enemies from wave_spawn.json
+  SPAWN_ENEMY_WAVES : OR spawn challenge stage
+  SPAWN_ENEMY_WAVES : Create 40 enemies total
+}
+
+SPAWN_ENEMY_WAVES --> GAME_READY : All enemies spawned
+
+state GAME_READY <<Transition>> {
+  GAME_READY : Enable player control
+  GAME_READY : Start enemy AI
+  GAME_READY : Brief delay before active
+}
+
+GAME_READY --> GAME_ACTIVE : Ready check complete
+
+state GAME_ACTIVE <<Active>> {
+  GAME_ACTIVE : Main gameplay loop
+  GAME_ACTIVE : Enemy AI active
+  GAME_ACTIVE : Player can shoot/move
+  GAME_ACTIVE : Collision detection active
+  GAME_ACTIVE : Formation breathing animation
+  --
+  GAME_ACTIVE : Check win condition:\n  All enemies destroyed
+  GAME_ACTIVE : Check loss condition:\n  Player lives = 0
+}
+
+GAME_ACTIVE --> SHOW_RESULTS : All enemies destroyed
+GAME_ACTIVE --> GAME_OVER : Player lives = 0
+GAME_ACTIVE --> GAME_PAUSED : Player presses pause
+
+state GAME_PAUSED <<Paused>> {
+  GAME_PAUSED : Freeze game logic
+  GAME_PAUSED : Apply pause FX
+  GAME_PAUSED : Display "PAUSED"
+}
+
+GAME_PAUSED --> GAME_ACTIVE : Player unpauses
+
+state SHOW_RESULTS <<Transition>> {
+  SHOW_RESULTS : Display score
+  SHOW_RESULTS : Show hit ratio
+  SHOW_RESULTS : Calculate bonuses
+  SHOW_RESULTS : Add to total score
+}
+
+SHOW_RESULTS --> ENTER_INITIALS : High score achieved
+SHOW_RESULTS --> GAME_PLAYER_MESSAGE : Next wave\n(No high score)
+
+state ENTER_INITIALS <<Transition>> {
+  ENTER_INITIALS : High score entry UI
+  ENTER_INITIALS : Player inputs 3 letters
+  ENTER_INITIALS : Save to high score table
+}
+
+ENTER_INITIALS --> GAME_PLAYER_MESSAGE : Initials entered
+
+state GAME_OVER {
+  GAME_OVER : Display "GAME OVER"
+  GAME_OVER : Show final score
+  GAME_OVER : Reset game state
+}
+
+GAME_OVER --> [*] : Return to title
+
+note right of SPAWN_ENEMY_WAVES
+  Challenge stages occur every 4 levels
+  (when global.challcount == 4)
+  Uses challenge_spawn.json instead
+  of wave_spawn.json
+end note
+
+note right of GAME_ACTIVE
+  This is where the Game_Loop()
+  function in GameManager_STEP_FNs.gml
+  is called to handle gameplay logic
+end note
+
+@enduml
