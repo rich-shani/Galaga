@@ -40,7 +40,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 	// Reset animation counters
 	global.Game.Display.flip = 0;
 	global.Game.State.breathing = 1;
-	global.Game.Enemy.breathePhase = 0;
+
 	exhale = 0;
 		global.Game.State.isGameOver = false;
 		global.Game.State.isPaused = false;

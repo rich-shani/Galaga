@@ -9,15 +9,15 @@ switch (ScreenShown) {
 	case TITLE_SCREEN.TITLE:
 	
 		if sequence > 1 {
-			draw_text((176 - 48)*global.Game.Display.scale, 132*global.Game.Display.scale, string_hash_to_newline("-- SCORE --"));
-			draw_text((176 - 40)*global.Game.Display.scale, 132*global.Game.Display.scale, string_hash_to_newline("-        -"));
+			draw_text((176 - 48)*global.Game.Display.scale, 132*global.Game.Display.scale, "-- SCORE --");
+			draw_text((176 - 40)*global.Game.Display.scale, 132*global.Game.Display.scale, "-        -");
 
 			if sequence > 2 {
-				draw_text((176 - 48)*global.Game.Display.scale, 176*global.Game.Display.scale, string_hash_to_newline("    50    100"));
+				draw_text((176 - 48)*global.Game.Display.scale, 176*global.Game.Display.scale, "    50    100");
 				draw_sprite_ext(sTieFighter, animationIndex/4, 104*global.Game.Display.scale, (168+16)*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 						
 				if sequence > 3 {
-					draw_text((176 - 48)*global.Game.Display.scale, 224*global.Game.Display.scale, string_hash_to_newline("    80    160"));
+					draw_text((176 - 48)*global.Game.Display.scale, 224*global.Game.Display.scale, "    80    160");
 					draw_sprite_ext(sImperialShuttle, animationIndex/4, 104*global.Game.Display.scale, (168+48+16)*global.Game.Display.scale, 1, 1, 0, c_white, 1);
 						
 					if sequence > 4 {											
@@ -114,17 +114,17 @@ switch (ScreenShown) {
 				draw_set_color(c_white)
 
 				draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale,
-					string_hash_to_newline("© 1981-2024 BANDAI"))
+					"© 1981-2024 BANDAI");
 
 				draw_text(224*global.Game.Display.scale, (448 + 32)*global.Game.Display.scale,
-					string_hash_to_newline(
-						"  NAMCO ENTERTAINMENT, INC. "))
+					
+						"  NAMCO ENTERTAINMENT, INC. ");
 
 				draw_set_color(c_red)
 
 				draw_text(224*global.Game.Display.scale, (480 + 32)*global.Game.Display.scale,
-					string_hash_to_newline(
-						"2025 Richard Shannon"))
+					
+						"2025 Richard Shannon");
 						
 				draw_set_halign(fa_left)
 			} // CREDITS
@@ -135,14 +135,14 @@ switch (ScreenShown) {
 		
 		draw_set_halign(fa_left);
 		draw_set_color(c_blue);
-		draw_text(68*global.Game.Display.scale, 150*global.Game.Display.scale, string_hash_to_newline("THE GALACTIC HEROES"))
+		draw_text(68*global.Game.Display.scale, 150*global.Game.Display.scale, "THE GALACTIC HEROES");
 
 		draw_set_color(c_red);
-		draw_text(122*global.Game.Display.scale, 224*global.Game.Display.scale, string_hash_to_newline("-- BEST 5 --"));
-		draw_text((122 + 8)*global.Game.Display.scale, 224*global.Game.Display.scale, string_hash_to_newline("-         -"));
+		draw_text(122*global.Game.Display.scale, 224*global.Game.Display.scale, "-- BEST 5 --");
+		draw_text((122 + 8)*global.Game.Display.scale, 224*global.Game.Display.scale, "-         -");
 
 		draw_set_color(c_aqua);
-		draw_text(160*global.Game.Display.scale, 320*global.Game.Display.scale, string_hash_to_newline("SCORE     NAME"));
+		draw_text(160*global.Game.Display.scale, 320*global.Game.Display.scale, "SCORE     NAME");
 
 		if !ds_list_empty(global.gmscoreboard_scores) {
 			var num = ds_list_size(global.gmscoreboard_scores);
@@ -187,15 +187,15 @@ switch (ScreenShown) {
 	case TITLE_SCREEN.INSTRUCTIONS:
 		draw_set_color(c_aqua);
 
-		draw_text(96*global.Game.Display.scale, 208*global.Game.Display.scale, string_hash_to_newline("PUSH START BUTTON"));
+		draw_text(96*global.Game.Display.scale, 208*global.Game.Display.scale, "PUSH START BUTTON");
 
 		draw_set_color(c_yellow);
 
-		draw_text(64*global.Game.Display.scale, (208 + 64)*global.Game.Display.scale, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
+		draw_text(64*global.Game.Display.scale, (208 + 64)*global.Game.Display.scale, "1ST BONUS FOR 20000 PTS");
 
-		draw_text(64*global.Game.Display.scale, (208 + 64 + 48)*global.Game.Display.scale, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
+		draw_text(64*global.Game.Display.scale, (208 + 64 + 48)*global.Game.Display.scale, "2ND BONUS FOR 70000 PTS");
 
-		draw_text(64*global.Game.Display.scale, (208 + 64 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("AND FOR EVERY 70000 PTS"));
+		draw_text(64*global.Game.Display.scale, (208 + 64 + 48 + 48)*global.Game.Display.scale, "AND FOR EVERY 70000 PTS");
 
 		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
 		draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 48 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
@@ -204,13 +204,13 @@ switch (ScreenShown) {
 		draw_set_halign(fa_center);
 		draw_set_color(c_white);
 
-		draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale, string_hash_to_newline("© 1981-2024 BANDAI"));
+		draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale, "© 1981-2024 BANDAI");
 		draw_text(224*global.Game.Display.scale, (448 + 32)*global.Game.Display.scale,
-		string_hash_to_newline("  NAMCO ENTERTAINMENT, INC. "));
+		"  NAMCO ENTERTAINMENT, INC. ");
 
 		draw_set_color(c_red)
 		draw_text(224*global.Game.Display.scale, (480 + 32)*global.Game.Display.scale,
-		string_hash_to_newline("2025 Richard Shannon"));
+		"2025 Richard Shannon");
 		draw_set_halign(fa_left);	
 	
 		break;

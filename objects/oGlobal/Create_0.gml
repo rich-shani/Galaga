@@ -50,6 +50,7 @@ global.Game = {
         diveCapacity: get_config_value("ENEMIES", "MAX_DIVE_CAP", 2),
         diveCapacityStart: get_config_value("ENEMIES", "DIVE_CAP_START", 2),
         breathePhase: 0,
+		breathePhase_normalized: 0,
         transformActive: 0,
         transformTokens: 0,
         transformCount: 0,
@@ -60,6 +61,7 @@ global.Game = {
         capturedPlayer: false,
         count: 0,  // Cached enemy count (updated each frame in oGameManager Step)
         shotNumber: 2,
+		shotCount: 0,
         animationSpeed: 0,
         escortCount: 0,
         fighterStore: 0,

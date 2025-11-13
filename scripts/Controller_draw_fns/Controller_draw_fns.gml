@@ -37,11 +37,11 @@ function Draw_Scores() {
 	// === "1UP" INDICATOR ===
 	// Blinks on/off to draw attention during active gameplay
 	// Blink state controlled by oGameManager alarm[8] (14 frame interval)
-	if (oGameManager.blink) { draw_text(80*global.Game.Display.scale, 10*global.Game.Display.scale, string_hash_to_newline("1UP")) };
+	if (oGameManager.blink) { draw_text(80*global.Game.Display.scale, 10*global.Game.Display.scale, "1UP"); };
 
 	// === "HIGH SCORE" LABEL ===
 	// Always visible (no blinking)
-	draw_text(304*global.Game.Display.scale, 10*global.Game.Display.scale, string_hash_to_newline("HIGH SCORE"));
+	draw_text(304*global.Game.Display.scale, 10*global.Game.Display.scale, "HIGH SCORE");
 
 	// === SCORE VALUES ===
 	// White text for actual score numbers
@@ -51,13 +51,13 @@ function Draw_Scores() {
 	// Only show player score once gameplay has started
 	// Hidden during attract mode && instructions
 	if (global.Game.State.mode >= GameMode.GAME_PLAYER_MESSAGE) {
-		draw_text(96*global.Game.Display.scale, 26*global.Game.Display.scale, string_hash_to_newline(global.Game.Player.score));
+		draw_text(96*global.Game.Display.scale, 26*global.Game.Display.scale, global.Game.Player.score);
 	}
 
 	// === HIGH SCORE ===
 	// Always display the high score
 	// global.Game.HighScores.display is synced to top score
-	draw_text(272*global.Game.Display.scale, 26*global.Game.Display.scale, string_hash_to_newline(global.Game.HighScores.display));
+	draw_text(272*global.Game.Display.scale, 26*global.Game.Display.scale, global.Game.HighScores.display);
 
 	// === RESET DRAWING STATE ===
 	// Restore default text alignment && opacity
@@ -99,7 +99,7 @@ function Draw_Results() {
 	// === HEADER ===
 	// Red "-RESULTS-" title centered on screen
 	draw_set_color(c_red);
-	draw_text(144*global.Game.Display.scale, 272*global.Game.Display.scale, string_hash_to_newline("-RESULTS-"));
+	draw_text(144*global.Game.Display.scale, 272*global.Game.Display.scale, "-RESULTS-");
 
 	// === STATISTICS LABELS ===
 	// Yellow text for "SHOTS FIRED" && "NUMBER OF HITS" labels
@@ -107,34 +107,34 @@ function Draw_Results() {
 
 	// === SHOTS FIRED ===
 	// Display total shots player fired during this stage
-	draw_text(64*global.Game.Display.scale, (272 + 48)*global.Game.Display.scale, string_hash_to_newline("SHOTS FIRED"));
-	draw_text(320*global.Game.Display.scale, (272 + 48)*global.Game.Display.scale, string_hash_to_newline(global.Game.Player.shotsFired))
+	draw_text(64*global.Game.Display.scale, (272 + 48)*global.Game.Display.scale, "SHOTS FIRED");
+	draw_text(320*global.Game.Display.scale, (272 + 48)*global.Game.Display.scale, global.Game.Player.shotsFired);
 
 	// === NUMBER OF HITS ===
 	// Display total successful hits (enemy collisions) during this stage
-	draw_text(64*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("NUMBER OF HITS"));
-	draw_text(320*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline(global.Game.Player.hits))
+	draw_text(64*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, "NUMBER OF HITS");
+	draw_text(320*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, global.Game.Player.hits);
 
 	// === ACCURACY RATIO ===
 	// White text for hit-miss ratio label && percentage
 	draw_set_color(c_white);
-	draw_text(64*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("HIT-MISS RATIO"));
+	draw_text(64*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, "HIT-MISS RATIO");
 
 	// === CALCULATE AND DISPLAY PERCENTAGE ===
 	// Check for division by zero || zero hits
 	if (global.Game.Player.shotsFired == 0 || global.Game.Player.hits == 0) {
 		// No shots || no hits = 0.0%
-		draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("0.0"))
+		draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, "0.0");
 	}
 	else {
 		// Calculate percentage: (hits / shots) * 100
 		// string_format(value, width, decimal_places) formats to 1 decimal place
 		// Example: 34 hits / 40 shots = 85.0%
 		draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale,
-		string_hash_to_newline(string_format(100 * (global.Game.Player.hits / global.Game.Player.shotsFired), 4, 1)))
+		string_format(100 * (global.Game.Player.hits / global.Game.Player.shotsFired), 4, 1));
 	};
 
-	draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("      %"));
+	draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, "      %");
 
 	return;
 }
@@ -143,20 +143,20 @@ function Draw_Enter_Initials() {
 	
 	draw_set_color(c_red)
 
-	draw_text(64*global.Game.Display.scale, 96*global.Game.Display.scale, string_hash_to_newline("ENTER YOUR INITIALS "));
+	draw_text(64*global.Game.Display.scale, 96*global.Game.Display.scale, "ENTER YOUR INITIALS ");
 	draw_sprite_ext(spr_exc, 0, 384*global.Game.Display.scale, 96*global.Game.Display.scale, 1, 1, 0, c_red, 1);
 
 	draw_set_color(c_aqua)
 
 	draw_set_halign(fa_right);
-	draw_text(176*global.Game.Display.scale, 176*global.Game.Display.scale, string_hash_to_newline(global.Game.Player.score));
+	draw_text(176*global.Game.Display.scale, 176*global.Game.Display.scale, global.Game.Player.score);
 	draw_set_halign(fa_left);
 
 	draw_set_color(c_red);
-	draw_text(192*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("TOP 5"));
+	draw_text(192*global.Game.Display.scale, 288*global.Game.Display.scale, "TOP 5");
 
 	draw_set_color(c_aqua);
-	draw_text(160*global.Game.Display.scale, (304 + 16)*global.Game.Display.scale, string_hash_to_newline("SCORE     NAME"));
+	draw_text(160*global.Game.Display.scale, (304 + 16)*global.Game.Display.scale, "SCORE     NAME");
 
     // === DISPLAY INITIALS ===
     // Calculate positions for 3 characters
@@ -192,12 +192,12 @@ function Draw_Enter_Initials() {
 	if global.Game.State.results < 5 {
 		draw_set_color(c_aqua);
 		draw_text((304 + (16 * global.Game.HighScores.initials_idx))*global.Game.Display.scale, 176*global.Game.Display.scale,
-		string_hash_to_newline(string_char_at(cycle, cyc)));
+		string_char_at(cycle, cyc));
 
 		if oGameManager.blink {
 			draw_set_color(c_yellow);
 			draw_text((304 + (16 * global.Game.HighScores.initials_idx))*global.Game.Display.scale, 176*global.Game.Display.scale,
-			string_hash_to_newline(string_char_at(cycle, cyc)))
+			string_char_at(cycle, cyc));
 		}
 	}
 	
@@ -208,15 +208,15 @@ function Draw_Instructions() {
 		
 	draw_set_color(c_aqua);
 
-	draw_text(96*global.Game.Display.scale, 208*global.Game.Display.scale, string_hash_to_newline("PUSH START BUTTON"));
+	draw_text(96*global.Game.Display.scale, 208*global.Game.Display.scale, "PUSH START BUTTON");
 
 	draw_set_color(c_yellow);
 
-	draw_text(64*global.Game.Display.scale, (208 + 64)*global.Game.Display.scale, string_hash_to_newline("1ST BONUS FOR 20000 PTS"));
+	draw_text(64*global.Game.Display.scale, (208 + 64)*global.Game.Display.scale, "1ST BONUS FOR 20000 PTS");
 
-	draw_text(64*global.Game.Display.scale, (208 + 64 + 48)*global.Game.Display.scale, string_hash_to_newline("2ND BONUS FOR 70000 PTS"));
+	draw_text(64*global.Game.Display.scale, (208 + 64 + 48)*global.Game.Display.scale, "2ND BONUS FOR 70000 PTS");
 
-	draw_text(64*global.Game.Display.scale, (208 + 64 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("AND FOR EVERY 70000 PTS"));
+	draw_text(64*global.Game.Display.scale, (208 + 64 + 48 + 48)*global.Game.Display.scale, "AND FOR EVERY 70000 PTS");
 
 	// which ship to draw ... 
 	draw_sprite_ext(xwing_sprite_sheet,2,32*global.Game.Display.scale, (8 + 208 + 64)*global.Game.Display.scale,0.8,0.8,0,c_white,1);
@@ -227,13 +227,13 @@ function Draw_Instructions() {
 	draw_set_halign(fa_center);
 	draw_set_color(c_white);
 
-	draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale, string_hash_to_newline("© 1981-2024 BANDAI"));
+	draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale, "© 1981-2024 BANDAI");
 	draw_text(224*global.Game.Display.scale, (448 + 32)*global.Game.Display.scale,
-	string_hash_to_newline("  NAMCO ENTERTAINMENT, INC. "));
+	"  NAMCO ENTERTAINMENT, INC. ");
 
 	draw_set_color(c_red)
 	draw_text(224*global.Game.Display.scale, (480 + 32)*global.Game.Display.scale,
-	string_hash_to_newline("2025 Richard Shannon"));
+	"2025 Richard Shannon");
 	draw_set_halign(fa_left);
 	
 	return;

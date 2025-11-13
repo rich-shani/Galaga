@@ -44,7 +44,7 @@ function Draw_Hud(){
 	if (global.Game.State.isGameOver)
 	{
 		draw_set_color(c_red);
-		draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("GAME OVER"));
+		draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, "GAME OVER");
 
 		return;  // Exit function early, skip all other drawing
 	}
@@ -97,31 +97,31 @@ function Draw_Hud(){
 			case GameMode.GAME_PLAYER_MESSAGE:
 				/// Display "PLAYER 1" message at start of game
 				/// Shown briefly before stage message
-				draw_text(176*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("PLAYER 1"));
+				draw_text(176*global.Game.Display.scale, 288*global.Game.Display.scale, "PLAYER 1");
 				break;
 
 			case GameMode.GAME_STAGE_MESSAGE:
 				/// Display "STAGE #" message before each level
 				/// Shows current stage number (global.Game.Level.current)
-				draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("STAGE"));
-				draw_text(260*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline(global.Game.Level.current));
+				draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, "STAGE");
+				draw_text(260*global.Game.Display.scale, 288*global.Game.Display.scale, global.Game.Level.current);
 				break;
 
 			case GameMode.CHALLENGE_STAGE_MESSAGE:
 				/// Display "CHALLENGING STAGE" message before bonus round
 				/// Challenge stages occur every 4 levels
-				draw_text(100*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("CHALLENGING STAGE"));
+				draw_text(100*global.Game.Display.scale, 288*global.Game.Display.scale, "CHALLENGING STAGE");
 				break;
 
 			case GameMode.GAME_READY:
 				/// Display stage indicator just before gameplay begins
 				/// Shows either "CHALLENGING STAGE" || "STAGE #"
 				if (global.Game.Challenge.isActive) {
-					draw_text(100*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("CHALLENGING STAGE"));
+					draw_text(100*global.Game.Display.scale, 288*global.Game.Display.scale, "CHALLENGING STAGE");
 				}
 				else {
-					draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("STAGE"));
-					draw_text(260*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline(global.Game.Level.current));
+					draw_text(160*global.Game.Display.scale, 288*global.Game.Display.scale, "STAGE");
+					draw_text(260*global.Game.Display.scale, 288*global.Game.Display.scale, global.Game.Level.current);
 				}
 				break;
 
@@ -129,10 +129,10 @@ function Draw_Hud(){
 				/// During active gameplay, show "READY" during player respawn
 				/// Displays only when player is respawning (alarm[1] active) && has lives
 				if ((oPlayer.alarm[1] > -1) && (global.Game.Player.lives > 0)) {
-					draw_text(170*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("READY"));
+					draw_text(170*global.Game.Display.scale, 288*global.Game.Display.scale, "READY");
 		        }
 				else if (oPlayer.alarm[5] > -1) {
-					draw_text(110*global.Game.Display.scale, 288*global.Game.Display.scale, string_hash_to_newline("FIGHTER CAPTURED"));
+					draw_text(110*global.Game.Display.scale, 288*global.Game.Display.scale, "FIGHTER CAPTURED");
 				}
 				break;
 

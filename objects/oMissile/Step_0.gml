@@ -34,7 +34,10 @@ y -= MISSILE_SPEED;
 // Return to pool if available, otherwise destroy to prevent memory leaks
 if (y < MISSILE_OFFSCREEN) {
 	if (global.missile_pool != undefined) {
-		global.missile_pool.release(self);
+		if (global.debug) {
+			show_debug_message("[oMissile] Off-screen, releasing: " + string(self) + " (id: " + string(id) + ")");
+		}
+		global.missile_pool.release(id);
 	} else {
 		instance_destroy();
 	}

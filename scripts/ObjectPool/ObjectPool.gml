@@ -57,9 +57,10 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 	}
 	stats.current_pooled = _initial_size;
 
-	show_debug_message("[ObjectPool] Initialized " + object_get_name(object_type) +
-		" pool with " + string(_initial_size) + " objects");
-
+	if (global.debug) {
+		show_debug_message("[ObjectPool] Initialized " + object_get_name(object_type) +
+			" pool with " + string(_initial_size) + " objects");
+	}
 	/// @function acquire
 	/// @description Gets an object from the pool (or creates new if pool empty)
 	/// @param {Real} _x X position
@@ -105,6 +106,9 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 
 			// Track as active
 			ds_list_add(active_instances, instance);
+			if (global.debug) {
+				show_debug_message("[ObjectPool] Acquired instance: " + string(instance) + " (active count: " + string(ds_list_size(active_instances)) + ")");
+			}
 			stats.total_acquired++;
 			stats.current_active = ds_list_size(active_instances);
 			if (stats.current_active > stats.peak_active) {
@@ -121,12 +125,27 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 	/// @return {Bool} True if successfully released
 	static release = function(_instance) {
 		if (!instance_exists(_instance)) {
+			show_debug_message("[ObjectPool] Release failed: instance does not exist");
 			return false;
 		}
 
 		// Remove from active list
 		var index = ds_list_find_index(active_instances, _instance);
-		if (index != -1) {
+		if (index == -1) {
+			if (global.debug) {
+				// DEBUG: Instance not found in active list - let's investigate
+				show_debug_message("[ObjectPool] WARNING: Instance " + string(_instance) + " not found in active_instances list!");
+				show_debug_message("[ObjectPool] Active list size: " + string(ds_list_size(active_instances)));
+				show_debug_message("[ObjectPool] Attempting to find instance manually...");
+			}
+			// Manual search to see if there's a comparison issue
+			for (var i = 0; i < ds_list_size(active_instances); i++) {
+				var stored_instance = ds_list_find_value(active_instances, i);
+				if (global.debug) {
+					show_debug_message("[ObjectPool] Index " + string(i) + ": " + string(stored_instance) + " (match: " + string(stored_instance == _instance) + ")");
+				}
+			}
+		} else {
 			ds_list_delete(active_instances, index);
 		}
 
@@ -181,7 +200,9 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 		stats.current_active = 0;
 		stats.current_pooled = 0;
 
-		show_debug_message("[ObjectPool] Cleared " + object_get_name(object_type) + " pool");
+		if (global.debug) {
+			show_debug_message("[ObjectPool] Cleared " + object_get_name(object_type) + " pool");
+		}
 	};
 
 	/// @function destroy
@@ -197,7 +218,9 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 			ds_list_destroy(active_instances);
 		}
 
-		show_debug_message("[ObjectPool] Destroyed " + object_get_name(object_type) + " pool");
+		if (global.debug) {
+			show_debug_message("[ObjectPool] Destroyed " + object_get_name(object_type) + " pool");
+		}
 	};
 
 	/// @function getStats

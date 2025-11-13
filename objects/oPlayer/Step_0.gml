@@ -102,12 +102,13 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// === MISSILE SPAWN CONDITIONS ===
 				// Only spawn missile if:
 				//   1. Cooldown expired (missileInterval <= 0)
-				//   2. Less than 2 missiles on screen (prevents spam)
+				//   2. Less than maxBullets missiles on screen (2 in SINGLE mode, 4 in DOUBLE mode)
 				//
 				// This creates a fair shooting system that rewards timing
 				// && prevents overwhelming the enemies with bullets
 				var maxBullets = (shotMode == ShotMode.DOUBLE) ? 4 : 2;
-				if (missileInterval <= 0) {
+				var activeMissiles = (global.missile_pool != undefined) ? global.missile_pool.stats.current_active : instance_number(oMissile);
+				if (missileInterval <= 0 && activeMissiles < maxBullets) {
 					// === SPAWN MISSILE ===
 					// Use object pool if available for better performance
 					// Falls back to instance_create_layer if pool not initialized

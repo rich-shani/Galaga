@@ -20,7 +20,10 @@
 // Return missile to pool or destroy it
 // "other" refers to the oMissile instance that collided with us
 if (global.missile_pool != undefined) {
-	global.missile_pool.release(other);
+	if (global.debug) {
+		show_debug_message("[oEnemyBase] Collision with missile, releasing: " + string(other) + " (other.id: " + string(other.id) + ")");
+	}
+	global.missile_pool.release(other.id);
 } else {
 	instance_destroy(other);
 }

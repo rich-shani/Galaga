@@ -59,7 +59,8 @@ else if (enemyMode == EnemyMode.ROGUE) {
 else if (enemyMode == EnemyMode.STANDARD) {
 	
 	// Enemy shooting logic: limit number of shots on screen
-	if (instance_number(oEnemyShot) < MAX_ENEMY_SHOTS) {
+	// Then in oEnemyBase/Step_0.gml, line 62, replace with:
+     if (global.Game.Enemy.shotCount < MAX_ENEMY_SHOTS) {
 		// Fire at specific alarm[1] values, use object pool for performance
 		if (alarm[1] == ENEMY_SHOT_TIMING_1) {
 			if (global.shot_pool != undefined) {
@@ -92,10 +93,18 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	/// with global.Game.Enemy.breathePhase variable which cycles 0-BREATHING_CYCLE_MAX.
 	/// breathing provides visual feedback that enemies are "alive"
 	/// ================================================================
-	
-	var manager_x_offset = 0;//instance_exists(oGameManager) ? floor(oGameManager.x) : 0;
-	breathex = xstart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((xstart - FORMATION_CENTER_X) / FORMATION_WIDTH))) + manager_x_offset;
-	breathey = ystart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((ystart - FORMATION_TOP_Y) / FORMATION_HEIGHT)));
+
+     // Then in oEnemyBase/Step_0.gml, lines 97-98, replace with:
+     var phase_norm = global.Game.Enemy.breathePhase_normalized ?? 0;
+     var x_oscillation = phase_norm * (FORMATION_BREATHE_AMPLITUDE * ((xstart - FORMATION_CENTER_X) / FORMATION_WIDTH));
+     var y_oscillation = phase_norm * (FORMATION_BREATHE_AMPLITUDE * ((ystart - FORMATION_TOP_Y) / FORMATION_HEIGHT));
+
+     breathex = xstart + x_oscillation;
+     breathey = ystart + y_oscillation;
+	 
+	//var manager_x_offset = 0;//instance_exists(oGameManager) ? floor(oGameManager.x) : 0;
+	//breathex = xstart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((xstart - FORMATION_CENTER_X) / FORMATION_WIDTH))) + manager_x_offset;
+	//breathey = ystart + ((global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX) * (FORMATION_BREATHE_AMPLITUDE * ((ystart - FORMATION_TOP_Y) / FORMATION_HEIGHT)));
 
 	/// ================================================================
 	/// TRANSFORMATION LOGIC - Enemy morphing into special types

@@ -451,6 +451,16 @@ function Game_Loop(){
 		return;
 	}
 
+     // Cache enemy shot count once per frame (used by 40 enemies)
+     // Use pool's active count if available, otherwise fall back to instance_number
+     global.Game.Enemy.shotCount = (global.shot_pool != undefined) ? global.shot_pool.stats.current_active : instance_number(oEnemyShot);
+	 
+	// calculate the Enemy breathing cycle - once per frame (used by 40 enemies)
+     if (global.Game.Enemy.breathePhase != undefined) {
+         global.Game.Enemy.breathePhase_normalized =
+             global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX;
+     }
+	 
 	// === EXTRA LIVES ===
 	// Award extra lives at score milestones (20k, then every 70k)
 	// Delegate to ScoreManager controller
