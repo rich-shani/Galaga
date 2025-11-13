@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"AssetCache",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"AssetCache",
+  "parent":{
+    "name":"AssetCache",
+    "path":"folders/Scripts/AssetCache.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

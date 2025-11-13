@@ -77,7 +77,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
         global.Game.Enemy.escortCount   = 0;
         global.Game.Enemy.fighterStore  = 0;
         global.Game.Enemy.breathePhase       = 0;
-
+		global.Game.Enemy.capturedPlayer = false;
 
 		global.Game.Rogue.level         = 0;
 	// Score thresholds for extra lives

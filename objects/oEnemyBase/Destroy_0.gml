@@ -157,7 +157,7 @@ if (!global.Game.State.isGameOver) {
 		}	
 		
 		// remove any enemy missiles in flight
-		with (EnemyShot) {
+		with (oEnemyShot) {
 			instance_destroy();
 		}
 	}

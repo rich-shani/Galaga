@@ -11,7 +11,8 @@
       "Bash(else echo \"not exists\")",
       "Bash(fi)",
       "Bash(cat:*)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(powershell:*)"
     ],
     "deny": [],
     "ask": []

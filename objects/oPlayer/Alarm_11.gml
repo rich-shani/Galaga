@@ -18,8 +18,7 @@ if (shotMode == ShotMode.DOUBLE) {
 else {
 	// PLAYER explosion animation
 	instance_create(round(x), round(y), oExplosion3);
-		
-		
+				
 	// screem shake ON when PLAYER is DEAD, && we need to RESPAWN
 	layer_set_visible("ScreenShake", true);
 

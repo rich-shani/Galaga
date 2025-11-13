@@ -22,10 +22,15 @@
 
 if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == ShipState.ACTIVE) {
 	// Check if we can spawn more shots (limit MAX_ENEMY_SHOTS concurrent enemy shots)
-	if instance_number(EnemyShot) < MAX_ENEMY_SHOTS{
+	if instance_number(oEnemyShot) < MAX_ENEMY_SHOTS{
 		// Only shoot if difficulty level is high enough
 		if global.Game.Enemy.shotNumber > 3 {
-			instance_create_layer(x, y, "GameSprites", EnemyShot);
+			// Use object pool if available for better performance
+			if (global.shot_pool != undefined) {
+				global.shot_pool.acquire(x, y);
+			} else {
+				instance_create_layer(x, y, "GameSprites", oEnemyShot);
+			}
 		}
 	}
 }

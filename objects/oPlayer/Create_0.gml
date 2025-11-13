@@ -54,4 +54,3 @@ regain = 0;
 captor = noone;
 rescued_fighter_x = 0;
 rescued_fighter_y = 0;
-

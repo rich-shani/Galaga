@@ -59,16 +59,28 @@ else if (enemyMode == EnemyMode.ROGUE) {
 else if (enemyMode == EnemyMode.STANDARD) {
 	
 	// Enemy shooting logic: limit number of shots on screen
-	if (instance_number(EnemyShot) < MAX_ENEMY_SHOTS) {
-		// Fire at specific alarm[1] values
+	if (instance_number(oEnemyShot) < MAX_ENEMY_SHOTS) {
+		// Fire at specific alarm[1] values, use object pool for performance
 		if (alarm[1] == ENEMY_SHOT_TIMING_1) {
-			instance_create_layer(x, y, "GameSprites", EnemyShot);
+			if (global.shot_pool != undefined) {
+				global.shot_pool.acquire(x, y);
+			} else {
+				instance_create_layer(x, y, "GameSprites", oEnemyShot);
+			}
 		}
 		if (alarm[1] == ENEMY_SHOT_TIMING_2) {
-			instance_create_layer(x, y, "GameSprites", EnemyShot);
+			if (global.shot_pool != undefined) {
+				global.shot_pool.acquire(x, y);
+			} else {
+				instance_create_layer(x, y, "GameSprites", oEnemyShot);
+			}
 		}
 		if (global.Game.Enemy.shotNumber > 2 && alarm[1] == ENEMY_SHOT_TIMING_3) {
-			instance_create_layer(x, y, "GameSprites", EnemyShot);
+			if (global.shot_pool != undefined) {
+				global.shot_pool.acquire(x, y);
+			} else {
+				instance_create_layer(x, y, "GameSprites", oEnemyShot);
+			}
 		}
 	}
 

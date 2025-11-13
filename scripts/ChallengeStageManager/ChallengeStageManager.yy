@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ChallengeStageManager",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ChallengeStageManager",
+  "parent":{
+    "name":"ChallengeStageManager",
+    "path":"folders/Scripts/ChallengeStageManager.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

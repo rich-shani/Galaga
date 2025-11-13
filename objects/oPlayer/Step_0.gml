@@ -107,15 +107,23 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// This creates a fair shooting system that rewards timing
 				// && prevents overwhelming the enemies with bullets
 				var maxBullets = (shotMode == ShotMode.DOUBLE) ? 4 : 2;
-				if (missileInterval <= 0 && instance_number(oMissile) < maxBullets) {
+//				if (missileInterval <= 0 && instance_number(oMissile) < maxBullets) {
+					if (missileInterval <= 0) {
 					// === SPAWN MISSILE ===
-					// Create missile above player ship (offset defined in GameConstants)
-					// Spawned on "GameSprites" layer (same as enemies)
-					instance_create_layer(x, y - PLAYER_MISSILE_SPAWN_OFFSET_Y, "GameSprites", oMissile);
-					if (shotMode == ShotMode.DOUBLE) {
-						instance_create_layer(x + DUAL_FIGHTER_OFFSET_X, y - PLAYER_MISSILE_SPAWN_OFFSET_Y, "GameSprites", oMissile);
+					// Use object pool if available for better performance
+					// Falls back to instance_create_layer if pool not initialized
+					if (global.missile_pool != undefined) {
+						var missile = global.missile_pool.acquire(x, y - PLAYER_MISSILE_SPAWN_OFFSET_Y);
+						if (shotMode == ShotMode.DOUBLE) {
+							global.missile_pool.acquire(x + DUAL_FIGHTER_OFFSET_X, y - PLAYER_MISSILE_SPAWN_OFFSET_Y);
+						}
+					} else {
+						instance_create_layer(x, y - PLAYER_MISSILE_SPAWN_OFFSET_Y, "GameSprites", oMissile);
+						if (shotMode == ShotMode.DOUBLE) {
+							instance_create_layer(x + DUAL_FIGHTER_OFFSET_X, y - PLAYER_MISSILE_SPAWN_OFFSET_Y, "GameSprites", oMissile);
+						}
 					}
-					
+
 					// === AUDIO FEEDBACK ===
 					// Play shooting sound effect
 					audio_play_sound(GShot, 1, false);
@@ -126,9 +134,13 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 					missileInterval = 0.1*game_get_speed(gamespeed_fps);
 
 					// === SHOT STATISTICS ===
-					// Increment fire counter for accuracy tracking
-					// Used to calculate hit ratio (hits/fires) at stage end
-					oGameManager.fire += 1;
+					// Track shot fired via ScoreManager for accuracy calculation
+					if (oGameManager.scoreManager != undefined) {
+						oGameManager.scoreManager.recordShot();
+					} else {
+						// Fallback to legacy tracking
+						oGameManager.fire += 1;
+					}
 				}
 			}
 

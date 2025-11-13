@@ -108,12 +108,12 @@ function Draw_Results() {
 	// === SHOTS FIRED ===
 	// Display total shots player fired during this stage
 	draw_text(64*global.Game.Display.scale, (272 + 48)*global.Game.Display.scale, string_hash_to_newline("SHOTS FIRED"));
-	draw_text(320*global.Game.Display.scale, (272 + 48)*global.Game.Display.scale, string_hash_to_newline(fire))
+	draw_text(320*global.Game.Display.scale, (272 + 48)*global.Game.Display.scale, string_hash_to_newline(global.Game.Player.shotsFired))
 
 	// === NUMBER OF HITS ===
 	// Display total successful hits (enemy collisions) during this stage
 	draw_text(64*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("NUMBER OF HITS"));
-	draw_text(320*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline(hits))
+	draw_text(320*global.Game.Display.scale, (272 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline(global.Game.Player.hits))
 
 	// === ACCURACY RATIO ===
 	// White text for hit-miss ratio label && percentage
@@ -122,7 +122,7 @@ function Draw_Results() {
 
 	// === CALCULATE AND DISPLAY PERCENTAGE ===
 	// Check for division by zero || zero hits
-	if (fire == 0 || hits == 0) {
+	if (global.Game.Player.shotsFired == 0 || global.Game.Player.hits == 0) {
 		// No shots || no hits = 0.0%
 		draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("0.0"))
 	}
@@ -131,7 +131,7 @@ function Draw_Results() {
 		// string_format(value, width, decimal_places) formats to 1 decimal place
 		// Example: 34 hits / 40 shots = 85.0%
 		draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale,
-		string_hash_to_newline(string_format(100 * (hits / fire), 4, 1)))
+		string_hash_to_newline(string_format(100 * (global.Game.Player.hits / global.Game.Player.shotsFired), 4, 1)))
 	};
 
 	draw_text(290*global.Game.Display.scale, (272 + 48 + 48 + 48)*global.Game.Display.scale, string_hash_to_newline("      %"));
@@ -319,7 +319,7 @@ function Draw_Debug_Overlay() {
 	// Draw semi-transparent background
 	draw_set_alpha(0.7);
 	draw_set_color(c_black);
-	draw_rectangle(_x - 5, _y - 5, _x + 280, _y + 340, false);
+	draw_rectangle(_x - 5, _y - 5, _x + 280, _y + 430, false);
 	draw_set_alpha(1);
 
 	// Set text properties
@@ -391,6 +391,33 @@ function Draw_Debug_Overlay() {
 
 	draw_text(_x, _current_y, "Instances: " + string(instance_count));
 	_current_y += _line_height;
+
+	_current_y += _line_height * 0.5;
+
+	// === ASSET CACHE STATS ===
+	if (global.asset_cache != undefined) {
+		var hit_rate = get_asset_cache_hit_rate();
+		draw_text(_x, _current_y, "Asset Cache: " + string(round(hit_rate)) + "% hits");
+		_current_y += _line_height;
+
+		draw_text(_x, _current_y, "Cached Assets: " + string(global.asset_cache_stats.unique_assets));
+		_current_y += _line_height;
+	}
+
+	_current_y += _line_height * 0.5;
+
+	// === OBJECT POOL STATS ===
+	if (global.shot_pool != undefined) {
+		var shot_stats = global.shot_pool.getStats();
+		draw_text(_x, _current_y, "Shot Pool: " + string(shot_stats.current_active) + "/" + string(shot_stats.current_pooled));
+		_current_y += _line_height;
+	}
+
+	if (global.missile_pool != undefined) {
+		var missile_stats = global.missile_pool.getStats();
+		draw_text(_x, _current_y, "Missile Pool: " + string(missile_stats.current_active) + "/" + string(missile_stats.current_pooled));
+		_current_y += _line_height;
+	}
 
 	// Reset draw properties
 	draw_set_color(c_white);

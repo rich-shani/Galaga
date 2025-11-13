@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ScoreManager",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ScoreManager",
+  "parent":{
+    "name":"ScoreManager",
+    "path":"folders/Scripts/ScoreManager.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

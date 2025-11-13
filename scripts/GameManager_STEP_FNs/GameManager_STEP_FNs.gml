@@ -58,13 +58,13 @@ function nRogueEnemies() {
 /// @description Spawns a single rogue enemy using ROGUE_ prefixed paths
 ///              Handles combination spawns (paired enemies) recursively
 ///              SAFETY: Includes depth limit to prevent stack overflow from malformed data
+///              UPDATED: Now uses asset caching for performance
 /// @param {Real} _spawn The spawn index in the wave data
 /// @param {Real} _depth Current recursion depth (optional, default 0)
 /// @return {undefined}
 function spawnRogueEnemy(_spawn, _depth = 0) {
 	// === RECURSION DEPTH LIMIT ===
 	// Prevent stack overflow from malformed JSON with infinite COMBINE chains
-	// Max depth of 16 allows for reasonable paired spawning while preventing crashes
 	var MAX_ROGUE_SPAWN_DEPTH = 16;
 	if (_depth > MAX_ROGUE_SPAWN_DEPTH) {
 		log_error("spawnRogueEnemy exceeded max recursion depth (" + string(MAX_ROGUE_SPAWN_DEPTH) + ")", "spawnRogueEnemy", 2);
@@ -72,30 +72,26 @@ function spawnRogueEnemy(_spawn, _depth = 0) {
 	}
 
 	// === BOUNDS CHECKING ===
-	// Verify spawn index is within valid range
 	var spawn_array = spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN;
 	if (_spawn < 0 || _spawn >= array_length(spawn_array)) {
 		log_error("spawnRogueEnemy spawn index out of bounds: " + string(_spawn), "spawnRogueEnemy", 2);
 		return;
 	}
 
-	// Get the enemy data from a specific SPAWN instance
 	var enemy_data = spawn_array[_spawn];
 
-	// SPAWN a ROGUE Enemy, create path using the STANDARD path && prefix "ROGUE_"
+	// SPAWN a ROGUE Enemy with cached asset lookup
 	var path_name = "ROGUE_" + enemy_data.PATH;
 	var enemy_id = safe_get_asset(enemy_data.ENEMY, -1);
 	if (enemy_id != -1) {
 		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
-															{ ENEMY_NAME: enemy_data.ENEMY, INDEX: -1, PATH_NAME: path_name, MODE: "ROGUE" });
+			{ ENEMY_NAME: enemy_data.ENEMY, INDEX: -1, PATH_NAME: path_name, MODE: "ROGUE" });
 	} else {
 		log_error("Failed to spawn rogue enemy: " + enemy_data.ENEMY, "spawnRogueEnemy", 2);
 	}
 
-	// is this a combination spawn, ie 2 enemies side by side?
+	// Handle combination spawn
 	if (enemy_data.COMBINE) {
-		// spawn another enemy in-sync with the current spawn cycle
-		// Pass increased depth to track recursion level
 		spawnRogueEnemy(_spawn + 1, _depth + 1);
 	}
 }
@@ -106,44 +102,27 @@ function spawnRogueEnemy(_spawn, _depth = 0) {
 /// @return {undefined}
 function spawnRogueEnemies(_nRogues) {
 
-	// loop to SPAWN _nRogues (and check for a COMBINATION SPAWN)
-	for (var i=0; i < _nRogues; i++ ) {
-		spawnRogueEnemy(global.Game.Spawn.counter-2);
+	if (waveSpawner != undefined) {
+		// loop to SPAWN _nRogues (and check for a COMBINATION SPAWN)
+		for (var i=0; i < _nRogues; i++ ) {
+			spawnRogueEnemy(waveSpawner.getSpawnCounter()-2);
+		}
+	} else {
+		log_error("waveSpawner controller not initialized", "spawnRogueEnemies", 3);
 	}
 }
 
 /// @function spawnEnemy
-/// @description Spawns a standard enemy using data from wave_spawn.json
-///              Automatically handles combination spawns (paired enemies)
-///              Increments the global spawn counter after spawning
+/// @description Spawns a standard enemy using WaveSpawner controller
+///              Delegates to waveSpawner.spawnStandardEnemy()
 /// @return {undefined}
 function spawnEnemy() {
-	var enemy_data = spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN[global.Game.Spawn.counter];
-
-	// enemy_data: eg
-	// ENEMY		"oTieFighter"
-	// PATH			"Ent1e1"
-	// SPAWN_XPOS	512
-	// SPAWN YPOS	-16
-	// INDEX		1
-	// COMBINE		true/false
-
-	// SPAWN a STANDARD Enemy with error checking
-	var enemy_id = safe_get_asset(enemy_data.ENEMY, -1);
-	if (enemy_id != -1) {
-		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
-															{ ENEMY_NAME: enemy_data.ENEMY, INDEX: enemy_data.INDEX, PATH_NAME: enemy_data.PATH, MODE: "STANDARD" });
+	// Delegate to WaveSpawner controller
+	// Controller handles: data reading, error checking, COMBINE flags, counter increment
+	if (waveSpawner != undefined) {
+		waveSpawner.spawnStandardEnemy();
 	} else {
-		log_error("Failed to spawn standard enemy: " + enemy_data.ENEMY, "spawnEnemy", 2);
-	}
-
-	// advance the enemy spawn counter
-	global.Game.Spawn.counter++;
-
-	// is this a comination spawn, ie 2 enemies side by side?
-	if (enemy_data.COMBINE) {
-		// spawn another enemy in-sync with the current spawn cycle
-		spawnEnemy();
+		log_error("waveSpawner controller not initialized", "spawnEnemy", 3);
 	}
 }
 
@@ -151,8 +130,12 @@ function spawnEnemy() {
 /// @description Checks if all enemies in the current wave have been spawned
 /// @return {Bool} True if all spawn indices have been processed
 function waveComplete() {
-
-	return (global.Game.Spawn.counter == array_length(spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN));
+	if (waveSpawner != undefined) {
+		return (waveSpawner.getSpawnCounter() == array_length(spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN));
+	} else {
+		log_error("waveSpawner controller not initialized", "waveComplete", 3);
+		return false;
+	}
 }
 
 /// @function patternComplete
@@ -183,85 +166,17 @@ function getChallengeWaveData() {
 }
 
 /// @function spawnChallengeEnemy
-/// @description Spawns a challenge stage enemy based on current wave && challenge
-///              Handles wave-specific path selection && enemy alternation
-///              Used for challenge stage-specific spawning logic
+/// @description Spawns a challenge stage enemy using WaveSpawner controller
+///              Delegates to waveSpawner.spawnChallengeEnemy()
 /// @return {undefined}
 function spawnChallengeEnemy() {
-	var chall_data = getChallengeData();
-	var wave_data = getChallengeWaveData();
-	var enemy_name = wave_data.ENEMY;
-	var enemy_id = asset_get_index(enemy_name);
-
-	if (enemy_id == -1) {
-		log_error("Could not find enemy: " + enemy_name, "spawnChallengeEnemy", 2);
-		return;
+	// Delegate to WaveSpawner controller
+	// Controller handles: path selection, enemy alternation, error checking
+	if (waveSpawner != undefined) {
+		waveSpawner.spawnChallengeEnemy();
+	} else {
+		log_error("waveSpawner controller not initialized", "spawnChallengeEnemy", 3);
 	}
-
-	// Determine which path to use based on wave && count
-	var path_name = "";
-	var spawn_x = 0;
-	var spawn_y = 0;
-
-	// Wave 0, 3, 4 use path1/path1flip
-	if (global.Game.Level.wave == 0 ||
-	    (global.Game.Level.wave == 3 && global.Game.Challenge.current != 1 && global.Game.Challenge.current != 6 && global.Game.Challenge.current != 7) ||
-	    (global.Game.Level.wave == 4 && (global.Game.Challenge.current == 1 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 7))) {
-		path_name = chall_data.PATH1;
-		var path_id = safe_get_asset(path_name);
-		if (path_id != -1) {
-			spawn_x = path_get_x(path_id, 0) ;
-			spawn_y = path_get_y(path_id, 0) ;
-		} else {
-			log_error("Challenge path not found: " + path_name, "spawnChallengeEnemy", 2);
-		}
-	}
-	// Wave 1 uses path2 (alternating enemy types handled below)
-	else if (global.Game.Level.wave == 1) {
-		path_name = chall_data.PATH2;
-		var path_id = safe_get_asset(path_name);
-		if (path_id != -1) {
-			spawn_x = path_get_x(path_id, 0) ;
-			spawn_y = path_get_y(path_id, 0) ;
-		} else {
-			log_error("Challenge path not found: " + path_name, "spawnChallengeEnemy", 2);
-		}
-	}
-	// Wave 2 uses path2flip
-	else if (global.Game.Level.wave == 2) {
-		path_name = chall_data.PATH2_FLIP;
-		var path_id = safe_get_asset(path_name);
-		if (path_id != -1) {
-			spawn_x = path_get_x(path_id, 0) ;
-			spawn_y = path_get_y(path_id, 0) ;
-		} else {
-			log_error("Challenge path not found: " + path_name, "spawnChallengeEnemy", 2);
-		}
-	}
-	// Wave 4 || 3 (depending on challenge) use path1flip
-	else if ((global.Game.Level.wave == 4 && global.Game.Challenge.current != 1 && global.Game.Challenge.current != 6 && global.Game.Challenge.current != 7) ||
-	         (global.Game.Level.wave == 3 && (global.Game.Challenge.current == 1 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 7))) {
-		path_name = chall_data.PATH1_FLIP;
-		var path_id = safe_get_asset(path_name);
-		if (path_id != -1) {
-			spawn_x = path_get_x(path_id, 0) ;
-			spawn_y = path_get_y(path_id, 0) ;
-		} else {
-			log_error("Challenge path not found: " + path_name, "spawnChallengeEnemy", 2);
-		}
-	}
-
-	// For wave 1, alternate between primary enemy && TieFighter based on count
-	if (global.Game.Level.wave == 1) {
-		if (count == 1 || count == 3 || count == 5 || count == 7) {
-			// Use TieFighter instead of the wave's enemy for odd counts
-			enemy_id = asset_get_index("oTieFighter");
-		}
-	}
-
-	// Spawn the enemy
-	instance_create_layer(spawn_x, spawn_y, "GameSprites", enemy_id,
-	                      { ENEMY_NAME: object_get_name(enemy_id), INDEX: -1, PATH_NAME: path_name, MODE: "CHALLENGE" });
 }
 
 /// @function Game_Loop_Standard
@@ -317,8 +232,11 @@ function Game_Loop_Standard() {
 			    // Wave fully spawned AND enemies in formation
 				// Advance to next wave
 
-				// Reset spawn counter for next wave
-				global.Game.Spawn.counter = 0;
+				if (waveSpawner != undefined) {
+					waveSpawner.resetSpawnCounter();
+				} else {
+					log_error("waveSpawner controller not initialized", "Game_Loop_Standard", 3);
+				}
 
 				// Advance to the next WAVE within this pattern
 	            global.Game.Level.wave += 1;
@@ -535,7 +453,10 @@ function Game_Loop(){
 
 	// === EXTRA LIVES ===
 	// Award extra lives at score milestones (20k, then every 70k)
-	checkForExtraLives();
+	// Delegate to ScoreManager controller
+	if (scoreManager != undefined) {
+		scoreManager.checkForExtraLife();
+	}
 
     // === ENEMY DIVE CAPACITY HANDLING ===
 	// Calculate how many enemies can dive simultaneously

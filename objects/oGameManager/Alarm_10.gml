@@ -16,7 +16,7 @@ if (nextlevel == 1) {
         /// @subsection Check for Active Enemy Shots || Ship Death
         /// If there are active enemy shots (instance_number(EnemyShot) > 0) 
         /// delay the transition by setting alarm[10] to 1 step to allow these states to resolve.
-        if (instance_number(EnemyShot) > 0) {
+        if (instance_number(oEnemyShot) > 0) {
             alarm[10] = 1;
         } else {
             /// @subsubsection Initialize New Level
@@ -124,6 +124,7 @@ if (nextlevel == 2) {
 		global.Game.Player.score = 0;
 		global.Game.Player.shotCount = 0;
 		global.Game.Player.shotTotal = 0;
+		global.Game.Enemy.capturedPlayer = false;
 	}
            
 	Set_Nebula_Color();

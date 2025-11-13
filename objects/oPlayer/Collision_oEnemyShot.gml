@@ -3,8 +3,12 @@
 /// MIGRATION NOTE:
 ///   Migrated to use global.Game.State.mode
 
-// destroy Enemy missile
-instance_destroy(other);
+// Return enemy shot to pool or destroy it
+if (global.shot_pool != undefined) {
+	global.shot_pool.release(other);
+} else {
+	instance_destroy(other);
+}
 
 // check if the Game && Player are ACTIVE
 if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == ShipState.ACTIVE) {

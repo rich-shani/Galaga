@@ -17,14 +17,23 @@
 /// @related oEnemyBase/Destroy_0.gml - Where scoring && cleanup occurs
 
 // === MISSILE DESTRUCTION ===
-// Destroy the missile that hit this enemy
+// Return missile to pool or destroy it
 // "other" refers to the oMissile instance that collided with us
-instance_destroy(other);
+if (global.missile_pool != undefined) {
+	global.missile_pool.release(other);
+} else {
+	instance_destroy(other);
+}
 
 // === HIT STATISTICS ===
-// Increment the global hit counter for player accuracy tracking
-// Used to calculate hit/miss ratio at end of stage
-oGameManager.hits += 1;
+// Increment the global hit counter for player accuracy tracking via ScoreManager
+// ScoreManager tracks both hits and shots fired for accuracy calculation
+if (oGameManager.scoreManager != undefined) {
+	oGameManager.scoreManager.recordHit();
+} else {
+	// Fallback to legacy tracking if controller not initialized
+	oGameManager.hits += 1;
+}
 
 // === HEALTH REDUCTION ===
 // Reduce enemy's remaining hit points
@@ -38,13 +47,20 @@ if (hitCount == 0) {
 
 	// === EXPLOSION ANIMATION ===
 	// Randomly choose between two explosion types for variety
-	// 50/50 chance of oExplosion || oExplosion2
-	// Explosions are spawned at enemy's current position (rounded to nearest pixel)
+	// Use object pool if available for better performance
 	if (irandom(1)) {
-		instance_create(round(x), round(y), oExplosion);
+		if (global.explosion_pool != undefined) {
+			global.explosion_pool.acquire(round(x), round(y));
+		} else {
+			instance_create(round(x), round(y), oExplosion);
+		}
 	}
 	else {
-		instance_create(round(x), round(y), oExplosion2);
+		if (global.explosion2_pool != undefined) {
+			global.explosion2_pool.acquire(round(x), round(y));
+		} else {
+			instance_create(round(x), round(y), oExplosion2);
+		}
 	}
 
 	// === ENEMY DESTRUCTION ===

@@ -1,2 +1,8 @@
-// check for the end of the explosion, then destory
-if (image_index > 9.8) instance_destroy();
+// Return explosion to pool when animation completes
+if (image_index > 9.8) {
+	if (global.explosion2_pool != undefined) {
+		global.explosion2_pool.release(self);
+	} else {
+		instance_destroy();
+	}
+}

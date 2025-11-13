@@ -31,5 +31,11 @@ y -= MISSILE_SPEED;
 
 // === OFF-SCREEN CHECK ===
 // Destroy missile when it travels past top of visible screen
-// This prevents missiles from existing indefinitely && wasting resources
-if (y < MISSILE_OFFSCREEN) instance_destroy();
+// Return to pool if available, otherwise destroy to prevent memory leaks
+if (y < MISSILE_OFFSCREEN) {
+	if (global.missile_pool != undefined) {
+		global.missile_pool.release(self);
+	} else {
+		instance_destroy();
+	}
+}
