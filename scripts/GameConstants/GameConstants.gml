@@ -668,3 +668,122 @@ function get_config_value(section, key, default_value) {
 /// Beam Capture Alarms (in frames at 60 FPS)
 #macro BEAM_FIGHTER_CAPTURED_MESSAGE_DELAY 240 // Delay before showing "FIGHTER CAPTURED" (4 seconds)
 #macro BEAM_PLAYER_RESPAWN_DELAY 180           // Delay before player can respawn after capture (3 seconds)
+
+// ========================================================================
+// LEVEL PROGRESSION CONSTANTS
+// ========================================================================
+// These thresholds define when difficulty mechanics activate.
+// Used by scripts/newlevel/newlevel.gml to escalate gameplay difficulty
+
+/// @macro LEVEL_ROGUE_1_START
+/// Starting level for rogue enemies (level 3+)
+#macro LEVEL_ROGUE_1_START 3
+
+/// @macro LEVEL_ROGUE_2_START
+/// Level 7+: Rogue level 2 + fast entry mode begins
+#macro LEVEL_ROGUE_2_START 7
+
+/// @macro LEVEL_FASTENTER_RESET
+/// Level 10: Fast entry resets, rogue level resets to 1
+#macro LEVEL_FASTENTER_RESET 10
+
+/// @macro LEVEL_ROGUE_3_START
+/// Level 11+: Rogue level 3, speed mode, 3 shots, boss dive cap 2
+#macro LEVEL_ROGUE_3_START 11
+
+/// @macro LEVEL_ROGUE_4_START
+/// Level 15+: Rogue level 4 activated
+#macro LEVEL_ROGUE_4_START 15
+
+/// @macro LEVEL_ADVANCED_SHOTS
+/// Level 19+: 4 shots, boss dive cap 4
+#macro LEVEL_ADVANCED_SHOTS 19
+
+/// @macro LEVEL_CHALLENGE_THRESHOLD
+/// Challenge stages occur every N levels (every 4th level)
+#macro LEVEL_CHALLENGE_THRESHOLD 4
+
+// ========================================================================
+// BONUS & SCORING CONSTANTS
+// ========================================================================
+
+/// @macro ENEMIES_PER_BONUS
+/// Every N destroyed enemies triggers transformation bonus
+#macro ENEMIES_PER_BONUS 8
+
+/// @macro TRANSFORMATION_BONUS
+/// Points awarded when player gets ENEMIES_PER_BONUS consecutive kills
+#macro TRANSFORMATION_BONUS 160
+
+/// @macro PERFECT_CLEAR_BONUS
+/// Bonus for clearing entire wave with 100% accuracy
+#macro PERFECT_CLEAR_BONUS 10000
+
+// ========================================================================
+// FORMATION GRID CONSTANTS
+// ========================================================================
+
+/// @macro FORMATION_GRID_SIZE
+/// Total enemy slots in formation grid (5 rows × 8 columns = 40)
+#macro FORMATION_GRID_SIZE 40
+
+// ========================================================================
+// TIMING CONSTANTS (Frame-based, 60 FPS)
+// ========================================================================
+// Note: 1 second = 60 frames at 60 FPS
+
+/// @macro FRAMES_PER_SECOND
+/// GameMaker runs at 60 FPS (frames per second)
+#macro FRAMES_PER_SECOND 60
+
+/// @macro ONE_SECOND_FRAMES
+/// Number of frames in 1 second
+#macro ONE_SECOND_FRAMES 60
+
+/// @macro TWO_SECOND_FRAMES
+/// Number of frames in 2 seconds
+#macro TWO_SECOND_FRAMES 120
+
+/// @macro HALF_SECOND_FRAMES
+/// Number of frames in 0.5 seconds
+#macro HALF_SECOND_FRAMES 30
+
+// ========================================================================
+// CONSTANT USAGE GUIDE - Quick Reference
+// ========================================================================
+//
+// This section documents how to use these constants in your code.
+// Always prefer constants over hardcoded values for maintainability.
+//
+// EXAMPLE USAGES:
+//
+// Movement:
+//   var new_x = x + (direction_x * PLAYER_SHIP_MOVE_INCREMENT_WARS);
+//   enemy.moveSpeed = ENEMY_BASE_SPEED * ENEMY_ENTRANCE_SPEED_MULTIPLIER;
+//
+// Timing/Alarms:
+//   alarm[EnemyAlarmIndex.DIVE_ATTACK] = DIVE_ALARM_STANDARD;
+//   if (alarm[0] == -1) {  // Rotation alignment complete
+//       direction = TARGET_DIRECTION_DOWN;
+//   }
+//
+// Scoring:
+//   extra_life_threshold = EXTRA_LIFE_FIRST_THRESHOLD;
+//   current_interval = EXTRA_LIFE_ADDITIONAL_THRESHOLD;
+//
+// Formation:
+//   breathing_amplitude = FORMATION_BREATHE_AMPLITUDE;
+//   var cycle_progress = (global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX);
+//
+// Collision Detection:
+//   if (distance_to_point(target_x, target_y) < CAPTURE_BEAM_RANGE) {
+//       // Enemy can capture player
+//   }
+//
+// When adding new constants:
+//   1. Add to appropriate section above
+//   2. Include JSDoc comment with @macro tag
+//   3. Explain purpose and units (pixels, frames, etc.)
+//   4. Document default/typical values
+//   5. Link to related constants if applicable
+// ========================================================================

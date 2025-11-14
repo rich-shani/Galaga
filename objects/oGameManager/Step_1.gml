@@ -41,7 +41,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 	global.Game.Display.flip = 0;
 	global.Game.State.breathing = 1;
 
-	exhale = 0;
+	global.Game.Controllers.visualEffects.exhaleFlag = 0;
 		global.Game.State.isGameOver = false;
 		global.Game.State.isPaused = false;
 		global.Game.State.prohibitDive = 0;
@@ -100,6 +100,10 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 }
 
 // === DEBUG INPUT HANDLING ===
+
+if (global.debug && keyboard_check_pressed(vk_f1)) {
+    gc_collect();
+}
 
 // If the F10 key is pressed, toggle game speed between 60 FPS && 10 FPS for debugging
 if keyboard_check_pressed(vk_f10) == true {

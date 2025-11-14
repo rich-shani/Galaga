@@ -109,18 +109,18 @@ function controlEnemyFormation() {
     if global.Game.State.breathing == 0 {
         // Not breathing yet; run animation to transition to breathing
 
-        if exhale == 0 {
+        if global.Game.Controllers.visualEffects.exhaleFlag == 0 {
             x -= 0.5; // Inhale motion (move object left)
             if x == -48 {
-                exhale = 1; // Switch to exhale
+                global.Game.Controllers.visualEffects.exhaleFlag = 1; // Switch to exhale
                 skip = 1;   // Skip one frame on exhale start
             }
         }
 
-        if exhale == 1 && skip == 0 {
+        if global.Game.Controllers.visualEffects.exhaleFlag == 1 && skip == 0 {
             x += 0.5; // Exhale motion (move object right)
             if x == 80 {
-                exhale = 0; // Loop back to inhale
+                global.Game.Controllers.visualEffects.exhaleFlag = 0; // Loop back to inhale
             }
         }
 
@@ -129,7 +129,7 @@ function controlEnemyFormation() {
         if global.Game.State.spawnOpen == 0 {
             if x == 16 {
                 global.Game.State.breathing = 1; // Begin breathing animation loop
-                exhale = 0;
+                global.Game.Controllers.visualEffects.exhaleFlag = 0;
                 sound_stop(GBreathe);
                 sound_loop(GBreathe); // Loop breathing sound
             }
@@ -139,18 +139,18 @@ function controlEnemyFormation() {
     if global.Game.State.breathing == 1 {
         // Active breathing animation && audio logic
 
-        if exhale == 0 {
+        if global.Game.Controllers.visualEffects.exhaleFlag == 0 {
             global.Game.Enemy.breathePhase += BREATHING_RATE; // Simulate inhale rate
             if round(global.Game.Enemy.breathePhase) >= BREATHING_CYCLE_MAX {
-                exhale = 1;
+                global.Game.Controllers.visualEffects.exhaleFlag = 1;
                 exit; // Exit breathing update for this frame
             }
         }
 
-        if exhale == 1 {
+        if global.Game.Controllers.visualEffects.exhaleFlag == 1 {
             global.Game.Enemy.breathePhase -= BREATHING_RATE; // Simulate exhale rate
             if round(global.Game.Enemy.breathePhase) <= 0 {
-                exhale = 0;
+                global.Game.Controllers.visualEffects.exhaleFlag = 0;
                 sound_stop(GBreathe);
                 sound_loop(GBreathe); // Restart breathing sound
                 exit;

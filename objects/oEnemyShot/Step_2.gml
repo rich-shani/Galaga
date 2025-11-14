@@ -63,7 +63,7 @@ if (!initialized) {
 /// @related EnemyShot/Create_0.gml - Where shot movement is initialized
 /// @related oPlayer/Collision_EnemyShot.gml - Player hit detection
 
-if (y > 576*global.Game.Display.scale) {
+if (y > SCREEN_BOTTOM_Y * global.Game.Display.scale) {
 	if (global.shot_pool != undefined) {
 		global.shot_pool.release(self);
 	} else {

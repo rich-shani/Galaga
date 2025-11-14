@@ -214,10 +214,10 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			/// ================================================================
 
 			// center player ...
-			if (x < 448) {
+			if (x < SCREEN_CENTER_X * global.Game.Display.scale) {
 				x += 3;
 			}
-			else if (x > 448) {
+			else if (x > SCREEN_CENTER_X * global.Game.Display.scale) {
 				x -= 3;
 			}
 			
@@ -274,8 +274,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 				// === RESET POSITION ===
 				// Place player at starting position (center-bottom of screen)
-				x = 224*global.Game.Display.scale;  // Horizontal center
-				y = 528*global.Game.Display.scale;  // Near bottom of screen
+				x = SCREEN_CENTER_X * global.Game.Display.scale;  // Horizontal center
+				y = PLAYER_SPAWN_Y * global.Game.Display.scale;  // Near bottom of screen
 			}
 
 			break;

@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"TestFramework",
+  "%Name":"VisualEffectManager",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"TestFramework",
+  "name":"VisualEffectManager",
   "parent":{
-    "name":"TestRunner",
-    "path":"folders/Scripts/TestRunner.yy",
+    "name":"Managers",
+    "path":"folders/Scripts/Managers.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

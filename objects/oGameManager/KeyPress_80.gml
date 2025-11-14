@@ -19,17 +19,17 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 		// PAUSE game, suspend the sounds && set screen effect to black && white
 		audio_pause_all();
 		
-		if (layer_pause_fx != -1) 
+		if (global.Game.Controllers.visualEffects.pauseEffectLayer != -1) 
 		{
-			if (fx_get_name(layer_pause_fx) == "_filter_colourise")
+			if (fx_get_name(global.Game.Controllers.visualEffects.pauseEffectLayer) == "_filter_colourise")
 			{            
-				fx_set_parameter(layer_pause_fx, "g_Intensity", 1.0);
+				fx_set_parameter(global.Game.Controllers.visualEffects.pauseEffectLayer, "g_Intensity", 1.0);
 			}		
 		}
 		
-		if (scrolling_nebula_bg != -1)
+		if (global.Game.Controllers.visualEffects.scrollingNebulaLayer != -1)
 		{
-			layer_set_visible(scrolling_nebula_bg, false);
+			layer_set_visible(global.Game.Controllers.visualEffects.scrollingNebulaLayer, false);
 		}
 	}
 	else {
@@ -37,17 +37,17 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 		// UNPAUSE game, resume the sounds && set screen effect to color
 		audio_resume_all();
 			
-		if (layer_pause_fx != -1) 
+		if (global.Game.Controllers.visualEffects.pauseEffectLayer != -1) 
 		{
-			if (fx_get_name(layer_pause_fx) == "_filter_colourise")
+			if (fx_get_name(global.Game.Controllers.visualEffects.pauseEffectLayer) == "_filter_colourise")
 			{            
-				fx_set_parameter(layer_pause_fx, "g_Intensity", 0.0);
+				fx_set_parameter(global.Game.Controllers.visualEffects.pauseEffectLayer, "g_Intensity", 0.0);
 			}		
 		}
 		
-		if (scrolling_nebula_bg != -1)
+		if (global.Game.Controllers.visualEffects.scrollingNebulaLayer != -1)
 		{
-			layer_set_visible(scrolling_nebula_bg, true);
+			layer_set_visible(global.Game.Controllers.visualEffects.scrollingNebulaLayer, true);
 		}
 	}
 }

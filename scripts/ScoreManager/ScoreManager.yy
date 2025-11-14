@@ -6,7 +6,7 @@
   "name":"ScoreManager",
   "parent":{
     "name":"ScoreManager",
-    "path":"folders/Scripts/ScoreManager.yy",
+    "path":"folders/Scripts/Managers/ScoreManager.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

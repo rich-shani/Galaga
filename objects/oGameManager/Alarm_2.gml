@@ -20,7 +20,7 @@ if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
         case 5:
             // Award special bonus || multiplied score
             if (global.Game.Player.shotTotal == 40) {
-                global.Game.Player.score += 10000; // Perfect bonus
+                global.Game.Player.score += PERFECT_CLEAR_BONUS; // Perfect bonus
             } else {
                 global.Game.Player.score += global.Game.Player.shotTotal * 100; // Score based on shots
             }

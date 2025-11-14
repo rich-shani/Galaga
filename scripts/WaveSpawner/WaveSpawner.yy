@@ -6,7 +6,7 @@
   "name":"WaveSpawner",
   "parent":{
     "name":"WaveSpawner",
-    "path":"folders/Scripts/WaveSpawner.yy",
+    "path":"folders/Scripts/Managers/WaveSpawner.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

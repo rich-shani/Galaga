@@ -6,7 +6,7 @@
   "name":"ChallengeStageManager",
   "parent":{
     "name":"ChallengeStageManager",
-    "path":"folders/Scripts/ChallengeStageManager.yy",
+    "path":"folders/Scripts/Managers/ChallengeStageManager.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

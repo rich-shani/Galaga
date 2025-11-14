@@ -42,11 +42,11 @@ nextlevel = 0;
 /// @section Miscellaneous
 // Exhale flag, initialized to 0.
 // Purpose unclear; possibly related to a visual || sound effect (e.g., boss animation).
-exhale = 0;
+//exhale = 0;
 
 // Skip flag, initialized to 0.
 // Likely used to manage timing || skip certain actions (e.g., shot firing in double mode).
-skip = 0;
+//skip = 0;
 
 /// @section Scoring && Hits
 // Tracks the number of shots fired by the player, initialized to 0.
@@ -122,28 +122,7 @@ hundrank = 0;
 // used for blinking UI elements, such as score || lives display.
 blink = 1;
 
-// Grab handles to visual effects layers
-layer_pause_fx = layer_get_fx("PauseEffect");
-if (layer_pause_fx == -1) {
-    log_error("PauseEffect layer not found - pause visual effects disabled", "oGameManager Create", 1);
-}
-
-scrolling_nebula_bg = layer_get_id("ScrollingNebula");
-if (scrolling_nebula_bg == -1) {
-    log_error("ScrollingNebula layer not found - background effects disabled", "oGameManager Create", 1);
-}
-
-// Nebula color palette - cycles through spectrum for visual variety per level
-hue_value = [
-    NEBULA_HUE_BLUE,
-    NEBULA_HUE_CYAN,
-    NEBULA_HUE_GREEN,
-    NEBULA_HUE_YELLOW_GREEN,
-    NEBULA_HUE_YELLOW,
-    NEBULA_HUE_ORANGE,
-    NEBULA_HUE_RED,
-    NEBULA_HUE_MAGENTA
-];
+global.Game.Controllers.visualEffects = new VisualEffectsManager();
 
 /// @section Data Loading - JSON Configuration Files
 /// All game data is loaded from external JSON files for easy content modification

@@ -5,6 +5,19 @@
 // This provides organized, type-safe access to game state
 
 global.Game = {
+	Input: {
+		gamePad: false,
+		fullScreen: false,
+		characterCycle: "ABCDEFGHIJKLMNOPQRSTUVWXYZ ."
+	},
+	Timing: {
+	    frameCounter: 0,
+	    lifeCounter: 0,
+	    loopCounter: 0,
+	    cycleCounter: 0,
+	    alternateCounter: 0,
+	    nextLevelFlag: 0
+	},
     Player: {
         score: 0,
         lives: get_config_value("PLAYER", "STARTING_LIVES", 3),
@@ -77,7 +90,13 @@ global.Game = {
         screenWidth: view_get_wport(view_current),
         screenHeight: view_get_hport(view_current),
         animationIndex: 0,
-		flip: 0
+		flip: 0,
+		uiState: {
+	        blinkCounter: 1,
+	        scoreDigits: { hundreds: 0, tens: 0, ones: 0 },
+	        rankDigits: { hundreds: 0, tens: 0, ones: 0 },
+	        rankDisplaySprites: []
+		}
     },
 	HighScores: {
 		scores: [20000, 10000, 5000, 2000, 1000],	// [score1, score2, score3, score4, score5]
@@ -89,7 +108,15 @@ global.Game = {
     Difficulty: {
         speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
         gameSpeed: 60
-    }
+    },
+	Controllers: {
+	    waveSpawner: undefined,
+	    scoreManager: undefined,
+	    challengeManager: undefined,
+	    visualEffects: undefined,
+	    frameCounters: undefined,
+	    uiManager: undefined
+	}
 };
 
 // === DEBUG MODE ===

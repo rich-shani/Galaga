@@ -146,7 +146,7 @@ if (nextlevel == 2) {
     /// Likely related to visual || sound effects for enemies (e.g., boss animations).
     global.Game.State.breathing = 0;
     global.Game.Enemy.breathePhase = 0;
-    exhale = 0;
+    global.Game.Controllers.visualEffects.exhaleFlag = 0;
     
     /// Reset global.beamcheck to 0, indicating no active boss beam mechanics.
     global.beamcheck = 0;

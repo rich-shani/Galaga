@@ -373,3 +373,177 @@ function getTestPassRate() {
 function didAllTestsPass() {
     return (global.test_results.failed == 0 && global.test_results.total > 0);
 }
+
+// ========================================================================
+// ADDITIONAL ASSERTION FUNCTIONS
+// ========================================================================
+
+/// @function assert_is_true
+/// @description Alias for assert_true for consistency
+/// @param {Bool} condition The condition to test
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_is_true(condition, message) {
+    return assert_true(condition, message);
+}
+
+/// @function assert_is_false
+/// @description Alias for assert_false for consistency
+/// @param {Bool} condition The condition to test
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_is_false(condition, message) {
+    return assert_false(condition, message);
+}
+
+/// @function assert_is_null
+/// @description Asserts that a value is undefined or -1 (null representation)
+/// @param {Any} value The value to test
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_is_null(value, message) {
+    var is_null = (value == undefined || value == -1);
+    return assert_true(is_null, message);
+}
+
+/// @function assert_is_not_null
+/// @description Asserts that a value is NOT undefined or -1 (null representation)
+/// @param {Any} value The value to test
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_is_not_null(value, message) {
+    var is_not_null = (value != undefined && value != -1);
+    return assert_true(is_not_null, message);
+}
+
+/// @function assert_is_array
+/// @description Asserts that a value is an array
+/// @param {Any} value The value to test
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_is_array(value, message) {
+    var is_arr = is_array(value);
+    return assert_true(is_arr, message);
+}
+
+/// @function assert_is_struct
+/// @description Asserts that a value is a struct
+/// @param {Any} value The value to test
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_is_struct(value, message) {
+    var is_str = is_struct(value);
+    return assert_true(is_str, message);
+}
+
+/// @function assert_array_length
+/// @description Asserts that an array has expected length
+/// @param {Array} arr The array to test
+/// @param {Real} expected_length Expected array length
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_array_length(arr, expected_length, message) {
+    if (!is_array(arr)) {
+        show_debug_message("[ERROR] assert_array_length: First argument is not an array");
+        return false;
+    }
+    var actual_length = array_length(arr);
+    return assert_equals(actual_length, expected_length, message);
+}
+
+/// @function assert_struct_has_property
+/// @description Asserts that a struct contains a specific property
+/// @param {Struct} str The struct to test
+/// @param {String} property_name The property name to check
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_struct_has_property(str, property_name, message) {
+    if (!is_struct(str)) {
+        show_debug_message("[ERROR] assert_struct_has_property: First argument is not a struct");
+        return false;
+    }
+    var has_prop = variable_struct_exists(str, property_name);
+    return assert_true(has_prop, message + " (property: " + property_name + ")");
+}
+
+/// @function assert_between
+/// @description Asserts that actual value is between min and max (exclusive of boundaries)
+/// @param {Real} actual The actual value
+/// @param {Real} min Minimum value (exclusive)
+/// @param {Real} max Maximum value (exclusive)
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_between(actual, min, max, message) {
+    global.test_results.total++;
+
+    var passed = (actual > min && actual < max);
+
+    if (passed) {
+        global.test_results.passed++;
+        show_debug_message("[PASS] " + message);
+
+        array_push(global.test_results.tests, {
+            name: message,
+            suite: global.test_results.current_suite,
+            status: "PASS",
+            expected: string(min) + " < x < " + string(max),
+            actual: actual
+        });
+
+        return true;
+    } else {
+        global.test_results.failed++;
+        show_debug_message("[FAIL] " + message);
+        show_debug_message("       Expected range: " + string(min) + " < x < " + string(max));
+        show_debug_message("       Actual:         " + string(actual));
+
+        array_push(global.test_results.tests, {
+            name: message,
+            suite: global.test_results.current_suite,
+            status: "FAIL",
+            expected: string(min) + " < x < " + string(max),
+            actual: actual
+        });
+
+        return false;
+    }
+}
+
+/// @function assert_string_contains
+/// @description Asserts that a string contains a substring
+/// @param {String} str The string to search in
+/// @param {String} substring The substring to find
+/// @param {String} message Description of what's being tested
+/// @return {Bool} True if assertion passed, false if failed
+function assert_string_contains(str, substring, message) {
+    var contains = (string_pos(substring, str) > 0);
+    return assert_true(contains, message);
+}
+
+// ========================================================================
+// TEST SETUP AND TEARDOWN HELPERS
+// ========================================================================
+
+/// @function setupTestEnvironment
+/// @description Initializes test environment with clean state
+/// @description Should be called before running test suites
+function setupTestEnvironment() {
+    resetTestResults();
+
+    // Initialize any global test state here
+    show_debug_message("");
+    show_debug_message("========================================");
+    show_debug_message("INITIALIZING TEST ENVIRONMENT");
+    show_debug_message("========================================");
+}
+
+/// @function teardownTestEnvironment
+/// @description Cleans up test environment after test suites complete
+/// @description Should be called after all tests finish
+function teardownTestEnvironment() {
+    reportTestResults();
+    show_debug_message("");
+    show_debug_message("========================================");
+    show_debug_message("TEST ENVIRONMENT CLEANED UP");
+    show_debug_message("========================================");
+}

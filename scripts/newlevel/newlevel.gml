@@ -2,7 +2,7 @@ function newlevel() {
 	sound_stop(GBreathe); global.transside = 0;
 	global.Game.Challenge.count = global.Game.Challenge.count + 1;
 	
-	if global.Game.Challenge.count < 4{
+	if global.Game.Challenge.count < LEVEL_CHALLENGE_THRESHOLD {
 		///pattern
 		if global.Game.Level.current = 1{global.Game.Level.pattern = 0;};
 		if global.Game.Level.current = 2{global.Game.Level.pattern = 1;};
@@ -11,20 +11,42 @@ function newlevel() {
 			global.Game.Level.pattern = global.Game.Level.pattern - 1;
 			if global.Game.Level.pattern = -1{global.Game.Level.pattern = 2;}
 		};
-		
-		///rogue
-		if global.Game.Level.current > 3{global.Game.Rogue.level = 1}
-		if global.Game.Level.current > 7{global.Game.Rogue.level = 2}
-		if global.Game.Level.current > 11{global.Game.Rogue.level = 3}
-		if global.Game.Level.current > 15{global.Game.Rogue.level = 4}
-		if global.Game.Level.current = 10 || global.Game.Level.current = 18{global.Game.Rogue.level = 0};
-		
-		// Calculate progressive speed multiplier based on level
-		
-		// Level 1: 1.0x, Level 5: 1.2x, Level 10: 1.5x, Level 20: 2.0x
-		global.Game.Difficulty.speedMultiplier = 1.0 + (global.Game.Level.current * 0.05);  // +5% per level
-		global.Game.Difficulty.speedMultiplier = clamp(global.Game.Difficulty.speedMultiplier, 1.0, 2.0);  // Cap at 2x
 
+		// === LEVEL PROGRESSION - Dynamic difficulty scaling ===
+		// Each threshold activates new enemy behaviors and game mechanics
+
+		if (global.Game.Level.current > LEVEL_ROGUE_1_START) {
+			global.Game.Rogue.level = 1;
+		}
+
+		if (global.Game.Level.current > LEVEL_ROGUE_2_START) {
+			global.Game.Rogue.level = 2;
+			global.Game.State.fastEnter = 1;
+		}
+
+		if (global.Game.Level.current == LEVEL_FASTENTER_RESET) {
+			// Reset difficulty parameters at level 10
+			global.Game.State.fastEnter = 0;
+			global.Game.Rogue.level = 1;
+		}
+
+		if (global.Game.Level.current > LEVEL_ROGUE_3_START) {
+			global.Game.Rogue.level = 3;
+			global.Game.State.fast = 1;
+			global.shotnumber = 3;
+			global.bosscap = 2;
+		}
+
+		if (global.Game.Level.current > LEVEL_ROGUE_4_START) {
+			global.Game.Rogue.level = 4;
+		}
+
+		if (global.Game.Level.current > LEVEL_ADVANCED_SHOTS) {
+			global.shotnumber = 4;
+			global.bosscap = 4;
+		}
+
+		// Calculate progressive speed multiplier based on level
 		var curve = speed_curves.SPEED_CURVE.LEVEL_MULTIPLIERS;
 		global.Game.Difficulty.speedMultiplier = 1.0;
 
@@ -34,18 +56,6 @@ function newlevel() {
 			}
 		}
 
-		///fastenter
-		if global.Game.Level.current > 7{global.Game.State.fastEnter = 1};
-		if global.Game.Level.current = 10{global.Game.State.fastEnter = 0};
-		///fast
-		if global.Game.Level.current > 11{global.Game.State.fast = 1};
-		///shotnumber
-		if global.Game.Level.current > 11{global.shotnumber = 3};
-		if global.Game.Level.current > 19{global.shotnumber = 4};
-		///bosscap
-		if global.Game.Level.current > 11{global.bosscap = 3}
-		if global.Game.Level.current > 19{global.bosscap = 4}
-		
 		global.Game.Challenge.isActive = false;
 		global.Game.State.mode = GameMode.GAME_STAGE_MESSAGE;
 	}

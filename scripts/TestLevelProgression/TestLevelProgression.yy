@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"TestLevelProgression",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"TestRunner",
+    "path":"folders/Scripts/TestRunner.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

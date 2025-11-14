@@ -66,8 +66,8 @@ if (!global.Game.State.isGameOver) {
 		if global.Game.Challenge.count == 0 {
 			global.Game.Player.shotCount += 1;
 
-			/// Every 8 consecutive kills in normal mode creates a bonus
-			if global.Game.Player.shotCount == 8 {
+			/// Every ENEMIES_PER_BONUS consecutive kills in normal mode creates a bonus
+			if global.Game.Player.shotCount == ENEMIES_PER_BONUS {
 				instance_create_layer(round(x), round(y), "GameSprites", TransPoints);
 			}
 		}
@@ -76,7 +76,7 @@ if (!global.Game.State.isGameOver) {
 		if trans == 1 {
 			/// Increment transformation counter && award transformation bonus
 			global.Game.Enemy.transformCount += 1;
-			global.Game.Player.score += 160;  // Fixed bonus per transformed enemy
+			global.Game.Player.score += TRANSFORMATION_BONUS;  // Fixed bonus per transformed enemy
 
 			/// After 3 transformation kills, spawn TransPoints bonus
 			if global.Game.Enemy.transformCount == 3 {

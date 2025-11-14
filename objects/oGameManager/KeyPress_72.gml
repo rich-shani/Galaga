@@ -1,13 +1,12 @@
 if (scrolling_nebula_bg != -1) 
 {
-	var layer_fx = layer_get_fx(scrolling_nebula_bg);
-   
-    if (layer_fx != -1)
-    {
-        if (fx_get_name(layer_fx) == "_filter_hue")
-        {
-            fx_set_parameter(layer_fx, "g_HueShift", global.Game.Level.current % array_length(hue_value));
-        }
-    }		
+	if (global.Game.Controllers.visualEffects.scrollingNebulaLayer != -1) 
+	{
+	    if (fx_get_name(global.Game.Controllers.visualEffects.scrollingNebulaLayer) == "_filter_hue")
+	    {
+	        fx_set_parameter(global.Game.Controllers.visualEffects.scrollingNebulaLayer, "g_HueShift",
+								global.Game.Level.current % array_length(global.Game.Controllers.visualEffects.hueValues));
+	    }
+	}
 }
 		
