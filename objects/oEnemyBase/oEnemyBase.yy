@@ -16,8 +16,8 @@
   "name":"oEnemyBase",
   "overriddenProperties":[],
   "parent":{
-    "name":"STARWARS",
-    "path":"folders/Objects/Enemies/STARWARS.yy",
+    "name":"Enemies",
+    "path":"folders/Objects/Enemies.yy",
   },
   "parentObjectId":null,
   "persistent":false,

@@ -30,10 +30,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_explode",
-    "path":"sprites/spr_explode/spr_explode.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
   "visible":true,
 }

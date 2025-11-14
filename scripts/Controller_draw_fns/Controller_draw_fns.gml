@@ -244,7 +244,7 @@ function Draw_Lives() {
 	lifecount = global.Game.Player.lives - 1;
 	repeat(lifecount)
 	{
-		draw_sprite_ext(sXWing, 0, (20 + 34 * (lifecount - 1))*global.Game.Display.scale, 560*global.Game.Display.scale, 0.6, 0.6, 0, c_white, 1);
+		draw_sprite_ext(xwing_sprite_sheet, 2, (20 + 34 * (lifecount - 1))*global.Game.Display.scale, 560*global.Game.Display.scale, 0.6, 0.6, 0, c_white, 1);
 
 		lifecount = lifecount - 1
 	};

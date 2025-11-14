@@ -12,7 +12,6 @@ part_emitter_region(ps, pe, 0, viewport_width, -16, -128, ps_shape_rectangle, ps
 
 // particle
 pt = part_type_create();
-//part_type_sprite(pt, sParticle, false, false, true);
 part_type_shape(pt, pt_shape_sphere);
 //part_type_alpha1(pt, 0.7);					// 70% alpha mix
 part_type_color_rgb(pt,0,255,0,255,0,255);

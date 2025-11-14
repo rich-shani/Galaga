@@ -8,8 +8,8 @@
   "name":"oImperialShuttle",
   "overriddenProperties":[],
   "parent":{
-    "name":"STARWARS",
-    "path":"folders/Objects/Enemies/STARWARS.yy",
+    "name":"Enemies",
+    "path":"folders/Objects/Enemies.yy",
   },
   "parentObjectId":{
     "name":"oEnemyBase",

@@ -3,7 +3,7 @@ if (!splashScreenSetup) {
 	randomise();
 	
 	// randomize the splash screen
-	sprite_splash_screen = asset_get_index("Splash" + string(irandom(8)));
+	sprite_splash_screen = asset_get_index("Splash" + string(irandom(13)));
 	
 	// play intro music
 	audio_play_sound(intro_music, 1, false);

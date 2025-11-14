@@ -41,10 +41,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"s",
-    "path":"sprites/s/s.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":{
     "name":"xwing_sprite_sheet",
     "path":"sprites/xwing_sprite_sheet/xwing_sprite_sheet.yy",
