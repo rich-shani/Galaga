@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ScoreManager",
   "parent":{
-    "name":"ScoreManager",
-    "path":"folders/Scripts/Managers/ScoreManager.yy",
+    "name":"Managers",
+    "path":"folders/Scripts/Managers.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

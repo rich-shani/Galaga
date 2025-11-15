@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"Hud",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"HUD",
+    "path":"folders/Scripts/HUD.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

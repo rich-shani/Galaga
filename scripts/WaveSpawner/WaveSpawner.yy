@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"WaveSpawner",
   "parent":{
-    "name":"WaveSpawner",
-    "path":"folders/Scripts/Managers/WaveSpawner.yy",
+    "name":"Managers",
+    "path":"folders/Scripts/Managers.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

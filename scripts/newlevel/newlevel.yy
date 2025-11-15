@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"newlevel",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Level",
+    "path":"folders/Scripts/Level.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

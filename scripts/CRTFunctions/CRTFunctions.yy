@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"CRTFunctions",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"CRT",
+    "path":"folders/Scripts/CRT.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

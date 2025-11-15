@@ -10,8 +10,8 @@
   "name":"oSplashScreen",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"Intro",
+    "path":"folders/Objects/Intro.yy",
   },
   "parentObjectId":null,
   "persistent":false,

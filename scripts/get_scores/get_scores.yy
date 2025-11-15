@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"get_scores",
   "parent":{
-    "name":"gmscoreboard",
-    "path":"folders/Scripts/gmscoreboard.yy",
+    "name":"GMScoreboard",
+    "path":"folders/Scripts/GMScoreboard.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

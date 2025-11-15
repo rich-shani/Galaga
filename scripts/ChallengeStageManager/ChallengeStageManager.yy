@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ChallengeStageManager",
   "parent":{
-    "name":"ChallengeStageManager",
-    "path":"folders/Scripts/Managers/ChallengeStageManager.yy",
+    "name":"Managers",
+    "path":"folders/Scripts/Managers.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
