@@ -54,7 +54,7 @@ function ChallengeStageManager(_challenge_data) constructor {
 		is_active = true;
 		global.Game.Challenge.isActive = true;
 
-		// Select challenge pattern (cycle through 0-7)
+		// Select challenge pattern (global.Game.Input.characterCycle through 0-7)
 		current_challenge_id = global.Game.Challenge.current mod 8;
 		global.Game.Challenge.current = current_challenge_id;
 

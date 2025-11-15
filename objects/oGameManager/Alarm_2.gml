@@ -11,9 +11,9 @@ if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
         case 1:
             // Play perfect || regular results sound based on shots fired
             if (global.Game.Player.shotTotal == 40) {
-                sound_play(GPerfect);
+                global.Game.Controllers.audioManager.playSound(GPerfect);
             } else {
-                sound_play(GResults);
+                global.Game.Controllers.audioManager.playSound(GResults);
             }
             break;
 

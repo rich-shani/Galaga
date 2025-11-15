@@ -13,7 +13,7 @@
 /// Beam weapon characteristics:
 /// • Activates during dive attack phase
 /// • Requires player in vulnerable state (single-ship mode)
-/// • One beam per dive cycle
+/// • One beam per dive global.Game.Input.characterCycle
 /// • Deals significant damage if player is hit
 /// ================================================================
 

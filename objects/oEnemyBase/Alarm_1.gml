@@ -12,7 +12,7 @@
 ///
 /// Shot difficulty (global.Game.Enemy.shotNumber) increases as game progresses:
 ///   • Higher values = more frequent shots
-///   • Value checked multiple times per alarm cycle in Step_0.gml
+///   • Value checked multiple times per alarm global.Game.Input.characterCycle in Step_0.gml
 ///
 /// MIGRATION NOTE:
 ///   Migrated to use global.Game.State.mode && MAX_ENEMY_SHOTS constant

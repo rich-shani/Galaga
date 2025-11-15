@@ -109,13 +109,19 @@ global.Game = {
         speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
         gameSpeed: 60
     },
+	Data: {
+		spawn: undefined,
+		challenge: undefined,
+		rogue: undefined,
+		speedCurves: undefined
+	},
 	Controllers: {
 	    waveSpawner: undefined,
 	    scoreManager: undefined,
 	    challengeManager: undefined,
 	    visualEffects: undefined,
-	    frameCounters: undefined,
-	    uiManager: undefined
+	    uiManager: undefined,
+	    audioManager: undefined
 	}
 };
 
@@ -135,6 +141,13 @@ global.asset_cache_stats = {
 };
 
 show_debug_message("[AssetCache] Cache initialized");
+
+// ========================================================================
+// AUDIO MANAGER INITIALIZATION
+// ========================================================================
+// Initialize the centralized audio management system
+global.Game.Controllers.audioManager = AudioManager_create();
+show_debug_message("[AudioManager] Audio management system initialized");
 
 show_debug_message("[init_globals] Struct-based global system initialized");
 show_debug_message("[init_globals] All game state managed through global.Game namespace");

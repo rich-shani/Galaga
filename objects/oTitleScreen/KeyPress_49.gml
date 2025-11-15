@@ -2,7 +2,7 @@
 if (global.Game.Player.credits < 10) {	
 	global.Game.Player.credits += 1;
 	
-	sound_play(GCredit);
+	global.Game.Controllers.audioManager.playSound(GCredit);
 }
 
 ScreenShown = TITLE_SCREEN.INSTRUCTIONS;

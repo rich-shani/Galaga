@@ -6,7 +6,7 @@ if (!splashScreenSetup) {
 	sprite_splash_screen = asset_get_index("Splash" + string(irandom(13)));
 	
 	// play intro music
-	audio_play_sound(intro_music, 1, false);
+	global.Game.Controllers.audioManager.playSound(intro_music, 1);
 
 	// create instance
 	var _inst = instance_create_depth(0, 0, 0, oFadeScreen);

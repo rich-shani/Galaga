@@ -2,7 +2,7 @@
 /// 
 /// This script is triggered by alarm[7]. On the first loop, it checks if the player has scored && plays a sound if so.
 /// The alarm is then reset to trigger again after 633 steps. On subsequent loops, it increments the loop counter,
-/// && restarts the room on the 4th loop. Otherwise, it continues resetting the alarm for the next cycle.
+/// && restarts the room on the 4th loop. Otherwise, it continues resetting the alarm for the next global.Game.Input.characterCycle.
 /// 
 /// @global {number} loop - Tracks the current loop count for alarm[7].
 /// @global {number} scored - Indicates if the player has scored (1 if true).
@@ -14,7 +14,7 @@
 if loop == 0 {
 	loop = 1; // Set loop to 1 to indicate first run
 	if scored == 1 {
-		sound_loop(G1stEnd633); // Play sound if scored
+		global.Game.Controllers.audioManager.loopSound(G1stEnd633); // Play sound if scored
 	}
 	alarm[7] = 633; // Set alarm[7] to trigger again after 633 steps
 	exit; // Exit the script

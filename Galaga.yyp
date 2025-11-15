@@ -302,6 +302,7 @@
     {"id":{"name":"TestFramework","path":"scripts/TestFramework/TestFramework.yy",},},
     {"id":{"name":"TestHighScoreSystem","path":"scripts/TestHighScoreSystem/TestHighScoreSystem.yy",},},
     {"id":{"name":"TestLevelProgression","path":"scripts/TestLevelProgression/TestLevelProgression.yy",},},
+    {"id":{"name":"UIManager","path":"scripts/UIManager/UIManager.yy",},},
     {"id":{"name":"VisualEffectManager","path":"scripts/VisualEffectManager/VisualEffectManager.yy",},},
     {"id":{"name":"waverogue","path":"scripts/waverogue/waverogue.yy",},},
     {"id":{"name":"WaveSpawner","path":"scripts/WaveSpawner/WaveSpawner.yy",},},

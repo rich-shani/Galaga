@@ -7,11 +7,11 @@
 if (global.Game.Level.current > 0 && rank > 0) {
 
     /// @subsection Ones Digit
-    // Handle the ones digit of the rank when rank equals onerank (the ones component of the rank)
-    if (rank == onerank) {
+    // Handle the ones digit of the rank when rank equals global.Game.Controllers.uiManager.rankDisplay.ones (the ones component of the rank)
+    if (rank == global.Game.Controllers.uiManager.rankDisplay.ones) {
         // If the ones digit is greater than 4, use sprite section at offset (16,0; 16x32 pixels)
-        if (one > 4) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.ones > 4) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 32,
                 sprite_y: 0,
                 sprite_width: 32,
@@ -22,7 +22,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
         }
         // Otherwise, use the default sprite section (0,0) for digits 0-4
         else {
-            array_push(rank_display_sprites, {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 0,
                 sprite_y: 0,
                 sprite_width: 32,
@@ -33,10 +33,10 @@ if (global.Game.Level.current > 0 && rank > 0) {
         }
     }
 
-    // Display the ones digit for ranks slightly below onerank (onerank-1 to onerank-4)
+    // Display the ones digit for ranks slightly below global.Game.Controllers.uiManager.rankDisplay.ones (global.Game.Controllers.uiManager.rankDisplay.ones-1 to global.Game.Controllers.uiManager.rankDisplay.ones-4)
     // Uses the default sprite section (0,0) for consistency, adjusting the x-position based on rank
-    if (rank == onerank - 1) {
-        array_push(rank_display_sprites, {
+    if (rank == global.Game.Controllers.uiManager.rankDisplay.ones - 1) {
+        array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
             sprite_x: 0,
             sprite_y: 0,
             sprite_width: 32,
@@ -45,8 +45,8 @@ if (global.Game.Level.current > 0 && rank > 0) {
             y_pos: 544 * global.Game.Display.scale
         });
     }
-    if (rank == onerank - 2) {
-        array_push(rank_display_sprites, {
+    if (rank == global.Game.Controllers.uiManager.rankDisplay.ones - 2) {
+        array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
             sprite_x: 0,
             sprite_y: 0,
             sprite_width: 32,
@@ -55,8 +55,8 @@ if (global.Game.Level.current > 0 && rank > 0) {
             y_pos: 544 * global.Game.Display.scale
         });
     }
-    if (rank == onerank - 3) {
-        array_push(rank_display_sprites, {
+    if (rank == global.Game.Controllers.uiManager.rankDisplay.ones - 3) {
+        array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
             sprite_x: 0,
             sprite_y: 0,
             sprite_width: 32,
@@ -65,8 +65,8 @@ if (global.Game.Level.current > 0 && rank > 0) {
             y_pos: 544 * global.Game.Display.scale
         });
     }
-    if (rank == onerank - 4) {
-        array_push(rank_display_sprites, {
+    if (rank == global.Game.Controllers.uiManager.rankDisplay.ones - 4) {
+        array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
             sprite_x: 0,
             sprite_y: 0,
             sprite_width: 32,
@@ -77,117 +77,117 @@ if (global.Game.Level.current > 0 && rank > 0) {
     }
 
     /// @subsection Tens Digit
-    // Handle the tens digit when rank equals the sum of onerank && tenrank, && tenrank is positive
-    if (tenrank > 0 && rank == onerank + tenrank) {
+    // Handle the tens digit when rank equals the sum of global.Game.Controllers.uiManager.rankDisplay.ones && global.Game.Controllers.uiManager.rankDisplay.tens, && global.Game.Controllers.uiManager.rankDisplay.tens is positive
+    if (global.Game.Controllers.uiManager.rankDisplay.tens > 0 && rank == global.Game.Controllers.uiManager.rankDisplay.ones + global.Game.Controllers.uiManager.rankDisplay.tens) {
         // For tens digit > 4, use wider sprite section (128,0; 32x32 pixels) to accommodate larger digits
-        // Position adjusted by (onerank*16) to align with the ones digit
-        if (ten > 4) {
-            array_push(rank_display_sprites, {
+        // Position adjusted by (global.Game.Controllers.uiManager.rankDisplay.ones*16) to align with the ones digit
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens > 4) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 256,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 3 || 4, use sprite section at (96,0)
-        if (ten == 3 || ten == 4) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens == 3 || global.Game.Controllers.uiManager.scoreDisplay.tens == 4) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 192,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 2, use sprite section at (64,0)
-        if (ten == 2) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens == 2) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 128,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 1, use sprite section at (32,0)
-        if (ten == 1) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens == 1) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 64,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
     }
 
-    // Handle tens digit for ranks one less than onerank + tenrank, when tenrank > 1
-    if (tenrank > 1 && rank == onerank + tenrank - 1) {
+    // Handle tens digit for ranks global.Game.Controllers.uiManager.scoreDisplay.ones less than global.Game.Controllers.uiManager.rankDisplay.ones + global.Game.Controllers.uiManager.rankDisplay.tens, when global.Game.Controllers.uiManager.rankDisplay.tens > 1
+    if (global.Game.Controllers.uiManager.rankDisplay.tens > 1 && rank == global.Game.Controllers.uiManager.rankDisplay.ones + global.Game.Controllers.uiManager.rankDisplay.tens - 1) {
         // For tens digit 8 || 9, use sprite section at (96,0)
-        if (ten == 9 || ten == 8) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens == 9 || global.Game.Controllers.uiManager.scoreDisplay.tens == 8) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 192,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 7, use sprite section at (64,0)
-        if (ten == 7) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens == 7) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 128,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
         // For tens digit 4 || 6, use sprite section at (32,0)
-        if (ten == 6 || ten == 4) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens == 6 || global.Game.Controllers.uiManager.scoreDisplay.tens == 4) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 64,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
     }
 
-    // Handle tens digit for ranks two less than onerank + tenrank, when tenrank > 2
-    if (tenrank > 2 && rank == onerank + tenrank - 2) {
+    // Handle tens digit for ranks two less than global.Game.Controllers.uiManager.rankDisplay.ones + global.Game.Controllers.uiManager.rankDisplay.tens, when global.Game.Controllers.uiManager.rankDisplay.tens > 2
+    if (global.Game.Controllers.uiManager.rankDisplay.tens > 2 && rank == global.Game.Controllers.uiManager.rankDisplay.ones + global.Game.Controllers.uiManager.rankDisplay.tens - 2) {
         // For tens digit 9, use sprite section at (32,0)
-        if (ten == 9) {
-            array_push(rank_display_sprites, {
+        if (global.Game.Controllers.uiManager.scoreDisplay.tens == 9) {
+            array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
                 sprite_x: 64,
                 sprite_y: 0,
                 sprite_width: 64,
                 sprite_height: 64,
-                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+                x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
                 y_pos: 544 * global.Game.Display.scale
             });
         }
     }
 
     /// @subsection Hundreds Digit
-    // Display the hundreds digit when rank exceeds the sum of onerank && tenrank
+    // Display the hundreds digit when rank exceeds the sum of global.Game.Controllers.uiManager.rankDisplay.ones && global.Game.Controllers.uiManager.rankDisplay.tens
     // Uses a wider sprite section (128,0; 32x32 pixels) for the hundreds place
-    if (rank > tenrank + onerank) {
-        array_push(rank_display_sprites, {
+    if (rank > global.Game.Controllers.uiManager.rankDisplay.tens + global.Game.Controllers.uiManager.rankDisplay.ones) {
+        array_push(global.Game.Controllers.uiManager.rankDisplaySprites, {
             sprite_x: 256,
             sprite_y: 0,
             sprite_width: 64,
             sprite_height: 64,
-            x_pos: 440 * global.Game.Display.scale - (64 * rank) + (onerank * 32),
+            x_pos: 440 * global.Game.Display.scale - (64 * rank) + (global.Game.Controllers.uiManager.rankDisplay.ones * 32),
             y_pos: 544 * global.Game.Display.scale
         });
     }
@@ -198,7 +198,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
 
     // Play a ranking sound (GRank) if a challenge mode is active
     if (global.Game.Challenge.count > 0) {
-        sound_play(GRank);
+        global.Game.Controllers.audioManager.playSound(GRank);
     }
 
     // Set alarm 1 to 7 steps to control the timing of rank updates

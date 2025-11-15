@@ -31,16 +31,13 @@ if (global.missile_pool != undefined) {
 // === HIT STATISTICS ===
 // Increment the global hit counter for player accuracy tracking via ScoreManager
 // ScoreManager tracks both hits and shots fired for accuracy calculation
-if (oGameManager.scoreManager != undefined) {
-	oGameManager.scoreManager.recordHit();
-} else {
-	// Fallback to legacy tracking if controller not initialized
-	oGameManager.hits += 1;
+if (global.Game.Controllers.scoreManager != undefined) {
+	global.Game.Controllers.scoreManager.recordHit();
 }
 
 // === HEALTH REDUCTION ===
 // Reduce enemy's remaining hit points
-// Most enemies have hitCount = 1 (die in one hit)
+// Most enemies have hitCount = 1 (die in global.Game.Controllers.uiManager.scoreDisplay.ones hit)
 // Boss enemies may have hitCount > 1 (require multiple hits)
 hitCount--;
 

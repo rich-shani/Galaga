@@ -46,7 +46,7 @@ function checkForExtraLives() {
 	    global.Game.Player.firstlife += global.Game.Player.additional;
 
 	    // === AWARD EXTRA LIFE ===
-	    sound_play(GLife);  // Play extra life sound effect
+	    global.Game.Controllers.audioManager.playSound(GLife);  // Play extra life sound effect
 	    global.Game.Player.lives += 1;
 
 	    // === LOG FOR DEBUG ===

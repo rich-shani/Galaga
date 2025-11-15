@@ -1,5 +1,5 @@
 function newlevel() {
-	sound_stop(GBreathe); global.transside = 0;
+	global.Game.Controllers.audioManager.stopSound(GBreathe); global.transside = 0;
 	global.Game.Challenge.count = global.Game.Challenge.count + 1;
 	
 	if global.Game.Challenge.count < LEVEL_CHALLENGE_THRESHOLD {
@@ -47,7 +47,7 @@ function newlevel() {
 		}
 
 		// Calculate progressive speed multiplier based on level
-		var curve = speed_curves.SPEED_CURVE.LEVEL_MULTIPLIERS;
+		var curve = global.Game.Data.speedCurves.SPEED_CURVE.LEVEL_MULTIPLIERS;
 		global.Game.Difficulty.speedMultiplier = 1.0;
 
 		for (var i = 0; i < array_length(curve); i++) {
@@ -67,7 +67,7 @@ function newlevel() {
 
 		global.Game.State.mode = GameMode.CHALLENGE_STAGE_MESSAGE;
 		
-		global.Game.Challenge.count = 0; sound_play(GChallenging);
+		global.Game.Challenge.count = 0; global.Game.Controllers.audioManager.playSound(GChallenging);
 		global.Game.Challenge.current += 1; if global.Game.Challenge.current = 9{global.Game.Challenge.current = 1}; script_execute(challenging);
 		///transnum
 		global.Game.Enemy.transformNum = global.Game.Enemy.transformNum + 1; if global.Game.Enemy.transformNum = 4{global.Game.Enemy.transformNum = 1};

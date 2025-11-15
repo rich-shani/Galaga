@@ -39,12 +39,12 @@ function load_json_datafile(_datafile, _default = undefined) {
 function nRogueEnemies() {
     // Get spawn count for current rogue level && wave
     // Add bounds checking to prevent crashes from invalid indices
-    if (global.Game.Rogue.level < 0 || global.Game.Rogue.level >= array_length(rogue_config.ROGUE_LEVELS)) {
+    if (global.Game.Rogue.level < 0 || global.Game.Rogue.level >= array_length(global.Game.Data.rogue.ROGUE_LEVELS)) {
         log_error("Invalid rogue level index: " + string(global.Game.Rogue.level), "nRogueEnemies", 2);
         return 0;
     }
 
-    var rogue_level_data = rogue_config.ROGUE_LEVELS[global.Game.Rogue.level];
+    var rogue_level_data = global.Game.Data.rogue.ROGUE_LEVELS[global.Game.Rogue.level];
 
     if (global.Game.Level.wave < 0 || global.Game.Level.wave >= array_length(rogue_level_data.SPAWN_COUNT)) {
         log_error("Invalid wave index: " + string(global.Game.Level.wave), "nRogueEnemies", 2);
@@ -72,7 +72,7 @@ function spawnRogueEnemy(_spawn, _depth = 0) {
 	}
 
 	// === BOUNDS CHECKING ===
-	var spawn_array = spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN;
+	var spawn_array = global.Game.Data.spawn.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN;
 	if (_spawn < 0 || _spawn >= array_length(spawn_array)) {
 		log_error("spawnRogueEnemy spawn index out of bounds: " + string(_spawn), "spawnRogueEnemy", 2);
 		return;
@@ -102,10 +102,10 @@ function spawnRogueEnemy(_spawn, _depth = 0) {
 /// @return {undefined}
 function spawnRogueEnemies(_nRogues) {
 
-	if (waveSpawner != undefined) {
+	if (global.Game.Controllers.waveSpawner != undefined) {
 		// loop to SPAWN _nRogues (and check for a COMBINATION SPAWN)
 		for (var i=0; i < _nRogues; i++ ) {
-			spawnRogueEnemy(waveSpawner.getSpawnCounter()-2);
+			spawnRogueEnemy(global.Game.Controllers.waveSpawner.getSpawnCounter()-2);
 		}
 	} else {
 		log_error("waveSpawner controller not initialized", "spawnRogueEnemies", 3);
@@ -119,8 +119,8 @@ function spawnRogueEnemies(_nRogues) {
 function spawnEnemy() {
 	// Delegate to WaveSpawner controller
 	// Controller handles: data reading, error checking, COMBINE flags, counter increment
-	if (waveSpawner != undefined) {
-		waveSpawner.spawnStandardEnemy();
+	if (global.Game.Controllers.waveSpawner != undefined) {
+		global.Game.Controllers.waveSpawner.spawnStandardEnemy();
 	} else {
 		log_error("waveSpawner controller not initialized", "spawnEnemy", 3);
 	}
@@ -130,8 +130,8 @@ function spawnEnemy() {
 /// @description Checks if all enemies in the current wave have been spawned
 /// @return {Bool} True if all spawn indices have been processed
 function waveComplete() {
-	if (waveSpawner != undefined) {
-		return (waveSpawner.getSpawnCounter() == array_length(spawn_data.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN));
+	if (global.Game.Controllers.waveSpawner != undefined) {
+		return (global.Game.Controllers.waveSpawner.getSpawnCounter() == array_length(global.Game.Data.spawn.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN));
 	} else {
 		log_error("waveSpawner controller not initialized", "waveComplete", 3);
 		return false;
@@ -143,7 +143,7 @@ function waveComplete() {
 /// @return {Bool} True if all waves in pattern are done
 function patternComplete() {
 
-	return (global.Game.Level.wave == array_length(spawn_data.PATTERN[global.Game.Level.pattern].WAVE));
+	return (global.Game.Level.wave == array_length(global.Game.Data.spawn.PATTERN[global.Game.Level.pattern].WAVE));
 }
 
 /// @function getChallengeData
@@ -153,7 +153,7 @@ function patternComplete() {
 function getChallengeData() {
 	// Get the challenge data for the current challenge (global.Game.Challenge.current is 1-8)
 	// Array is 0-indexed, so subtract 1
-	return challenge_data.CHALLENGES[global.Game.Challenge.current - 1];
+	return global.Game.Data.challenge.CHALLENGES[global.Game.Challenge.current - 1];
 }
 
 /// @function getChallengeWaveData
@@ -172,8 +172,8 @@ function getChallengeWaveData() {
 function spawnChallengeEnemy() {
 	// Delegate to WaveSpawner controller
 	// Controller handles: path selection, enemy alternation, error checking
-	if (waveSpawner != undefined) {
-		waveSpawner.spawnChallengeEnemy();
+	if (global.Game.Controllers.waveSpawner != undefined) {
+		global.Game.Controllers.waveSpawner.spawnChallengeEnemy();
 	} else {
 		log_error("waveSpawner controller not initialized", "spawnChallengeEnemy", 3);
 	}
@@ -232,8 +232,8 @@ function Game_Loop_Standard() {
 			    // Wave fully spawned AND enemies in formation
 				// Advance to next wave
 
-				if (waveSpawner != undefined) {
-					waveSpawner.resetSpawnCounter();
+				if (global.Game.Controllers.waveSpawner != undefined) {
+					global.Game.Controllers.waveSpawner.resetSpawnCounter();
 				} else {
 					log_error("waveSpawner controller not initialized", "Game_Loop_Standard", 3);
 				}
@@ -455,7 +455,7 @@ function Game_Loop(){
      // Use pool's active count if available, otherwise fall back to instance_number
      global.Game.Enemy.shotCount = (global.shot_pool != undefined) ? global.shot_pool.stats.current_active : instance_number(oEnemyShot);
 	 
-	// calculate the Enemy breathing cycle - once per frame (used by 40 enemies)
+	// calculate the Enemy breathing global.Game.Input.characterCycle - once per frame (used by 40 enemies)
      if (global.Game.Enemy.breathePhase != undefined) {
          global.Game.Enemy.breathePhase_normalized =
              global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX;
@@ -464,8 +464,8 @@ function Game_Loop(){
 	// === EXTRA LIVES ===
 	// Award extra lives at score milestones (20k, then every 70k)
 	// Delegate to ScoreManager controller
-	if (scoreManager != undefined) {
-		scoreManager.checkForExtraLife();
+	if (global.Game.Controllers.scoreManager != undefined) {
+		global.Game.Controllers.scoreManager.checkForExtraLife();
 	}
 
     // === ENEMY DIVE CAPACITY HANDLING ===

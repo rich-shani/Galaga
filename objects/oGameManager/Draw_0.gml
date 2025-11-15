@@ -3,8 +3,8 @@ Draw_Hud();
 
 /// @section Rank Display Rendering
 // Render all rank display sprites stored in the array
-for (var i = 0; i < array_length(rank_display_sprites); i++) {
-    var sprite_data = rank_display_sprites[i];
+for (var i = 0; i < array_length(global.Game.Controllers.uiManager.rankDisplaySprites); i++) {
+    var sprite_data = global.Game.Controllers.uiManager.rankDisplaySprites[i];
 
     // Draw a portion of the bkgd_Rank sprite at the specified position
     draw_sprite_part(

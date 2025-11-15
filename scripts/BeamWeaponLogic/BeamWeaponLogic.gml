@@ -75,8 +75,8 @@ function activateBeamWeapon() {
     beam_weapon.state = BEAM_STATE.FIRE;
 
     // === PLAY BEAM SOUND ===
-    sound_stop(GBeam);
-    sound_loop(GBeam);
+    global.Game.Controllers.audioManager.stopSound(GBeam);
+    global.Game.Controllers.audioManager.loopSound(GBeam);
 }
 
 /// @function isPlayerInCaptureZone
@@ -136,8 +136,8 @@ function capturePlayer() {
     oPlayer.alarm[0] = BEAM_PLAYER_RESPAWN_DELAY;             // Respawn delay
 
     // === PLAY CAPTURE SOUND ===
-    sound_stop(GBeam);
-    sound_loop(GCaptured);
+    global.Game.Controllers.audioManager.stopSound(GBeam);
+    global.Game.Controllers.audioManager.loopSound(GCaptured);
 }
 
 /// @function updateBeamFire

@@ -71,8 +71,8 @@ else if (ScreenShown == TITLE_SCREEN.INSTRUCTIONS) {
 		// 'use' credit to enter game mode
 		global.Game.Player.credits--;
 		
-		if (audio_is_playing(Galaga_Theme_Remix_Short)) {
-			audio_stop_sound(Galaga_Theme_Remix_Short);
+		if (global.Game.Controllers.audioManager.isPlaying(Galaga_Theme_Remix_Short)) {
+			global.Game.Controllers.audioManager.stopSound(Galaga_Theme_Remix_Short);
 		}
 	
 		global.Game.State.mode = GameMode.INITIALIZE;

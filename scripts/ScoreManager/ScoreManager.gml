@@ -69,7 +69,7 @@ function ScoreManager() constructor {
 			next_extra_life_score += extra_life_interval;
 
 			// Award life
-			sound_play(GLife);
+			global.Game.Controllers.audioManager.playSound(GLife);
 			global.Game.Player.lives += 1;
 
 			log_error("Extra life awarded at score: " + string(total_score), "ScoreManager.checkForExtraLife", 1);

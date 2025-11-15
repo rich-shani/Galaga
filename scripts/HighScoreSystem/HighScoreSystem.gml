@@ -20,7 +20,7 @@ function shift_scores_for_new_high_score(position, new_score) {
     var idx = position - 1;  // Convert 1-based to 0-based
 
     // === SHIFT SCORES DOWN ===
-    // Move positions (idx+1) through 4 down by one
+    // Move positions (idx+1) through 4 down by global.Game.Controllers.uiManager.scoreDisplay.ones
     for (var i = 4; i > idx; i--) {
         global.Game.HighScores.scores[i] = global.Game.HighScores.scores[i - 1];
         global.Game.HighScores.initials[i] = global.Game.HighScores.initials[i - 1];
@@ -36,7 +36,7 @@ function shift_scores_for_new_high_score(position, new_score) {
 
 /// @function Enter_Initials
 /// @description Handles player input for entering initials on the high score screen
-///              Allows navigation through character cycle && selection of characters
+///              Allows navigation through character global.Game.Input.characterCycle && selection of characters
 ///              for high score name entry (3 characters per initial slot)
 /// @return {undefined}
 function Enter_Initials() {
@@ -45,7 +45,7 @@ function Enter_Initials() {
     if keyboard_check(vk_left) && alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
         cyc -= 1;  // Move to previous character
         if cyc <= 0 {
-            cyc = string_length(cycle); // Wrap to last character
+            cyc = string_length(global.Game.Input.characterCycle); // Wrap to last character
         }
         alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Input cooldown
     }
@@ -53,7 +53,7 @@ function Enter_Initials() {
     // === NAVIGATE RIGHT THROUGH CHARACTER CYCLE ===
     if keyboard_check(vk_right) && alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
         cyc += 1; // Move to next character
-        if cyc > string_length(cycle) {
+        if cyc > string_length(global.Game.Input.characterCycle) {
             cyc = 1; // Wrap to first character
         }
         alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Input cooldown
@@ -62,8 +62,8 @@ function Enter_Initials() {
     // === SELECT CHARACTER (SPACE KEY) ===
     if (keyboard_check_pressed(vk_space) && loop > 0 && global.Game.State.results < 5) {
 
-        // Get new character from cycle string
-        var _new_char = string_char_at(cycle, cyc);
+        // Get new character from global.Game.Input.characterCycle string
+        var _new_char = string_char_at(global.Game.Input.characterCycle, cyc);
 
         // Get the array index (scored is 1-based position, convert to 0-based)
         var pos_idx = scored - 1;
@@ -81,7 +81,7 @@ function Enter_Initials() {
 
         // === MOVE TO NEXT CHARACTER OR FINALIZE ===
         global.Game.State.results += 1;
-        cyc = 1;  // Reset character cycle
+        cyc = 1;  // Reset character global.Game.Input.characterCycle
 
         if global.Game.State.results == 5 {
             // === ALL 3 CHARACTERS ENTERED ===

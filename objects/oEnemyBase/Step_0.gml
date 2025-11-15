@@ -125,7 +125,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		// Trigger transformation animation
 		alarm[EnemyAlarmIndex.DIVE_ATTACK] = TRANSFORM_ALARM_DELAY;
 		global.Game.Enemy.transformActive = 1;
-		sound_play(GTransform);
+		global.Game.Controllers.audioManager.playSound(GTransform);
 	}
 
 	/// ================================================================
@@ -258,8 +258,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				alarm[1] = ENEMY_SHOT_ALARM;
 
 				// Play dive sound effect
-				sound_stop(GDive);
-				sound_play(GDive);
+				global.Game.Controllers.audioManager.stopSound(GDive);
+				global.Game.Controllers.audioManager.playSound(GDive);
 
 				/// === DIVE PATH SELECTION ===
 				/// Choose appropriate dive path based on starting formation position
@@ -309,7 +309,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				
 				if (beam_weapon.state == BEAM_STATE.READY) {
 					// BEAM ACTIVATION POSITION REACHED 
-					// Check if PLAYER is in single mode && use a random one-in-three chance to activate
+					// Check if PLAYER is in single mode && use a random global.Game.Controllers.uiManager.scoreDisplay.ones-in-three chance to activate
 					if (!global.Game.Enemy.capturedPlayer && (irandom(0) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
 					else beam_weapon.state = BEAM_STATE.FAILED;
 				}
@@ -330,8 +330,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						beam_weapon.state = BEAM_STATE.FIRE;
 
 						/// Stop dive sound && play beam sound effect
-						sound_stop(GBeam);
-						sound_loop(GBeam);
+						global.Game.Controllers.audioManager.stopSound(GBeam);
+						global.Game.Controllers.audioManager.loopSound(GBeam);
 					}
 					/// === PLAYER CAPTURE ZONE ===
 					/// During beam FIRE phase, check if player is in capture zone
@@ -371,8 +371,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 								global.Game.Enemy.capturedPlayer = true;
 
-								sound_stop(GBeam);			// Stop beam sound
-						        sound_loop(GCaptured);		// Play captured sound
+								global.Game.Controllers.audioManager.stopSound(GBeam);			// Stop beam sound
+						        global.Game.Controllers.audioManager.loopSound(GCaptured);		// Play captured sound
 
 								// delay the RESPAWN of the PLAYER
 								oPlayer.alarm[0] = 180;
@@ -454,12 +454,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				// Status: OPEN
 				//
 				// Description:
-				//   When 2 enemies remain, one enemy occasionally exhibits erratic
+				//   When 2 enemies remain, global.Game.Controllers.uiManager.scoreDisplay.ones enemy occasionally exhibits erratic
 				//   path behavior on its first dive attack before normalizing.
 				//
 				// Reproduction:
 				//   1. Clear all enemies except 2
-				//   2. Wait for one enemy to initiate dive attack
+				//   2. Wait for global.Game.Controllers.uiManager.scoreDisplay.ones enemy to initiate dive attack
 				//   3. Observe: Enemy may follow unexpected path briefly
 				//   4. Subsequent dives behave normally
 				//
@@ -503,8 +503,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			alarm[1] = ENEMY_SHOT_ALARM;
 		
 			// dive sound ...
-			sound_stop(GDive);
-			sound_play(GDive);
+			global.Game.Controllers.audioManager.stopSound(GDive);
+			global.Game.Controllers.audioManager.playSound(GDive);
 
 			// Choose path based on starting position
 			if (x > SCREEN_CENTER_X * global.Game.Display.scale) {

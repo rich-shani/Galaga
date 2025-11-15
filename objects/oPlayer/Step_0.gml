@@ -37,7 +37,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 			// === GAMEPAD INPUT ===
 			// Check if gamepad is connected && active
-			if (oGameManager.useGamepad) {
+			if (global.Game.Input.useGamepad) {
 				// === HORIZONTAL MOVEMENT ===
 				// Read analog stick value (-1.0 to 1.0)
 				// Apply deadzone of 0.1 to prevent drift
@@ -126,7 +126,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 					// === AUDIO FEEDBACK ===
 					// Play shooting sound effect
-					audio_play_sound(GShot, 1, false);
+					global.Game.Controllers.audioManager.playSound(GShot, 1);
 
 					// === COOLDOWN TIMER ===
 					// Set cooldown to 0.1 seconds (6 frames at 60 FPS)
@@ -135,11 +135,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 					// === SHOT STATISTICS ===
 					// Track shot fired via ScoreManager for accuracy calculation
-					if (oGameManager.scoreManager != undefined) {
-						oGameManager.scoreManager.recordShot();
-					} else {
-						// Fallback to legacy tracking
-						oGameManager.fire += 1;
+					if (global.Game.Controllers.scoreManager != undefined) {
+						global.Game.Controllers.scoreManager.recordShot();
 					}
 				}
 			}
@@ -175,7 +172,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			// Only process if game isn't already over
 			if (!global.Game.State.isGameOver) {
 				// === DEDUCT LIFE ===
-				// Remove one life from player
+				// Remove global.Game.Controllers.uiManager.scoreDisplay.ones life from player
 				global.Game.Player.lives -= 1;
 
 				// === CHECK FOR REMAINING LIVES ===
@@ -195,7 +192,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 					global.Game.State.isGameOver = true;
 
 					// just incase there's a sound running in a loop, clear ...
-					audio_stop_all();
+					global.Game.Controllers.audioManager.stopAll();
 					
 					// Set cleanup/game over sequence timer (2 seconds)
 					// Triggers high score check && return to title
@@ -242,7 +239,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			rescued_fighter_y = 0;
 			
 			// === DOCKING COMPLETE ===
-			sound_stop(GRescue); 
+			global.Game.Controllers.audioManager.stopSound(GRescue); 
 		
 			// Rescued fighter has reached player position
 			shotMode = ShotMode.DOUBLE; // Enable dual fighter mode!

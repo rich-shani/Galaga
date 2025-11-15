@@ -92,16 +92,16 @@ if (!global.Game.State.isGameOver) {
 			/// • transnum = 3: Boss1 sound (third transformation)
 			/// ================================================================
 			if global.Game.Enemy.transformNum == 1 {
-				sound_stop(GBoss2);
-				sound_play(GBoss2);
+				global.Game.Controllers.audioManager.stopSound(GBoss2);
+				global.Game.Controllers.audioManager.playSound(GBoss2);
 			}
 			if global.Game.Enemy.transformNum == 2 {
-				sound_stop(GButterfly);
-				sound_play(GButterfly);
+				global.Game.Controllers.audioManager.stopSound(GButterfly);
+				global.Game.Controllers.audioManager.playSound(GButterfly);
 			}
 			if global.Game.Enemy.transformNum == 3 {
-				sound_stop(GBoss1);
-				sound_play(GBoss1);
+				global.Game.Controllers.audioManager.stopSound(GBoss1);
+				global.Game.Controllers.audioManager.playSound(GBoss1);
 			}
 		} else {
 			/// ================================================================
@@ -115,22 +115,22 @@ if (!global.Game.State.isGameOver) {
 			/// • Challenge 7: Boss1 sound
 			/// ================================================================
 			if global.Game.Challenge.count > 0 || global.Game.Challenge.current == 1 {
-				sound_stop(GBee);
-				sound_play(GBee);
+				global.Game.Controllers.audioManager.stopSound(GBee);
+				global.Game.Controllers.audioManager.playSound(GBee);
 			}
 
 			if global.Game.Challenge.count == 0 {
 				if global.Game.Challenge.current == 2 || global.Game.Challenge.current == 3 || global.Game.Challenge.current == 5 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 8 {
-					sound_stop(GButterfly);
-					sound_play(GButterfly);
+					global.Game.Controllers.audioManager.stopSound(GButterfly);
+					global.Game.Controllers.audioManager.playSound(GButterfly);
 				}
 				if global.Game.Challenge.current == 4 {
-					sound_stop(GBoss2);
-					sound_play(GBoss2);
+					global.Game.Controllers.audioManager.stopSound(GBoss2);
+					global.Game.Controllers.audioManager.playSound(GBoss2);
 				}
 				if global.Game.Challenge.current == 7 {
-					sound_stop(GBoss1);
-					sound_play(GBoss1);
+					global.Game.Controllers.audioManager.stopSound(GBoss1);
+					global.Game.Controllers.audioManager.playSound(GBoss1);
 				}
 			}
 		}
@@ -145,7 +145,7 @@ if (!global.Game.State.isGameOver) {
 		oPlayer.rescued_fighter_y = beam_weapon.player_y;
 
 		// Play rescue sound effect
-		sound_loop(GRescue); 
+		global.Game.Controllers.audioManager.loopSound(GRescue); 
 		
 		// instruct all enemies to return to FORMATION
 		with (oEnemyBase) {

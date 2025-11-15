@@ -113,13 +113,13 @@ enum PlayerAlarmIndex {
 #macro FORMATION_ROTATION_ANGLE_STEP 6
 
 /// @macro BREATHING_CYCLE_MAX
-/// @description Maximum value for breathing animation cycle
+/// @description Maximum value for breathing animation global.Game.Input.characterCycle
 #macro BREATHING_CYCLE_MAX 120
 
 /// @macro BREATHING_RATE
 /// @description Rate of breathing animation increment per frame
 ///              Value calculated as: 120 cycles / 127 frames ≈ 0.9469697
-///              This specific value ensures breathing cycle aligns with audio loop timing
+///              This specific value ensures breathing global.Game.Input.characterCycle aligns with audio loop timing
 #macro BREATHING_RATE 0.946969697
 
 ///// @macro TARGET_DIRECTION_DOWN

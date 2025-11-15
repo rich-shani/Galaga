@@ -39,7 +39,7 @@ function challenging() {
 	// Get challenge data for current challenge pattern
 	// global.Game.Challenge.current ranges from 1-8, corresponding to 8 different challenge patterns
 	// Array is 0-indexed, so subtract 1 to get correct pattern
-	var chall_data = challenge_data.CHALLENGES[global.Game.Challenge.current - 1];
+	var chall_data = global.Game.Data.challenge.CHALLENGES[global.Game.Challenge.current - 1];
 
 	// === SET PATH VARIABLES ===
 	// Convert path names (strings) to path asset IDs (numbers)

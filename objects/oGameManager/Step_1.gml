@@ -23,7 +23,7 @@ if (!global.Game.State.isPaused) {
 if (global.Game.State.mode == GameMode.INITIALIZE) {
 	// Stops all currently playing sounds to ensure a clean audio state at initialization.
 	// Prevents audio overlap from previous game states || sessions.
-	sound_stop_all();
+	global.Game.Controllers.audioManager.stopAll();
 
 	load_highscores();
 	
@@ -90,13 +90,10 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 
 	global.Game.State.mode = GameMode.GAME_PLAYER_MESSAGE;
 
-	sound_play(GStart);  // Play game start sound
+	global.Game.Controllers.audioManager.playSound(GStart);  // Play game start sound
 
 	alarm[11] = 250;  // Start spawn / formation timer
 	alarm[8] = 14;   // Start formation countdown
-
-	fire = 0;   // Reset fire state
-	hits = 0;   // Reset hit count
 }
 
 // === DEBUG INPUT HANDLING ===

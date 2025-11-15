@@ -183,7 +183,7 @@ vec3 glow(vec2 uv, vec3 mask_color) {
 	
 	vec4 glow = vec4(0.0);
 
-	// Simple one-pass blur using 4 samples
+	// Simple global.Game.Controllers.uiManager.scoreDisplay.ones-pass blur using 4 samples
 	// Save the size of a texel into a vec2
 	vec2 texel = gold_noise(uv * 1000.0, u_random_seed) * u_glow_spread / u_game_size;
 	vec2 h = texel * 0.6;
@@ -210,7 +210,7 @@ vec3 reflection(vec2 uv, float dist) {
 	
 	vec4 glow = vec4(0.0);
 
-	// Simple one-pass blur using 4 samples
+	// Simple global.Game.Controllers.uiManager.scoreDisplay.ones-pass blur using 4 samples
 	// Save the size of a texel into a vec2
 	vec2 texel = gold_noise(uv * 1000.0, u_random_seed) * pow(dist + 1.0, 2.0 * u_border_width) / u_game_size;
 	vec2 h = texel * 1.0;

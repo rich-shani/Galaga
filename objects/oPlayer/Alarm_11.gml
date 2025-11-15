@@ -1,14 +1,15 @@
 /// @description PLAYER HIT
 
 // PLAYER explosion sound
-sound_stop(GDie); sound_play(GDie); 
+global.Game.Controllers.audioManager.stopSound(GDie);
+global.Game.Controllers.audioManager.playSound(GDie); 
 
 if (shotMode == ShotMode.DOUBLE) {
 	// Lose dual fighter, revert to single
 	shotMode = ShotMode.SINGLE;
 
 	// need to remove the fighter that was HIT, ie the left || right ...
-	/// not just the one on the right 
+	/// not just the global.Game.Controllers.uiManager.scoreDisplay.ones on the right 
 	
 	// Create explosion for lost fighter
 	instance_create(x + 96, y, oExplosion);

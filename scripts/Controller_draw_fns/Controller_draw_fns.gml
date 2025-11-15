@@ -37,7 +37,7 @@ function Draw_Scores() {
 	// === "1UP" INDICATOR ===
 	// Blinks on/off to draw attention during active gameplay
 	// Blink state controlled by oGameManager alarm[8] (14 frame interval)
-	if (oGameManager.blink) { draw_text(80*global.Game.Display.scale, 10*global.Game.Display.scale, "1UP"); };
+	if (global.Game.Controllers.uiManager.blinkCounter) { draw_text(80*global.Game.Display.scale, 10*global.Game.Display.scale, "1UP"); };
 
 	// === "HIGH SCORE" LABEL ===
 	// Always visible (no blinking)
@@ -192,12 +192,12 @@ function Draw_Enter_Initials() {
 	if global.Game.State.results < 5 {
 		draw_set_color(c_aqua);
 		draw_text((304 + (16 * global.Game.HighScores.initials_idx))*global.Game.Display.scale, 176*global.Game.Display.scale,
-		string_char_at(cycle, cyc));
+		string_char_at(global.Game.Input.characterCycle, cyc));
 
-		if oGameManager.blink {
+		if (global.Game.Controllers.uiManager.blinkCounter) {
 			draw_set_color(c_yellow);
 			draw_text((304 + (16 * global.Game.HighScores.initials_idx))*global.Game.Display.scale, 176*global.Game.Display.scale,
-			string_char_at(cycle, cyc));
+			string_char_at(global.Game.Input.characterCycle, cyc));
 		}
 	}
 	
@@ -241,7 +241,7 @@ function Draw_Instructions() {
 	
 function Draw_Lives() {
 	// draw lives
-	lifecount = global.Game.Player.lives - 1;
+	var lifecount = global.Game.Player.lives - 1;
 	repeat(lifecount)
 	{
 		draw_sprite_ext(xwing_sprite_sheet, 2, (20 + 34 * (lifecount - 1))*global.Game.Display.scale, 560*global.Game.Display.scale, 0.6, 0.6, 0, c_white, 1);

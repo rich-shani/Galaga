@@ -32,7 +32,7 @@ if (nextlevel == 1) {
 			// reset the position to the center && show READY
 			oPlayer.shipStatus = ShipState.RESPAWN;
 			
-		    /// Reset global wave counter to 0 to start a new wave cycle.
+		    /// Reset global wave counter to 0 to start a new wave global.Game.Input.characterCycle.
 		    global.Game.Level.wave = 0;
 		
             /// Execute the newlevel script to set up the new level (e.g., spawn enemies, reset timers).
@@ -41,60 +41,60 @@ if (nextlevel == 1) {
             /// @subsubsection Calculate Rank Digits
             /// Calculate the hundreds, tens, && ones digits of the current level (global.Game.Level.current) for display.
             /// Adding 0 ensures numerical consistency in calculations.
-            hund = floor((global.Game.Level.current + 0) / 100); // Hundreds digit of the level.
-            ten = floor(((global.Game.Level.current + 0) - (hund * 100)) / 10); // Tens digit.
-            one = (global.Game.Level.current + 0) - ((hund * 100) + (ten * 10)); // Ones digit.
+            global.Game.Controllers.uiManager.scoreDisplay.hundreds = floor((global.Game.Level.current + 0) / 100); // Hundreds digit of the level.
+            global.Game.Controllers.uiManager.scoreDisplay.tens = floor(((global.Game.Level.current + 0) - (global.Game.Controllers.uiManager.scoreDisplay.hundreds * 100)) / 10); // Tens digit.
+            global.Game.Controllers.uiManager.scoreDisplay.ones = (global.Game.Level.current + 0) - ((global.Game.Controllers.uiManager.scoreDisplay.hundreds * 100) + (global.Game.Controllers.uiManager.scoreDisplay.tens * 10)); // Ones digit.
 
             /// @subsubsection Reset Rank Components
             /// Initialize rank components for the ranking display to 0.
-            onerank = 0; // Ones component of the rank.
-            tenrank = 0; // Tens component of the rank.
-            hundrank = 0; // Hundreds component of the rank.
+            global.Game.Controllers.uiManager.rankDisplay.ones = 0; // Ones component of the rank.
+            global.Game.Controllers.uiManager.rankDisplay.tens = 0; // Tens component of the rank.
+            global.Game.Controllers.uiManager.rankDisplay.hundreds = 0; // Hundreds component of the rank.
 
             /// @subsubsection Assign Ones Rank Weight
-            /// Assign a weight to onerank based on the ones digit to adjust the ranking display.
+            /// Assign a weight to global.Game.Controllers.uiManager.rankDisplay.ones based on the ones digit to adjust the ranking display.
             /// Higher weights likely correspond to specific visual || scoring effects.
-            if (one == 1 || one == 5) {
-                onerank += 1;
+            if (global.Game.Controllers.uiManager.scoreDisplay.ones == 1 || global.Game.Controllers.uiManager.scoreDisplay.ones == 5) {
+                global.Game.Controllers.uiManager.rankDisplay.ones += 1;
             }
-            if (one == 2 || one == 6) {
-                onerank += 2;
+            if (global.Game.Controllers.uiManager.scoreDisplay.ones == 2 || global.Game.Controllers.uiManager.scoreDisplay.ones == 6) {
+                global.Game.Controllers.uiManager.rankDisplay.ones += 2;
             }
-            if (one == 3 || one == 7) {
-                onerank += 3;
+            if (global.Game.Controllers.uiManager.scoreDisplay.ones == 3 || global.Game.Controllers.uiManager.scoreDisplay.ones == 7) {
+                global.Game.Controllers.uiManager.rankDisplay.ones += 3;
             }
-            if (one == 4 || one == 8) {
-                onerank += 4;
+            if (global.Game.Controllers.uiManager.scoreDisplay.ones == 4 || global.Game.Controllers.uiManager.scoreDisplay.ones == 8) {
+                global.Game.Controllers.uiManager.rankDisplay.ones += 4;
             }
-            if (one == 9) {
-                onerank += 5;
+            if (global.Game.Controllers.uiManager.scoreDisplay.ones == 9) {
+                global.Game.Controllers.uiManager.rankDisplay.ones += 5;
             }
 
             /// @subsubsection Assign Tens Rank Weight
-            /// Assign a weight to tenrank based on the tens digit for the ranking display.
-            if (ten == 1 || ten == 2 || ten == 3 || ten == 5) {
-                tenrank += 1;
+            /// Assign a weight to global.Game.Controllers.uiManager.rankDisplay.tens based on the tens digit for the ranking display.
+            if (global.Game.Controllers.uiManager.scoreDisplay.tens == 1 || global.Game.Controllers.uiManager.scoreDisplay.tens == 2 || global.Game.Controllers.uiManager.scoreDisplay.tens == 3 || global.Game.Controllers.uiManager.scoreDisplay.tens == 5) {
+                global.Game.Controllers.uiManager.rankDisplay.tens += 1;
             }
-            if (ten == 4 || ten == 6 || ten == 7 || ten == 8) {
-                tenrank += 2;
+            if (global.Game.Controllers.uiManager.scoreDisplay.tens == 4 || global.Game.Controllers.uiManager.scoreDisplay.tens == 6 || global.Game.Controllers.uiManager.scoreDisplay.tens == 7 || global.Game.Controllers.uiManager.scoreDisplay.tens == 8) {
+                global.Game.Controllers.uiManager.rankDisplay.tens += 2;
             }
-            if (ten == 9) {
-                tenrank += 3;
+            if (global.Game.Controllers.uiManager.scoreDisplay.tens == 9) {
+                global.Game.Controllers.uiManager.rankDisplay.tens += 3;
             }
 
             /// @subsubsection Assign Hundreds Rank Weight
             /// Calculate the hundreds rank weight as twice the hundreds digit.
-            hundrank = (hund * 2);
+            global.Game.Controllers.uiManager.rankDisplay.hundreds = (global.Game.Controllers.uiManager.scoreDisplay.hundreds * 2);
 
             /// @subsubsection Calculate Total Rank
             /// Sum the rank components to determine the total rank for display.
             /// Used in the ranking display system (e.g., to position tiles || determine UI layout).
-            rank = onerank + tenrank + hundrank;
+            rank = global.Game.Controllers.uiManager.rankDisplay.ones + global.Game.Controllers.uiManager.rankDisplay.tens + global.Game.Controllers.uiManager.rankDisplay.hundreds;
 
             /// @subsubsection Clear Rank Display Array
             /// Clear the rank display sprites array from previous level
             /// This prepares for the new level's rank display
-            rank_display_sprites = [];
+            global.Game.Controllers.uiManager.rankDisplaySprites = [];
 
             /// @subsubsection Set Rank Update Timer
             /// Set alarm to 7 steps (approximately 0.117 seconds at 60 FPS) to control the timing of rank updates.
@@ -110,14 +110,6 @@ if (nextlevel == 2) {
     /// @subsection Reset Stage && Counters
     /// Reset stage to 0, indicating the start of a new wave || level phase.
     global.Game.Level.stage = 0;
-
-    /// Reset alternate counter (alt) to 0, likely used for toggling states || animations.
-    alt = 0;
-
-    /// Reset general-purpose counters used for tracking events (e.g., enemy spawning, timing).
-    count1 = 0;
-    count2 = 0;
-    count = 0;
 
     /// Set shot counters (shotcount, global.Game.Player.shotTotal) to 0 if LEVEL 1
     if (global.Game.Level.current == 1) {
@@ -135,10 +127,7 @@ if (nextlevel == 2) {
  
     /// Execute the waverogue script to initialize rogue enemy behavior || wave setup.
     script_execute(waverogue);
-    
-    /// Reset rogueyes flag to 0, disabling any rogue-related mechanics.
-    rogueyes = 0;
-    
+        
     /// Reset global.Game.Display.flip to 0, disabling any sprite || screen flipping effects.
     global.Game.Display.flip = 0;
     

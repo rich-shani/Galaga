@@ -107,7 +107,7 @@ function test_canActivateBeam_returnsFalseWhenPlayerAlreadyCaptured() {
     global.Game.Enemy.capturedPlayer = saved_captured;
 
     // Assert: Verify setup worked
-    assert_true(true, "Test setup validated - captures only one player at a time");
+    assert_true(true, "Test setup validated - captures only global.Game.Controllers.uiManager.scoreDisplay.ones player at a time");
 }
 
 /// @function test_isInCaptureTimeWindow_returnsTrueInMiddleThird

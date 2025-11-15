@@ -49,7 +49,7 @@ if (instance_exists(oPlayer) && oPlayer.captor == id && beam_weapon.state != BEA
 			instance_destroy(missileHit);
 			
 			// Oops, we've hit the PLAYER instead of the Enemy
-			sound_play(GFighter);
+			global.Game.Controllers.audioManager.playSound(GFighter);
 			
 			// Missile hit the CAPTURED player, remove the fighter, set an explosion, play sound
 			oPlayer.captor = noone;

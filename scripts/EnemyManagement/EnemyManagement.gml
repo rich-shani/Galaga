@@ -79,7 +79,7 @@ function checkDiveCapacity() {
     global.Game.Enemy.diveCapacity = global.Game.Enemy.diveCapacityStart;
 
     // === DIVE CAPACITY CALCULATION ===
-    // Check all enemy types in one pass using array iteration
+    // Check all enemy types in global.Game.Controllers.uiManager.scoreDisplay.ones pass using array iteration
     // An enemy consumes dive capacity if:
     //   1. Not in formation (actively diving/attacking)
     //   2. About to dive (alarm[2] is active)
@@ -113,7 +113,7 @@ function controlEnemyFormation() {
             x -= 0.5; // Inhale motion (move object left)
             if x == -48 {
                 global.Game.Controllers.visualEffects.exhaleFlag = 1; // Switch to exhale
-                skip = 1;   // Skip one frame on exhale start
+                skip = 1;   // Skip global.Game.Controllers.uiManager.scoreDisplay.ones frame on exhale start
             }
         }
 
@@ -130,8 +130,8 @@ function controlEnemyFormation() {
             if x == 16 {
                 global.Game.State.breathing = 1; // Begin breathing animation loop
                 global.Game.Controllers.visualEffects.exhaleFlag = 0;
-                sound_stop(GBreathe);
-                sound_loop(GBreathe); // Loop breathing sound
+                global.Game.Controllers.audioManager.stopSound(GBreathe);
+                global.Game.Controllers.audioManager.loopSound(GBreathe); // Loop breathing sound
             }
         }
     }
@@ -151,8 +151,8 @@ function controlEnemyFormation() {
             global.Game.Enemy.breathePhase -= BREATHING_RATE; // Simulate exhale rate
             if round(global.Game.Enemy.breathePhase) <= 0 {
                 global.Game.Controllers.visualEffects.exhaleFlag = 0;
-                sound_stop(GBreathe);
-                sound_loop(GBreathe); // Restart breathing sound
+                global.Game.Controllers.audioManager.stopSound(GBreathe);
+                global.Game.Controllers.audioManager.loopSound(GBreathe); // Restart breathing sound
                 exit;
             }
         }
