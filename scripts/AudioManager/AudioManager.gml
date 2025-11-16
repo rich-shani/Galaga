@@ -179,9 +179,9 @@ function AudioManager() constructor {
 		// Apply to all currently playing sounds
 		var sound_id = ds_map_find_first(playing_sounds);
 		while (sound_id != undefined) {
-			var instance_id = playing_sounds[? sound_id];
-			if (instance_id != -1) {
-				audio_sound_set_volume(instance_id, master_volume);
+			var inst_id = playing_sounds[? sound_id];
+			if (inst_id != -1) {
+				audio_sound_set_volume(inst_id, master_volume);
 			}
 			sound_id = ds_map_find_next(playing_sounds, sound_id);
 		}
@@ -195,8 +195,8 @@ function AudioManager() constructor {
 	///   audio_mgr.setSoundVolume(GBoss1, 0.5);
 	static setSoundVolume = function(sound_id, volume) {
 		if (playing_sounds[? sound_id] != undefined) {
-			var instance_id = playing_sounds[? sound_id];
-			audio_sound_set_volume(instance_id, volume * master_volume);
+			var inst_id = playing_sounds[? sound_id];
+			audio_sound_set_volume(inst_id, volume * master_volume);
 		}
 	};
 
@@ -213,8 +213,8 @@ function AudioManager() constructor {
 	static isPlaying = function(sound_id) {
 		if (playing_sounds[? sound_id] == undefined) return false;
 
-		var instance_id = playing_sounds[? sound_id];
-		if (instance_id == -1) return false;
+		var inst_id = playing_sounds[? sound_id];
+		if (inst_id == -1) return false;
 
 		// Check if instance is still valid
 		return audio_is_playing(instance_id);
@@ -302,11 +302,4 @@ function AudioManager() constructor {
 
 	// Return the struct as the AudioManager instance
 	return self;
-}
-
-/// @function AudioManager_create()
-/// @description Creates and initializes a new AudioManager instance
-/// @return {Struct} Configured AudioManager ready for use
-function AudioManager_create() {
-	return AudioManager();
 }

@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"BeamWeaponLogic",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"EnemyLogic",
+    "path":"folders/Scripts/EnemyLogic.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

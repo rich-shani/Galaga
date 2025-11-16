@@ -14,8 +14,8 @@
   "name":"oStarfieldGenerator",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"StarField",
+    "path":"folders/Objects/StarField.yy",
   },
   "parentObjectId":null,
   "persistent":false,

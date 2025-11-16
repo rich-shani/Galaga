@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"rogueturn",
+  "%Name":"AudioManager",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"rogueturn",
+  "name":"AudioManager",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Managers",
+    "path":"folders/Scripts/Managers.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

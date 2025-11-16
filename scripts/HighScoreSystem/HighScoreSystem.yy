@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"HighScoreSystem",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"HighScore",
+    "path":"folders/Scripts/HighScore.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

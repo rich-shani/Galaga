@@ -1,3 +1,0 @@
-GALAGA WARS CODEBASE STRUCTURE OVERVIEW
-
-Project: GameMaker Studio 2 | Star Wars Galaga Implementation

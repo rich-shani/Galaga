@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ErrorHandling",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"ErrorHandling",
+    "path":"folders/Scripts/ErrorHandling.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

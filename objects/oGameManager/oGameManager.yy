@@ -28,8 +28,8 @@
   "name":"oGameManager",
   "overriddenProperties":[],
   "parent":{
-    "name":"Objects",
-    "path":"folders/Objects.yy",
+    "name":"GameManager",
+    "path":"folders/Objects/GameManager.yy",
   },
   "parentObjectId":null,
   "persistent":false,

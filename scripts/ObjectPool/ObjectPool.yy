@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ObjectPool",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"ObjectPool",
+    "path":"folders/Scripts/ObjectPool.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",
