@@ -5,7 +5,7 @@
 
 // Return enemy shot to pool or destroy it
 if (global.shot_pool != undefined) {
-	global.shot_pool.release(other);
+	global.shot_pool.release(other.id);
 } else {
 	instance_destroy(other);
 }

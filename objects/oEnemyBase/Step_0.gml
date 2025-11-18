@@ -60,7 +60,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 	
 	// Enemy shooting logic: limit number of shots on screen
 	// Then in oEnemyBase/Step_0.gml, line 62, replace with:
-     if (global.Game.Enemy.shotCount < MAX_ENEMY_SHOTS) {
+	if (global.shot_pool.stats.current_active < MAX_ENEMY_SHOTS) {
+//     if (global.Game.Enemy.shotCount < MAX_ENEMY_SHOTS) {
 		// Fire at specific alarm[1] values, use object pool for performance
 		if (alarm[1] == ENEMY_SHOT_TIMING_1) {
 			if (global.shot_pool != undefined) {

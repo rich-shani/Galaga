@@ -25,7 +25,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 
 	    // If shotnumber is 2, allow up to 4 EnemyShot instances
 	    if (global.Game.Enemy.shotNumber == 2) {
-	        if (global.Game.Enemy.shotCount < 4) {
+			if (global.shot_pool.stats.current_active < 4) {
+//	        if (global.Game.Enemy.shotCount < 4) {
 				if (global.shot_pool != undefined) {
 					global.shot_pool.acquire(x, y);
 				} else {
@@ -36,7 +37,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 
 	    // If shotnumber is 3, allow up to 6 EnemyShot instances
 	    if (global.Game.Enemy.shotNumber == 3) {
-	        if (global.Game.Enemy.shotCount < 6) {
+			if (global.shot_pool.stats.current_active < 6) {
+//	        if (global.Game.Enemy.shotCount < 6) {
 				if (global.shot_pool != undefined) {
 					global.shot_pool.acquire(x, y);
 				} else {
@@ -47,7 +49,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 
 	    // If shotnumber is 4, allow up to 8 EnemyShot instances
 	    if (global.Game.Enemy.shotNumber == 4) {
-	        if (global.Game.Enemy.shotCount < 8) {
+			if (global.shot_pool.stats.current_active < 8) {
+//	        if (global.Game.Enemy.shotCount < 8) {
 				if (global.shot_pool != undefined) {
 					global.shot_pool.acquire(x, y);
 				} else {

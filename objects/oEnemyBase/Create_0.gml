@@ -151,7 +151,7 @@ if (PATH_NAME != noone && is_string(PATH_NAME)) {
 /// Three modes exist: STANDARD (normal waves), CHALLENGE (bonus), ROGUE (special)
 /// ================================================================
 
-if (MODE == "STANDARD") {
+if (MODE == EnemyMode.STANDARD) {
 	/// === STANDARD MODE ===
 	/// Normal enemy spawned from regular waves
 	/// Uses all standard behaviors: formation, diving, attacking
@@ -177,10 +177,10 @@ if (MODE == "STANDARD") {
 		alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_INITIAL;  // Wave 0: shorter delay
 	}
 }
-else if (MODE == "CHALLENGE") {
+else if (MODE == EnemyMode.CHALLENGE) {
 	enemyMode = EnemyMode.CHALLENGE;
 }
-else if (MODE == "ROGUE") {
+else if (MODE == EnemyMode.ROGUE) {
 	enemyMode = EnemyMode.ROGUE;
 }
 

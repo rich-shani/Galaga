@@ -12,6 +12,10 @@
 /// visible play area, preventing score exploitation from off-screen kills.
 /// ================================================================
 
+// ensure no looping sounds are still playing ...
+global.Game.Controllers.audioManager.stopSound(GBeam);
+global.Game.Controllers.audioManager.stopSound(GCaptured);
+
 if (!global.Game.State.isGameOver) {
 	/// === BOUNDARY CHECK ===
 	/// Only award points && play effects for on-screen kills

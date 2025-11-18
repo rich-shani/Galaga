@@ -85,7 +85,7 @@ function spawnRogueEnemy(_spawn, _depth = 0) {
 	var enemy_id = safe_get_asset(enemy_data.ENEMY, -1);
 	if (enemy_id != -1) {
 		instance_create_layer(enemy_data.SPAWN_XPOS, enemy_data.SPAWN_YPOS, "GameSprites", enemy_id,
-			{ ENEMY_NAME: enemy_data.ENEMY, INDEX: -1, PATH_NAME: path_name, MODE: "ROGUE" });
+			{ ENEMY_NAME: enemy_data.ENEMY, INDEX: -1, PATH_NAME: path_name, MODE: EnemyMode.ROGUE });
 	} else {
 		log_error("Failed to spawn rogue enemy: " + enemy_data.ENEMY, "spawnRogueEnemy", 2);
 	}
@@ -271,9 +271,9 @@ function spawnChallengeWave_0_3_4(chall_data, wave_data) {
 
 	if (path1_id != -1 && path1flip_id != -1 && enemy_id != -1) {
 		instance_create_layer(path_get_x(path1_id, 0), path_get_y(path1_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1, MODE: "CHALLENGE" });
+							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1, MODE: EnemyMode.CHALLENGE });
 		instance_create_layer(path_get_x(path1flip_id, 0), path_get_y(path1flip_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1_FLIP, MODE: "CHALLENGE" });
+							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1_FLIP, MODE: EnemyMode.CHALLENGE });
 	} else {
 		if (enemy_id == -1) log_error("Challenge enemy not found: " + wave_data.ENEMY, "spawnChallengeWave_0_3_4", 2);
 		if (path1_id == -1) log_error("Challenge path1 not found: " + chall_data.PATH1, "spawnChallengeWave_0_3_4", 2);
@@ -297,9 +297,9 @@ function spawnChallengeWave_1(chall_data, wave_data) {
 
 	if (path2_id != -1 && path2flip_id != -1 && enemy1_id != -1 && enemy2_id != -1) {
 		instance_create_layer(path_get_x(path2_id, 0), path_get_y(path2_id, 0),
-							"GameSprites", enemy1_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: "CHALLENGE" });
+							"GameSprites", enemy1_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: EnemyMode.CHALLENGE });
 		instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
-							"GameSprites", enemy2_id, { ENEMY_NAME: "oTieFighter", INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: "CHALLENGE" });
+							"GameSprites", enemy2_id, { ENEMY_NAME: "oTieFighter", INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: EnemyMode.CHALLENGE });
 	} else {
 		if (enemy1_id == -1) log_error("Challenge wave 1 enemy not found: " + wave_data.ENEMY, "spawnChallengeWave_1", 2);
 		if (enemy2_id == -1) log_error("Challenge wave 1 TieFighter not found", "spawnChallengeWave_1", 2);
@@ -322,9 +322,9 @@ function spawnChallengeWave_2(chall_data, wave_data) {
 
 	if (path2_id != -1 && path2flip_id != -1 && enemy_id != -1) {
 		instance_create_layer(path_get_x(path2_id, 0), path_get_y(path2_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: "CHALLENGE" });
+							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: EnemyMode.CHALLENGE });
 		instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: "CHALLENGE" });
+							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: EnemyMode.CHALLENGE });
 	} else {
 		if (enemy_id == -1) log_error("Challenge wave 2 enemy not found: " + wave_data.ENEMY, "spawnChallengeWave_2", 2);
 		if (path2_id == -1) log_error("Challenge wave 2 path2 not found: " + chall_data.PATH2, "spawnChallengeWave_2", 2);
