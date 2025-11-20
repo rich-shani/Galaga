@@ -50,7 +50,7 @@ function canTransform() {
 	var playerVulnerable = instance_exists(oPlayer) &&
 	                       (oPlayer.shipStatus == ShipState.ACTIVE) &&
 	                       (oPlayer.regain == 0) &&
-	                       (oPlayer.alarm[4] == -1);
+	                       (oPlayer.alarm[PlayerAlarmIndex.TiMER] == -1);
 
 	// === ENEMY COUNT CHECK ===
 	// Don't transform if too many enemies already on screen (performance/balance)

@@ -91,6 +91,7 @@ enum EnemyAlarmIndex {
 enum PlayerAlarmIndex {
     DEATH_SHAKE = 0,            // Screen shake effect duration
     RESPAWN = 1,                // Respawn timer after death
+	TiMER = 4,					// General Timer
     // UNUSED_2 TO 9 = 2-9,     // Available
     GAME_OVER_CLEANUP = 10,     // Cleanup when game ends
     // UNUSED_11 = 11           // Available
@@ -300,6 +301,18 @@ enum PlayerAlarmIndex {
 ///              Note: Same as OFFSCREEN_Y_THRESHOLD
 #macro SCREEN_BOTTOM_Y 592
 
+/// @macro SPAWN_TOP_Y
+/// @description Y-coordinate for spawning enemies at top of screen (base resolution)
+#macro SPAWN_TOP_Y -64
+
+/// @macro SCREEN_LEFT_X
+/// @description X-coordinate for spawning enemies right of screen (base resolution)
+#macro SCREEN_LEFT_X -64
+
+/// @macro SCREEN_RIGHT_X
+/// @description X-coordinate for spawning enemies right of screen (base resolution)
+#macro SCREEN_RIGHT_X 464
+
 /// @macro BEAM_ACTIVATION_Y
 /// @description Y-coordinate where beam weapon can activate (base resolution)
 #macro BEAM_ACTIVATION_Y 368
@@ -308,9 +321,7 @@ enum PlayerAlarmIndex {
 /// @description Y-coordinate where rogue enemies transition behavior (base resolution)
 #macro ROGUE_TRANSITION_Y 462
 
-/// @macro SPAWN_TOP_Y
-/// @description Y-coordinate for spawning enemies at top of screen (base resolution)
-#macro SPAWN_TOP_Y -16
+
 
 /// @macro SPAWN_EDGE_MARGIN
 /// @description Minimum margin from screen edge for random spawning (pixels)

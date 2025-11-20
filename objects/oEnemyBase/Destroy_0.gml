@@ -21,7 +21,7 @@ if (!global.Game.State.isGameOver) {
 	/// Only award points && play effects for on-screen kills
 	/// This prevents exploiting off-screen enemy kills for free points
 	/// Boundaries: Y between -64 && 592, X between -64 && 464 (scaled)
-	if (y > -64 * global.Game.Display.scale && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > -64 && x < 464 * global.Game.Display.scale) {
+	if (y > SPAWN_TOP_Y * global.Game.Display.scale && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > SCREEN_LEFT_X && x < SCREEN_RIGHT_X * global.Game.Display.scale) {
 
 		/// ================================================================
 		/// SCORING SYSTEM - Award points based on enemy state
@@ -36,7 +36,7 @@ if (!global.Game.State.isGameOver) {
 		/// ================================================================
 		if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 			/// Enemy is currently diving/attacking - grant invulnerability window
-			oPlayer.alarm[4] = global.Game.State.hold + irandom(global.Game.State.hold);
+			oPlayer.alarm[PlayerAlarmIndex.TiMER] = global.Game.State.hold + irandom(global.Game.State.hold);
 
 			/// If not a transformed enemy, award points for the kill
 			if (trans == 0) {
