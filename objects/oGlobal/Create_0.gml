@@ -4,6 +4,10 @@
 // Initialize the new global.Game struct hierarchy
 // This provides organized, type-safe access to game state
 
+// Central game configuration (lives, extra life thresholds, difficulty settings)
+global.game_config = load_game_config();
+show_debug_message("[GameConfig] Configuration loaded");
+
 global.Game = {
 	Input: {
 		gamePad: false,
@@ -106,14 +110,30 @@ global.Game = {
 		position: -1								// position player (1-5 || -1 if none)
 	},
     Difficulty: {
-        speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
+		speedMultiplier: get_config_value("DIFFICULTY", "SPEED_MULTIPLIER_BASE", 1.0),
         gameSpeed: 60
     },
 	Data: {
 		spawn: undefined,
 		challenge: undefined,
 		rogue: undefined,
-		speedCurves: undefined
+		speedCurves: undefined,
+		formation: undefined,        // Formation grid coordinates (40 positions in 5x8 grid)
+		enemyAttributes: {
+			oTieFighter: undefined,
+			oTieIntercepter: undefined,
+			oImperialShuttle: undefined
+		},
+//		config: undefined            // Central game configuration (lives, difficulty, etc.)
+	},
+	Cache: {
+		assetCache: undefined,       // Asset ID caching system for performance
+		assetStats: {
+			hits: 0,
+			misses: 0,
+			totalLookups: 0,
+			uniqueAssets: 0
+		}
 	},
 	Controllers: {
 	    waveSpawner: undefined,
@@ -132,30 +152,17 @@ global.debug = false; // Debug mode flag (set to true for debug output)
 // Initialize asset ID caching system for performance
 // Eliminates 200+ asset_get_index() calls per level
 // Expected FPS gain: +5-10 FPS, 96% cache hit rate
-global.asset_cache = ds_map_create();
-global.asset_cache_stats = {
-	hits: 0,
-	misses: 0,
-	total_lookups: 0,
-	unique_assets: 0
-};
-
-show_debug_message("[AssetCache] Cache initialized");
+global.Game.Cache.assetCache = ds_map_create();
 
 // Formation grid coordinates (40 positions in 5x8 grid)
 // Loaded once && shared globally to avoid per-enemy loading overhead
-global.formation_data = load_json_datafile("Patterns/formation_coordinates.json");
+global.Game.Data.formation = load_json_datafile("Patterns/formation_coordinates.json");
 
 // Enemy attributes (health, points, paths) by enemy type
 // Loaded once && cached globally for performance optimization
-global.enemy_attributes = {
-    oTieFighter: load_json_datafile("Patterns/oTieFighter.json"),
-    oTieIntercepter: load_json_datafile("Patterns/oTieIntercepter.json"),
-    oImperialShuttle: load_json_datafile("Patterns/oImperialShuttle.json")
-};
-
-// Central game configuration (lives, extra life thresholds, difficulty settings)
-global.game_config = load_game_config();
+global.Game.Data.enemyAttributes.oTieFighter = load_json_datafile("Patterns/oTieFighter.json");
+global.Game.Data.enemyAttributes.oTieIntercepter = load_json_datafile("Patterns/oTieIntercepter.json");
+global.Game.Data.enemyAttributes.oImperialShuttle = load_json_datafile("Patterns/oImperialShuttle.json");
 
 // Wave spawn patterns - defines enemy entry sequences && formation positions (40 enemies per wave)
 global.Game.Data.spawn = load_json_datafile("Patterns/wave_spawn.json");
@@ -174,31 +181,31 @@ global.Game.Data.speedCurves = load_json_datafile("Patterns/speed_curve.json");
 // If validation fails, game will show error but continue with loaded data
 
 if (global.Game.Data.spawn != undefined && !validate_wave_spawn_json(global.Game.Data.spawn)) {
-	log_error("Wave spawn data failed validation - check wave_spawn.json structure", "oGameManager Create", 3);
+	log_error("Wave spawn data failed validation - check wave_spawn.json structure", "oGlobal Create", 3);
 }
 
 if (global.Game.Data.challenge != undefined && !validate_challenge_spawn_json(global.Game.Data.challenge)) {
-	log_error("Challenge spawn data failed validation - check challenge_spawn.json structure", "oGameManager Create", 3);
+	log_error("Challenge spawn data failed validation - check challenge_spawn.json structure", "oGlobal Create", 3);
 }
 
-if (global.formation_data != undefined && !validate_formation_coordinates_json(global.formation_data)) {
-	log_error("Formation coordinates failed validation - check formation_coordinates.json structure", "oGameManager Create", 3);
+if (global.Game.Data.formation != undefined && !validate_formation_coordinates_json(global.Game.Data.formation)) {
+	log_error("Formation coordinates failed validation - check formation_coordinates.json structure", "oGlobal Create", 3);
 }
 
-if (global.enemy_attributes.oTieFighter != undefined && !validate_enemy_attributes_json(global.enemy_attributes.oTieFighter, "oTieFighter")) {
-	log_error("TIE Fighter attributes failed validation", "oGameManager Create", 3);
+if (global.Game.Data.enemyAttributes.oTieFighter != undefined && !validate_enemy_attributes_json(global.Game.Data.enemyAttributes.oTieFighter, "oTieFighter")) {
+	log_error("TIE Fighter attributes failed validation", "oGlobal Create", 3);
 }
 
-if (global.enemy_attributes.oTieIntercepter != undefined && !validate_enemy_attributes_json(global.enemy_attributes.oTieIntercepter, "oTieIntercepter")) {
-	log_error("TIE Interceptor attributes failed validation", "oGameManager Create", 3);
+if (global.Game.Data.enemyAttributes.oTieIntercepter != undefined && !validate_enemy_attributes_json(global.Game.Data.enemyAttributes.oTieIntercepter, "oTieIntercepter")) {
+	log_error("TIE Interceptor attributes failed validation", "oGlobal Create", 3);
 }
 
-if (global.enemy_attributes.oImperialShuttle != undefined && !validate_enemy_attributes_json(global.enemy_attributes.oImperialShuttle, "oImperialShuttle")) {
-	log_error("Imperial Shuttle attributes failed validation", "oGameManager Create", 3);
+if (global.Game.Data.enemyAttributes.oImperialShuttle != undefined && !validate_enemy_attributes_json(global.Game.Data.enemyAttributes.oImperialShuttle, "oImperialShuttle")) {
+	log_error("Imperial Shuttle attributes failed validation", "oGlobal Create", 3);
 }
 
 if (global.game_config != undefined && !validate_game_config_json(global.game_config)) {
-	log_error("Game configuration failed validation - check game_config.json structure", "oGameManager Create", 3);
+	log_error("Game configuration failed validation - check game_config.json structure", "oGlobal Create", 3);
 }
 
 // TODO: GMScoreboard integration is currently disabled
@@ -212,6 +219,18 @@ if (global.game_config != undefined && !validate_game_config_json(global.game_co
 // get_scores(5);
 // var refresh_seconds = get_config_value("HIGH_SCORES", "REFRESH_INTERVAL_SECONDS", 300);
 // alarm[AlarmIndex.HIGH_SCORE_REFRESH] = refresh_seconds * 60;
+
+
+// Setup the GM Scoreboard using the unique game tag (loaded from config)
+var game_tag = get_config_value("HIGH_SCORES", "GAME_TAG", "fd0828983a329a0be9e26c34d892769b");
+// setup the GM Scoreboard using the unique game tag
+setup_gmscoreboard(game_tag);
+
+// get the current set of high-scores
+get_scores(5);
+
+// setup an alarm to refresh the high score table every 5 minutes
+alarm[0]=5*60*60;
 
 // ========================================================================
 // AUDIO MANAGER INITIALIZATION
@@ -235,6 +254,8 @@ global.Game.Controllers.scoreManager = new ScoreManager();
 
 // Challenge stage manager - handles challenge stages with path lookup table
 global.Game.Controllers.challengeManager = new ChallengeStageManager(global.Game.Data.challenge);
+
+ensure_controllers_initialized();
 
 show_debug_message("[oGameManager] All controllers initialized - ready for gameplay");
 

@@ -258,32 +258,65 @@ function Game_Loop_Standard() {
 	}
 }
 
+/// @function _spawn_paired_challenge_enemies
+/// @description Generic spawner for paired enemies on mirrored paths
+///              Handles both same-enemy and mixed-enemy spawning
+/// @param {Struct} chall_data Challenge pattern data with path names
+/// @param {Real} path_id ID of first path asset
+/// @param {Real} path_flip_id ID of flipped path asset
+/// @param {Real} enemy1_id ID of first enemy type
+/// @param {String} enemy1_name Name of first enemy type
+/// @param {Real} enemy2_id ID of second enemy type (optional, -1 to use enemy1_id)
+/// @param {String} enemy2_name Name of second enemy type (optional, default enemy1_name)
+/// @return {Bool} True if both enemies spawned successfully
+function _spawn_paired_challenge_enemies(chall_data, path_id, path_flip_id, enemy1_id, enemy1_name, enemy2_id = -1, enemy2_name = "") {
+	// Use second enemy as first if not specified
+	if (enemy2_id == -1) enemy2_id = enemy1_id;
+	if (enemy2_name == "") enemy2_name = enemy1_name;
+
+	// Spawn first enemy on primary path
+	if (path_id != -1 && enemy1_id != -1) {
+		instance_create_layer(path_get_x(path_id, 0), path_get_y(path_id, 0),
+							"GameSprites", enemy1_id,
+							{ ENEMY_NAME: enemy1_name, INDEX: -1, PATH_NAME: chall_data.PATH1, MODE: EnemyMode.CHALLENGE });
+	} else {
+		if (enemy1_id == -1) log_error("Challenge enemy not found: " + enemy1_name, "spawnChallengeWave", 2);
+		if (path_id == -1) log_error("Challenge path not found", "spawnChallengeWave", 2);
+		return false;
+	}
+
+	// Spawn second enemy on flipped path
+	if (path_flip_id != -1 && enemy2_id != -1) {
+		instance_create_layer(path_get_x(path_flip_id, 0), path_get_y(path_flip_id, 0),
+							"GameSprites", enemy2_id,
+							{ ENEMY_NAME: enemy2_name, INDEX: -1, PATH_NAME: chall_data.PATH1_FLIP, MODE: EnemyMode.CHALLENGE });
+	} else {
+		if (enemy2_id == -1) log_error("Challenge enemy not found: " + enemy2_name, "spawnChallengeWave", 2);
+		if (path_flip_id == -1) log_error("Challenge flipped path not found", "spawnChallengeWave", 2);
+		return false;
+	}
+
+	return true;
+}
+
 /// @function spawnChallengeWave_0_3_4
 /// @description Spawns doubled enemies for challenge waves 0, 3, && 4 using PATH1/PATH1_FLIP
+///              Both enemies are the same type
 /// @param {Struct} chall_data Challenge pattern data with path names
 /// @param {Struct} wave_data Current wave data with enemy type
 /// @return {undefined}
 function spawnChallengeWave_0_3_4(chall_data, wave_data) {
-	// Spawn two enemies on mirrored paths
+	// Spawn two enemies of the same type on mirrored paths
 	var path1_id = safe_get_asset(chall_data.PATH1, -1);
 	var path1flip_id = safe_get_asset(chall_data.PATH1_FLIP, -1);
 	var enemy_id = safe_get_asset(wave_data.ENEMY, -1);
 
-	if (path1_id != -1 && path1flip_id != -1 && enemy_id != -1) {
-		instance_create_layer(path_get_x(path1_id, 0), path_get_y(path1_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1, MODE: EnemyMode.CHALLENGE });
-		instance_create_layer(path_get_x(path1flip_id, 0), path_get_y(path1flip_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH1_FLIP, MODE: EnemyMode.CHALLENGE });
-	} else {
-		if (enemy_id == -1) log_error("Challenge enemy not found: " + wave_data.ENEMY, "spawnChallengeWave_0_3_4", 2);
-		if (path1_id == -1) log_error("Challenge path1 not found: " + chall_data.PATH1, "spawnChallengeWave_0_3_4", 2);
-		if (path1flip_id == -1) log_error("Challenge path1_flip not found: " + chall_data.PATH1_FLIP, "spawnChallengeWave_0_3_4", 2);
-	}
+	_spawn_paired_challenge_enemies(chall_data, path1_id, path1flip_id, enemy_id, wave_data.ENEMY);
 	alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_SPAWN_DELAY;
 }
 
 /// @function spawnChallengeWave_1
-/// @description Spawns doubled enemies for challenge wave 1 using PATH2/PATH2_FLIP
+/// @description Spawns mixed enemies for challenge wave 1 using PATH2/PATH2_FLIP
 ///              Spawns primary enemy + TieFighter on mirrored paths
 /// @param {Struct} chall_data Challenge pattern data with path names
 /// @param {Struct} wave_data Current wave data with enemy type
@@ -295,41 +328,43 @@ function spawnChallengeWave_1(chall_data, wave_data) {
 	var enemy1_id = safe_get_asset(wave_data.ENEMY, -1);
 	var enemy2_id = safe_get_asset("oTieFighter", -1);
 
-	if (path2_id != -1 && path2flip_id != -1 && enemy1_id != -1 && enemy2_id != -1) {
-		instance_create_layer(path_get_x(path2_id, 0), path_get_y(path2_id, 0),
-							"GameSprites", enemy1_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: EnemyMode.CHALLENGE });
-		instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
-							"GameSprites", enemy2_id, { ENEMY_NAME: "oTieFighter", INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: EnemyMode.CHALLENGE });
-	} else {
-		if (enemy1_id == -1) log_error("Challenge wave 1 enemy not found: " + wave_data.ENEMY, "spawnChallengeWave_1", 2);
-		if (enemy2_id == -1) log_error("Challenge wave 1 TieFighter not found", "spawnChallengeWave_1", 2);
-		if (path2_id == -1) log_error("Challenge wave 1 path2 not found: " + chall_data.PATH2, "spawnChallengeWave_1", 2);
-		if (path2flip_id == -1) log_error("Challenge wave 1 path2_flip not found: " + chall_data.PATH2_FLIP, "spawnChallengeWave_1", 2);
-	}
+	// Temporarily swap path names for mixed spawn
+	var orig_path1 = chall_data.PATH1;
+	var orig_path1_flip = chall_data.PATH1_FLIP;
+	chall_data.PATH1 = chall_data.PATH2;
+	chall_data.PATH1_FLIP = chall_data.PATH2_FLIP;
+
+	_spawn_paired_challenge_enemies(chall_data, path2_id, path2flip_id, enemy1_id, wave_data.ENEMY, enemy2_id, "oTieFighter");
+
+	// Restore original paths
+	chall_data.PATH1 = orig_path1;
+	chall_data.PATH1_FLIP = orig_path1_flip;
 	alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_SPAWN_DELAY;
 }
 
 /// @function spawnChallengeWave_2
 /// @description Spawns doubled enemies for challenge wave 2 using PATH2/PATH2_FLIP
+///              Both enemies are the same type
 /// @param {Struct} chall_data Challenge pattern data with path names
 /// @param {Struct} wave_data Current wave data with enemy type
 /// @return {undefined}
 function spawnChallengeWave_2(chall_data, wave_data) {
-	// Spawn mirrored enemies
+	// Spawn two enemies of the same type on mirrored paths (PATH2)
 	var path2_id = safe_get_asset(chall_data.PATH2, -1);
 	var path2flip_id = safe_get_asset(chall_data.PATH2_FLIP, -1);
 	var enemy_id = safe_get_asset(wave_data.ENEMY, -1);
 
-	if (path2_id != -1 && path2flip_id != -1 && enemy_id != -1) {
-		instance_create_layer(path_get_x(path2_id, 0), path_get_y(path2_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2, MODE: EnemyMode.CHALLENGE });
-		instance_create_layer(path_get_x(path2flip_id, 0), path_get_y(path2flip_id, 0),
-							"GameSprites", enemy_id, { ENEMY_NAME: wave_data.ENEMY, INDEX: -1, PATH_NAME: chall_data.PATH2_FLIP, MODE: EnemyMode.CHALLENGE });
-	} else {
-		if (enemy_id == -1) log_error("Challenge wave 2 enemy not found: " + wave_data.ENEMY, "spawnChallengeWave_2", 2);
-		if (path2_id == -1) log_error("Challenge wave 2 path2 not found: " + chall_data.PATH2, "spawnChallengeWave_2", 2);
-		if (path2flip_id == -1) log_error("Challenge wave 2 path2_flip not found: " + chall_data.PATH2_FLIP, "spawnChallengeWave_2", 2);
-	}
+	// Temporarily swap path names for PATH2 use
+	var orig_path1 = chall_data.PATH1;
+	var orig_path1_flip = chall_data.PATH1_FLIP;
+	chall_data.PATH1 = chall_data.PATH2;
+	chall_data.PATH1_FLIP = chall_data.PATH2_FLIP;
+
+	_spawn_paired_challenge_enemies(chall_data, path2_id, path2flip_id, enemy_id, wave_data.ENEMY);
+
+	// Restore original paths
+	chall_data.PATH1 = orig_path1;
+	chall_data.PATH1_FLIP = orig_path1_flip;
 	alarm[AlarmIndex.SPAWN_DELAY] = CHALLENGE_SPAWN_DELAY;
 }
 
@@ -359,12 +394,12 @@ function Game_Loop_Challenge() {
             // Special case: Challenge 4, Wave 4 shifts paths right for visual variety
             if (global.Game.Challenge.current == 4 && global.Game.Level.wave == 4) {
                 var path1_id = safe_get_asset(chall_data.PATH1, -1);
-                if (path1_id != -1 && path_get_x(path1_id, 0) == 192) {
+                if (path1_id != -1 && path_get_x(path1_id, 0) == FORMATION_CENTER_X) {
                     var path1flip_id = safe_get_asset(chall_data.PATH1_FLIP, -1);
                     if (path1flip_id != -1) {
-                        // Shift paths right by 64 pixels
-                        path_shift(path1_id, 64*global.Game.Display.scale, 0);
-                        path_shift(path1flip_id, 64*global.Game.Display.scale, 0);
+                        // Shift paths right for visual variety
+                        path_shift(path1_id, CHALLENGE_4_WAVE_4_PATH_SHIFT_X * global.Game.Display.scale, 0);
+                        path_shift(path1flip_id, CHALLENGE_4_WAVE_4_PATH_SHIFT_X * global.Game.Display.scale, 0);
                     } else {
                         log_error("Challenge 4 flipped path not found: " + chall_data.PATH1_FLIP, "Game_Loop_Challenge", 1);
                     }

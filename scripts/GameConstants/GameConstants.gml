@@ -270,7 +270,16 @@ enum PlayerAlarmIndex {
 
 /// @macro FORMATION_CENTER_X
 /// @description X-coordinate of formation center point (base resolution)
-#macro FORMATION_CENTER_X 448
+#macro FORMATION_CENTER_X 192
+
+/// @macro CHALLENGE_4_WAVE_4_PATH_SHIFT_X
+/// @description Horizontal pixel offset for Challenge 4, Wave 4 path positioning
+///              Provides visual variety by shifting formation right by this amount
+#macro CHALLENGE_4_WAVE_4_PATH_SHIFT_X 64
+
+/// @macro BEAM_CAPTURE_WIDTH
+/// @description Horizontal width of beam capture zone (half-width from center)
+#macro BEAM_CAPTURE_WIDTH 48
 
 /// @macro FORMATION_WIDTH
 /// @description Total width of enemy formation grid (base resolution)
@@ -466,10 +475,6 @@ enum PlayerAlarmIndex {
 /// @description Default duration of tractor beam animation (frames)
 #macro BEAM_TIME_DEFAULT 300
 
-/// @macro BEAM_CAPTURE_WIDTH
-/// @description Horizontal width of beam capture zone (pixels, half-width from center)
-#macro BEAM_CAPTURE_WIDTH 32
-
 /// @macro BEAM_CAPTURE_WINDOW_START_RATIO
 /// @description Fraction of beam duration when capture window opens (0.0-1.0)
 ///              Capture window = (1/3 to 2/3) of beam duration
@@ -638,23 +643,23 @@ function load_game_config() {
 /// @param {String} key The configuration key within the section
 /// @param {Any} default_value The value to return if config is not available
 /// @return {Any} The configuration value || default
-function get_config_value(section, key, default_value) {
-    if (global.game_config == undefined) {
-        return default_value;
-    }
+//function get_config_value(section, key, default_value) {
+//    if (global.game_config == undefined) {
+//        return default_value;
+//    }
 
-    if (!variable_struct_exists(global.game_config, section)) {
-        return default_value;
-    }
+//    if (!variable_struct_exists(global.game_config, section)) {
+//        return default_value;
+//    }
 
-    var section_data = global.game_config[$ section];
+//    var section_data = global.game_config[$ section];
 
-    if (!variable_struct_exists(section_data, key)) {
-        return default_value;
-    }
+//    if (!variable_struct_exists(section_data, key)) {
+//        return default_value;
+//    }
 
-    return section_data[$ key];
-}
+//    return section_data[$ key];
+//}
 
 // ========================================================================
 // BEAM WEAPON CONSTANTS

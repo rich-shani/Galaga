@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"NullObjects",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"NullObjects",
+  "parent":{
+    "name":"ErrorHandling",
+    "path":"folders/Scripts/ErrorHandling.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

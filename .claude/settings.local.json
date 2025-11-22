@@ -12,7 +12,11 @@
       "Bash(fi)",
       "Bash(cat:*)",
       "Bash(git log:*)",
-      "Bash(powershell:*)"
+      "Bash(powershell:*)",
+      "Bash(tree:*)",
+      "Bash(for dir in objects/o*/)",
+      "Bash(do basename \"$dir\")",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

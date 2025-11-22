@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"GlobalAccessors",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"GlobalAccessors",
+  "parent":{
+    "name":"Constants",
+    "path":"folders/Scripts/Constants.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

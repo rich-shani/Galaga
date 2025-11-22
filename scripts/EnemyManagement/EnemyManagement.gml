@@ -98,81 +98,112 @@ function checkDiveCapacity() {
     global.Game.Enemy.bossCap = 2;
 }
 
+/// @function _init_breathing_state
+/// @description Initializes breathing animation setup phase (before active breathing)
+///              Moves formation into position for breathing animation
+/// @return {undefined}
+function _init_breathing_state() {
+	// Run one-time initialization animation
+
+	if global.Game.Controllers.visualEffects.exhaleFlag == 0 {
+		x -= 0.5; // Inhale motion (move object left)
+		if x == -48 {
+			global.Game.Controllers.visualEffects.exhaleFlag = 1; // Switch to exhale
+			skip = 1;   // Skip frame on exhale start to synchronize animation
+		}
+	}
+
+	if global.Game.Controllers.visualEffects.exhaleFlag == 1 && skip == 0 {
+		x += 0.5; // Exhale motion (move object right)
+		if x == 80 {
+			global.Game.Controllers.visualEffects.exhaleFlag = 0; // Loop back to inhale
+		}
+	}
+
+	skip = 0;
+
+	// Check if animation is complete && ready to start breathing loop
+	if global.Game.State.spawnOpen == 0 {
+		if x == 16 {
+			global.Game.State.breathing = 1; // Begin breathing animation loop
+			global.Game.Controllers.visualEffects.exhaleFlag = 0;
+			global.Game.Controllers.audioManager.stopSound(GBreathe);
+			global.Game.Controllers.audioManager.loopSound(GBreathe); // Loop breathing sound
+		}
+	}
+}
+
+/// @function _update_breathing_phase
+/// @description Updates the breathing animation phase (oscillating motion)
+///              Handles inhale and exhale cycles
+/// @return {undefined}
+function _update_breathing_phase() {
+	// Update the oscillating phase value for breathing animation
+
+	if global.Game.Controllers.visualEffects.exhaleFlag == 0 {
+		// Inhale phase
+		global.Game.Enemy.breathePhase += BREATHING_RATE;
+		if round(global.Game.Enemy.breathePhase) >= BREATHING_CYCLE_MAX {
+			global.Game.Controllers.visualEffects.exhaleFlag = 1;
+			exit; // Exit for this frame
+		}
+	}
+
+	if global.Game.Controllers.visualEffects.exhaleFlag == 1 {
+		// Exhale phase
+		global.Game.Enemy.breathePhase -= BREATHING_RATE;
+		if round(global.Game.Enemy.breathePhase) <= 0 {
+			global.Game.Controllers.visualEffects.exhaleFlag = 0;
+			global.Game.Controllers.audioManager.stopSound(GBreathe);
+			global.Game.Controllers.audioManager.loopSound(GBreathe); // Restart breathing sound
+			exit;
+		}
+	}
+}
+
+/// @function _sync_breathing_audio
+/// @description Synchronizes breathing sound volume with game state
+///              Mutes breathing when action sounds (dive, beam) are playing
+///              Only checks every 10 frames for performance
+/// @return {undefined}
+function _sync_breathing_audio() {
+	// OPTIMIZATION: Only check sound state && enemy count periodically (every 10 frames)
+	// This reduces expensive function calls from 8 per frame to ~0.8 per frame
+
+	if (global.Game.Level.current % 10 == 0) {
+		// Check only critical action sounds (dive && beam) at full volume
+		var actionSoundPlaying = sound_isplaying(GDive) || sound_isplaying(GBeam);
+
+		// Use cached enemy count instead of 3 instance_number calls
+		var enemyCountHigh = global.Game.Enemy.count > global.Game.State.lastAttack;
+
+		if (!actionSoundPlaying && enemyCountHigh) {
+			sound_volume(GBreathe, 1); // Play breathing sound at full volume
+		} else {
+			sound_volume(GBreathe, 0); // Mute if any action sounds playing
+		}
+	}
+}
+
 /// @function controlEnemyFormation
-/// @description Controls the breathing animation && sound for enemy formation
-///              Manages the oscillating motion of enemies in formation && syncs
-///              the breathing sound effect with visual animation
+/// @description Main orchestrator for breathing animation && sound synchronization
+///              Routes to specific animation phases based on current state
+///
+/// FLOW:
+///   1. BREATHING_STATE == 0: Initialize breathing (setup animation)
+///   2. BREATHING_STATE == 1: Active breathing (oscillation + audio sync)
 /// @return {undefined}
 function controlEnemyFormation() {
-	// Controls breathing motion of a visual/background element && audio
+	// Breathing state machine: 0 = initialization, 1 = active breathing
 
-    if global.Game.State.breathing == 0 {
-        // Not breathing yet; run animation to transition to breathing
+	if global.Game.State.breathing == 0 {
+		// Initialization phase: move formation into breathing position
+		_init_breathing_state();
+	}
 
-        if global.Game.Controllers.visualEffects.exhaleFlag == 0 {
-            x -= 0.5; // Inhale motion (move object left)
-            if x == -48 {
-                global.Game.Controllers.visualEffects.exhaleFlag = 1; // Switch to exhale
-                skip = 1;   // Skip global.Game.Controllers.uiManager.scoreDisplay.ones frame on exhale start
-            }
-        }
-
-        if global.Game.Controllers.visualEffects.exhaleFlag == 1 && skip == 0 {
-            x += 0.5; // Exhale motion (move object right)
-            if x == 80 {
-                global.Game.Controllers.visualEffects.exhaleFlag = 0; // Loop back to inhale
-            }
-        }
-
-        skip = 0;
-
-        if global.Game.State.spawnOpen == 0 {
-            if x == 16 {
-                global.Game.State.breathing = 1; // Begin breathing animation loop
-                global.Game.Controllers.visualEffects.exhaleFlag = 0;
-                global.Game.Controllers.audioManager.stopSound(GBreathe);
-                global.Game.Controllers.audioManager.loopSound(GBreathe); // Loop breathing sound
-            }
-        }
-    }
-
-    if global.Game.State.breathing == 1 {
-        // Active breathing animation && audio logic
-
-        if global.Game.Controllers.visualEffects.exhaleFlag == 0 {
-            global.Game.Enemy.breathePhase += BREATHING_RATE; // Simulate inhale rate
-            if round(global.Game.Enemy.breathePhase) >= BREATHING_CYCLE_MAX {
-                global.Game.Controllers.visualEffects.exhaleFlag = 1;
-                exit; // Exit breathing update for this frame
-            }
-        }
-
-        if global.Game.Controllers.visualEffects.exhaleFlag == 1 {
-            global.Game.Enemy.breathePhase -= BREATHING_RATE; // Simulate exhale rate
-            if round(global.Game.Enemy.breathePhase) <= 0 {
-                global.Game.Controllers.visualEffects.exhaleFlag = 0;
-                global.Game.Controllers.audioManager.stopSound(GBreathe);
-                global.Game.Controllers.audioManager.loopSound(GBreathe); // Restart breathing sound
-                exit;
-            }
-        }
-
-        // === BREATHING SOUND VOLUME CONTROL ===
-        // OPTIMIZATION: Only check sound state && enemy count periodically (every 10 frames)
-        // This reduces expensive function calls from 8 per frame to ~0.8 per frame
-        // (5 sound checks + 3 instance_number calls are costly)
-        if (global.Game.Level.current % 10 == 0) {
-            // Check only critical action sounds (dive && beam) at full volume
-            var actionSoundPlaying = sound_isplaying(GDive) || sound_isplaying(GBeam);
-
-            // Use cached enemy count instead of 3 instance_number calls
-            var enemyCountHigh = global.Game.Enemy.count > global.Game.State.lastAttack;
-
-            if (!actionSoundPlaying && enemyCountHigh) {
-                sound_volume(GBreathe, 1); // Play breathing sound at full volume
-            } else {
-                sound_volume(GBreathe, 0); // Mute if any action sounds playing
-            }
-        }
-    }
+	if global.Game.State.breathing == 1 {
+		// Active breathing: oscillate && synchronize audio
+		_update_breathing_phase();
+		_sync_breathing_audio();
+	}
 }

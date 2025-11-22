@@ -71,38 +71,38 @@ targy = 0;
 /// loaded from JSON files during GameManager initialization.
 ///
 /// Critical structures:
-///   • global.formation_data: Grid positions for all enemies
-///   • global.enemy_attributes: Stats (health, points, etc.) by type
+///   • global.Game.Data.formation: Grid positions for all enemies
+///   • global.Game.Data.enemyAttributes: Stats (health, points, etc.) by type
 /// ================================================================
 
 // === SAFE DATA INITIALIZATION - Validate Formation Grid ===
 // Validate formation data exists && contains required structure
-if (!is_struct(global.formation_data)) {
-	log_error("global.formation_data is not initialized", "oEnemyBase Create_0", 3);
-	global.formation_data = { POSITION: [] };  // Fallback with empty POSITION array
+if (!is_struct(global.Game.Data.formation)) {
+	log_error("global.Game.Data.formation is not initialized", "oEnemyBase Create_0", 3);
+	global.Game.Data.formation = { POSITION: [] };  // Fallback with empty POSITION array
 }
 
 // Additional check: Ensure POSITION array exists within formation struct
-if (!variable_struct_exists(global.formation_data, "POSITION")) {
-	log_error("global.formation_data missing POSITION array", "oEnemyBase Create_0", 3);
-	global.formation_data.POSITION = [];  // Add empty array as fallback
+if (!variable_struct_exists(global.Game.Data.formation, "POSITION")) {
+	log_error("global.Game.Data.formation missing POSITION array", "oEnemyBase Create_0", 3);
+	global.Game.Data.formation.POSITION = [];  // Add empty array as fallback
 }
 
 // === SAFE DATA INITIALIZATION - Validate Enemy Attributes ===
 // Validate enemy attributes map exists
-if (!is_struct(global.enemy_attributes)) {
-	log_error("global.enemy_attributes is not initialized", "oEnemyBase Create_0", 3);
-	global.enemy_attributes = {};  // Fallback to empty structure
+if (!is_struct(global.Game.Data.enemyAttributes)) {
+	log_error("global.Game.Data.enemyAttributes is not initialized", "oEnemyBase Create_0", 3);
+	global.Game.Data.enemyAttributes = {};  // Fallback to empty structure
 }
 
 // === ASSIGNMENT ===
 /// Store references to global data for use throughout object lifetime
-formation = global.formation_data;
+formation = global.Game.Data.formation;
 
 /// === LOAD ENEMY-SPECIFIC ATTRIBUTES ===
 /// Safely retrieve this enemy type's stats from the attributes map
 /// Uses safe_struct_get() to avoid crashes if enemy type not found
-attributes = safe_struct_get(global.enemy_attributes, ENEMY_NAME, {});
+attributes = safe_struct_get(global.Game.Data.enemyAttributes, ENEMY_NAME, {});
 
 // === VALIDATE REQUIRED FIELDS ===
 /// Check that essential attributes exist, provide safe defaults
