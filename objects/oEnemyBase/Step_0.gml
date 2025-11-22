@@ -77,7 +77,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				instance_create_layer(x, y, "GameSprites", oEnemyShot);
 			}
 		}
-		if (global.Game.Enemy.shotNumber > 2 && alarm[1] == ENEMY_SHOT_TIMING_3) {
+		if (global.Game.Enemy.difficultyLevel > 2 && alarm[1] == ENEMY_SHOT_TIMING_3) {
 			if (global.shot_pool != undefined) {
 				global.shot_pool.acquire(x, y);
 			} else {

@@ -33,7 +33,7 @@ function newlevel() {
 		if (global.Game.Level.current > LEVEL_ROGUE_3_START) {
 			global.Game.Rogue.level = 3;
 			global.Game.State.fast = 1;
-			global.shotnumber = 3;
+			global.Game.Enemy.difficultyLevel = 3;
 			global.bosscap = 2;
 		}
 
@@ -42,7 +42,7 @@ function newlevel() {
 		}
 
 		if (global.Game.Level.current > LEVEL_ADVANCED_SHOTS) {
-			global.shotnumber = 4;
+			global.Game.Enemy.difficultyLevel = 4;
 			global.bosscap = 4;
 		}
 
@@ -90,7 +90,7 @@ function newlevel() {
 	///if keyboard_check_pressed(ord("4")) = true{global.Game.Rogue.level = global.Game.Rogue.level + 1; if global.Game.Rogue.level = 5{global.Game.Rogue.level = 0}};
 	///if keyboard_check_pressed(ord("5")) = true{global.Game.State.fast = global.Game.State.fast + 1; if global.Game.State.fast = 2{global.Game.State.fast = 0}};
 	///if keyboard_check_pressed(ord("6")) = true{global.Game.State.fastEnter = global.Game.State.fastEnter + 1; if global.Game.State.fastEnter = 2{global.Game.State.fastEnter = 0}};
-	///if keyboard_check_pressed(ord("7")) = true{global.shotnumber = global.shotnumber + 1; if global.shotnumber = 5{global.shotnumber = 2}}; //stage 6, stage 16,
+	///if keyboard_check_pressed(ord("7")) = true{global.Game.Enemy.difficultyLevel = global.Game.Enemy.difficultyLevel + 1; if global.Game.Enemy.difficultyLevel = 5{global.Game.Enemy.difficultyLevel = 2}}; //stage 6, stage 16,
 	///if keyboard_check_pressed(ord("8")) = true{global.Game.Enemy.diveCapacityStart = global.Game.Enemy.diveCapacityStart + 1; if global.Game.Enemy.diveCapacityStart = 7{global.Game.Enemy.diveCapacityStart = 2}};
 	///if keyboard_check_pressed(ord("9")) = true{global.Game.State.lastAttack = global.Game.State.lastAttack + 1; if global.Game.State.lastAttack = 9{global.Game.State.lastAttack = 4}};
 	///if keyboard_check_pressed(ord("0")) = true{global.Game.Enemy.beamDuration = global.Game.Enemy.beamDuration - 50; if global.Game.Enemy.beamDuration = 100{global.Game.Enemy.beamDuration = 350}};

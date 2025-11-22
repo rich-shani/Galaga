@@ -67,7 +67,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
         global.Game.Enemy.diveCapacityStart  = 2;
         global.Game.Enemy.diveCapacity = global.Game.Enemy.diveCapacityStart;
 		global.Game.Enemy.beamDuration = BEAM_TIME_DEFAULT;
-        global.Game.Enemy.shotNumber    = 2;
+        global.Game.Enemy.difficultyLevel    = 2;
         global.Game.Enemy.transformNum      = 0;
         global.Game.Enemy.transformTokens = 0;
         global.Game.Enemy.bossCap       = 2;
