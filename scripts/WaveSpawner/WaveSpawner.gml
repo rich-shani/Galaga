@@ -129,9 +129,11 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		var path_id = get_cached_asset(path_name);
 
 		// Determine spawn position
-		var spawn_x = (wave_data.DOUBLED) ? getDoubledSpawnX() : getCenterSpawnX();
-		var spawn_y = SPAWN_TOP_Y;
-
+		var spawn_x = path_get_x(path_id, 0);
+//		var spawn_x = (wave_data.DOUBLED) ? getDoubledSpawnX() : getCenterSpawnX();
+//		var spawn_y = SPAWN_TOP_Y;
+		var spawn_y = path_get_y(path_id, 0);
+		
 		// Create enemy
 		var enemy = instance_create_layer(
 			spawn_x,
