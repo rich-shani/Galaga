@@ -26,6 +26,8 @@
 // === LOCK ONTO TARGET (ONCE) ===
 // Only set target on first frame after activation from pool
 if (!initialized) {
+	laserColor = irandom(1);
+		
 	// Calculate fixed target position based on player's CURRENT location
 	if (instance_exists(oPlayer)) {
 		target_x = oPlayer.x + (32 * oPlayer.shotMode);

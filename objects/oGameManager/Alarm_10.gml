@@ -16,7 +16,7 @@ if (nextlevel == 1) {
         /// @subsection Check for Active Enemy Shots || Ship Death
         /// If there are active enemy shots (instance_number(EnemyShot) > 0) 
         /// delay the transition by setting alarm[10] to 1 step to allow these states to resolve.
-        if (instance_number(oEnemyShot) > 0) {
+        if (global.shot_pool.stats.current_active > 0) {
             alarm[10] = 1;
         } else {
             /// @subsubsection Initialize New Level

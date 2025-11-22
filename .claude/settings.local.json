@@ -16,7 +16,8 @@
       "Bash(tree:*)",
       "Bash(for dir in objects/o*/)",
       "Bash(do basename \"$dir\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []

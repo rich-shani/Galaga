@@ -349,7 +349,6 @@
     {"id":{"name":"GTransform","path":"sounds/GTransform/GTransform.yy",},},
     {"id":{"name":"intro_music","path":"sounds/intro_music/intro_music.yy",},},
     {"id":{"name":"bkgd_Rank","path":"sprites/bkgd_Rank/bkgd_Rank.yy",},},
-    {"id":{"name":"bkgd_Star","path":"sprites/bkgd_Star/bkgd_Star.yy",},},
     {"id":{"name":"death_star","path":"sprites/death_star/death_star.yy",},},
     {"id":{"name":"galaga_header","path":"sprites/galaga_header/galaga_header.yy",},},
     {"id":{"name":"galagawars_decal","path":"sprites/galagawars_decal/galagawars_decal.yy",},},
