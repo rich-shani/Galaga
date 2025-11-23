@@ -67,8 +67,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// Alternative control scheme using A/D keys
 				// keyboard_check returns 1 if pressed, 0 if not
 				// Subtraction creates -1 (left), 0 (none), || 1 (right)
-				xDirection = keyboard_check(ord("D")) - keyboard_check(ord("A"));
-
+				//xDirection = keyboard_check(ord("D")) - keyboard_check(ord("A"));
+				xDirection = keyboard_check(vk_right) - keyboard_check(vk_left);
 				// === SHIP SPRITE SELECTION ===
 				// Choose ship sprite based on movement direction
 				if (xDirection == -1) shipImage = 1;       // Left-tilted
@@ -176,15 +176,29 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				global.Game.Player.lives -= 1;
 
 				// === CHECK FOR REMAINING LIVES ===
+	
+				// set the RESPANW timer only if we're DEAD
+				// if the ship has been CAPTURED, the alarm[1] will be set once the ship has been taken to FORMATION
+					
 				if (global.Game.Player.lives > 0) {
-					// === RESPAWN ===
-					// Player has lives remaining, prepare to respawn
-				    shipStatus = ShipState.RESPAWN;
-					shotMode = ShotMode.SINGLE;
+					
+						if (shipStatus == ShipState.DEAD) {
+							// === RESPAWN ===
+							// Player has lives remaining, prepare to respawn
+							shipStatus = ShipState.RESPAWN;
+							shotMode = ShotMode.SINGLE;
 
-					// Set respawn timer to PLAYER_RESPAWN_DELAY_FRAMES
-					// Gives player brief moment to prepare
-					alarm[1] = PLAYER_RESPAWN_DELAY_FRAMES;
+							// Set respawn timer to PLAYER_RESPAWN_DELAY_FRAMES
+							// Gives player brief moment to prepare
+							alarm[1] = PLAYER_RESPAWN_DELAY_FRAMES;
+						}
+						else { // CAPTURED
+							// === RESPAWN ===
+							// Player has lives remaining, prepare to respawn
+							shipStatus = ShipState.RESPAWN;
+							
+							alarm[5] = 300;
+						}
 				}
 				else {
 					// === GAME OVER ===
@@ -262,6 +276,9 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			/// player to ACTIVE state at default starting position
 			/// ================================================================
 
+			// is the FIGHTER in CAPTURED mode?
+			if (alarm[5] > -1) return;
+			
 			// === RESPAWN TIMER CHECK ===
 			// Wait for respawn animation/delay to complete (alarm[1])
 			if (alarm[1] ==-1) {

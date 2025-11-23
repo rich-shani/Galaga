@@ -138,6 +138,9 @@ if (!global.Game.State.isGameOver) {
 				}
 			}
 		}
+		
+		// score has been updated, check for extra life condition
+		checkForExtraLives();
 	}
 	
 	// check if this enemy had a CAPTURED PLAYER

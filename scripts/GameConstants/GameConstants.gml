@@ -683,7 +683,7 @@ function load_game_config() {
 
 /// Beam Capture Alarms (in frames at 60 FPS)
 #macro BEAM_FIGHTER_CAPTURED_MESSAGE_DELAY 240 // Delay before showing "FIGHTER CAPTURED" (4 seconds)
-#macro BEAM_PLAYER_RESPAWN_DELAY 180           // Delay before player can respawn after capture (3 seconds)
+#macro BEAM_PLAYER_RESPAWN_DELAY 60           // Delay before player can respawn after capture (1 second)
 
 // ========================================================================
 // LEVEL PROGRESSION CONSTANTS

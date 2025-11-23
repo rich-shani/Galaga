@@ -173,6 +173,9 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 			/// Transition to next state: moving into grid formation
 			enemyState = EnemyState.MOVE_INTO_FORMATION;		
+			
+			// show READY as we re-spawn the PLAYER
+			oPlayer.alarm[1] = 60;
 		}		
 	}
 	else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
@@ -361,7 +364,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 								/// Player is captured by beam!
 								oPlayer.shipStatus = ShipState.CAPTURED;
 								// FIGTHER CAPTURED MESSAGE
-								oPlayer.alarm[5] = 240;
+								oPlayer.alarm[5] = 300;
 
 								// grab the player x location
 								beam_weapon.player_x = oPlayer.x;
@@ -374,9 +377,6 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 								global.Game.Controllers.audioManager.stopSound(GBeam);			// Stop beam sound
 						        global.Game.Controllers.audioManager.loopSound(GCaptured);		// Play captured sound
-
-								// delay the RESPAWN of the PLAYER
-								oPlayer.alarm[0] = 180;
 
 								// extend the beam to cover the period to CAPTURE the player
 						       // alarm[3] = ((global.Game.Enemy.beamDuration / 3) / (90 / alarm[3])) + 20;
