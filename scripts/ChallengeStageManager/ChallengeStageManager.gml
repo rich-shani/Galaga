@@ -43,7 +43,7 @@ function ChallengeStageManager(_challenge_data) constructor {
 	static shouldTriggerChallenge = function() {
 		// Challenge triggers every 4 levels
 		var interval = get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS);
-		return (global.Game.Challenge.count >= interval);
+		return (global.Game.Challenge.countdown >= interval);
 	};
 
 	/// @function startChallenge
@@ -64,7 +64,7 @@ function ChallengeStageManager(_challenge_data) constructor {
 		enemies_destroyed = 0;
 
 		// Reset challenge counter
-		global.Game.Challenge.count = 0;
+		global.Game.Challenge.countdown = 0;
 
 		show_debug_message("[ChallengeStageManager] Challenge " + string(current_challenge_id) + " started");
 	};
@@ -189,14 +189,14 @@ function ChallengeStageManager(_challenge_data) constructor {
 
 		global.Game.Challenge.isActive = false;
 		global.Game.Challenge.current = 0;
-		global.Game.Challenge.count = 1; // Start at 1 so first challenge is at level 4
+		global.Game.Challenge.countdown = 1; // Start at 1 so first challenge is at level 4
 	};
 
 	/// @function incrementChallengeCounter
 	/// @description Increments the challenge counter (called after each standard level)
 	/// @return {undefined}
 	static incrementChallengeCounter = function() {
-		global.Game.Challenge.count++;
+		global.Game.Challenge.countdown++;
 	};
 }
 

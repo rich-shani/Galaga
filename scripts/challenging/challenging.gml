@@ -1,7 +1,7 @@
 /// @function challenging
 /// @description Initialize challenge stage data && paths
 ///
-/// Challenge stages are special bonus rounds that occur every 4 levels (when global.Game.Challenge.count reaches 4).
+/// Challenge stages are special bonus rounds that occur every 4 levels (when global.Game.Challenge.countdown reaches 4).
 /// Unlike normal stages, enemies don't form up - they follow looping paths across the screen.
 /// This function loads the challenge pattern data from JSON && sets up path references for spawning.
 ///

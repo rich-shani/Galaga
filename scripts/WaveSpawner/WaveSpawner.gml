@@ -28,16 +28,19 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 	// Spawn state
 	spawn_counter = 0;
 	spawn_alarm = 0;
-
-	/// @function spawnStandardEnemy
-	/// @description Spawns a standard enemy using data from wave_spawn.json
-	///              Automatically handles combination spawns (paired enemies)
-	/// @return {Bool} True if spawn successful, false if no more enemies to spawn
-	static spawnStandardEnemy = function() {
-		// Get current spawn configuration
+	
+	// Enemies to spawn for this WAVE
+	enemy_wave_info = [];
+	
+	/// @function computeEnemiesForWave
+	/// @description compute the list of enemies to spawn for this pattern, wave
+	///              This may add ROGUE enemies (at random positions)
+	/// @return {null}
+	static computeEnemiesForWave = function() {
+		
 		var pattern = global.Game.Level.pattern;
-		var wave = global.Game.Level.wave;
-
+		var wave = global.Game.Level.wave;		
+		
 		// Bounds checking
 		if (pattern >= array_length(spawn_data.PATTERN)) {
 			log_error("Pattern index out of bounds: " + string(pattern), "WaveSpawner.spawnStandardEnemy", 2);
@@ -49,14 +52,62 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 			log_error("Wave index out of bounds: " + string(wave), "WaveSpawner.spawnStandardEnemy", 2);
 			return false;
 		}
-
+		
 		var wave_data = pattern_data.WAVE[wave];
-		if (spawn_counter >= array_length(wave_data.SPAWN)) {
-			return false; // No more enemies to spawn
+		var src = wave_data.SPAWN;
+		var srcCount = array_length(src);		
+		var rogueCount = getRogueCount();
+		
+		// start with the standard Enemy WAVE from the JSON config
+		
+		// function will extend the enemy_wave_info array as part of the copy
+		array_copy(enemy_wave_info, 0, src, 0, srcCount);
+		
+		// do we need to insert (random index) ROGUE enemies for this WAVE?
+		for (i = 0; i < rogueCount; i++) {
+			// clone rogue details from the first Element in the array
+			var rogueElement = variable_clone(enemy_wave_info[i]);
+			// update the PATH
+			rogueElement.PATH = "ROGUE_" + enemy_wave_info[i].PATH;
+			// update the INDEX
+			rogueElement.INDEX = -1; // if INDEX == -1, then MODE: EnemyMode.ROGUE
+			
+			// choose an index (at random) to insert the ROGUE enemy
+			array_insert(enemy_wave_info, irandom(array_length(enemy_wave_info)-1), rogueElement);
 		}
+		
+		return;
+	}
+	
+	/// @function spawnStandardEnemy
+	/// @description Spawns a standard enemy using data from wave_spawn.json
+	///              Automatically handles combination spawns (paired enemies)
+	/// @return {Bool} True if spawn successful, false if no more enemies to spawn
+	static spawnStandardEnemy = function() {
+		// Get current spawn configuration
+		//var pattern = global.Game.Level.pattern;
+		//var wave = global.Game.Level.wave;
+
+		//// Bounds checking
+		//if (pattern >= array_length(spawn_data.PATTERN)) {
+		//	log_error("Pattern index out of bounds: " + string(pattern), "WaveSpawner.spawnStandardEnemy", 2);
+		//	return false;
+		//}
+
+		//var pattern_data = spawn_data.PATTERN[pattern];
+		//if (wave >= array_length(pattern_data.WAVE)) {
+		//	log_error("Wave index out of bounds: " + string(wave), "WaveSpawner.spawnStandardEnemy", 2);
+		//	return false;
+		//}
+
+		//var wave_data = pattern_data.WAVE[wave];
+		//if (spawn_counter >= array_length(wave_data.SPAWN)) {
+		//	return false; // No more enemies to spawn
+		//}
 
 		// Get enemy configuration
-		var enemy_data = wave_data.SPAWN[spawn_counter];
+//		var enemy_data = wave_data.SPAWN[spawn_counter];
+		var enemy_data = enemy_wave_info[spawn_counter];
 		var enemy_id = safe_get_asset(enemy_data.ENEMY, -1);
 
 		if (enemy_id == -1) {
@@ -71,7 +122,7 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 			log_error("Invalid path: " + enemy_data.PATH, "WaveSpawner.spawnStandardEnemy", 1);
 		}
 
-		// Create enemy instance
+		// Create enemy instance		
 		var enemy = instance_create_layer(
 			enemy_data.SPAWN_XPOS,
 			enemy_data.SPAWN_YPOS,
@@ -82,7 +133,7 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 				INDEX: enemy_data.INDEX,
 				PATH_NAME: enemy_data.PATH,
 				COMBINE: enemy_data.COMBINE,
-				MODE: EnemyMode.STANDARD
+				MODE: (enemy_data.INDEX == -1) ? EnemyMode.ROGUE : EnemyMode.STANDARD
 			}
 		);
 
@@ -251,8 +302,13 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 	/// @description Resets spawn counter for new wave
 	static resetSpawnCounter = function() {
 		spawn_counter = 0;
+		enemy_wave_info = [];
 	};
 
+	static isWaveComplete = function() {
+		return (spawn_counter == array_length(enemy_wave_info));
+	}
+	
 	/// @function getSpawnDelay
 	/// @description Returns appropriate spawn delay based on game mode
 	/// @return {Real} Frames to wait between spawns

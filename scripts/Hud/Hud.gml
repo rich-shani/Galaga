@@ -530,7 +530,7 @@ function Draw_Debug_Overlay() {
 	draw_text(_x, _current_y, "Challenge Stage: " + (global.Game.Challenge.isActive ? "YES" : "NO"));
 	_current_y += _line_height;
 
-	draw_text(_x, _current_y, "Challenge Count: " + string(global.Game.Challenge.count) + " / " + string(global.Game.Challenge.intervalsToNext));
+	draw_text(_x, _current_y, "Challenge Count: " + string(global.Game.Challenge.countdown) + " / " + string(global.Game.Challenge.intervalsToNext));
 	_current_y += _line_height;
 
 	_current_y += _line_height * 0.5;

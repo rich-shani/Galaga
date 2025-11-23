@@ -57,7 +57,7 @@ global.Game = {
     Challenge: {
         isActive: false,
         current: 0,
-        count: 1,
+        countdown: 1,
         intervalsToNext: get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS)
     },
     Spawn: {

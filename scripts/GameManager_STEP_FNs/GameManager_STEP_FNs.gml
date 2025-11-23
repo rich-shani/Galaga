@@ -131,7 +131,8 @@ function spawnEnemy() {
 /// @return {Bool} True if all spawn indices have been processed
 function waveComplete() {
 	if (global.Game.Controllers.waveSpawner != undefined) {
-		return (global.Game.Controllers.waveSpawner.getSpawnCounter() == array_length(global.Game.Data.spawn.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN));
+		return (global.Game.Controllers.waveSpawner.isWaveComplete());
+//		return (global.Game.Controllers.waveSpawner.getSpawnCounter() == array_length(global.Game.Data.spawn.PATTERN[global.Game.Level.pattern].WAVE[global.Game.Level.wave].SPAWN));
 	} else {
 		log_error("waveSpawner controller not initialized", "waveComplete", 3);
 		return false;
@@ -207,19 +208,19 @@ function Game_Loop_Standard() {
 				// Automatically handles COMBINE flag for paired spawns
 				spawnEnemy();
 			}
-			// === PHASE 2: ADD ROGUE ENEMIES ===
-			else if (!global.Game.Rogue.checkPerWave) {
-				// Wave spawning complete, now check for rogue enemies
-				// Rogues are special enemies that don't join formation
-				// They target the player directly after entrance path
+			//// === PHASE 2: ADD ROGUE ENEMIES ===
+			//else if (!global.Game.Rogue.checkPerWave) {
+			//	// Wave spawning complete, now check for rogue enemies
+			//	// Rogues are special enemies that don't join formation
+			//	// They target the player directly after entrance path
 
-				var nRogue = nRogueEnemies(); // Get rogue count from rogue_spawn.json
-				if (nRogue > 0) {
-					spawnRogueEnemies(nRogue);
-				}
+			//	var nRogue = nRogueEnemies(); // Get rogue count from rogue_spawn.json
+			//	if (nRogue > 0) {
+			//		spawnRogueEnemies(nRogue);
+			//	}
 
-				global.Game.Rogue.checkPerWave = true; // Mark rogues as spawned for this wave
-			}
+			//	global.Game.Rogue.checkPerWave = true; // Mark rogues as spawned for this wave
+			//}
 
 			// === PHASE 3: WAVE TRANSITION CHECK ===
 			// Only advance to next wave when:
@@ -240,7 +241,8 @@ function Game_Loop_Standard() {
 
 				// Advance to the next WAVE within this pattern
 	            global.Game.Level.wave += 1;
-				global.Game.Rogue.checkPerWave = false; // Reset rogue flag for next wave
+				// Reset rogue flag for next wave
+				global.Game.Rogue.checkPerWave = false;
             }
 			else {
 				// Still spawning OR enemies still moving into formation
@@ -378,7 +380,7 @@ function Game_Loop_Challenge() {
 	// ====================================================================
 	// CHALLENGE MODE: Challenge Stage Spawning Logic
 	// ====================================================================
-	// Challenge stages occur every 4 levels (when global.Game.Challenge.count reaches 0)
+	// Challenge stages occur every 4 levels (when global.Game.Challenge.countdown reaches 0)
 	// Different spawning logic: 8 enemies per wave, 5 waves total = 40 enemies
 	// Enemies follow looping paths && don't form into grid
 
@@ -449,12 +451,12 @@ function Game_Loop_Challenge() {
 ///
 /// ARCHITECTURE:
 /// This function handles TWO distinct game modes:
-///   1. STANDARD MODE (global.Game.Challenge.count > 0): Regular wave-based gameplay
+///   1. STANDARD MODE (global.Game.Challenge.countdown > 0): Regular wave-based gameplay
 ///      - Spawns 40 enemies per wave from wave_spawn.json
 ///      - Enemies form into 5x8 grid formation
 ///      - Includes rogue enemy spawning between waves
 ///
-///   2. CHALLENGE MODE (global.Game.Challenge.count == 0): Bonus stages every 4 levels
+///   2. CHALLENGE MODE (global.Game.Challenge.countdown == 0): Bonus stages every 4 levels
 ///      - Spawns 8 enemies per wave (5 waves = 40 total)
 ///      - Enemies follow looping paths (no formation)
 ///      - Uses challenge_spawn.json for patterns
@@ -472,7 +474,15 @@ function Game_Loop(){
 	// Skip processing if game is paused || transitioning to next level
 	// do not spawn a wave if the Ship isn't active (eg its RESPAWNING)
 	if (global.Game.State.isPaused || oPlayer.shipStatus != ShipState.ACTIVE) return;
+	else if (!global.Game.Rogue.checkPerWave) {
 
+		// pre-compute the wave to SPAWN, include any rogue enemies (and randomize their position in the SPANN)
+		global.Game.Controllers.waveSpawner.computeEnemiesForWave();
+			
+		// flag is reset, at the end of each WAVE (within Game_Loop_Standard)
+		global.Game.Rogue.checkPerWave = true;	
+	}
+	
 	// === CHECK LEVEL ADVANCE CONDITIONS ===
 	// Pass current state to readyForNextLevel() for context-independent validation
 	var levelAdvanceResult = readyForNextLevel(alarm[AlarmIndex.LEVEL_ADVANCE], nextlevel);
@@ -516,11 +526,11 @@ function Game_Loop(){
 	// ====================================================================
 	// GAME MODE ROUTING: Standard Wave Gameplay vs Challenge Stage
 	// ====================================================================
-	// global.Game.Challenge.count tracks progress toward challenge stages
+	// global.Game.Challenge.countdown tracks progress toward challenge stages
 	// When > 0: Normal gameplay with formations
 	// When == 0: Challenge stage (every 4th level)
 
-	if (global.Game.Challenge.count > 0) {
+	if (global.Game.Challenge.countdown > 0) {
 		Game_Loop_Standard();
 	} else {
 		Game_Loop_Challenge();

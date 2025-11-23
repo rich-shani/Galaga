@@ -61,7 +61,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 
 		global.Game.Challenge.isActive = false;
 		global.Game.Challenge.current = 0;
-		global.Game.Challenge.count = 1;
+		global.Game.Challenge.countdown = 1;
 		global.Game.Challenge.intervalsToNext = get_config_value("CHALLENGE_STAGES", "INTERVAL_LEVELS", CHALLENGE_INTERVAL_LEVELS);
 
         global.Game.Enemy.diveCapacityStart  = 2;

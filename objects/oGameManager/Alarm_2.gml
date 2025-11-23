@@ -2,7 +2,7 @@
 /// Handles the results && scoring for the challenge stage in wave 5.
 /// Plays sounds && awards bonus points based on player performance.
 
-if (global.Game.Challenge.count == 0 && global.Game.Level.wave == 5) {
+if (global.Game.Challenge.countdown == 0 && global.Game.Level.wave == 5) {
 
     global.Game.State.results += 1; // Increment the results step
 

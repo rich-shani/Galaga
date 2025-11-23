@@ -197,7 +197,7 @@ if (global.Game.Level.current > 0 && rank > 0) {
     rank -= 1;
 
     // Play a ranking sound (GRank) if a challenge mode is active
-    if (global.Game.Challenge.count > 0) {
+    if (global.Game.Challenge.countdown > 0) {
         global.Game.Controllers.audioManager.playSound(GRank);
     }
 
