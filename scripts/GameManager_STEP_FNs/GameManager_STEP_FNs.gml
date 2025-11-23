@@ -120,9 +120,9 @@ function spawnEnemy() {
 	// Delegate to WaveSpawner controller
 	// Controller handles: data reading, error checking, COMBINE flags, counter increment
 	if (global.Game.Controllers.waveSpawner != undefined) {
-		global.Game.Controllers.waveSpawner.spawnStandardEnemy();
+		global.Game.Controllers.waveSpawner.spawnEnemyGroup();
 	} else {
-		log_error("waveSpawner controller not initialized", "spawnEnemy", 3);
+		log_error("waveSpawner controller not initialized", "spawnEnemyGroup", 3);
 	}
 }
 
