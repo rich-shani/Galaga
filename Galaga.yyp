@@ -284,6 +284,7 @@
     {"id":{"name":"ChallengeStageManager","path":"scripts/ChallengeStageManager/ChallengeStageManager.yy",},},
     {"id":{"name":"challenging","path":"scripts/challenging/challenging.yy",},},
     {"id":{"name":"CRTFunctions","path":"scripts/CRTFunctions/CRTFunctions.yy",},},
+    {"id":{"name":"EnemyBehavior","path":"scripts/EnemyBehavior/EnemyBehavior.yy",},},
     {"id":{"name":"EnemyManagement","path":"scripts/EnemyManagement/EnemyManagement.yy",},},
     {"id":{"name":"ErrorHandling","path":"scripts/ErrorHandling/ErrorHandling.yy",},},
     {"id":{"name":"GameConstants","path":"scripts/GameConstants/GameConstants.yy",},},
