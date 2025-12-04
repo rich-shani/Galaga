@@ -1,0 +1,12 @@
+{
+  "$GMShader":"",
+  "%Name":"shd_bloom",
+  "name":"shd_bloom",
+  "parent":{
+    "name":"Galaga",
+    "path":"Galaga.yyp",
+  },
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
+}

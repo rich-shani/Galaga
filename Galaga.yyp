@@ -70,7 +70,11 @@
     {"$GMFolder":"","%Name":"Splash","folderPath":"folders/Sprites/LoadingScreens/Splash.yy","name":"Splash","resourceType":"GMFolder","resourceVersion":"2.0",},
     {"$GMFolder":"","%Name":"tilesets","folderPath":"folders/Sprites/tilesets.yy","name":"tilesets","resourceType":"GMFolder","resourceVersion":"2.0",},
   ],
-  "ForcedPrefabProjectReferences":[],
+  "ForcedPrefabProjectReferences":[
+    {"link":"io.gamemaker.gm_filter_colourise-1.0.0","name":"io.gamemaker.gm_filter_colourise-1.0.0","path":"io.gamemaker.gm_filter_colourise-1.0.0.yyp",},
+    {"link":"io.gamemaker.gm_filter_screenshake-1.0.0","name":"io.gamemaker.gm_filter_screenshake-1.0.0","path":"io.gamemaker.gm_filter_screenshake-1.0.0.yyp",},
+    {"link":"io.gamemaker.gm_filter_hue-1.0.0","name":"io.gamemaker.gm_filter_hue-1.0.0","path":"io.gamemaker.gm_filter_hue-1.0.0.yyp",},
+  ],
   "IncludedFiles":[
     {"$GMIncludedFile":"","%Name":"atari.ttf","CopyToMask":-1,"filePath":"datafiles/Fonts","name":"atari.ttf","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
     {"$GMIncludedFile":"","%Name":"challenge_spawn.json","CopyToMask":-1,"filePath":"datafiles/Patterns","name":"challenge_spawn.json","resourceType":"GMIncludedFile","resourceVersion":"2.0",},
@@ -86,7 +90,7 @@
   "isEcma":false,
   "LibraryEmitters":[],
   "MetaData":{
-    "IDEVersion":"2024.14.0.207",
+    "IDEVersion":"2024.14.1.210",
   },
   "name":"Galaga",
   "resources":[
@@ -299,6 +303,7 @@
     {"id":{"name":"newlevel","path":"scripts/newlevel/newlevel.yy",},},
     {"id":{"name":"NullObjects","path":"scripts/NullObjects/NullObjects.yy",},},
     {"id":{"name":"ObjectPool","path":"scripts/ObjectPool/ObjectPool.yy",},},
+    {"id":{"name":"ParticleManager","path":"scripts/ParticleManager/ParticleManager.yy",},},
     {"id":{"name":"ScoreManager","path":"scripts/ScoreManager/ScoreManager.yy",},},
     {"id":{"name":"set_score","path":"scripts/set_score/set_score.yy",},},
     {"id":{"name":"setup_gmscoreboard","path":"scripts/setup_gmscoreboard/setup_gmscoreboard.yy",},},
@@ -318,6 +323,7 @@
     {"id":{"name":"VisualEffectManager","path":"scripts/VisualEffectManager/VisualEffectManager.yy",},},
     {"id":{"name":"waverogue","path":"scripts/waverogue/waverogue.yy",},},
     {"id":{"name":"WaveSpawner","path":"scripts/WaveSpawner/WaveSpawner.yy",},},
+    {"id":{"name":"shd_bloom","path":"shaders/shd_bloom/shd_bloom.yy",},},
     {"id":{"name":"shd_crt_fast","path":"shaders/shd_crt_fast/shd_crt_fast.yy",},},
     {"id":{"name":"shd_crt","path":"shaders/shd_crt/shd_crt.yy",},},
     {"id":{"name":"shd_raw","path":"shaders/shd_raw/shd_raw.yy",},},

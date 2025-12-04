@@ -44,6 +44,12 @@ hitCount--;
 // === DEATH CHECK ===
 // If health depleted, create explosion effect && destroy enemy
 if (hitCount == 0) {
+    // CREATE EXPLOSION PARTICLES (new)
+    if (global.Game.Controllers.particleManager != undefined) {
+        // Scale intensity based on enemy type
+        var intensity = (object_index == oTieIntercepter) ? 1.5 : 1.0;
+        global.Game.Controllers.particleManager.burst_explosion(x, y, intensity);
+    }
 
 	// === EXPLOSION ANIMATION ===
 	// Randomly choose between two explosion types for variety
@@ -71,4 +77,9 @@ if (hitCount == 0) {
 	//   • Formation slot cleanup
 	//   • Bonus enemy spawn checks
 	instance_destroy(self);
+} else {
+    // Hit but not destroyed - create hit impact particles
+    if (global.Game.Controllers.particleManager != undefined) {
+        global.Game.Controllers.particleManager.burst_hit_impact(x, y);
+    }
 }

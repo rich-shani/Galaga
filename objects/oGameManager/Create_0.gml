@@ -79,3 +79,15 @@ init_object_pools();
 precache_assets();
 
 show_debug_message("[oGameManager] Object pools and asset cache initialized");
+
+//// In oGameManager Create event or room initialization
+//bloom_layer = layer_create(-50, "BloomEffect");
+//layer_shader(bloom_layer, shd_bloom);
+
+//// Set shader uniforms (do this in Create or when shader is applied)
+//shader_set(shd_bloom);
+//shader_set_uniform_f(shader_get_uniform(shd_bloom, "intensity"), 0.9);
+//shader_set_uniform_f(shader_get_uniform(shd_bloom, "threshold"), 0.9);
+//shader_set_uniform_f_array(shader_get_uniform(shd_bloom, "texel_size"), 
+//    [1.0/view_wport[0], 1.0/view_hport[0]]);
+//shader_reset();
