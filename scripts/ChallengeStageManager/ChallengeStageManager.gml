@@ -104,6 +104,8 @@ function ChallengeStageManager(_challenge_data) constructor {
 			return "";
 		}
 
+		// BUG" mixing GameManager_STEP_FNs and this ChallengeStageManager, and here it should be index 0, not 1 for this first challenge stage!
+		/// convert to use ChallengeStageManager through-out and remove GameManager_STEP_FNs calls (eg getChallengeData())
 		var challenge = challenge_data.CHALLENGES[current_challenge_id];
 
 		// Use lookup table instead of massive if/else tree

@@ -21,7 +21,7 @@ if (!global.Game.State.isGameOver) {
 	/// Only award points && play effects for on-screen kills
 	/// This prevents exploiting off-screen enemy kills for free points
 	/// Boundaries: Y between -64 && 592, X between -64 && 464 (scaled)
-	if (y > SPAWN_TOP_Y * global.Game.Display.scale && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > SCREEN_LEFT_X && x < SCREEN_RIGHT_X * global.Game.Display.scale) {
+	if (y > SPAWN_TOP_Y && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > SCREEN_LEFT_X && x < SCREEN_RIGHT_X * global.Game.Display.scale) {
 
 		/// ================================================================
 		/// SCORING SYSTEM - Award points based on enemy state
@@ -41,7 +41,7 @@ if (!global.Game.State.isGameOver) {
 			/// If not a transformed enemy, award points for the kill
 			if (trans == 0) {
 				/// Award higher points for diving enemies (more dangerous)
-				if (global.Game.Challenge.countdown > 0 || global.Game.Challenge.current == 1) {
+				if (global.Game.Challenge.countdown > 0) {
 					global.Game.Player.score += attributes.DIVE_POINT_VALUE;
 				} else {
 					global.Game.Player.score += attributes.CHALLENGE_POINT_VALUE;
@@ -118,7 +118,7 @@ if (!global.Game.State.isGameOver) {
 			/// • Challenge 4: Boss2 sound
 			/// • Challenge 7: Boss1 sound
 			/// ================================================================
-			if global.Game.Challenge.countdown > 0 || global.Game.Challenge.current == 1 {
+			if global.Game.Challenge.countdown > 0 {
 				global.Game.Controllers.audioManager.stopSound(GBee);
 				global.Game.Controllers.audioManager.playSound(GBee);
 			}

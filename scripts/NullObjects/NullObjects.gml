@@ -233,7 +233,7 @@ function ensure_controllers_initialized() {
 	// Ensure all controllers exist (use null objects as fallback)
 	global.Game.Controllers.waveSpawner ??= new NullWaveSpawner();
 	global.Game.Controllers.scoreManager ??= new NullScoreManager();
-	global.Game.Controllers.challengeManager ??= new NullChallengeManager();
+//	global.Game.Controllers.challengeManager ??= new NullChallengeManager();
 	global.Game.Controllers.visualEffects ??= new NullVisualEffectsManager();
 	global.Game.Controllers.uiManager ??= new NullUIManager();
 	global.Game.Controllers.audioManager ??= new NullAudioManager();
