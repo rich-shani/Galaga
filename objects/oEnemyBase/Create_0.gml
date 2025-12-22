@@ -189,35 +189,6 @@ else if (MODE == EnemyMode.ROGUE) {
 // fasty set to TRANSFORM_ALARM_DELAY steps to speed up entry animations.
 if (global.Game.State.fastEnter == 1) fasty = TRANSFORM_ALARM_DELAY;
 
-/// ================================================================
-/// BEAM WEAPON SYSTEM - Special Ability
-/// ================================================================
-/// The beam weapon system allows special enemy types (like TIE Intercepters)
-/// to charge && fire a powerful energy beam at the player ship.
-///
-/// Beam mechanics:
-/// • beam: Flag indicating if this enemy can use beam weapon (0 = no, 1 = yes)
-/// • beamsignal: Tracks beam charging state during activation
-/// • loop: State machine for beam charging && firing phases
-/// • anim: Animation frame counter for beam sprite cycling
-///
-/// Beam can only activate once per dive attack when:
-/// • No other beam currently active
-/// • Player is in single-ship mode (!dual/doubled)
-/// • No fighters are captured
-/// • Global beam check flag is clear
-/// ================================================================
-
-// Beam weapon structure - set to false by default (disable until enabled by subclass)
-enum BEAM_STATE {
-	READY,
-	CHARGING,
-	FIRE,
-	FIRE_COMPLETE,
-	CAPTURE_PLAYER,
-	FAILED
-}
-
 beam_weapon = {
 	available : false,
 

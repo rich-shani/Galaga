@@ -57,6 +57,35 @@
      RESPAWN
  }
 
+/// ================================================================
+/// BEAM WEAPON SYSTEM - Special Ability
+/// ================================================================
+/// The beam weapon system allows special enemy types (like TIE Intercepters)
+/// to charge && fire a powerful energy beam at the player ship.
+///
+/// Beam mechanics:
+/// • beam: Flag indicating if this enemy can use beam weapon (0 = no, 1 = yes)
+/// • beamsignal: Tracks beam charging state during activation
+/// • loop: State machine for beam charging && firing phases
+/// • anim: Animation frame counter for beam sprite cycling
+///
+/// Beam can only activate once per dive attack when:
+/// • No other beam currently active
+/// • Player is in single-ship mode (!dual/doubled)
+/// • No fighters are captured
+/// • Global beam check flag is clear
+/// ================================================================
+
+// Beam weapon structure - set to false by default (disable until enabled by subclass)
+enum BEAM_STATE {
+	READY,
+	CHARGING,
+	FIRE,
+	FIRE_COMPLETE,
+	CAPTURE_PLAYER,
+	FAILED
+}
+
 /// @enum AlarmIndex
 /// @description Named indices for alarm events in oGameManager
 /// Makes alarm usage more readable && maintainable
@@ -802,4 +831,38 @@ function load_game_config() {
 //   3. Explain purpose and units (pixels, frames, etc.)
 //   4. Document default/typical values
 //   5. Link to related constants if applicable
+// ========================================================================
+
+// ========================================================================
+// HELPER FUNCTIONS
+// ========================================================================
+
+/// @function score_to_sprite_frame
+/// @description Maps score values to spriteFrame indices for oPointsDisplay
+/// @param {Real} _score The score value to map
+/// @return {Real} The spriteFrame index (0-7) corresponding to the score value
+/// 
+/// Score to Frame Mapping:
+///   - 50 points   → frame 0
+///   - 100 points  → frame 1
+///   - 150 points  → frame 2
+///   - 200 points  → frame 3
+///   - 300 points  → frame 4
+///   - 400 points  → frame 5
+///   - 500 points  → frame 6
+///   - 800 points  → frame 7
+///   - Default: frame 0 for unknown values
+function score_to_sprite_frame(_score) {
+	switch (_score) {
+		case 150: return 0;
+		case 400: return 1;
+		case 800: return 2;
+		case 1000: return 3;
+		case 1500: return 4;
+		case 1600: return 5;
+		case 2000: return 6;
+		case 3000: return 7;
+		default: return 0;  // Default to frame 0 for unknown values
+	}
+}
 // ========================================================================

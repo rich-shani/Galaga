@@ -34,6 +34,7 @@ if (!global.Game.State.isGameOver) {
 		/// • In challenge: Uses DIVE_POINT_VALUE even for non-diving
 		/// • Normal waves: Uses CHALLENGE_POINT_VALUE
 		/// ================================================================
+		var points = 0;
 		if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 			/// Enemy is currently diving/attacking - grant invulnerability window
 			oPlayer.alarm[PlayerAlarmIndex.TiMER] = global.Game.State.hold + irandom(global.Game.State.hold);
@@ -42,16 +43,24 @@ if (!global.Game.State.isGameOver) {
 			if (trans == 0) {
 				/// Award higher points for diving enemies (more dangerous)
 				if (global.Game.Challenge.countdown > 0) {
-					global.Game.Player.score += attributes.DIVE_POINT_VALUE;
+					points = attributes.DIVE_POINT_VALUE;
 				} else {
-					global.Game.Player.score += attributes.CHALLENGE_POINT_VALUE;
+					points = attributes.CHALLENGE_POINT_VALUE;
 				}
 			}
 		} else {
 			/// Enemy is in formation || other non-dive state - standard points
-			global.Game.Player.score += attributes.POINT_VALUE;
+			points = attributes.POINT_VALUE;
 		}
 
+		// assign points
+		global.Game.Player.score += points;
+
+		// check if beam_weapon enabled, as this enemy also shows POINTS scored
+		if (beam_weapon.available) {
+			instance_create_layer(x, y, "GameSprites", oPointsDisplay, { spriteFrame: score_to_sprite_frame(points) });
+		}
+		
 		/// ================================================================
 		/// TRANSFORMATION TRACKING AND COMBO SYSTEM
 		/// ================================================================

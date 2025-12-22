@@ -149,22 +149,38 @@ function patternComplete() {
 
 /// @function getChallengeData
 /// @description Retrieves challenge stage data for the current challenge number
+///              DEPRECATED: Use global.Game.Controllers.challengeManager.getChallengeData() instead
 ///              Note: global.Game.Challenge.current is 1-indexed (1-8), array is 0-indexed
 /// @return {Struct} Challenge data structure with paths && wave information
-function getChallengeData() {
-	// Get the challenge data for the current challenge (global.Game.Challenge.current is 1-8)
-	// Array is 0-indexed, so subtract 1
-	return global.Game.Data.challenge.CHALLENGES[global.Game.Challenge.current - 1];
-}
+/// @deprecated Use challengeManager.getChallengeData() instead
+//function getChallengeData() {
+//	if (global.Game.Controllers.challengeManager != undefined) {
+//		return global.Game.Controllers.challengeManager.getChallengeData();
+//	} else {
+//		log_error("challengeManager controller not initialized", "getChallengeData", 3);
+//		// Fallback to direct access for backward compatibility
+//		return global.Game.Data.challenge.CHALLENGES[global.Game.Challenge.current - 1];
+//	}
+//}
 
 /// @function getChallengeWaveData
 /// @description Retrieves wave data for the current wave in the current challenge
+///              DEPRECATED: Use global.Game.Controllers.challengeManager.getChallengeWaveData() instead
 /// @return {Struct} Wave data structure with enemy type && spawn settings
-function getChallengeWaveData() {
-	// Get the wave data for the current wave in the current challenge
-	var chall_data = getChallengeData();
-	return chall_data.WAVES[global.Game.Level.wave];
-}
+/// @deprecated Use challengeManager.getChallengeWaveData() instead
+//function getChallengeWaveData() {
+//	if (global.Game.Controllers.challengeManager != undefined) {
+//		return global.Game.Controllers.challengeManager.getChallengeWaveData();
+//	} else {
+//		log_error("challengeManager controller not initialized", "getChallengeWaveData", 3);
+//		// Fallback to direct access for backward compatibility
+//		var chall_data = getChallengeData();
+//		if (chall_data != undefined) {
+//			return chall_data.WAVES[global.Game.Level.wave];
+//		}
+//		return undefined;
+//	}
+//}
 
 /// @function spawnChallengeEnemy
 /// @description Spawns a challenge stage enemy using WaveSpawner controller
@@ -389,8 +405,14 @@ function Game_Loop_Challenge() {
 
         if (count < CHALLENGE_ENEMIES_PER_WAVE) {  // Only spawn if current wave hasn't reached full enemy count
 
-            var chall_data = getChallengeData();
-            var wave_data = getChallengeWaveData();
+            // Use challengeManager to get challenge and wave data
+            if (global.Game.Controllers.challengeManager != undefined) {
+                var chall_data = global.Game.Controllers.challengeManager.getChallengeData();
+                var wave_data = global.Game.Controllers.challengeManager.getChallengeWaveData();
+            } else {
+                log_error("challengeManager controller not initialized", "Game_Loop_Challenge", 3);
+                return;
+            }
 
             // === PATH SHIFTING FOR CHALLENGE 4 ===
             // Special case: Challenge 4, Wave 4 shifts paths right for visual variety
@@ -414,7 +436,7 @@ function Game_Loop_Challenge() {
 
                 if (global.Game.Level.wave == 0 || global.Game.Level.wave == 3 || global.Game.Level.wave == 4) {
 					spawnChallengeWave_0_3_4(chall_data, wave_data);
-                } else if (global.Game.Level.wave == 1) {
+               } else if (global.Game.Level.wave == 1) {
 					spawnChallengeWave_1(chall_data, wave_data);
                 } else if (global.Game.Level.wave == 2) {
 					spawnChallengeWave_2(chall_data, wave_data);

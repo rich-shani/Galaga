@@ -162,24 +162,24 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 
 	/// @function spawnChallengeEnemy
 	/// @description Spawns challenge stage enemies
+	///              Uses challengeManager to get challenge and wave data
 	/// @return {Bool} True if spawn successful
 	static spawnChallengeEnemy = function() {
-		var challenge_id = global.Game.Challenge.current;
-		var wave = global.Game.Level.wave;
-
-		// Bounds checking
-		if (challenge_id >= array_length(challenge_data.CHALLENGES)) {
-			log_error("Challenge ID out of bounds: " + string(challenge_id), "WaveSpawner.spawnChallengeEnemy", 2);
+		// Use challengeManager to get challenge and wave data
+		if (global.Game.Controllers.challengeManager == undefined) {
+			log_error("challengeManager controller not initialized", "WaveSpawner.spawnChallengeEnemy", 3);
 			return false;
 		}
 
-		var challenge = challenge_data.CHALLENGES[challenge_id];
-		if (wave >= array_length(challenge.WAVES)) {
-			log_error("Challenge wave out of bounds: " + string(wave), "WaveSpawner.spawnChallengeEnemy", 2);
+		var challenge = global.Game.Controllers.challengeManager.getChallengeData();
+		if (challenge == undefined) {
 			return false;
 		}
 
-		var wave_data = challenge.WAVES[wave];
+		var wave_data = global.Game.Controllers.challengeManager.getChallengeWaveData();
+		if (wave_data == undefined) {
+			return false;
+		}
 		var enemy_id = safe_get_asset(wave_data.ENEMY, -1);
 
 		if (enemy_id == -1) {
@@ -187,7 +187,8 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 			return false;
 		}
 
-		// Select path based on wave number
+		// Select path based on wave number using challengeManager
+		var wave = global.Game.Level.wave;
 		var path_name = selectChallengePath(challenge, wave);
 		var path_id = get_cached_asset(path_name);
 

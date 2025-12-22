@@ -90,6 +90,45 @@ function ChallengeStageManager(_challenge_data) constructor {
 		return bonus;
 	};
 
+	/// @function getChallengeData
+	/// @description Retrieves challenge stage data for the current challenge number
+	///              Uses global.Game.Challenge.current (1-indexed) and converts to 0-indexed array access
+	/// @return {Struct} Challenge data structure with paths && wave information, undefined if invalid
+	static getChallengeData = function() {
+		// Get the challenge ID (global.Game.Challenge.current is 1-indexed, array is 0-indexed)
+		var challenge_id = global.Game.Challenge.current - 1;
+		
+		// Bounds checking
+		if (challenge_id < 0 || challenge_id >= array_length(challenge_data.CHALLENGES)) {
+			log_error("Challenge ID out of bounds: " + string(global.Game.Challenge.current) + " (0-indexed: " + string(challenge_id) + ")",
+				"ChallengeStageManager.getChallengeData", 2);
+			return undefined;
+		}
+		
+		return challenge_data.CHALLENGES[challenge_id];
+	};
+
+	/// @function getChallengeWaveData
+	/// @description Retrieves wave data for the current wave in the current challenge
+	/// @return {Struct} Wave data structure with enemy type && spawn settings, undefined if invalid
+	static getChallengeWaveData = function() {
+		var chall_data = ChallengeStageManager.getChallengeData();
+		if (chall_data == undefined) {
+			return undefined;
+		}
+		
+		var wave = global.Game.Level.wave;
+		
+		// Bounds checking
+		if (wave < 0 || wave >= array_length(chall_data.WAVES)) {
+			log_error("Challenge wave index out of bounds: " + string(wave),
+				"ChallengeStageManager.getChallengeWaveData", 2);
+			return undefined;
+		}
+		
+		return chall_data.WAVES[wave];
+	};
+
 	/// @function getPathForWave
 	/// @description Gets appropriate path name for current wave using lookup table
 	///              ELIMINATES 60+ lines of duplicate if/else code
@@ -97,16 +136,10 @@ function ChallengeStageManager(_challenge_data) constructor {
 	/// @param {Bool} _use_alt Whether to use alternate (flipped) path
 	/// @return {String} Path name
 	static getPathForWave = function(_wave, _use_alt) {
-		// Bounds checking
-		if (current_challenge_id >= array_length(challenge_data.CHALLENGES)) {
-			log_error("Challenge ID out of bounds: " + string(current_challenge_id),
-				"ChallengeStageManager.getPathForWave", 2);
+		var challenge = ChallengeStageManager.getChallengeData();
+		if (challenge == undefined) {
 			return "";
 		}
-
-		// BUG" mixing GameManager_STEP_FNs and this ChallengeStageManager, and here it should be index 0, not 1 for this first challenge stage!
-		/// convert to use ChallengeStageManager through-out and remove GameManager_STEP_FNs calls (eg getChallengeData())
-		var challenge = challenge_data.CHALLENGES[current_challenge_id];
 
 		// Use lookup table instead of massive if/else tree
 		var path_key = "wave_" + string(_wave);
