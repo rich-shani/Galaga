@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"sound_isplaying",
   "parent":{
-    "name":"sound",
-    "path":"folders/Scripts/compatibility/sound.yy",
+    "name":"Sound",
+    "path":"folders/Scripts/Sound.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

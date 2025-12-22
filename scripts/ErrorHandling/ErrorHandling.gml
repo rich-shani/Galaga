@@ -460,7 +460,7 @@ function validate_challenge_spawn_json(_data) {
 /// @param {String} _enemy_name Enemy name for error messages
 /// @return {Bool} True if valid, false otherwise
 function validate_enemy_attributes_json(_data, _enemy_name = "enemy") {
-	var required_keys = ["HEALTH", "POINTS_BASE", "STANDARD"];
+	var required_keys = ["HEALTH", "POINT_VALUE", "STANDARD"];
 	if (!validate_json_structure(_data, required_keys, _enemy_name + " attributes")) {
 		return false;
 	}

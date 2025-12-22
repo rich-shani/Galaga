@@ -832,37 +832,3 @@ function load_game_config() {
 //   4. Document default/typical values
 //   5. Link to related constants if applicable
 // ========================================================================
-
-// ========================================================================
-// HELPER FUNCTIONS
-// ========================================================================
-
-/// @function score_to_sprite_frame
-/// @description Maps score values to spriteFrame indices for oPointsDisplay
-/// @param {Real} _score The score value to map
-/// @return {Real} The spriteFrame index (0-7) corresponding to the score value
-/// 
-/// Score to Frame Mapping:
-///   - 50 points   → frame 0
-///   - 100 points  → frame 1
-///   - 150 points  → frame 2
-///   - 200 points  → frame 3
-///   - 300 points  → frame 4
-///   - 400 points  → frame 5
-///   - 500 points  → frame 6
-///   - 800 points  → frame 7
-///   - Default: frame 0 for unknown values
-function score_to_sprite_frame(_score) {
-	switch (_score) {
-		case 150: return 0;
-		case 400: return 1;
-		case 800: return 2;
-		case 1000: return 3;
-		case 1500: return 4;
-		case 1600: return 5;
-		case 2000: return 6;
-		case 3000: return 7;
-		default: return 0;  // Default to frame 0 for unknown values
-	}
-}
-// ========================================================================

@@ -228,7 +228,7 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		var flip_path = use_path1 ? _challenge.PATH1_FLIP : _challenge.PATH2_FLIP;
 
 		// Alternate between normal and flipped
-		var use_flip = (spawn_counter % 2 == 1);
+		var use_flip = (global.Game.Level.wave % 2 == 1);
 		return use_flip ? flip_path : base_path;
 	};
 
@@ -342,4 +342,19 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		var center = SCREEN_CENTER_X * global.Game.Display.scale;
 		return (spawn_counter % 2 == 0) ? (center - offset) : (center + offset);
 	};
+}
+
+function waverogue() {
+	if global.Game.Rogue.level = 1{
+	    if global.Game.Level.wave = 0 || global.Game.Level.wave = 3 || global.Game.Level.wave = 4{rogue1 = 1; rogue2 = 1} else{rogue1 = 0; rogue2 = 0};
+	}
+	if global.Game.Rogue.level = 2{
+	    rogue1 = 1; rogue2 = 1;
+	}
+	if global.Game.Rogue.level = 3{
+	    if global.Game.Level.wave = 0 || global.Game.Level.wave = 3 || global.Game.Level.wave = 4{rogue1 = 2; rogue2 = 2} else{rogue1 = 1; rogue2 = 1}
+	}
+	if global.Game.Rogue.level = 4{
+	    rogue1 = 2; rogue2 = 2;
+	}
 }
