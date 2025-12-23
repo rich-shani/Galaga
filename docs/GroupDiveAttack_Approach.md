@@ -1,7 +1,7 @@
 # Group Dive Attack Implementation Approach
 
 ## Overview
-This document outlines the approach for implementing group dive attacks where an `oTieIntercepter` can initiate a dive attack and be accompanied by one or two `oTieFighter` enemies that follow the same path, similar to the classic Galaga game mechanics.
+This document outlines the approach for implementing group dive attacks where an `oTieIntercepter` can initiate a dive attack and be accompanied by one of two possible `oImperialShuttle` enemies that follow the same path, similar to the classic Galaga game mechanics.
 
 ## Current System Analysis
 
@@ -16,7 +16,7 @@ This document outlines the approach for implementing group dive attacks where an
 - `objects/oEnemyBase/Step_0.gml` - Main enemy behavior logic
 - `objects/oEnemyBase/Create_0.gml` - Enemy initialization
 - `datafiles/Patterns/oTieIntercepter.json` - TIE Intercepter configuration
-- `datafiles/Patterns/oTieFighter.json` - TIE Fighter configuration
+- `datafiles/Patterns/oImperialShuttle.json` - Imperial Shuttle configuration
 
 ## Proposed Implementation
 
@@ -42,23 +42,23 @@ canFollowGroupDive = false;    // Flag: can this enemy type follow in group dive
 canLeadGroupDive = true;  // TIE Intercepters can lead group dives
 ```
 
-**In `objects/oTieFighter/Create_0.gml`:**
+**In `objects/oImperialShuttle/Create_0.gml`:**
 ```gml
-canFollowGroupDive = true;  // TIE Fighters can follow in group dives
+canFollowGroupDive = true;  // Imperial Shuttles can follow in group dives
 ```
 
 ### Phase 2: Helper Functions
 
-#### 2.1 Find Nearby TIE Fighters Function
+#### 2.1 Find One of Two Imperial Shuttles Function
 Create a new function in `scripts/EnemyBehavior/EnemyBehavior.gml`:
 
 ```gml
-/// @function find_nearby_tie_fighters
-/// @description Finds up to 2 nearby TIE Fighters in formation that can join a group dive
-/// @param {Id.Instance} _leader The enemy initiating the group dive
-/// @param {Int} _max_followers Maximum number of followers to find (default: 2)
-/// @return {Array} Array of enemy instance IDs that can follow
-function find_nearby_tie_fighters(_leader, _max_followers = 2) {
+/// @function find_imperial_shuttle_follower
+/// @description Finds one of two possible Imperial Shuttles in formation that can join a group dive
+/// @description The function searches for up to 2 Imperial Shuttles and randomly selects one
+/// @param {Id.Instance} _leader The enemy initiating the group dive (oTieIntercepter)
+/// @return {Id.Instance|noone} Single enemy instance ID that can follow, or noone if none found
+function find_imperial_shuttle_follower(_leader) {
     var candidates = [];
     var leader_index = _leader.INDEX;
     
@@ -86,7 +86,7 @@ function find_nearby_tie_fighters(_leader, _max_followers = 2) {
         }
     }
     
-    // Also check row above and below (optional - for more flexible grouping)
+    // Also check row above and below for more flexible grouping
     // Row above
     if (leader_row > 0) {
         var above_index = leader_index - 5;
@@ -103,11 +103,11 @@ function find_nearby_tie_fighters(_leader, _max_followers = 2) {
         }
     }
     
-    // Find TIE Fighters at these positions
+    // Find Imperial Shuttles at these positions
     with (oEnemyBase) {
         // Check if this enemy is a candidate
         if (enemyState == EnemyState.IN_FORMATION &&
-            ENEMY_NAME == "oTieFighter" &&
+            ENEMY_NAME == "oImperialShuttle" &&
             canFollowGroupDive &&
             groupLeader == noone &&  // Not already following someone
             array_length(groupFollowers) == 0) {  // Not leading a group
@@ -127,33 +127,30 @@ function find_nearby_tie_fighters(_leader, _max_followers = 2) {
         }
     }
     
-    // Limit to max_followers
-    if (array_length(candidates) > _max_followers) {
-        // Randomly select which ones to use, or pick closest
-        // For simplicity, just take first _max_followers
-        var selected = [];
-        for (var i = 0; i < _max_followers; i++) {
-            array_push(selected, candidates[i]);
-        }
-        return selected;
+    // Return one of the candidates (randomly select if multiple found)
+    if (array_length(candidates) == 0) {
+        return noone;
+    } else if (array_length(candidates) == 1) {
+        return candidates[0];
+    } else {
+        // Two candidates found - randomly select one
+        return candidates[irandom(array_length(candidates) - 1)];
     }
-    
-    return candidates;
 }
 ```
 
 #### 2.2 Setup Group Dive Function
 ```gml
 /// @function setup_group_dive_attack
-/// @description Sets up a group dive attack with leader and followers
-/// @param {Id.Instance} _leader The enemy leading the dive
-/// @param {Array} _followers Array of follower enemy IDs
+/// @description Sets up a group dive attack with leader and a single follower
+/// @param {Id.Instance} _leader The enemy leading the dive (oTieIntercepter)
+/// @param {Id.Instance} _follower Single follower enemy ID (oImperialShuttle)
 /// @param {Int} _path_id The path asset ID to follow
 /// @return {undefined}
-function setup_group_dive_attack(_leader, _followers, _path_id) {
+function setup_group_dive_attack(_leader, _follower, _path_id) {
     with (_leader) {
-        // Store follower references
-        groupFollowers = _followers;
+        // Store follower reference (as array for consistency with existing code)
+        groupFollowers = [_follower];
         groupPathOffset = 0;  // Leader is at position 0
         
         // Start the dive path for leader
@@ -167,36 +164,32 @@ function setup_group_dive_attack(_leader, _followers, _path_id) {
         global.Game.Enemy.diveCapacity--;
     }
     
-    // Setup each follower
-    var offset_increment = 0.15;  // 15% path offset between followers
-    for (var i = 0; i < array_length(_followers); i++) {
-        var follower = _followers[i];
-        if (instance_exists(follower)) {
-            with (follower) {
-                // Link to leader
-                groupLeader = _leader.id;
-                groupPathOffset = (i + 1) * offset_increment;  // 0.15, 0.30, etc.
-                
-                // Calculate formation offset (for visual spacing)
-                var leader_index = _leader.INDEX;
-                var follower_index = INDEX;
-                var leader_row = floor(leader_index / 5);
-                var leader_col = leader_index mod 5;
-                var follower_row = floor(follower_index / 5);
-                var follower_col = follower_index mod 5;
-                
-                groupFormationOffset.x = (follower_col - leader_col) * 32;  // Approx spacing
-                groupFormationOffset.y = (follower_row - leader_row) * 32;
-                
-                // Start following the same path (with offset)
-                path_start(_path_id, moveSpeed, 0, 0);
-                path_position = groupPathOffset;  // Start at offset position
-                
-                enemyState = EnemyState.IN_DIVE_ATTACK;
-                
-                // Set shooting timer (slightly offset for visual variety)
-                alarm[1] = ENEMY_SHOT_ALARM + (i * 10);
-            }
+    // Setup the follower
+    if (instance_exists(_follower)) {
+        with (_follower) {
+            // Link to leader
+            groupLeader = _leader.id;
+            groupPathOffset = 0.15;  // 15% path offset behind leader
+            
+            // Calculate formation offset (for visual spacing)
+            var leader_index = _leader.INDEX;
+            var follower_index = INDEX;
+            var leader_row = floor(leader_index / 5);
+            var leader_col = leader_index mod 5;
+            var follower_row = floor(follower_index / 5);
+            var follower_col = follower_index mod 5;
+            
+            groupFormationOffset.x = (follower_col - leader_col) * 32;  // Approx spacing
+            groupFormationOffset.y = (follower_row - leader_row) * 32;
+            
+            // Start following the same path (with offset)
+            path_start(_path_id, moveSpeed, 0, 0);
+            path_position = groupPathOffset;  // Start at offset position
+            
+            enemyState = EnemyState.IN_DIVE_ATTACK;
+            
+            // Set shooting timer (slightly offset for visual variety)
+            alarm[1] = ENEMY_SHOT_ALARM + 10;
         }
     }
 }
@@ -218,12 +211,12 @@ if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && global.Gam
         
         // Check if this enemy can lead a group dive
         var use_group_dive = false;
-        var followers = [];
+        var follower = noone;
         
         if (canLeadGroupDive && ENEMY_NAME == "oTieIntercepter") {
-            // Try to find nearby TIE Fighters
-            followers = find_nearby_tie_fighters(self, 2);
-            if (array_length(followers) > 0) {
+            // Try to find one of two possible Imperial Shuttles
+            follower = find_imperial_shuttle_follower(self);
+            if (follower != noone) {
                 use_group_dive = true;
             }
         }
@@ -254,7 +247,7 @@ if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && global.Gam
         
         if (use_group_dive && selected_path != -1) {
             // Setup group dive attack
-            setup_group_dive_attack(self, followers, selected_path);
+            setup_group_dive_attack(self, follower, selected_path);
         } else {
             // Solo dive attack (existing behavior)
             if (selected_path != -1) {
@@ -400,16 +393,19 @@ if (y > DIVE_Y_THRESHOLD * global.Game.Display.scale) {
 ## Design Considerations
 
 ### Path Offset Strategy
-- **Option A**: Fixed offset (0.15, 0.30) - Simple, predictable
+- **Current**: Fixed offset (0.15) for single follower - Simple, predictable
+- **Option A**: Fixed offset (0.15) - Simple, predictable (current implementation)
 - **Option B**: Dynamic offset based on formation spacing - More visually accurate
 - **Recommendation**: Start with Option A, refine to Option B if needed
 
 ### Follower Selection
-- **Current**: Adjacent positions only (same row, left/right)
-- **Future Enhancement**: Could include row above/below, or distance-based selection
+- **Current**: Searches adjacent positions (same row left/right, and row above/below)
+- **Selection Logic**: If 2 Imperial Shuttles are found, randomly selects one
+- **Future Enhancement**: Could use distance-based selection or prefer specific positions
 
 ### Group Size
-- **Current**: Up to 2 followers (3 total enemies)
+- **Current**: 1 follower (2 total enemies: oTieIntercepter + 1 oImperialShuttle)
+- **Selection**: Randomly selects 1 of 2 possible Imperial Shuttles if both are available
 - **Future**: Could be configurable per enemy type
 
 ### Visual Spacing
@@ -419,20 +415,23 @@ if (y > DIVE_Y_THRESHOLD * global.Game.Display.scale) {
 ## Testing Checklist
 
 - [ ] TIE Intercepter can initiate solo dive (existing behavior preserved)
-- [ ] TIE Intercepter can initiate group dive with 1 TIE Fighter
-- [ ] TIE Intercepter can initiate group dive with 2 TIE Fighters
+- [ ] TIE Intercepter can initiate group dive with 1 Imperial Shuttle (when 1 available)
+- [ ] TIE Intercepter can initiate group dive with 1 Imperial Shuttle (when 2 available, randomly selects one)
 - [ ] Group maintains formation during dive
 - [ ] Group completes dive together
 - [ ] Leader destruction breaks group properly
 - [ ] Follower destruction doesn't break leader
 - [ ] Multiple groups can exist simultaneously (if dive capacity allows)
-- [ ] Group dive respects dive capacity (counts as 1 dive, not 3)
+- [ ] Group dive respects dive capacity (counts as 1 dive, not 2)
+- [ ] When 2 Imperial Shuttles are adjacent, selection is random
 
 ## Future Enhancements
 
 1. **Formation Patterns**: Different group formations (V-shape, line, etc.)
 2. **Dynamic Grouping**: Enemies can join mid-dive
-3. **Mixed Groups**: Other enemy types can follow
-4. **Group Behaviors**: Coordinated shooting, synchronized loops
-5. **Visual Effects**: Group dive trails, formation indicators
+3. **Multiple Followers**: Allow 2 Imperial Shuttles to follow simultaneously
+4. **Mixed Groups**: Other enemy types can follow (e.g., TIE Fighters)
+5. **Group Behaviors**: Coordinated shooting, synchronized loops
+6. **Visual Effects**: Group dive trails, formation indicators
+7. **Selection Strategy**: Configurable follower selection (random, closest, strongest, etc.)
 
