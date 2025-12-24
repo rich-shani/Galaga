@@ -92,9 +92,9 @@ enum BEAM_STATE {
 enum AlarmIndex {
     PROHIBIT_RESET = 0,         // Resets global.prohib flag after dive attacks
     RANK_UPDATE = 1,            // Controls rank digit display timing
-    SPAWN_DELAY = 2,            // Delays between enemy spawns
+    // UNUSED_2 = 2,            // Available
     HIGH_SCORE_REFRESH = 3,     // Periodic high score table refresh (5 minutes)
-    // UNUSED_4 = 4,            // Available
+	SPAWN_DELAY = 4,            // Delays between enemy spawns
     // UNUSED_5 = 5,            // Available
     INPUT_COOLDOWN = 6,         // Cooldown for initial entry navigation
     SCORE_ENTRY_ADVANCE = 7,    // Advances to next scorer in initial entry

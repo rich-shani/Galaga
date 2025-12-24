@@ -204,22 +204,28 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 						alarm[10] = 1;
 				}
 				
-				// now, check all enemies that are in DIVE_ATTACK, as they may have collided with the Player
-				// similar to the above, when the player is in SINGLE SHOT mode, we will detect the collision ...
-				var enemyCollision = collision_rectangle(x + DUAL_FIGHTER_OFFSET_X - CAPTURED_PLAYER_COLLISION_RADIUS,
-													y - CAPTURED_PLAYER_COLLISION_RADIUS,
-													x + DUAL_FIGHTER_OFFSET_X + CAPTURED_PLAYER_COLLISION_RADIUS,
-													y + CAPTURED_PLAYER_COLLISION_RADIUS,
-													oEnemyBase, false, true);
-				
-				if (enemyCollision != noone) {
-					// inform the enemy instance that it hit the PLAYER
-					enemyCollision.alarm[11] = 1;
-					
-					//.. process the hit for the DOUBLE SHOT player
-					alarm[10] = 1;
+				// now, check all enemies that are in DIVE_ATTACK if there's a collision with the Player
+				// doing this, rather than collision_rectangle is more efficient (as we only check the 2-3 that are diving)
+				with (oEnemyBase) {
+					if (enemyState == EnemyState.IN_DIVE_ATTACK) {
+						// x,y is the Enemy position, other.x/y is the oPlayer (and we add DUAL_FIGHTER_OFFSET_X)
+						var dual_player_x = other.x + DUAL_FIGHTER_OFFSET_X;
+						var dual_player_y = other.y;
+			
+						if (point_in_rectangle(x, y,
+										dual_player_x - CAPTURED_PLAYER_COLLISION_RADIUS,
+										dual_player_y - CAPTURED_PLAYER_COLLISION_RADIUS,
+										dual_player_x + CAPTURED_PLAYER_COLLISION_RADIUS,
+										dual_player_y + CAPTURED_PLAYER_COLLISION_RADIUS)) {
+							// inform the enemy instance that it hit the PLAYER
+							alarm[11] = 1;
+							// inform the player that the enemy hit the DOUBLE SHOT ship					
+							other.alarm[10] = 1;
+							
+							break;
+						}
+					}
 				}
-				
 			}
 			
 			// ========================================================================

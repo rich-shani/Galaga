@@ -213,9 +213,9 @@ function Game_Loop_Standard() {
     if (!patternComplete()) {
 
 		// === ENEMY SPAWNING TIMER ===
-		// alarm[2] controls delay between spawns (WAVE_SPAWN_DELAY = 9 frames)
-		// When alarm[2] == -1, spawn timer is inactive && we can spawn
-		if (alarm[2] == -1) {
+		// alarm[AlarmIndex.SPAWN_DELAY] controls delay between spawns (WAVE_SPAWN_DELAY = 9 frames)
+		// When alarm[AlarmIndex.SPAWN_DELAY] == -1, spawn timer is inactive && we can spawn
+		if (alarm[AlarmIndex.SPAWN_DELAY] == -1) {
 
 			// === PHASE 1: SPAWN STANDARD ENEMIES ===
 			if (!waveComplete()) {
@@ -465,6 +465,11 @@ function Game_Loop_Challenge() {
             }
         }
     }
+	else if (global.Game.Level.wave == CHALLENGE_TOTAL_WAVES) {
+		if (alarm[2] == -1) {
+			alarm[2] = 60;
+		}
+	}
 }
 
 /// @function Game_Loop

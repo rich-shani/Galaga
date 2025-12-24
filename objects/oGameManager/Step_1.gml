@@ -54,7 +54,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 		global.Game.State.hold = 15;
 		global.Game.State.lastAttack = 4;
 		
-        global.Game.Level.current = 4;
+        global.Game.Level.current = 0;
         global.Game.Level.wave = 0;
 		global.Game.Level.stage = 0;
 		global.Game.Level.pattern = 0;
