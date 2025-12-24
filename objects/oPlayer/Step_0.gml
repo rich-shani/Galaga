@@ -175,11 +175,53 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			// ========================================================================
 			if (shotMode == ShotMode.SINGLE) {
 				x = clamp(x, SHIP_MIN_X, SHIP_MAX_X);
+				
+				// no special logic for Enemy Missile check, as we use the collision function for the base (SINGLE MODE) player
 			}
 			else if (shotMode == ShotMode.DOUBLE) {
 				x = clamp(x, SHIP_MIN_X, SHIP_MAX_X - SHIP_SPACE);
-			}
 
+
+				// ========================================================================
+				// ENEMY COLLISION LOGIC - For the second PLAYER in DOUBLE SHOT MODE
+				// ========================================================================
+				// use built-in collision detection to check if any enemy missile has hit the DOUBLE SHOT player
+				// when the player is in SINGLE SHOT mode, we will detect the missile hit using the standard collision function
+				// ========================================================================		
+				
+				var missileHit = collision_rectangle(x + DUAL_FIGHTER_OFFSET_X - CAPTURED_PLAYER_COLLISION_RADIUS,
+													y - CAPTURED_PLAYER_COLLISION_RADIUS,
+													x + DUAL_FIGHTER_OFFSET_X + CAPTURED_PLAYER_COLLISION_RADIUS,
+													y + CAPTURED_PLAYER_COLLISION_RADIUS,
+													oEnemyShot, false, true);
+											
+				if (missileHit != noone) {
+
+						// Destroy the Enemy Missile
+						instance_destroy(missileHit);
+											
+						//.. process the hit for the DOUBLE SHOT player
+						alarm[10] = 1;
+				}
+				
+				// now, check all enemies that are in DIVE_ATTACK, as they may have collided with the Player
+				// similar to the above, when the player is in SINGLE SHOT mode, we will detect the collision ...
+				var enemyCollision = collision_rectangle(x + DUAL_FIGHTER_OFFSET_X - CAPTURED_PLAYER_COLLISION_RADIUS,
+													y - CAPTURED_PLAYER_COLLISION_RADIUS,
+													x + DUAL_FIGHTER_OFFSET_X + CAPTURED_PLAYER_COLLISION_RADIUS,
+													y + CAPTURED_PLAYER_COLLISION_RADIUS,
+													oEnemyBase, false, true);
+				
+				if (enemyCollision != noone) {
+					// inform the enemy instance that it hit the PLAYER
+					enemyCollision.alarm[11] = 1;
+					
+					//.. process the hit for the DOUBLE SHOT player
+					alarm[10] = 1;
+				}
+				
+			}
+			
 			// ========================================================================
 			// SHOOTING LOGIC - Missile Firing System
 			// ========================================================================
@@ -368,7 +410,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 					// Set cleanup/game over sequence timer (120 frames = 2 seconds at 60 FPS)
 					// Triggers high score check and transition to results screen
 					// Alarm[10] handler in Alarm_10.gml cleans up enemies and shows results
-					alarm[10] = 120;
+					alarm[9] = 120;
 				}
 			}
 
@@ -402,11 +444,14 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			// Moves player toward center at 3 pixels per frame if off-center
 			// This ensures clean docking animation alignment
 			// ========================================================================
-			if (x < SCREEN_CENTER_X * global.Game.Display.scale) {
-				x += 3;  // Move right toward center
+			if (abs(x - (SCREEN_CENTER_X * global.Game.Display.scale)) < 4) {
+				// do nothing
+			}
+			else if (x < SCREEN_CENTER_X * global.Game.Display.scale) {
+				x += 4;  // Move right toward center
 			}
 			else if (x > SCREEN_CENTER_X * global.Game.Display.scale) {
-				x -= 3;  // Move left toward center
+				x -= 4;  // Move left toward center
 			}
 			
 			// ========================================================================
@@ -425,8 +470,11 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// Gradually move horizontally toward player's right side (docking position)
 				// Target X: Player's X + DUAL_FIGHTER_OFFSET_X (84 pixels to the right)
 				var target_x = x + DUAL_FIGHTER_OFFSET_X;
-				if (rescued_fighter_x < target_x) rescued_fighter_x += 2;  // Move right
-				else if (rescued_fighter_x > target_x) rescued_fighter_x -= 2;  // Move left
+				if (abs(rescued_fighter_x - target_x) < 4) {
+					// do nothing
+				}
+				else if (rescued_fighter_x < target_x) rescued_fighter_x += 4;  // Move right
+				else if (rescued_fighter_x > target_x) rescued_fighter_x -= 4;  // Move left
 			}
 			else {
 				// ========================================================================

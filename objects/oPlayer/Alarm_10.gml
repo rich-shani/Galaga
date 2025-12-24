@@ -1,84 +1,58 @@
 /// ========================================================================
-/// oPlayer - ALARM EVENT 10 (Game Over Cleanup and Transition)
+/// oPlayer - ALARM EVENT 10 (Player Hit/Damage Processing)
 /// ========================================================================
-/// @description Handles cleanup and transition to results screen after game over.
-///              Triggered when player runs out of lives and game over sequence completes.
+/// @description Processes DOUBLE SHOT player hit/damage when colliding with enemy projectiles.
+///              This is only where we are dual fighter, and the 2nd fighter is hit
+///				 See Alarm 11 for when the 1st fighter is hit, as there is special logic 
 /// 
-/// Game Over Flow:
-///   1. Player dies with 0 lives remaining (Step_0.gml)
-///   2. Step_0.gml sets alarm[10] = 120 frames (2 seconds)
-///   3. Timer counts down (gives brief pause after death)
-///   4. This alarm event fires when timer expires
-///   5. Clean up all enemies, transition to results screen
 /// 
-/// Cleanup Actions:
-///   • Destroy all remaining enemy instances (clean slate for next game)
-///   • Transition game mode to SHOW_RESULTS
-///   • Trigger high score entry if applicable (oGameManager alarm[9])
-///   • Reset game over flag
+/// Damage Logic:
+///   • DOUBLE mode: Lose second fighter, revert to SINGLE (no life loss) - "shield" effect
 /// 
-/// Timer Duration:
-///   • 120 frames = 2 seconds at 60 FPS
-///   • Provides brief pause after final death before cleanup
-///   • Allows death animation to complete
+/// Dual Fighter Protection:
+///   • In DOUBLE mode, getting hit only loses the dual fighter
+///   • This provides a form of "extra hit" protection - like a shield
+///   • Encourages players to rescue fighters for defensive benefit
 /// 
 /// @author Galaga Wars Team
-/// @event Alarm 10 - Game over cleanup timer
-/// @related Step_0.gml - Sets alarm[10] when player dies with 0 lives
-/// @related oGameManager - Handles results screen and high score entry
+/// @event Alarm 10 - Player hit/damage processing (triggered by collision)
 /// ========================================================================
 
 // ========================================================================
-// GAME OVER CHECK - Verify Game Over State
+// PLAYER HIT AUDIO - Death Sound Effect
 // ========================================================================
-// Only proceed with cleanup if game over flag is set
-// This prevents cleanup from running inappropriately if alarm fires incorrectly
+// Play player explosion/death sound effect
+// Stop sound first to prevent overlapping if already playing
+// GDie is the sound resource for player death/explosion
 // ========================================================================
-if (global.Game.State.isGameOver) {
+global.Game.Controllers.audioManager.stopSound(GDie);
+global.Game.Controllers.audioManager.playSound(GDie); 
 
+// ========================================================================
+// DAMAGE PROCESSING - Dual Fighter vs Single Fighter
+// ========================================================================
+// Process damage based on current shot mode
+// Dual fighter mode provides "extra hit" protection (lose fighter, not life)
+// Single fighter mode results in death (lose life)
+// ========================================================================
+if (shotMode == ShotMode.DOUBLE) {
 	// ========================================================================
-	// ENEMY CLEANUP - Remove All Remaining Enemies
+	// DUAL FIGHTER MODE - Lose Second Fighter (No Life Loss)
 	// ========================================================================
-	// Destroy all enemy instances that are still alive in the game world
-	// This ensures a clean state for the results screen and prevents enemies
-	// from interfering with the transition
-	// 
-	// Enemy Types Cleaned:
-	//   • oTieFighter - Standard enemy fighters
-	//   • oTieIntercepter - Interceptor enemies (may have capture beams)
-	//   • oImperialShuttle - Shuttle enemies
-	// ========================================================================
-	with oTieFighter { instance_destroy(); }
-	with oTieIntercepter { instance_destroy(); }
-	with oImperialShuttle { instance_destroy(); }
+	// Player has dual fighters - getting hit only loses the second fighter
+	// This provides defensive benefit (acts like an extra life/shield)
+	// Player reverts to single fighter mode but doesn't lose a life
+	
+	// Revert to single fighter mode (lose dual fighter bonus)
+	shotMode = ShotMode.SINGLE;
+	
+	// Create explosion effect for lost fighter
+	// Position: Offset 96 pixels to the right (approximate second fighter position)
+	// Uses oExplosion for smaller explosion effect (second fighter destruction)
+	instance_create(x + DUAL_FIGHTER_OFFSET_X, y, oExplosion);
 
-	// ========================================================================
-	// TRANSITION TO RESULTS SCREEN - Game Manager Coordination
-	// ========================================================================
-	// Signal the game manager to show the results screen
-	// Sets up the high score entry sequence if player's score qualifies
-	// ========================================================================
-	with oGameManager {
-		// Change game mode to results screen
-		global.Game.State.mode = GameMode.SHOW_RESULTS;
-		global.Game.State.results = 1;  // Enable results display
-		
-		// Trigger game manager's alarm[9] to handle high score entry
-		// 450 frames = 7.5 seconds delay before entering initials (if score is top 5)
-		// This gives time to display results before prompting for initials
-		alarm[9] = 450;
-	}
-
-	// ========================================================================
-	// RESET GAME OVER FLAG - Cleanup Complete
-	// ========================================================================
-	// Reset the game over flag after cleanup is complete
-	// This prevents re-triggering cleanup if alarm fires again
-	// Flag will be set again on next game over event
-	// ========================================================================
-	global.Game.State.isGameOver = false;
-
-	// Note: Player object is NOT destroyed here - it remains for potential reuse
-	//       in attract mode or next game session
-	// instance_destroy();  // Commented out - player object persists
+	// No life deduction - player continues with single fighter
+	// This is the key defensive benefit of dual fighter mode
 }
+
+// this alarm should ONLY be triggered when we're in DOUBLE SHOT mode and the 2nd player was hit (not the primary player)

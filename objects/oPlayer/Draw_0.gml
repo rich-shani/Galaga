@@ -143,12 +143,12 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	// ========================================================================
 	else if (shipStatus == ShipState.RELEASING) {
 		// Draw main player ship sprite (centered position)
-		draw_sprite_ext(xwing_sprite_sheet, shipImage, x, y, 0.8, 0.8, 0, c_white, 1);
+		draw_sprite_ext(xwing_sprite_sheet, 2, x, y, 0.8, 0.8, 0, c_white, 1);
 		
 		// Draw descending fighter during rescue animation
 		// Position (rescued_fighter_x, rescued_fighter_y) is updated in Step_0.gml
 		// Fighter smoothly moves from captor's position toward docking position
-		draw_sprite_ext(xwing_sprite_sheet, shipImage, rescued_fighter_x, rescued_fighter_y, 0.8, 0.8, 0, c_white, 1);		
+		draw_sprite_ext(xwing_sprite_sheet, 2, rescued_fighter_x, rescued_fighter_y, 0.8, 0.8, 0, c_white, 1);		
 	}
 	// ========================================================================
 	// CAPTURED STATE RENDERING - No Drawing

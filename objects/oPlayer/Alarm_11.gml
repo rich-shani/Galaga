@@ -44,41 +44,26 @@ global.Game.Controllers.audioManager.playSound(GDie);
 // Dual fighter mode provides "extra hit" protection (lose fighter, not life)
 // Single fighter mode results in death (lose life)
 // ========================================================================
-if (shotMode == ShotMode.DOUBLE) {
-	// ========================================================================
-	// DUAL FIGHTER MODE - Lose Second Fighter (No Life Loss)
-	// ========================================================================
-	// Player has dual fighters - getting hit only loses the second fighter
-	// This provides defensive benefit (acts like an extra life/shield)
-	// Player reverts to single fighter mode but doesn't lose a life
+
 	
+// Create main player explosion animation
+// Position: Current player position (rounded to nearest pixel)
+
+				
+if (shotMode == ShotMode.DOUBLE) {
 	// Revert to single fighter mode (lose dual fighter bonus)
 	shotMode = ShotMode.SINGLE;
-
-	// TODO: Need to determine which fighter was hit (left or right)
-	// Currently defaults to destroying the right fighter
-	// Future enhancement: Check collision point to determine which fighter was hit
-	// This would make the damage more visually accurate
 	
 	// Create explosion effect for lost fighter
-	// Position: Offset 96 pixels to the right (approximate second fighter position)
-	// Uses oExplosion for smaller explosion effect (second fighter destruction)
-	instance_create(x + 96, y, oExplosion);
-
-	// No life deduction - player continues with single fighter
-	// This is the key defensive benefit of dual fighter mode
+	instance_create(x, y, oExplosion);
+		
+	// the 1st player position was hit, so 'move' to the second position player
+	x += DUAL_FIGHTER_OFFSET_X;
 }
-else {
-	// ========================================================================
-	// SINGLE FIGHTER MODE - Player Death (Life Loss)
-	// ========================================================================
-	// Player only has one fighter - getting hit results in death
-	
-	// Create main player explosion animation
-	// Position: Current player position (rounded to nearest pixel)
+else if (shotMode == ShotMode.SINGLE) {
 	// Uses oExplosion3 for larger explosion effect (main ship destruction)
 	instance_create(round(x), round(y), oExplosion3);
-				
+
 	// ========================================================================
 	// SCREEN SHAKE EFFECT - Visual Impact
 	// ========================================================================
