@@ -74,9 +74,9 @@ function checkForExtraLives() {
 function readyForNextLevel(_alarm_level_advance, _nextlevel) {
 	// === EARLY EXIT: ALREADY TRANSITIONING ===
 	// If alarm[LEVEL_ADVANCE] is already set, we're transitioning
-	if (_alarm_level_advance != -1) {
-		return { shouldAdvance: true, alarmLevelAdvance: _alarm_level_advance, alarmSpawnTimer: -1, nextlevel: _nextlevel };
-	}
+	//if (_alarm_level_advance != -1) {
+	//	return { shouldAdvance: true, alarmLevelAdvance: _alarm_level_advance, alarmSpawnTimer: -1, nextlevel: _nextlevel };
+	//}
 
 	// === CONDITION 1: ALL ENEMIES CLEARED ===
 	var allEnemiesCleared = (global.Game.Enemy.count == 0);

@@ -173,6 +173,9 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 			/// Transition to next state: moving into grid formation
 			enemyState = EnemyState.MOVE_INTO_FORMATION;		
+			
+			// show READY as we re-spawn the PLAYER
+			oPlayer.alarm[1] = 60;
 		}		
 	}
 	else if (enemyState == EnemyState.MOVE_INTO_FORMATION) {
@@ -361,7 +364,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 								/// Player is captured by beam!
 								oPlayer.shipStatus = ShipState.CAPTURED;
 								// FIGTHER CAPTURED MESSAGE
-								oPlayer.alarm[5] = 240;
+								oPlayer.alarm[5] = 300;
 
 								// grab the player x location
 								beam_weapon.player_x = oPlayer.x;
@@ -374,9 +377,6 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 								global.Game.Controllers.audioManager.stopSound(GBeam);			// Stop beam sound
 						        global.Game.Controllers.audioManager.loopSound(GCaptured);		// Play captured sound
-
-								// delay the RESPAWN of the PLAYER
-								oPlayer.alarm[0] = 180;
 
 								// extend the beam to cover the period to CAPTURE the player
 						       // alarm[3] = ((global.Game.Enemy.beamDuration / 3) / (90 / alarm[3])) + 20;
@@ -440,43 +440,22 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			else {
 				// reset to the top of screen && move into formation
 				path_end();
-				speed = entranceSpeed;
-		
-				x = breathex;
-				y = SPAWN_TOP_Y;
-
-				// reset beam state
-				if (beam_weapon.available) { beam_weapon.state = BEAM_STATE.READY; }
-
-				// ================================================================
-				// BUG #GW-001: Erratic Path Behavior with Final Enemies
-				// ================================================================
-				// Severity: LOW (visual glitch, does not affect gameplay)
-				// Status: OPEN
-				//
-				// Description:
-				//   When 2 enemies remain, global.Game.Controllers.uiManager.scoreDisplay.ones enemy occasionally exhibits erratic
-				//   path behavior on its first dive attack before normalizing.
-				//
-				// Reproduction:
-				//   1. Clear all enemies except 2
-				//   2. Wait for global.Game.Controllers.uiManager.scoreDisplay.ones enemy to initiate dive attack
-				//   3. Observe: Enemy may follow unexpected path briefly
-				//   4. Subsequent dives behave normally
-				//
-				// Expected Behavior:
-				//   Final 2 enemies should follow standard dive patterns
-				//
-				// Root Cause Hypothesis:
-				//   Possible state transition issue when entering IN_FINAL_ATTACK
-				//   mode. Path may not be properly set before first dive.
-				//
-				// Priority: P3 (Low) - Rare edge case, minimal player impact
-				// ================================================================
 
 				// check if we're the last two enemies left ...
-				if (global.Game.Enemy.count < 3) enemyState = EnemyState.IN_FINAL_ATTACK;
-				else enemyState = EnemyState.MOVE_INTO_FORMATION;
+				if (global.Game.Enemy.count < 3) {
+					enemyState = EnemyState.IN_FINAL_ATTACK;
+					
+					start_final_attack_dive(self);  // Initialize first dive immediately
+				} else {						
+					x = breathex;
+					y = SPAWN_TOP_Y;
+					speed = entranceSpeed;	
+
+					// reset beam state
+					if (beam_weapon.available) { beam_weapon.state = BEAM_STATE.READY; }
+					
+					enemyState = EnemyState.MOVE_INTO_FORMATION;
+				}
 			}
 		}
 	}
@@ -494,31 +473,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		if (y > SCREEN_BOTTOM_Y * global.Game.Display.scale) {
 			// reset to the top of screen && move into formation
 			path_end();
-
-			// randomize the x location of where the enemy will drop in ...
-			// don't spawn near the edges of the screen
-			x = SPAWN_EDGE_MARGIN + irandom(global.Game.Display.screenWidth-SPAWN_EDGE_BUFFER);
-			y = SPAWN_TOP_Y;
-
-			// spawn enemy bullets ...
-			alarm[1] = ENEMY_SHOT_ALARM;
-		
-			// dive sound ...
-			global.Game.Controllers.audioManager.stopSound(GDive);
-			global.Game.Controllers.audioManager.playSound(GDive);
-
-			// Choose path based on starting position
-			if (x > SCREEN_CENTER_X * global.Game.Display.scale) {
-				if (attributes.STANDARD.DIVE_PATH2 != noone) {
-					var path_id = safe_get_asset(attributes.STANDARD.DIVE_PATH2, -1);
-					if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
-				}
-			} else {
-				if (attributes.STANDARD.DIVE_ALT_PATH2 != noone) {
-					var path_id = safe_get_asset(attributes.STANDARD.DIVE_ALT_PATH2, -1);
-					if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
-				}
-			}
+				
+			start_final_attack_dive(self);
 		}
 	}
 }

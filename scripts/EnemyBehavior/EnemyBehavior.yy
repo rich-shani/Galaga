@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"waverogue",
+  "%Name":"EnemyBehavior",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"waverogue",
+  "name":"EnemyBehavior",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"EnemyLogic",
+    "path":"folders/Scripts/EnemyLogic.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

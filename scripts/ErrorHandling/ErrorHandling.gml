@@ -408,7 +408,7 @@ function validate_wave_spawn_json(_data) {
 	}
 
 	var spawn = wave.SPAWN[0];
-	var required_keys = ["ENEMY", "PATH", "SPAWN_XPOS", "SPAWN_YPOS", "INDEX", "COMBINE"];
+	var required_keys = ["ENEMY", "PATH", "SPAWN_XPOS", "SPAWN_YPOS", "INDEX"];
 	if (!validate_json_structure(spawn, required_keys, "wave_spawn.json spawn entry")) {
 		return false;
 	}
@@ -460,7 +460,7 @@ function validate_challenge_spawn_json(_data) {
 /// @param {String} _enemy_name Enemy name for error messages
 /// @return {Bool} True if valid, false otherwise
 function validate_enemy_attributes_json(_data, _enemy_name = "enemy") {
-	var required_keys = ["HEALTH", "POINTS_BASE", "STANDARD"];
+	var required_keys = ["HEALTH", "POINT_VALUE", "STANDARD"];
 	if (!validate_json_structure(_data, required_keys, _enemy_name + " attributes")) {
 		return false;
 	}

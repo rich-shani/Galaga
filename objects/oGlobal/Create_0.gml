@@ -141,7 +141,8 @@ global.Game = {
 	    challengeManager: undefined,
 	    visualEffects: undefined,
 	    uiManager: undefined,
-	    audioManager: undefined
+	    audioManager: undefined,
+		particleManager: undefined
 	}
 };
 
@@ -254,6 +255,9 @@ global.Game.Controllers.scoreManager = new ScoreManager();
 
 // Challenge stage manager - handles challenge stages with path lookup table
 global.Game.Controllers.challengeManager = new ChallengeStageManager(global.Game.Data.challenge);
+
+// Initialize ParticleManager in global.Game.Controllers
+global.Game.Controllers.particleManager = new ParticleManager();
 
 ensure_controllers_initialized();
 

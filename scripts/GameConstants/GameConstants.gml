@@ -57,6 +57,35 @@
      RESPAWN
  }
 
+/// ================================================================
+/// BEAM WEAPON SYSTEM - Special Ability
+/// ================================================================
+/// The beam weapon system allows special enemy types (like TIE Intercepters)
+/// to charge && fire a powerful energy beam at the player ship.
+///
+/// Beam mechanics:
+/// • beam: Flag indicating if this enemy can use beam weapon (0 = no, 1 = yes)
+/// • beamsignal: Tracks beam charging state during activation
+/// • loop: State machine for beam charging && firing phases
+/// • anim: Animation frame counter for beam sprite cycling
+///
+/// Beam can only activate once per dive attack when:
+/// • No other beam currently active
+/// • Player is in single-ship mode (!dual/doubled)
+/// • No fighters are captured
+/// • Global beam check flag is clear
+/// ================================================================
+
+// Beam weapon structure - set to false by default (disable until enabled by subclass)
+enum BEAM_STATE {
+	READY,
+	CHARGING,
+	FIRE,
+	FIRE_COMPLETE,
+	CAPTURE_PLAYER,
+	FAILED
+}
+
 /// @enum AlarmIndex
 /// @description Named indices for alarm events in oGameManager
 /// Makes alarm usage more readable && maintainable
@@ -683,7 +712,7 @@ function load_game_config() {
 
 /// Beam Capture Alarms (in frames at 60 FPS)
 #macro BEAM_FIGHTER_CAPTURED_MESSAGE_DELAY 240 // Delay before showing "FIGHTER CAPTURED" (4 seconds)
-#macro BEAM_PLAYER_RESPAWN_DELAY 180           // Delay before player can respawn after capture (3 seconds)
+#macro BEAM_PLAYER_RESPAWN_DELAY 60           // Delay before player can respawn after capture (1 second)
 
 // ========================================================================
 // LEVEL PROGRESSION CONSTANTS

@@ -1,12 +1,12 @@
 {
   "$GMScript":"v1",
-  "%Name":"challenging",
+  "%Name":"ParticleManager",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"challenging",
+  "name":"ParticleManager",
   "parent":{
-    "name":"Scripts",
-    "path":"folders/Scripts.yy",
+    "name":"Managers",
+    "path":"folders/Scripts/Managers.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

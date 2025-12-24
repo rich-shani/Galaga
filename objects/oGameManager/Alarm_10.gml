@@ -16,9 +16,9 @@ if (nextlevel == 1) {
         /// @subsection Check for Active Enemy Shots || Ship Death
         /// If there are active enemy shots (instance_number(EnemyShot) > 0) 
         /// delay the transition by setting alarm[10] to 1 step to allow these states to resolve.
-        if (global.shot_pool.stats.current_active > 0) {
-            alarm[10] = 1;
-        } else {
+        //if (global.shot_pool.stats.current_active > 0) {
+        //    alarm[10] = 1;
+        //} else {
             /// @subsubsection Initialize New Level
             /// Set stage to 1 to indicate the start of a new level || wave.
             global.Game.Level.stage = 1;
@@ -34,7 +34,9 @@ if (nextlevel == 1) {
 			
 		    /// Reset global wave counter to 0 to start a new wave global.Game.Input.characterCycle.
 		    global.Game.Level.wave = 0;
-		
+
+			global.Game.State.spawnOpen = 1;
+	
             /// Execute the newlevel script to set up the new level (e.g., spawn enemies, reset timers).
             script_execute(newlevel);
 
@@ -100,7 +102,7 @@ if (nextlevel == 1) {
             /// Set alarm to 7 steps (approximately 0.117 seconds at 60 FPS) to control the timing of rank updates.
             /// Likely used to animate || stagger the display of rank digits.
             alarm[AlarmIndex.RANK_UPDATE] = 7;
-        }
+        //}
     }
 }
 
@@ -151,7 +153,6 @@ if (nextlevel == 2) {
 
     /// @subsection Challenge Mode && Game Start   
 	//global.open = 1;
-	global.Game.State.spawnOpen = 1;
 	
 	/// If in challenge mode (global.Game.Challenge.countdown == 0) && in the initial state (start == 0),
 	/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.

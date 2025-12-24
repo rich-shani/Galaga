@@ -31,6 +31,7 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 	
 	// Enemies to spawn for this WAVE
 	enemy_wave_info = [];
+	group_spawn_count = 1;
 	
 	/// @function computeEnemiesForWave
 	/// @description compute the list of enemies to spawn for this pattern, wave
@@ -54,15 +55,16 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		}
 		
 		var wave_data = pattern_data.WAVE[wave];
+		group_spawn_count = wave_data.GROUP_SPAWN_COUNT;
+		
 		var src = wave_data.SPAWN;
 		var srcCount = array_length(src);		
-		var rogueCount = getRogueCount();
+		var rogueCount = getRogueCount() * group_spawn_count;
 		
 		// start with the standard Enemy WAVE from the JSON config
-		
-		// function will extend the enemy_wave_info array as part of the copy
+		// array_copy will extend the enemy_wave_info array as part of the copy
 		array_copy(enemy_wave_info, 0, src, 0, srcCount);
-		
+				
 		// do we need to insert (random index) ROGUE enemies for this WAVE?
 		for (i = 0; i < rogueCount; i++) {
 			// clone rogue details from the first Element in the array
@@ -71,10 +73,17 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 			rogueElement.PATH = "ROGUE_" + enemy_wave_info[i].PATH;
 			// update the INDEX
 			rogueElement.INDEX = -1; // if INDEX == -1, then MODE: EnemyMode.ROGUE
-			
+		
 			// choose an index (at random) to insert the ROGUE enemy
 			array_insert(enemy_wave_info, irandom(array_length(enemy_wave_info)-1), rogueElement);
 		}
+		
+		
+		return;
+	}
+	
+	static spawnEnemyGroup = function() {
+		spawnStandardEnemy(group_spawn_count);
 		
 		return;
 	}
@@ -83,7 +92,7 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 	/// @description Spawns a standard enemy using data from wave_spawn.json
 	///              Automatically handles combination spawns (paired enemies)
 	/// @return {Bool} True if spawn successful, false if no more enemies to spawn
-	static spawnStandardEnemy = function() {
+	static spawnStandardEnemy = function(_group_count) {
 		// Get current spawn configuration
 		//var pattern = global.Game.Level.pattern;
 		//var wave = global.Game.Level.wave;
@@ -132,7 +141,6 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 				ENEMY_NAME: enemy_data.ENEMY,
 				INDEX: enemy_data.INDEX,
 				PATH_NAME: enemy_data.PATH,
-				COMBINE: enemy_data.COMBINE,
 				MODE: (enemy_data.INDEX == -1) ? EnemyMode.ROGUE : EnemyMode.STANDARD
 			}
 		);
@@ -141,33 +149,37 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		spawn_counter++;
 
 		// Handle combination spawns (paired enemies)
-		if (enemy_data.COMBINE) {
-			spawnStandardEnemy(); // Recursive call for paired enemy
+
+		// decrement the group counter and check if we need to SPAWN more enemies in this grouping
+		_group_count--;
+		
+		if (_group_count > 0) {
+			spawnStandardEnemy(_group_count-1); // Recursive call for enemy grouping
 		}
 
 		return true;
-	};
+	}
 
 	/// @function spawnChallengeEnemy
 	/// @description Spawns challenge stage enemies
+	///              Uses challengeManager to get challenge and wave data
 	/// @return {Bool} True if spawn successful
 	static spawnChallengeEnemy = function() {
-		var challenge_id = global.Game.Challenge.current;
-		var wave = global.Game.Level.wave;
-
-		// Bounds checking
-		if (challenge_id >= array_length(challenge_data.CHALLENGES)) {
-			log_error("Challenge ID out of bounds: " + string(challenge_id), "WaveSpawner.spawnChallengeEnemy", 2);
+		// Use challengeManager to get challenge and wave data
+		if (global.Game.Controllers.challengeManager == undefined) {
+			log_error("challengeManager controller not initialized", "WaveSpawner.spawnChallengeEnemy", 3);
 			return false;
 		}
 
-		var challenge = challenge_data.CHALLENGES[challenge_id];
-		if (wave >= array_length(challenge.WAVES)) {
-			log_error("Challenge wave out of bounds: " + string(wave), "WaveSpawner.spawnChallengeEnemy", 2);
+		var challenge = global.Game.Controllers.challengeManager.getChallengeData();
+		if (challenge == undefined) {
 			return false;
 		}
 
-		var wave_data = challenge.WAVES[wave];
+		var wave_data = global.Game.Controllers.challengeManager.getChallengeWaveData();
+		if (wave_data == undefined) {
+			return false;
+		}
 		var enemy_id = safe_get_asset(wave_data.ENEMY, -1);
 
 		if (enemy_id == -1) {
@@ -175,7 +187,8 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 			return false;
 		}
 
-		// Select path based on wave number
+		// Select path based on wave number using challengeManager
+		var wave = global.Game.Level.wave;
 		var path_name = selectChallengePath(challenge, wave);
 		var path_id = get_cached_asset(path_name);
 
@@ -195,7 +208,6 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 				ENEMY_NAME: wave_data.ENEMY,
 				INDEX: -1, // Challenge enemies don't have formation positions
 				PATH_NAME: path_name,
-				COMBINE: false,
 				MODE: EnemyMode.CHALLENGE
 			}
 		);
@@ -216,7 +228,7 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		var flip_path = use_path1 ? _challenge.PATH1_FLIP : _challenge.PATH2_FLIP;
 
 		// Alternate between normal and flipped
-		var use_flip = (spawn_counter % 2 == 1);
+		var use_flip = (global.Game.Level.wave % 2 == 1);
 		return use_flip ? flip_path : base_path;
 	};
 
@@ -263,7 +275,6 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 				ENEMY_NAME: enemy_name,
 				INDEX: -1,
 				PATH_NAME: path_name,
-				COMBINE: false,
 				MODE: EnemyMode.ROGUE
 			}
 		);
@@ -331,4 +342,19 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		var center = SCREEN_CENTER_X * global.Game.Display.scale;
 		return (spawn_counter % 2 == 0) ? (center - offset) : (center + offset);
 	};
+}
+
+function waverogue() {
+	if global.Game.Rogue.level = 1{
+	    if global.Game.Level.wave = 0 || global.Game.Level.wave = 3 || global.Game.Level.wave = 4{rogue1 = 1; rogue2 = 1} else{rogue1 = 0; rogue2 = 0};
+	}
+	if global.Game.Rogue.level = 2{
+	    rogue1 = 1; rogue2 = 1;
+	}
+	if global.Game.Rogue.level = 3{
+	    if global.Game.Level.wave = 0 || global.Game.Level.wave = 3 || global.Game.Level.wave = 4{rogue1 = 2; rogue2 = 2} else{rogue1 = 1; rogue2 = 1}
+	}
+	if global.Game.Rogue.level = 4{
+	    rogue1 = 2; rogue2 = 2;
+	}
 }

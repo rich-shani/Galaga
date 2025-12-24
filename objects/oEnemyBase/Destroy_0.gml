@@ -21,7 +21,7 @@ if (!global.Game.State.isGameOver) {
 	/// Only award points && play effects for on-screen kills
 	/// This prevents exploiting off-screen enemy kills for free points
 	/// Boundaries: Y between -64 && 592, X between -64 && 464 (scaled)
-	if (y > SPAWN_TOP_Y * global.Game.Display.scale && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > SCREEN_LEFT_X && x < SCREEN_RIGHT_X * global.Game.Display.scale) {
+	if (y > SPAWN_TOP_Y && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > SCREEN_LEFT_X && x < SCREEN_RIGHT_X * global.Game.Display.scale) {
 
 		/// ================================================================
 		/// SCORING SYSTEM - Award points based on enemy state
@@ -34,6 +34,7 @@ if (!global.Game.State.isGameOver) {
 		/// • In challenge: Uses DIVE_POINT_VALUE even for non-diving
 		/// • Normal waves: Uses CHALLENGE_POINT_VALUE
 		/// ================================================================
+		var points = 0;
 		if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 			/// Enemy is currently diving/attacking - grant invulnerability window
 			oPlayer.alarm[PlayerAlarmIndex.TiMER] = global.Game.State.hold + irandom(global.Game.State.hold);
@@ -41,17 +42,25 @@ if (!global.Game.State.isGameOver) {
 			/// If not a transformed enemy, award points for the kill
 			if (trans == 0) {
 				/// Award higher points for diving enemies (more dangerous)
-				if (global.Game.Challenge.countdown > 0 || global.Game.Challenge.current == 1) {
-					global.Game.Player.score += attributes.DIVE_POINT_VALUE;
+				if (global.Game.Challenge.countdown > 0) {
+					points = attributes.DIVE_POINT_VALUE;
 				} else {
-					global.Game.Player.score += attributes.CHALLENGE_POINT_VALUE;
+					points = attributes.CHALLENGE_POINT_VALUE;
 				}
 			}
 		} else {
 			/// Enemy is in formation || other non-dive state - standard points
-			global.Game.Player.score += attributes.POINT_VALUE;
+			points = attributes.POINT_VALUE;
 		}
 
+		// assign points
+		global.Game.Player.score += points;
+
+		// check if beam_weapon enabled, as this enemy also shows POINTS scored
+		if (beam_weapon.available) {
+			instance_create_layer(x, y, "GameSprites", oPointsDisplay, { spriteFrame: score_to_sprite_frame(points) });
+		}
+		
 		/// ================================================================
 		/// TRANSFORMATION TRACKING AND COMBO SYSTEM
 		/// ================================================================
@@ -118,7 +127,7 @@ if (!global.Game.State.isGameOver) {
 			/// • Challenge 4: Boss2 sound
 			/// • Challenge 7: Boss1 sound
 			/// ================================================================
-			if global.Game.Challenge.countdown > 0 || global.Game.Challenge.current == 1 {
+			if global.Game.Challenge.countdown > 0 {
 				global.Game.Controllers.audioManager.stopSound(GBee);
 				global.Game.Controllers.audioManager.playSound(GBee);
 			}
@@ -138,6 +147,9 @@ if (!global.Game.State.isGameOver) {
 				}
 			}
 		}
+		
+		// score has been updated, check for extra life condition
+		checkForExtraLives();
 	}
 	
 	// check if this enemy had a CAPTURED PLAYER

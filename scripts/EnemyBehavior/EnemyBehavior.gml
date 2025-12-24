@@ -330,3 +330,33 @@ function update_final_attack(_enemy) {
 		}
 	}
 }
+
+/// @function start_final_attack_dive
+/// @description Initializes first dive in IN_FINAL_ATTACK mode
+/// @param {Id.Instance} _enemy Enemy instance
+/// @return {undefined}
+function start_final_attack_dive(_enemy) {
+	with (_enemy) {
+		// Randomize spawn position
+		x = 400 + irandom(96); //SPAWN_EDGE_MARGIN + irandom(global.Game.Display.screenWidth - SPAWN_EDGE_BUFFER);
+		y = SPAWN_TOP_Y;
+
+		// Choose path based on position
+		if (x > SCREEN_CENTER_X * global.Game.Display.scale) {
+			if (attributes.STANDARD.DIVE_PATH2 != noone) {
+				var path_id = safe_get_asset(attributes.STANDARD.DIVE_PATH2, -1);
+				if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
+			}
+		} else {
+			if (attributes.STANDARD.DIVE_ALT_PATH2 != noone) {
+				var path_id = safe_get_asset(attributes.STANDARD.DIVE_ALT_PATH2, -1);
+				if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
+			}
+		}
+
+		// Sound and shooting
+		global.Game.Controllers.audioManager.stopSound(GDive);
+		global.Game.Controllers.audioManager.playSound(GDive);
+		alarm[1] = ENEMY_SHOT_ALARM;
+	}
+}

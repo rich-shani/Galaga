@@ -69,7 +69,7 @@ else if (ScreenShown == TITLE_SCREEN.INSTRUCTIONS) {
 	// if player presses space, start the actual game
     if (startGame) {
 		// 'use' credit to enter game mode
-		global.Game.Player.credits--;
+		if (global.Game.Player.credits > 0) global.Game.Player.credits--;
 		
 		if (global.Game.Controllers.audioManager.isPlaying(Galaga_Theme_Remix_Short)) {
 			global.Game.Controllers.audioManager.stopSound(Galaga_Theme_Remix_Short);
