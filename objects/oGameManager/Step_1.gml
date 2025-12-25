@@ -34,7 +34,7 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 	// NOTE: Most global variables are already initialized in init_globals() called from Create_0
 	// Only reset variables that need to be reset specifically for game start
 	global.Game.Level.wave = 0;
-	global.checkRoguePerWave = false;
+	global.Game.Rogue.checkPerWave = false;
 	global.Game.Level.pattern = 0;
 
 	// Reset animation counters
@@ -83,6 +83,11 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 	// Score thresholds for extra lives
 	global.Game.Player.firstlife = EXTRA_LIFE_FIRST_THRESHOLD;
 	global.Game.Player.additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;
+
+	// Reset wave spawner for new game
+	if (global.Game.Controllers.waveSpawner != undefined) {
+		global.Game.Controllers.waveSpawner.resetSpawnCounter();
+	}
 
 	// create the death star on the DeathStar layer (ie behind the game sprites)
 	instance_create_layer(0, 0, "DeathStar", oDeathStar);

@@ -558,6 +558,19 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			// ========================================================================
 			if (alarm[1] == -1) {
 				// ========================================================================
+				// CHECK FOR ENEMIES IN DIVE ATTACK - Wait for All to Return
+				// ========================================================================
+				// Before respawning, check if any enemies are still in dive attack.
+				// If so, wait until all enemies have returned to formation before
+				// respawning the player. This prevents unfair respawns during active attacks.
+				// ========================================================================
+				with (oEnemyBase) {
+					if (enemyState == EnemyState.IN_DIVE_ATTACK) {
+						return;
+					}
+				}
+				
+				// ========================================================================
 				// REACTIVATE PLAYER - Return to Normal Gameplay
 				// ========================================================================
 				// Return to normal gameplay state - player regains full control

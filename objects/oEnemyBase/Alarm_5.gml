@@ -64,7 +64,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 // === ALARM RESET FOR CONTINUOUS ENTRANCE SHOOTING ===
 // Only reset alarm if enemy is still in entrance phase
 // Once in formation, shooting is handled by alarm[1] in Step event instead
-if (enemyState == EnemyState.ENTER_SCREEN) {
+if (enemyState == EnemyState.ENTER_SCREEN || enemyState == EnemyState.MOVE_INTO_FORMATION) {
 	// Reset alarm for next shot during entrance
 	// Use same timing as initial setup
 	if (global.Game.Level.wave == 1 || global.Game.Level.wave == 2) {
