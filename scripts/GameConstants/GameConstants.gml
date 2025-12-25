@@ -54,7 +54,8 @@
      CAPTURED,
      RELEASING,
      DEAD,
-     RESPAWN
+     RESPAWN,
+	 HIDDEN
  }
 
 /// ================================================================
