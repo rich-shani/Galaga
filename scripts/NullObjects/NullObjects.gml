@@ -238,5 +238,5 @@ function ensure_controllers_initialized() {
 	global.Game.Controllers.uiManager ??= new NullUIManager();
 	global.Game.Controllers.audioManager ??= new NullAudioManager();
 
-	show_debug_message("[NullObjects] All controllers initialized (or null objects created)");
+//	show_debug_message("[NullObjects] All controllers initialized (or null objects created)");
 }

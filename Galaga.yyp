@@ -273,8 +273,6 @@
     {"id":{"name":"Transform3Flip","path":"paths/Transform3Flip/Transform3Flip.yy",},},
     {"id":{"name":"Transform4","path":"paths/Transform4/Transform4.yy",},},
     {"id":{"name":"Transform4Flip","path":"paths/Transform4Flip/Transform4Flip.yy",},},
-    {"id":{"name":"Galaga","path":"rooms/Galaga/Galaga.yy",},},
-    {"id":{"name":"Galaga2","path":"rooms/Galaga2/Galaga2.yy",},},
     {"id":{"name":"GalagaWars","path":"rooms/GalagaWars/GalagaWars.yy",},},
     {"id":{"name":"SplashScreen","path":"rooms/SplashScreen/SplashScreen.yy",},},
     {"id":{"name":"TitleScreen","path":"rooms/TitleScreen/TitleScreen.yy",},},
@@ -407,8 +405,6 @@
   "resourceVersion":"2.0",
   "RoomOrderNodes":[
     {"roomId":{"name":"SplashScreen","path":"rooms/SplashScreen/SplashScreen.yy",},},
-    {"roomId":{"name":"Galaga","path":"rooms/Galaga/Galaga.yy",},},
-    {"roomId":{"name":"Galaga2","path":"rooms/Galaga2/Galaga2.yy",},},
     {"roomId":{"name":"GalagaWars","path":"rooms/GalagaWars/GalagaWars.yy",},},
     {"roomId":{"name":"TitleScreen","path":"rooms/TitleScreen/TitleScreen.yy",},},
   ],

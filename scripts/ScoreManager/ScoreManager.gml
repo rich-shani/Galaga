@@ -24,7 +24,7 @@ function ScoreManager() constructor {
 	// Extra life tracking
 	next_extra_life_score = get_config_value("PLAYER", "EXTRA_LIFE_FIRST", EXTRA_LIFE_FIRST_THRESHOLD);
 	extra_life_interval = get_config_value("PLAYER", "EXTRA_LIFE_ADDITIONAL", EXTRA_LIFE_ADDITIONAL_THRESHOLD);
-	max_extra_life_score = get_config_value("SCORE", "MAX_SCORE_FOR_EXTRA_LIVES", MAX_SCORE_FOR_EXTRA_LIVES);
+	max_extra_life_score = get_config_value("PLAYER", "MAX_SCORE_FOR_EXTRA_LIVES", MAX_SCORE_FOR_EXTRA_LIVES);
 
 	/// @function addScore
 	/// @description Adds points to player score and checks for extra lives

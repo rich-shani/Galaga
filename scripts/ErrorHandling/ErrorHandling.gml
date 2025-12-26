@@ -484,7 +484,8 @@ function validate_formation_coordinates_json(_data) {
 	}
 
 	var positions = _data.POSITION;
-	if (!is_array(positions) || array_length(positions) != 40) {
+	// position 0 is a place-holder, as the INDEX per enemy is 1..40, so array position 0 is not used
+	if (!is_array(positions) || array_length(positions) != 41) {
 		log_error("POSITION array must have exactly 40 entries (found: " + string(array_length(positions)) + ")", "validate_formation_coordinates_json", 2);
 		return false;
 	}

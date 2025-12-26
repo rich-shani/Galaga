@@ -37,7 +37,7 @@ if (y < MISSILE_OFFSCREEN) {
 		if (global.debug) {
 			show_debug_message("[oMissile] Off-screen, releasing: " + string(self) + " (id: " + string(id) + ")");
 		}
-		global.missile_pool.release(id);
+		global.missile_pool.release(self.id);
 	} else {
 		instance_destroy();
 	}
