@@ -22,9 +22,9 @@
 
 if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == ShipState.ACTIVE) {
 	// Check if we can spawn more shots (limit MAX_ENEMY_SHOTS concurrent enemy shots)
-	 if (global.Game.Enemy.difficultyLevel < MAX_ENEMY_SHOTS) {
+	 if (global.shot_pool.stats.current_active < MAX_ENEMY_SHOTS) {
 		// Only shoot if difficulty level is high enough
-		if global.Game.Enemy.difficultyLevel > 3 {
+		if (global.Game.Enemy.difficultyLevel > 3) {
 			// Use object pool if available for better performance
 			if (global.shot_pool != undefined) {
 				global.shot_pool.acquire(x, y);

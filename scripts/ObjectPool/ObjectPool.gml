@@ -136,18 +136,40 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 				// DEBUG: Instance not found in active list - let's investigate
 				show_debug_message("[ObjectPool] WARNING: Instance " + string(_instance) + " not found in active_instances list!");
 				show_debug_message("[ObjectPool] Active list size: " + string(ds_list_size(active_instances)));
-				show_debug_message("[ObjectPool] Attempting to find instance manually...");
+				show_debug_message("[ObjectPool] Instance was not in active list - cleaning up without pool return");
 			}
-			// Manual search to see if there's a comparison issue
-			for (var i = 0; i < ds_list_size(active_instances); i++) {
-				var stored_instance = ds_list_find_value(active_instances, i);
-				if (global.debug) {
-					show_debug_message("[ObjectPool] Index " + string(i) + ": " + string(stored_instance) + " (match: " + string(stored_instance == _instance) + ")");
-				}
+			// Instance not in active list - this shouldn't happen but we'll handle it gracefully
+			// Clean up the instance but don't add to inactive pool since it was never properly tracked
+			// This prevents the current_active count from becoming incorrect
+
+			// Reset physics/movement BEFORE deactivating
+			if (variable_instance_exists(_instance, "speed")) {
+				_instance.speed = 0;
 			}
-		} else {
-			ds_list_delete(active_instances, index);
+			if (variable_instance_exists(_instance, "direction")) {
+				_instance.direction = 0;
+			}
+			if (variable_instance_exists(_instance, "image_index")) {
+				_instance.image_index = 0;
+			}
+
+			// Move offscreen
+			_instance.x = -1000;
+			_instance.y = -1000;
+			_instance.visible = false;
+			_instance.active = false;
+
+			// Deactivate instance (disables Step events)
+			instance_deactivate_object(_instance);
+
+			// Update stats but don't add to pool
+			stats.current_active = ds_list_size(active_instances);
+
+			return false;
 		}
+
+		// Instance was found - remove from active list
+		ds_list_delete(active_instances, index);
 
 		// Reset physics/movement BEFORE deactivating
 		if (variable_instance_exists(_instance, "speed")) {

@@ -174,7 +174,11 @@ if (!global.Game.State.isGameOver) {
 		
 		// remove any enemy missiles in flight
 		with (oEnemyShot) {
-			instance_destroy();
+			if (global.shot_pool != undefined) {
+				global.shot_pool.release(self);
+			} else {
+				instance_destroy();
+			}
 		}
 	}
 }

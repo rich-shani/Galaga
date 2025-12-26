@@ -23,8 +23,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 	} else {
 	    // Shot logic based on difficultyLevel
 
-	    // If difficultyLevel is 2, allow up to 4 EnemyShot instances
 	    if (global.Game.Enemy.difficultyLevel == 2) {
+			// If difficultyLevel is 2, allow up to 4 EnemyShot instances
 			if (global.shot_pool.stats.current_active < 4) {
 //	        if (global.Game.Enemy.shotCount < 4) {
 				if (global.shot_pool != undefined) {
@@ -34,9 +34,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 				}
 	        }
 	    }
-
-	    // If difficultyLevel is 3, allow up to 6 EnemyShot instances
-	    if (global.Game.Enemy.difficultyLevel == 3) {
+	    else if (global.Game.Enemy.difficultyLevel == 3) {
+			// If difficultyLevel is 3, allow up to 6 EnemyShot instances			
 			if (global.shot_pool.stats.current_active < 6) {
 //	        if (global.Game.Enemy.shotCount < 6) {
 				if (global.shot_pool != undefined) {
@@ -46,9 +45,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 				}
 	        }
 	    }
-
-	    // If difficultyLevel is 4, allow up to 8 EnemyShot instances
-	    if (global.Game.Enemy.difficultyLevel == 4) {
+		else if (global.Game.Enemy.difficultyLevel == 4) {
+		    // If difficultyLevel is 4, allow up to 8 EnemyShot instances
 			if (global.shot_pool.stats.current_active < 8) {
 //	        if (global.Game.Enemy.shotCount < 8) {
 				if (global.shot_pool != undefined) {
@@ -64,15 +62,15 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) &
 // === ALARM RESET FOR CONTINUOUS ENTRANCE SHOOTING ===
 // Only reset alarm if enemy is still in entrance phase
 // Once in formation, shooting is handled by alarm[1] in Step event instead
-if (enemyState == EnemyState.ENTER_SCREEN || enemyState == EnemyState.MOVE_INTO_FORMATION) {
-	// Reset alarm for next shot during entrance
-	// Use same timing as initial setup
-	if (global.Game.Level.wave == 1 || global.Game.Level.wave == 2) {
-		alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_STANDARD;
-		if (global.Game.State.fastEnter == 1) {
-			alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_FAST;
-		}
-	} else {
-		alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_INITIAL;
-	}
-}
+//if (enemyState == EnemyState.ENTER_SCREEN || enemyState == EnemyState.MOVE_INTO_FORMATION) {
+//	// Reset alarm for next shot during entrance
+//	// Use same timing as initial setup
+//	if (global.Game.Level.wave == 1 || global.Game.Level.wave == 2) {
+//		alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_STANDARD;
+//		if (global.Game.State.fastEnter == 1) {
+//			alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_FAST;
+//		}
+//	} else {
+//		alarm[EnemyAlarmIndex.DIVE_SETUP] = DIVE_ALARM_INITIAL;
+//	}
+//}
