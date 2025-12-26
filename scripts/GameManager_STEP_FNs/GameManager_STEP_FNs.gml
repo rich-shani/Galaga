@@ -570,19 +570,16 @@ function Game_Loop(){
 ///              Cycles through predefined hue values to create visual variety
 /// @return {undefined}
 function Set_Nebula_Color() {
-	// change the hue mix for the nebula
-	if (global.Game.Controllers.visualEffects.scrollingNebulaLayer != -1)
+	// set the hue mix for the nebula, based on the level
+	
+	if (global.Game.Controllers.visualEffects.scrollingNebulaFX != -1) 
 	{
-		var layer_fx = layer_get_fx(global.Game.Controllers.visualEffects.scrollingNebulaLayer);
-
-		if (layer_fx != -1)
+		if (fx_get_name(global.Game.Controllers.visualEffects.scrollingNebulaFX) == "_filter_hue")
 		{
-			if (fx_get_name(layer_fx) == "_filter_hue")
-			{
-				// background color based on Level, wrap around array length of pre-set colors
-			    fx_set_parameter(layer_fx, "g_HueShift", global.Game.Level.current % array_length(global.Game.Controllers.visualEffects.hueValues));
-			}
+		    fx_set_parameter(global.Game.Controllers.visualEffects.scrollingNebulaFX, "g_HueShift",
+								global.Game.Controllers.visualEffects.getCurrentHue(global.Game.Level.current));
 		}
+
 		// make the nebula visible
 		layer_set_visible(global.Game.Controllers.visualEffects.scrollingNebulaLayer, true);
 	}

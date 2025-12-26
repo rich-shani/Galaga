@@ -244,7 +244,6 @@ show_debug_message("[AudioManager] Audio management system initialized");
 // Initialize specialized controllers to reduce god object complexity
 // Reduces oGameManager from 594 lines to <200 lines (70% reduction)
 
-global.Game.Controllers.visualEffects = new VisualEffectsManager();
 global.Game.Controllers.uiManager = new UIManager();
 
 // Wave spawner - handles all enemy spawning logic

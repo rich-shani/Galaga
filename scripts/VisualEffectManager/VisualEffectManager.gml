@@ -3,9 +3,10 @@
 
 function VisualEffectsManager() constructor {
     // Visual effect layer handles
-    pauseEffectLayer = -1;
+    pauseEffectFX = -1;
     scrollingNebulaLayer = -1;
-
+	scrollingNebulaFX = -1;
+	
     // Nebula color palette
     hueValues = [
         NEBULA_HUE_BLUE,
@@ -24,10 +25,11 @@ function VisualEffectsManager() constructor {
 
     // Initialize layers
 	initialize = function() {
-		pauseEffectLayer = layer_get_fx("PauseEffect");
+		pauseEffectFX = layer_get_fx("PauseEffect");
 		scrollingNebulaLayer = layer_get_id("ScrollingNebula");
+		scrollingNebulaFX = layer_get_fx("ScrollingNebula");
 
-        if (pauseEffectLayer == -1) {
+        if (pauseEffectFX == -1) {
             log_error("PauseEffect layer not found", "VisualEffectsManager", 1);
         }
         if (scrollingNebulaLayer == -1) {

@@ -67,6 +67,9 @@ var _sprites_to_load = [
 ];
 sprite_prefetch_multi(_sprites_to_load);
 
+// load the visual effects now (not in oGlobals) as we now have the PauseEffect, and ScrollingNebula LAYERs
+global.Game.Controllers.visualEffects = new VisualEffectsManager();
+
 /// @section Object Pool Initialization
 // Initialize object pools for projectiles to eliminate GC stutters
 // Pools: Enemy shots (8/16), Player missiles (4/8), Explosions (10/20)

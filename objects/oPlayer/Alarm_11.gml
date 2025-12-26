@@ -71,7 +71,9 @@ else if (shotMode == ShotMode.SINGLE) {
 	// Creates dramatic effect to emphasize player death
 	// Will be disabled in Step_0.gml after death animation completes
 	// ========================================================================
-	layer_set_visible("ScreenShake", true);
+	if (!layer_get_visible("ScreenShake")) {
+		layer_set_visible("ScreenShake", true);
+	}
 
 	// ========================================================================
 	// STATE TRANSITION - Update to DEAD State

@@ -9,7 +9,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 	var inst = instance_find(oStarfieldGenerator, 0);
 	if (inst != noone) {
-		// trigger an alarm (to check && set the speed)
+		// trigger an alarm (to check, and set the speed)
 		inst.alarm[0] = 10;
 	}
 
@@ -19,11 +19,11 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 		// PAUSE game, suspend the sounds && set screen effect to black && white
 		audio_pause_all();
 		
-		if (global.Game.Controllers.visualEffects.pauseEffectLayer != -1) 
+		if (global.Game.Controllers.visualEffects.pauseEffectFX != -1) 
 		{
-			if (fx_get_name(global.Game.Controllers.visualEffects.pauseEffectLayer) == "_filter_colourise")
+			if (fx_get_name(global.Game.Controllers.visualEffects.pauseEffectFX) == "_filter_colourise")
 			{            
-				fx_set_parameter(global.Game.Controllers.visualEffects.pauseEffectLayer, "g_Intensity", 1.0);
+				fx_set_parameter(global.Game.Controllers.visualEffects.pauseEffectFX, "g_Intensity", 1.0);
 			}		
 		}
 		
@@ -37,11 +37,11 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 		// UNPAUSE game, resume the sounds && set screen effect to color
 		audio_resume_all();
 			
-		if (global.Game.Controllers.visualEffects.pauseEffectLayer != -1) 
+		if (global.Game.Controllers.visualEffects.pauseEffectFX != -1) 
 		{
-			if (fx_get_name(global.Game.Controllers.visualEffects.pauseEffectLayer) == "_filter_colourise")
+			if (fx_get_name(global.Game.Controllers.visualEffects.pauseEffectFX) == "_filter_colourise")
 			{            
-				fx_set_parameter(global.Game.Controllers.visualEffects.pauseEffectLayer, "g_Intensity", 0.0);
+				fx_set_parameter(global.Game.Controllers.visualEffects.pauseEffectFX, "g_Intensity", 0.0);
 			}		
 		}
 		
