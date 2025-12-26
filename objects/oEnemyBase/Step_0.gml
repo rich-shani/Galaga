@@ -309,15 +309,17 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// ================================================================
 		if (beam_weapon.available && instance_exists(oPlayer) && (oPlayer.shotMode == ShotMode.SINGLE)) {
 
-			if ((y > BEAM_ACTIVATION_Y * global.Game.Display.scale) && beam_weapon.state != BEAM_STATE.FAILED) {
+			// is the enemy in the ZONE where they can deploy the beam?
+			if (abs(y - (BEAM_ACTIVATION_Y * global.Game.Display.scale)) < moveSpeed) {
 				
+				// is the beam READY to deploy?
 				if (beam_weapon.state == BEAM_STATE.READY) {
 					// BEAM ACTIVATION POSITION REACHED 
 					// Check if PLAYER is in single mode && use a random global.Game.Controllers.uiManager.scoreDisplay.ones-in-three chance to activate
-					if (!global.Game.Enemy.capturedPlayer && (irandom(0) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
+					if (!global.Game.Enemy.capturedPlayer && (irandom(2) == 0)) beam_weapon.state = BEAM_STATE.CHARGING;
 					else beam_weapon.state = BEAM_STATE.FAILED;
 				}
-				else { 
+				else if (beam_weapon.state != BEAM_STATE.FAILED) { 
 					// BEAM will be CHARGING, then FIRE, then FIRE_COMPLETE
 
 					if (beam_weapon.state == BEAM_STATE.CHARGING) {

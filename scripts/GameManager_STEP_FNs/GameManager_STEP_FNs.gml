@@ -467,11 +467,8 @@ function Game_Loop_Challenge() {
     }
 	else if (global.Game.Level.wave == CHALLENGE_TOTAL_WAVES) {
 		if (alarm[2] == -1) {
+			// trigger the RESULTS ...
 			alarm[2] = 60;
-			if (oPlayer.shipStatus != ShipState.HIDDEN) {
-				
-				oPlayer.shipStatus = ShipState.HIDDEN;
-			}
 		}
 	}
 }

@@ -55,10 +55,10 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 		}
 		
 		var wave_data = pattern_data.WAVE[wave];
-		group_spawn_count = wave_data.GROUP_SPAWN_COUNT;
-		
 		var src = wave_data.SPAWN;
 		var srcCount = array_length(src);		
+		
+		group_spawn_count = wave_data.GROUP_SPAWN_COUNT;
 		var rogueCount = getRogueCount() * group_spawn_count;
 		
 		// start with the standard Enemy WAVE from the JSON config
@@ -67,18 +67,17 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 				
 		// do we need to insert (random index) ROGUE enemies for this WAVE?
 		for (i = 0; i < rogueCount; i++) {
-			// clone rogue details from the first Element in the array
-			var rogueElement = variable_clone(enemy_wave_info[i]);
+			// clone rogue details from the ORIGINAL source array (prevents cloning previously inserted rogues)                
+			var rogueElement = variable_clone(src[i % srcCount]);
 			// update the PATH
-			rogueElement.PATH = "ROGUE_" + enemy_wave_info[i].PATH;
+			rogueElement.PATH = "ROGUE_" + rogueElement.PATH;
 			// update the INDEX
 			rogueElement.INDEX = -1; // if INDEX == -1, then MODE: EnemyMode.ROGUE
-		
+	  
 			// choose an index (at random) to insert the ROGUE enemy
 			array_insert(enemy_wave_info, irandom(array_length(enemy_wave_info)-1), rogueElement);
 		}
-		
-		
+			
 		return;
 	}
 	

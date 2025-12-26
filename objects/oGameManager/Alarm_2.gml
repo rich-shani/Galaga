@@ -14,6 +14,10 @@ if (global.Game.Challenge.countdown == 0 && global.Game.Level.wave == CHALLENGE_
             } else {
                 global.Game.Controllers.audioManager.playSound(GResults);
             }
+			
+			// hide PLAYER during results presentation ...
+			if (oPlayer.shipStatus != ShipState.HIDDEN) oPlayer.shipStatus = ShipState.HIDDEN;
+			
             break;
 
         case 5:
@@ -23,6 +27,10 @@ if (global.Game.Challenge.countdown == 0 && global.Game.Level.wave == CHALLENGE_
             } else {
                 global.Game.Player.score += global.Game.Player.shotTotal * 100; // Score based on shots
             }
+			
+			// score has been updated, check for extra life condition
+			checkForExtraLives();
+		
             break;
     }
 
