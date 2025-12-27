@@ -91,7 +91,8 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 
 	// create the death star on the DeathStar layer (ie behind the game sprites)
 	instance_create_layer(0, 0, "DeathStar", oDeathStar);
-	Set_Nebula_Color();
+	// add one to the current level at initialization (as it will be advanced to level 1 when the Game starts)
+	Set_Nebula_Color(global.Game.Level.current+1);
 
 	global.Game.State.mode = GameMode.GAME_PLAYER_MESSAGE;
 

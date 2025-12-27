@@ -29,7 +29,7 @@ if (nextlevel == 1) {
             /// Increment the global level counter (global.Game.Level.current) to advance to the next level || wave.
 			global.Game.Level.current += 1; 
            
-			Set_Nebula_Color();		
+			Set_Nebula_Color(global.Game.Level.current);		
 			
 			// reset the position to the center && show READY
 			oPlayer.shipStatus = ShipState.RESPAWN;

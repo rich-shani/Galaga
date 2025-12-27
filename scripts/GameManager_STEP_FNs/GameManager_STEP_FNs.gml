@@ -569,7 +569,7 @@ function Game_Loop(){
 /// @description Updates the scrolling nebula background color based on current level
 ///              Cycles through predefined hue values to create visual variety
 /// @return {undefined}
-function Set_Nebula_Color() {
+function Set_Nebula_Color(_level) {
 	// set the hue mix for the nebula, based on the level
 	
 	if (global.Game.Controllers.visualEffects.scrollingNebulaFX != -1) 
@@ -577,7 +577,7 @@ function Set_Nebula_Color() {
 		if (fx_get_name(global.Game.Controllers.visualEffects.scrollingNebulaFX) == "_filter_hue")
 		{
 		    fx_set_parameter(global.Game.Controllers.visualEffects.scrollingNebulaFX, "g_HueShift",
-								global.Game.Controllers.visualEffects.getCurrentHue(global.Game.Level.current));
+								global.Game.Controllers.visualEffects.getCurrentHue(_level));
 		}
 
 		// make the nebula visible
