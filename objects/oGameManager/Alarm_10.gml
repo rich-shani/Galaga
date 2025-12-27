@@ -28,6 +28,8 @@ if (nextlevel == 1) {
 
             /// Increment the global level counter (global.Game.Level.current) to advance to the next level || wave.
 			global.Game.Level.current += 1; 
+           
+			Set_Nebula_Color();		
 			
 			// reset the position to the center && show READY
 			oPlayer.shipStatus = ShipState.RESPAWN;
@@ -120,8 +122,6 @@ if (nextlevel == 2) {
 		global.Game.Player.shotTotal = 0;
 		global.Game.Enemy.capturedPlayer = false;
 	}
-           
-	Set_Nebula_Color();
 			
     /// Reset rogue enemy flags (rogue1, rogue2) to 0, indicating no active rogue behaviors.
     rogue1 = 0;
