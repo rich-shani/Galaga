@@ -410,8 +410,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			// do nothing ... execute DIVE PATH
 		}
 		else if ((y > DIVE_Y_THRESHOLD * global.Game.Display.scale)) {
-		
-			if (attributes.CAN_LOOP) {
+			// loop if we have more than 2 enemies left on the screen (otherwise, we will move into FINAL ATTACK mode)
+			if (attributes.CAN_LOOP && global.Game.Enemy.count > 2 {
 
 				path_end();
 
@@ -444,7 +444,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				path_end();
 
 				// check if we're the last two enemies left ...
-				if (global.Game.Enemy.count < 3) {
+				if (global.Game.Enemy.count <= 2) {
 					enemyState = EnemyState.IN_FINAL_ATTACK;
 					
 					start_final_attack_dive(self);  // Initialize first dive immediately
