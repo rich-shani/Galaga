@@ -47,6 +47,40 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	if (shipStatus == ShipState.ACTIVE) {
 		
 		// ========================================================================
+		// SHIELD VISUAL EFFECT - Draw Shield When Active
+		// ========================================================================
+		// Draw glowing shield effect around player when shield is active
+		// Shield provides invincibility and visual feedback to player
+		// Uses pulsing animation to make it more visible
+		// ========================================================================
+		if (isShieldActive) {
+			// Calculate pulse animation based on shield timer
+			// Creates a pulsing effect that gets faster as shield expires
+			var pulse = (sin(global.Game.Display.animationIndex * 0.15) + 1) / 2; // 0 to 1
+			var alpha = 0.5 + (pulse * 0.5); // Pulse between 0.5 and 1.0
+			var shieldRadius = 40 * global.Game.Display.scale;
+			
+			// Draw outer glow circle (cyan/blue)
+			draw_set_alpha(alpha * 0.4);
+			draw_set_colour(c_navy);
+			draw_circle(x, y, shieldRadius * 1.2, false);
+			
+			// Draw main shield circle (white/blue)
+			//draw_set_alpha(alpha);
+			//draw_set_colour(c_aqua);
+			//draw_circle(x, y, shieldRadius, false);
+			
+			// Draw inner shield ring (brighter)
+			draw_set_alpha(alpha * 0.8);
+			draw_set_colour(c_white);
+			draw_circle(x, y, shieldRadius * 0.7, false);
+			
+			// Reset drawing settings
+			draw_set_alpha(1);
+			draw_set_colour(c_white);
+		}
+
+		// ========================================================================
 		// MAIN SHIP SPRITE - Primary Player Fighter
 		// ========================================================================
 		// Draw the main player ship sprite

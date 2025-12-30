@@ -209,3 +209,31 @@ rescued_fighter_x = 0;
 ///                          When within 64 pixels of player, docking completes
 ///                          Used only during RELEASING state in Step_0.gml and Draw_0.gml
 rescued_fighter_y = 0;
+
+// ========================================================================
+// SHIELD SYSTEM - Invincibility Power-Up
+// ========================================================================
+/// @section Shield System
+/// @description Shield pickup system that grants temporary invincibility.
+///              When a shield pickup is collected, the player becomes
+///              invincible for 2 seconds with a visual shield effect.
+/// 
+/// Shield Mechanics:
+///   • isShieldActive: Flag indicating if shield is currently active
+///   • shieldTimer: Countdown timer for shield duration (in frames)
+///   • Shield duration: 2 seconds = 120 frames at 60 FPS
+///   • While active: Player is invincible to enemy shots
+///   • Visual: Glowing circular shield effect around player ship
+/// ========================================================================
+
+/// @var isShieldActive - Flag indicating if shield power-up is currently active
+///                       When true, player is invincible to enemy shots
+///                       Set to true when shield pickup is collected
+///                       Set to false when shield timer expires
+isShieldActive = false;
+
+/// @var shieldTimer - Countdown timer for shield duration (frames remaining)
+///                    Decremented each frame while shield is active
+///                    When reaches 0, shield deactivates
+///                    Initialized to 120 (2 seconds at 60 FPS) when collected
+shieldTimer = 0;

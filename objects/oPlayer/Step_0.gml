@@ -58,6 +58,22 @@ if (global.Game.State.isPaused) return;
 if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 	// ========================================================================
+	// SHIELD TIMER MANAGEMENT - Update Shield State
+	// ========================================================================
+	/// @description Manages shield power-up timer and deactivation.
+	///              Shield provides 2 seconds (120 frames) of invincibility.
+	///              Timer decrements each frame and shield deactivates when it reaches 0.
+	/// ========================================================================
+	if (isShieldActive) {
+		shieldTimer--;
+		if (shieldTimer <= 0) {
+			// Shield expired - deactivate
+			isShieldActive = false;
+			shieldTimer = 0;
+		}
+	}
+
+	// ========================================================================
 	// SHIP STATE MACHINE - Main Behavior Controller
 	// ========================================================================
 	/// @description Central state machine that processes different behaviors

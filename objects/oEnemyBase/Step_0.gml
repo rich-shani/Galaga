@@ -411,7 +411,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		}
 		else if ((y > DIVE_Y_THRESHOLD * global.Game.Display.scale)) {
 			// loop if we have more than 2 enemies left on the screen (otherwise, we will move into FINAL ATTACK mode)
-			if (attributes.CAN_LOOP && global.Game.Enemy.count > 2 {
+			if (attributes.CAN_LOOP && global.Game.Enemy.count > 2) {
 
 				path_end();
 

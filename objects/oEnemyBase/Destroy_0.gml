@@ -38,7 +38,20 @@ if (!global.Game.State.isGameOver) {
 		if (enemyState == EnemyState.IN_DIVE_ATTACK) {
 			/// Enemy is currently diving/attacking - grant invulnerability window
 			oPlayer.alarm[PlayerAlarmIndex.TiMER] = global.Game.State.hold + irandom(global.Game.State.hold);
-
+		
+			/// ================================================================
+			/// SHIELD PICKUP DROP SYSTEM
+			/// ================================================================
+			/// Shield pickups have a chance to drop when enemies are killed.
+			/// When collected, grants the player 2 seconds of invincibility
+			/// with a visual shield effect.
+			/// Drop chance: 15% (adjustable via SHIELD_PICKUP_DROP_CHANCE)
+			/// ================================================================
+			// 15% chance to drop a shield pickup
+			if (irandom(99) < 99) {
+				instance_create_layer(round(x), round(y), "GameSprites", oShieldPickup);
+			}
+		
 			/// If not a transformed enemy, award points for the kill
 			if (trans == 0) {
 				/// Award higher points for diving enemies (more dangerous)

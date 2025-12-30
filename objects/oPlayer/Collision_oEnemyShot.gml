@@ -59,6 +59,19 @@ if (global.shot_pool != undefined) {
 if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == ShipState.ACTIVE) {
 
 	// ========================================================================
+	// SHIELD CHECK - Skip Damage if Shield is Active
+	// ========================================================================
+	// If shield is active, player is invincible - skip all damage processing
+	// Shield provides 2 seconds of invincibility when collected
+	// Visual feedback: Shield effect is drawn around player in Draw_0.gml
+	// ========================================================================
+	if (isShieldActive) {
+		// Shield is active - player is invincible, no damage taken
+		// Just return without processing the hit
+		return;
+	}
+
+	// ========================================================================
 	// TRIGGER HIT PROCESSING - Set Up Damage Alarm
 	// ========================================================================
 	// Trigger hit processing by setting alarm[11] if it's not already active
