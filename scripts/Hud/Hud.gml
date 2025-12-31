@@ -377,7 +377,7 @@ function Draw_Instructions() {
 	draw_set_halign(fa_center);
 	draw_set_color(c_white);
 
-	draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale, "© 1981-2024 BANDAI");
+	draw_text(224*global.Game.Display.scale, (416 + 32)*global.Game.Display.scale, "© 1981 BANDAI");
 	draw_text(224*global.Game.Display.scale, (448 + 32)*global.Game.Display.scale,
 	"  NAMCO ENTERTAINMENT, INC. ");
 
