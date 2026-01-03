@@ -9,8 +9,13 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == Ship
 	// process the collision, using Alarm 11 (as we can also call the hit from the player (DOUBLE SHOT mode)
 	alarm[11] = 1;
 
-	// Notify the PLAYER that it was HIT
-	if (oPlayer.alarm[11] < 0) {
-		oPlayer.alarm[11] = 1;
+	// ========================================================================
+	// SHIELD CHECK - Skip Damage if Player's shield is Active
+	// ========================================================================
+	if (!oPlayer.isShieldActive) {
+		// Notify the PLAYER that it was HIT
+		if (oPlayer.alarm[11] < 0) {
+			oPlayer.alarm[11] = 1;
+		}
 	}
 }

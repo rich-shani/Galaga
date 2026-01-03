@@ -380,6 +380,26 @@ else if (enemyMode == EnemyMode.STANDARD) {
 								global.Game.Controllers.audioManager.stopSound(GBeam);			// Stop beam sound
 						        global.Game.Controllers.audioManager.loopSound(GCaptured);		// Play captured sound
 
+								// instruct all enemies to return to FORMATION
+								// Do NOT request the enemy with the BEAM to return as they are picking up the player
+								with (oEnemyBase) {
+									if (oPlayer.captor != id) {
+										if (enemyState != EnemyState.IN_FORMATION) {
+											// end current path && return to FORMATION
+											path_end();
+											enemyState = EnemyState.MOVE_INTO_FORMATION;
+										}
+									}
+								}	
+		
+								// remove any enemy missiles in flight
+								if (global.shot_pool != undefined) {
+									global.shot_pool.releaseAll();
+								} else {
+									with (oEnemyShot) {
+										instance_destroy();
+									}
+								}
 								// extend the beam to cover the period to CAPTURE the player
 						       // alarm[3] = ((global.Game.Enemy.beamDuration / 3) / (90 / alarm[3])) + 20;
 							}

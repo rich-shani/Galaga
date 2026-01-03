@@ -58,6 +58,12 @@ function Draw_Hud(){
 	else {
 		Draw_Lives();
 	}
+	
+	// === SHIELD HEALTH BAR ===
+	// Draw shield health bar at bottom of screen during active gameplay
+	if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
+		Draw_ShieldHealthBar();
+	}
 
 	// === PAUSE OVERLAY ===
 	// If game is paused, display large "GAME PAUSED" message
@@ -398,6 +404,64 @@ function Draw_Lives() {
 
 		lifecount = lifecount - 1
 	};
+	
+	return;
+}
+
+function Draw_ShieldHealthBar() {
+	/// @function Draw_ShieldHealthBar
+	/// @description Draws the shield health bar at the bottom of the screen
+	///              Shows shield capacity from 0 (empty) to 5 (full)
+	///              Only displays when player exists and game is active
+	
+	// Only draw if player exists
+	if (!instance_exists(oPlayer)) {
+		return;
+	}
+	
+	var bar_x = 128 * global.Game.Display.scale;
+	var bar_y = 565 * global.Game.Display.scale;
+	var bar_width = 400;
+	var bar_height = 20;
+	
+	// Get shield value (0 to 5)
+	var shield_value = oPlayer.shieldTimer;
+	if (shield_value < 0) {
+		shield_value = 0;
+	}
+	if (shield_value > 5) {
+		shield_value = 5;
+	}
+	
+	// Calculate fill percentage (0.0 to 1.0)
+	var fill_percentage = shield_value / 5.0;
+	var fill_width = bar_width * fill_percentage;
+	
+	// Draw background (empty bar) - dark red/black
+	draw_set_color(c_black);
+	draw_set_alpha(0.8);
+	draw_rectangle(bar_x, bar_y, bar_x + bar_width, bar_y + bar_height, false);
+	draw_set_alpha(1.0);
+	
+	// Draw filled portion - green when full, yellow when medium, red when low
+	if (fill_percentage > 0) {
+		var bar_color = c_green;
+		if (fill_percentage < 0.4) {
+			bar_color = c_red;
+		} else if (fill_percentage < 0.7) {
+			bar_color = c_yellow;
+		}
+		
+		draw_set_color(bar_color);
+		draw_set_alpha(0.9);
+		draw_rectangle(bar_x, bar_y, bar_x + fill_width, bar_y + bar_height, false);
+		draw_set_alpha(1.0);
+	}
+	
+	// Draw border
+	draw_set_color(c_white);
+	draw_set_alpha(1.0);
+	draw_rectangle(bar_x, bar_y, bar_x + bar_width, bar_y + bar_height, true);
 	
 	return;
 }

@@ -215,25 +215,27 @@ rescued_fighter_y = 0;
 // ========================================================================
 /// @section Shield System
 /// @description Shield pickup system that grants temporary invincibility.
-///              When a shield pickup is collected, the player becomes
-///              invincible for 2 seconds with a visual shield effect.
+///              Shield timer ranges from 0 to 5, where 5 is maximum capacity.
+///              When S key is pressed, shield activates and drains the timer.
 /// 
 /// Shield Mechanics:
 ///   • isShieldActive: Flag indicating if shield is currently active
-///   • shieldTimer: Countdown timer for shield duration (in frames)
-///   • Shield duration: 2 seconds = 120 frames at 60 FPS
-///   • While active: Player is invincible to enemy shots
-///   • Visual: Glowing circular shield effect around player ship
+///   • shieldTimer: Shield capacity (0 to 5 scale, where 5 is maximum)
+///   • When S key is pressed: Shield activates if shieldTimer > 0
+///   • While active: Player is invincible to enemy shots, shieldTimer drains
+///   • Drain rate: 1 per second (1/60 per frame at 60 FPS)
+///   • Visual: Glowing circular shield effect around player ship + health bar
 /// ========================================================================
 
 /// @var isShieldActive - Flag indicating if shield power-up is currently active
 ///                       When true, player is invincible to enemy shots
-///                       Set to true when shield pickup is collected
-///                       Set to false when shield timer expires
+///                       Set to true when S key is pressed (if shieldTimer > 0)
+///                       Set to false when shield timer reaches 0 or S key released
 isShieldActive = false;
 
-/// @var shieldTimer - Countdown timer for shield duration (frames remaining)
-///                    Decremented each frame while shield is active
-///                    When reaches 0, shield deactivates
-///                    Initialized to 120 (2 seconds at 60 FPS) when collected
+/// @var shieldTimer - Shield capacity value (0 to 5 scale, where 5 is maximum)
+///                    Ranges from 0 (empty) to 5 (full capacity)
+///                    Drains at 1 per second (1/60 per frame) when shield is active
+///                    Increased when shield pickup is collected
+///                    Clamped to maximum of 5
 shieldTimer = 0;

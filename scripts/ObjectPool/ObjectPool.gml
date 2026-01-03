@@ -200,6 +200,21 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 		return true;
 	};
 
+	/// @function releaseAll
+	/// @description release all Active instances, putting them back to the pool
+	/// @return {undefined}
+	static releaseAll = function() {
+		// release all active instances
+		for (var i = 0; i < ds_list_size(active_instances); i++) {
+			var instance = ds_list_find_value(active_instances, i);
+			release(instance);
+		}
+
+		if (global.debug) {
+			show_debug_message("[ObjectPool] ReleaseAll active instances from the " + object_get_name(object_type) + " pool");
+		}
+	};
+	
 	/// @function clear
 	/// @description Clears all pooled instances (call when changing rooms)
 	/// @return {undefined}

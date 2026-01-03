@@ -61,15 +61,15 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	// SHIELD TIMER MANAGEMENT - Update Shield State
 	// ========================================================================
 	/// @description Manages shield power-up timer and deactivation.
-	///              Shield provides 2 seconds (120 frames) of invincibility.
-	///              Timer decrements each frame and shield deactivates when it reaches 0.
+	///              Shield timer ranges from 0 to 5 (max capacity).
+	///              Drains at 1 per second (1/60 per frame) when active.
+	///              Shield deactivates when timer reaches 0.
 	/// ========================================================================
 	if (isShieldActive) {
-		shieldTimer--;
+		shieldTimer -= (1.0 / 60.0); // Drain 1 per second (1/60 per frame at 60 FPS)
 		if (shieldTimer <= 0) {
 			// Shield expired - deactivate
 			isShieldActive = false;
-			shieldTimer = 0;
 		}
 	}
 
@@ -195,16 +195,38 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// no special logic for Enemy Missile check, as we use the collision function for the base (SINGLE MODE) player
 			}
 			else if (shotMode == ShotMode.DOUBLE) {
+				
 				x = clamp(x, SHIP_MIN_X, SHIP_MAX_X - SHIP_SPACE);
 
+				// ========================================================================
+				// SHIELD PICKUP COLLISION LOGIC - For the second PLAYER in DOUBLE SHOT MODE
+				// ========================================================================
+				// use built-in collision detection to check if a SHIELD has collied with the DOUBLE SHOT player
+				// when the player is in SINGLE SHOT mode, we will detect the shield collision using the standard collision function
+				// ========================================================================		
+	
+				var shieldPickup = collision_rectangle(x + DUAL_FIGHTER_OFFSET_X - CAPTURED_PLAYER_COLLISION_RADIUS,
+													y - CAPTURED_PLAYER_COLLISION_RADIUS,
+													x + DUAL_FIGHTER_OFFSET_X + CAPTURED_PLAYER_COLLISION_RADIUS,
+													y + CAPTURED_PLAYER_COLLISION_RADIUS,
+													oShieldPickup, false, true);
+											
+				if (shieldPickup != noone) {
 
+					// Destroy the shield pickup
+					instance_destroy(shieldPickup);
+						
+					//.. process the shiled pickup
+					alarm[8] = 1;
+				}
+				
 				// ========================================================================
 				// ENEMY COLLISION LOGIC - For the second PLAYER in DOUBLE SHOT MODE
 				// ========================================================================
 				// use built-in collision detection to check if any enemy missile has hit the DOUBLE SHOT player
 				// when the player is in SINGLE SHOT mode, we will detect the missile hit using the standard collision function
 				// ========================================================================		
-				
+	
 				var missileHit = collision_rectangle(x + DUAL_FIGHTER_OFFSET_X - CAPTURED_PLAYER_COLLISION_RADIUS,
 													y - CAPTURED_PLAYER_COLLISION_RADIUS,
 													x + DUAL_FIGHTER_OFFSET_X + CAPTURED_PLAYER_COLLISION_RADIUS,
@@ -213,11 +235,16 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 											
 				if (missileHit != noone) {
 
-						// Destroy the Enemy Missile
-						instance_destroy(missileHit);
-											
+					// Destroy the Enemy Missile
+					instance_destroy(missileHit);
+
+					// ========================================================================
+					// SHIELD CHECK - Skip Damage if Shield is Active
+					// ========================================================================
+					if (!isShieldActive) {						
 						//.. process the hit for the DOUBLE SHOT player
 						alarm[10] = 1;
+					}
 				}
 				
 				// now, check all enemies that are in DIVE_ATTACK if there's a collision with the Player
@@ -235,8 +262,14 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 										dual_player_y + CAPTURED_PLAYER_COLLISION_RADIUS)) {
 							// inform the enemy instance that it hit the PLAYER
 							alarm[11] = 1;
-							// inform the player that the enemy hit the DOUBLE SHOT ship					
-							other.alarm[10] = 1;
+
+							// ========================================================================
+							// SHIELD CHECK - Skip Damage if Shield is Active
+							// ========================================================================
+							if (!isShieldActive) {						
+								//.. process the hit for the DOUBLE SHOT player
+								other.alarm[10] = 1;
+							}
 							
 							break;
 						}
