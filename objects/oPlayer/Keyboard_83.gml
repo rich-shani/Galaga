@@ -13,7 +13,8 @@ if (global.Game.State.isPaused ||
 // When > 0: Normal gameplay with formations
 // When == 0: Challenge stage (every 4th level)
 
-if (global.Game.Challenge.countdown > 0) {
+if (!global.Game.Challenge.isActive) {
+//if (global.Game.Challenge.countdown > 0) {
 		
 	// activate the SHIELD if we have some energy available
 	if (shieldTimer > 0) {

@@ -156,7 +156,8 @@ if (nextlevel == 2) {
 	
 	/// If in challenge mode (global.Game.Challenge.countdown == 0) && in the initial state (start == 0),
 	/// set alarm[2] to 70 steps (approximately 1.167 seconds at 60 FPS) to delay the start of gameplay.
-	if (global.Game.Challenge.countdown == 0) alarm[2] = 70;
+	if (global.Game.Challenge.isActive) alarm[2] = 70;
+	//if (global.Game.Challenge.countdown == 0) alarm[2] = 70;
 
     /// @subsection Challenge Mode Path Adjustment
     // Challenge mode path adjustments are handled by individual enemy paths

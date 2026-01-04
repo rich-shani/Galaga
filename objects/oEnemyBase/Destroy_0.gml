@@ -55,7 +55,8 @@ if (!global.Game.State.isGameOver) {
 			/// If not a transformed enemy, award points for the kill
 			if (trans == 0) {
 				/// Award higher points for diving enemies (more dangerous)
-				if (global.Game.Challenge.countdown > 0) {
+				if (!global.Game.Challenge.isActive) {
+//				if (global.Game.Challenge.countdown > 0) {
 					points = attributes.DIVE_POINT_VALUE;
 				} else {
 					points = attributes.CHALLENGE_POINT_VALUE;
@@ -89,7 +90,8 @@ if (!global.Game.State.isGameOver) {
 
 		/// === NORMAL MODE COMBO TRACKING ===
 		/// Track regular enemy kills for TransPoints bonus
-		if global.Game.Challenge.countdown == 0 {
+		//if global.Game.Challenge.countdown == 0 {
+		if (global.Game.Challenge.isActive) {
 			global.Game.Player.shotCount += 1;
 
 			/// Every ENEMIES_PER_BONUS consecutive kills in normal mode creates a bonus
@@ -140,12 +142,13 @@ if (!global.Game.State.isGameOver) {
 			/// • Challenge 4: Boss2 sound
 			/// • Challenge 7: Boss1 sound
 			/// ================================================================
-			if global.Game.Challenge.countdown > 0 {
+			//if global.Game.Challenge.countdown > 0 {
+			if (!global.Game.Challenge.isActive) {
 				global.Game.Controllers.audioManager.stopSound(GBee);
 				global.Game.Controllers.audioManager.playSound(GBee);
 			}
-
-			if global.Game.Challenge.countdown == 0 {
+			else {
+			//if global.Game.Challenge.countdown == 0 {
 				if global.Game.Challenge.current == 2 || global.Game.Challenge.current == 3 || global.Game.Challenge.current == 5 || global.Game.Challenge.current == 6 || global.Game.Challenge.current == 8 {
 					global.Game.Controllers.audioManager.stopSound(GButterfly);
 					global.Game.Controllers.audioManager.playSound(GButterfly);

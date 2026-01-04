@@ -60,8 +60,8 @@ function Draw_Hud(){
 	}
 	
 	// === SHIELD HEALTH BAR ===
-	// Draw shield health bar at bottom of screen during active gameplay
-	if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
+	// Draw shield health bar at bottom of screen during active gameplay (but, not during the Challenge Stage)
+	if (global.Game.State.mode == GameMode.GAME_ACTIVE && !global.Game.Challenge.isActive) {
 		Draw_ShieldHealthBar();
 	}
 

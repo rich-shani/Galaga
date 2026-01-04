@@ -557,11 +557,11 @@ function Game_Loop(){
 	// global.Game.Challenge.countdown tracks progress toward challenge stages
 	// When > 0: Normal gameplay with formations
 	// When == 0: Challenge stage (every 4th level)
-
-	if (global.Game.Challenge.countdown > 0) {
-		Game_Loop_Standard();
-	} else {
+	if (global.Game.Challenge.isActive) {
 		Game_Loop_Challenge();
+	}
+	else {
+		Game_Loop_Standard();
 	}
 }
 

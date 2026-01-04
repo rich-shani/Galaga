@@ -1,6 +1,7 @@
 if alarm[1] = -1 {
 
-    if global.Game.Challenge.countdown > 0 {
+	if (!global.Game.Challenge.isActive) {
+ //   if global.Game.Challenge.countdown > 0 {
         if global.Game.Enemy.transformNum = 1 {
             draw_sprite_ext(spr_Galagapoints,3,x,y,global.Game.Display.scale,global.Game.Display.scale,0,c_white,1);
         }

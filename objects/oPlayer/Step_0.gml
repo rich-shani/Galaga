@@ -70,6 +70,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 		if (shieldTimer <= 0) {
 			// Shield expired - deactivate
 			isShieldActive = false;
+			
+			shieldTimer = 0;
 		}
 	}
 
