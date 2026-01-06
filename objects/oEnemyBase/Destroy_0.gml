@@ -47,8 +47,8 @@ if (!global.Game.State.isGameOver) {
 			/// with a visual shield effect.
 			/// Drop chance: 15% (adjustable via SHIELD_PICKUP_DROP_CHANCE)
 			/// ================================================================
-			// 15% chance to drop a shield pickup
-			if (irandom(99) < 99) {
+			// 50% chance to drop a shield pickup
+			if ((global.Game.Enemy.count > 2) && (irandom(99) < 50)) {
 				instance_create_layer(round(x), round(y), "GameSprites", oShieldPickup);
 			}
 		

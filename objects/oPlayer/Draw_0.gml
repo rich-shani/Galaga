@@ -88,8 +88,8 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			var shieldRadius = 40 * global.Game.Display.scale;
 			
 			// Draw outer glow circle (cyan/blue)
-			draw_set_alpha(alpha * 0.4);
-			draw_set_colour(c_teal);
+			draw_set_alpha(alpha * 0.6);
+			draw_set_colour(c_purple);
 			draw_circle(x, y, shieldRadius * 1.2, false);
 			
 			// Draw inner shield ring (brighter)
@@ -99,7 +99,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			
 			if (shotMode == ShotMode.DOUBLE) {
 				// Draw outer glow circle (cyan/blue)
-				draw_set_alpha(alpha * 0.4);
+				draw_set_alpha(alpha * 0.6);
 				draw_set_colour(c_purple);
 				draw_circle(x + DUAL_FIGHTER_OFFSET_X, y, shieldRadius * 1.2, false);
 			

@@ -418,12 +418,7 @@ function Draw_ShieldHealthBar() {
 	if (!instance_exists(oPlayer)) {
 		return;
 	}
-	
-	var bar_x = 128 * global.Game.Display.scale;
-	var bar_y = 565 * global.Game.Display.scale;
-	var bar_width = 400;
-	var bar_height = 20;
-	
+
 	// Get shield value (0 to 5)
 	var shield_value = oPlayer.shieldTimer;
 	if (shield_value < 0) {
@@ -432,6 +427,19 @@ function Draw_ShieldHealthBar() {
 	if (shield_value > 5) {
 		shield_value = 5;
 	}
+	
+	if (shield_value == 0) {
+		// don't display when the shield is empty
+		return;
+	}
+	
+	var bar_x = 128 * global.Game.Display.scale;
+	var bar_y = 560 * global.Game.Display.scale;
+	var bar_width = 400;
+	var bar_height = 20;
+	
+	// draw animated shield
+	draw_sprite_ext(sCoin, (global.Game.Display.animationIndex/12) % 8, bar_x - 32, bar_y + bar_height/2, 0.5, 0.5, 0, c_white, 1);
 	
 	// Calculate fill percentage (0.0 to 1.0)
 	var fill_percentage = shield_value / 5.0;

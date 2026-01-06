@@ -139,7 +139,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// === FIRE BUTTON - Gamepad ===
 				// Check if A button (gp_face1) was pressed this frame
 				// Only triggers on button press, not hold (check_pressed vs check)
-				if (gamepad_button_check_pressed(0, gp_face1)) fireIsPressed = true;
+				if (!isShieldActive && gamepad_button_check_pressed(0, gp_face1)) fireIsPressed = true;
 			}
 			else {
 				// ========================================================================
@@ -163,7 +163,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 
 				// === FIRE BUTTON - Keyboard ===
 				// Spacebar triggers shooting (only on key press, not hold)
-				if (keyboard_check_pressed(vk_space)) fireIsPressed = true;
+				if (!isShieldActive && keyboard_check_pressed(vk_space)) fireIsPressed = true;
 			}
 
 			// ========================================================================

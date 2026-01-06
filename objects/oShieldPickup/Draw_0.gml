@@ -15,25 +15,3 @@ var i = rotation/45; // 8 animation frames per rotation
 
 draw_sprite_ext(sCoin, i, x, y, scale, scale, 0, c_white, alpha);
 
-// === DRAW SHIELD ICON ===
-// Draw outer glow circle (cyan/blue)
-//draw_set_alpha(alpha * 0.5);
-//draw_set_colour(c_navy);
-//draw_circle(x, y, 16 * global.Game.Display.scale * scale, false);
-
-//// Draw inner shield circle (white/blue)
-//draw_set_alpha(alpha);
-//draw_set_colour(c_white);
-//draw_circle(x, y, 12 * global.Game.Display.scale * scale, false);
-
-//// Draw shield symbol (simple arc shape)
-//draw_set_alpha(alpha);
-//draw_set_colour(c_aqua);
-//var shieldRadius = 10 * global.Game.Display.scale * scale;
-//// Draw a semi-circle arc to represent a shield
-//draw_arc(x, y - shieldRadius * 0.3, shieldRadius, 180, 0, false);
-
-// Reset drawing settings
-//draw_set_alpha(1);
-//draw_set_colour(c_white);
-
