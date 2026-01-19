@@ -90,23 +90,23 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			// Draw outer glow circle (cyan/blue)
 			draw_set_alpha(alpha * 0.6);
 			draw_set_colour(c_purple);
-			draw_circle(x, y, shieldRadius * 1.2, false);
+			draw_circle(x, y, shieldRadius * 1.1, false);
 			
 			// Draw inner shield ring (brighter)
 			draw_set_alpha(alpha * 0.8);
 			draw_set_colour(c_white);
-			draw_circle(x, y, shieldRadius * 0.7, false);
+			draw_circle(x, y, shieldRadius * 0.8, false);
 			
 			if (shotMode == ShotMode.DOUBLE) {
 				// Draw outer glow circle (cyan/blue)
 				draw_set_alpha(alpha * 0.6);
 				draw_set_colour(c_purple);
-				draw_circle(x + DUAL_FIGHTER_OFFSET_X, y, shieldRadius * 1.2, false);
+				draw_circle(x + DUAL_FIGHTER_OFFSET_X, y, shieldRadius * 1.1, false);
 			
 				// Draw inner shield ring (brighter)
 				draw_set_alpha(alpha * 0.8);
 				draw_set_colour(c_white);
-				draw_circle(x + DUAL_FIGHTER_OFFSET_X, y, shieldRadius * 0.7, false);						
+				draw_circle(x + DUAL_FIGHTER_OFFSET_X, y, shieldRadius * 0.8, false);						
 			}
 					
 			// Reset drawing settings
