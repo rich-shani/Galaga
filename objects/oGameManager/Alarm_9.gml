@@ -12,6 +12,7 @@ if (high_score_result.is_high_score) {
     // Set game mode to enter initials
     global.Game.State.mode = GameMode.ENTER_INITIALS;
     global.Game.State.results = 2;  // Start at character position 2 (0-indexed is 1)
+    global.Game.HighScores.initials_idx = 0;  // Initialize to first character position (0-based: 0, 1, 2)
 
     // Stop all sounds && prepare audio
     global.Game.Controllers.audioManager.stopAll();

@@ -336,7 +336,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						beam_weapon.state = BEAM_STATE.FIRE;
 
 						/// Stop dive sound && play beam sound effect
-						global.Game.Controllers.audioManager.stopSound(GBeam);
+						// global.Game.Controllers.audioManager.stopSound(GBeam);
 						global.Game.Controllers.audioManager.loopSound(GBeam);
 					}
 					/// === PLAYER CAPTURE ZONE ===

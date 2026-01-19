@@ -72,15 +72,18 @@ function Enter_Initials() {
         var current_initials = global.Game.HighScores.initials[pos_idx];
 
         // Update character at current position (global.Game.HighScores.initials_idx tracks which of 3 characters we're editing)
-        global.Game.HighScores.initials_idx = global.Game.State.results - 2;  // 0-based index (0, 1, || 2)
-        current_initials = string_delete(current_initials, global.Game.HighScores.initials_idx + 1, 1);
-        current_initials = string_insert(_new_char, current_initials, global.Game.HighScores.initials_idx + 1);
+        // Calculate which character we're currently editing (before incrementing results)
+        var char_idx = global.Game.State.results - 2;  // 0-based index (0, 1, or 2)
+        current_initials = string_delete(current_initials, char_idx + 1, 1);
+        current_initials = string_insert(_new_char, current_initials, char_idx + 1);
 
         // === UPDATE STRUCT ARRAY ===
         global.Game.HighScores.initials[pos_idx] = current_initials;
 
         // === MOVE TO NEXT CHARACTER OR FINALIZE ===
         global.Game.State.results += 1;
+        // Update initials_idx to point to the NEXT character position (for display cursor)
+        global.Game.HighScores.initials_idx = global.Game.State.results - 2;  // 0-based index (0, 1, or 2)
         cyc = 1;  // Reset character global.Game.Input.characterCycle
 
         if global.Game.State.results == 5 {

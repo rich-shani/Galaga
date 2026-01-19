@@ -75,7 +75,7 @@ function activateBeamWeapon() {
     beam_weapon.state = BEAM_STATE.FIRE;
 
     // === PLAY BEAM SOUND ===
-    global.Game.Controllers.audioManager.stopSound(GBeam);
+    // global.Game.Controllers.audioManager.stopSound(GBeam);
     global.Game.Controllers.audioManager.loopSound(GBeam);
 }
 

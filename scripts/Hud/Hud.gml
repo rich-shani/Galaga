@@ -318,7 +318,7 @@ function Draw_Enter_Initials() {
     // Calculate positions for 3 characters
     var base_x = 192 * global.Game.Display.scale;
     var base_y = 160 * global.Game.Display.scale;
-    var char_spacing = 32 * global.Game.Display.scale;
+    var char_spacing = 16 * global.Game.Display.scale;
 
 	// Get the position being edited (scored = 1-5)
     var pos_idx = scored - 1;
@@ -330,7 +330,7 @@ function Draw_Enter_Initials() {
 		var player_score = global.Game.HighScores.scores[i];
 		
 		// is this the NEW player score?
-		if (scored == i) { draw_set_color(c_yellow); }
+		if (pos_idx == i) { draw_set_color(c_yellow); }
 		
 		draw_text(64*global.Game.Display.scale, (352 + 32*i)*global.Game.Display.scale, TITLE[i]);
 		draw_set_halign(fa_right);
@@ -340,21 +340,19 @@ function Draw_Enter_Initials() {
 		
 		draw_set_color(c_aqua);
 	
-		if (scored == i) { 
+		if (pos_idx == i) { 
 			draw_text(304*global.Game.Display.scale, 176*global.Game.Display.scale, player_initials);
 		}
 	}
 
 	if global.Game.State.results < 5 {
 		draw_set_color(c_aqua);
-		draw_text((304 + (16 * global.Game.HighScores.initials_idx))*global.Game.Display.scale, 176*global.Game.Display.scale,
-		string_char_at(global.Game.Input.characterCycle, cyc));
-
 		if (global.Game.Controllers.uiManager.blinkCounter) {
 			draw_set_color(c_yellow);
-			draw_text((304 + (16 * global.Game.HighScores.initials_idx))*global.Game.Display.scale, 176*global.Game.Display.scale,
-			string_char_at(global.Game.Input.characterCycle, cyc));
 		}
+		
+		draw_text(304*global.Game.Display.scale + (char_spacing * global.Game.HighScores.initials_idx), 
+					176*global.Game.Display.scale, string_char_at(global.Game.Input.characterCycle, cyc));
 	}
 	
 	return;
