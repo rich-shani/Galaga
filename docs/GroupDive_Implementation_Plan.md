@@ -3,36 +3,43 @@
 
 ## Overview
 
-This document provides a detailed, step-by-step approach for implementing the group dive attack feature where `oTieIntercepter` enemies can dive with up to one `oImperialShuttle` follower. This matches the classic Galaga arcade game mechanics where enemies in vertical formation can dive together.
+This document provides a detailed, step-by-step approach for implementing the group dive attack feature where `oTieIntercepter` enemies can dive with up to two `oImperialShuttle` followers. This matches the classic Galaga arcade game mechanics where enemies in formation can dive together.
 
 ## Core Requirements
 
-1. **oTieIntercepter** can initiate dives alone OR with a follower
+1. **oTieIntercepter** can initiate dives alone OR with followers (1 or 2)
 2. **oImperialShuttle** can follow an oTieIntercepter during dives
-3. **Formation Requirement**: Imperial Shuttles must be positioned **exactly below** the TieIntercepter in the same column
-4. **Random Selection**: When multiple eligible shuttles exist, randomly select one (or none for solo dive)
-5. **Path Following**: Followers maintain the same path trajectory as the leader with slight offset
+3. **Formation Requirement**: TieIntercepters are always in row 0, Imperial Shuttles are always in row 1
+4. **Hardcoded Relationships**: Group relationships are hardcoded based on specific INDEX values (see Formation Mapping below)
+5. **Random Selection**: Randomly choose 0, 1, or 2 followers from eligible shuttles (can dive alone even if followers available)
+6. **Path Following**: Followers maintain the same path trajectory as the leader with slight offset
 
 ## Formation Grid Structure
 
 The game uses a **5 column × 8 row grid** (40 positions total):
 - **INDEX range**: 0-39
-- **Column calculation**: `INDEX mod 5`
-- **Row calculation**: `floor(INDEX / 5)`
-- **Directly below**: `INDEX + 5` (if valid, i.e., `< 40`)
-- **Two rows below**: `INDEX + 10` (if valid, i.e., `< 40`)
+- **TieIntercepters**: Always in row 0 (4 positions)
+- **Imperial Shuttles**: Always in row 1 (associated with specific TieIntercepters)
+- **INDEX values are NOT sequential** - specific INDEX values must be used
 
-### Example Formation Relationship
-```
-Row 0: [0]  [1]  [2]  [3]  [4]
-Row 1: [5]  [6]  [7]  [8]  [9]
-Row 2: [10] [11] [12] [13] [14]
-...
-```
+### Hardcoded Group Formation Mapping
 
-If TieIntercepter is at INDEX 12 (row 2, column 2):
-- Potential follower at INDEX 17 (row 3, column 2) - directly below
-- Potential follower at INDEX 22 (row 4, column 2) - two rows below
+The relationship between TieIntercepters and their associated Imperial Shuttles is **hardcoded** based on INDEX values:
+
+| TieIntercepter INDEX | Imperial Shuttle INDEXs (left to right) |
+|---------------------|------------------------------------------|
+| 9                   | 22, 10                                   |
+| 13                  | 10, 2                                    |
+| 11                  | 4, 12                                    |
+| 15                  | 12, 17                                   |
+
+**TieIntercepter positions (left to right)**: 9, 13, 11, 15
+
+**Notes:**
+- Each TieIntercepter has exactly 2 associated Imperial Shuttle positions
+- Up to 2 of the associated shuttles can join a group dive
+- If an Imperial Shuttle doesn't exist at an INDEX (destroyed or not spawned), it cannot be selected
+- Note: Some Imperial Shuttle INDEXs appear for multiple TieIntercepters (e.g., INDEX 10 for both 9 and 13; INDEX 12 for both 11 and 15)
 
 ## Implementation Phases
 
@@ -103,51 +110,49 @@ canFollowGroupDive = true;
 Create a new function in `scripts/EnemyBehavior/EnemyBehavior.gml`:
 
 ```gml
-/// @function find_imperial_shuttle_follower
-/// @description Finds one of up to two possible Imperial Shuttles positioned
-///              exactly below the TieIntercepter in the formation grid.
-///              Returns randomly selected follower or noone if none available.
+/// @function find_imperial_shuttle_followers
+/// @description Finds up to 2 Imperial Shuttles associated with a TieIntercepter
+///              based on hardcoded INDEX relationships. Returns array of 0, 1, or 2
+///              follower instance IDs.
 /// @param {Id.Instance} _leader The TieIntercepter initiating the dive
-/// @return {Id.Instance|noone} Selected follower enemy ID, or noone if none found
-function find_imperial_shuttle_follower(_leader) {
+/// @return {Array<Id.Instance>} Array of selected follower enemy IDs (empty if none)
+function find_imperial_shuttle_followers(_leader) {
+    var result = [];
+    
     // Validate leader
     if (!instance_exists(_leader)) {
-        return noone;
+        return result;
     }
     
     var leader_index = _leader.INDEX;
-    var leader_col = leader_index mod 5;
-    var leader_row = floor(leader_index / 5);
     
-    // Find Imperial Shuttles in the same column, directly below
-    // Check up to 2 rows below (positions INDEX+5 and INDEX+10)
-    var candidate_indices = [];
+    // Hardcoded mapping: TieIntercepter INDEX -> Imperial Shuttle INDEXs
+    // TieIntercepters at INDEX: 9, 13, 11, 15 (left to right)
+    var associated_indices = [];
     
-    // Position directly below (1 row down)
-    var below_index_1 = leader_index + 5;
-    if (below_index_1 < 40) {
-        var below_row = floor(below_index_1 / 5);
-        var below_col = below_index_1 mod 5;
-        
-        // Verify it's in the same column
-        if (below_col == leader_col && below_row == leader_row + 1) {
-            array_push(candidate_indices, below_index_1);
-        }
+    switch (leader_index) {
+        case 9:
+            // First TieIntercepter (leftmost) -> Shuttles at INDEX 22, 10
+            associated_indices = [22, 10];
+            break;
+        case 13:
+            // Second TieIntercepter -> Shuttles at INDEX 10, 2
+            associated_indices = [10, 2];
+            break;
+        case 11:
+            // Third TieIntercepter -> Shuttles at INDEX 4, 12
+            associated_indices = [4, 12];
+            break;
+        case 15:
+            // Fourth TieIntercepter (rightmost) -> Shuttles at INDEX 12, 17
+            associated_indices = [12, 17];
+            break;
+        default:
+            // Not a TieIntercepter that can lead group dives
+            return result;
     }
     
-    // Position two rows below
-    var below_index_2 = leader_index + 10;
-    if (below_index_2 < 40) {
-        var below_row = floor(below_index_2 / 5);
-        var below_col = below_index_2 mod 5;
-        
-        // Verify it's in the same column
-        if (below_col == leader_col && below_row == leader_row + 2) {
-            array_push(candidate_indices, below_index_2);
-        }
-    }
-    
-    // Find actual Imperial Shuttle instances at these positions
+    // Find actual Imperial Shuttle instances at these INDEX positions
     var candidates = [];
     
     with (oEnemyBase) {
@@ -158,10 +163,10 @@ function find_imperial_shuttle_follower(_leader) {
             groupLeader == noone &&  // Not already following someone
             array_length(groupFollowers) == 0) {  // Not leading a group
             
-            // Check if this enemy's INDEX matches any candidate position
+            // Check if this enemy's INDEX matches any associated position
             var is_candidate = false;
-            for (var i = 0; i < array_length(candidate_indices); i++) {
-                if (INDEX == candidate_indices[i]) {
+            for (var i = 0; i < array_length(associated_indices); i++) {
+                if (INDEX == associated_indices[i]) {
                     is_candidate = true;
                     break;
                 }
@@ -175,21 +180,30 @@ function find_imperial_shuttle_follower(_leader) {
     
     // Randomly decide whether to use group dive (50% chance if candidates exist)
     if (array_length(candidates) == 0) {
-        return noone;  // No eligible followers
+        return result;  // No eligible followers
     }
     
     // Random chance: sometimes dive alone even if followers available
     if (irandom(1) == 0) {
-        return noone;  // Solo dive (50% chance)
+        return result;  // Solo dive (50% chance)
     }
     
-    // Select one follower randomly if multiple available
+    // Select 1 or 2 followers randomly
     if (array_length(candidates) == 1) {
-        return candidates[0];
-    } else {
-        // Two candidates - randomly select one
-        return candidates[irandom(array_length(candidates) - 1)];
+        // Only one candidate - use it
+        array_push(result, candidates[0]);
+    } else if (array_length(candidates) == 2) {
+        // Two candidates - randomly decide: use 1 or both
+        if (irandom(1) == 0) {
+            // Use one (randomly selected)
+            array_push(result, candidates[irandom(1)]);
+        } else {
+            // Use both
+            result = candidates;
+        }
     }
+    
+    return result;
 }
 ```
 
@@ -200,20 +214,33 @@ Add to `scripts/EnemyBehavior/EnemyBehavior.gml`:
 ```gml
 /// @function setup_group_dive_attack
 /// @description Configures and initiates a group dive attack with a leader
-///              and single follower. The follower follows the leader's path
-///              with a slight offset to maintain formation spacing.
+///              and 1-2 followers. Followers follow the leader's path with
+///              slight offsets to maintain formation spacing.
 /// @param {Id.Instance} _leader The TieIntercepter leading the dive
-/// @param {Id.Instance} _follower The Imperial Shuttle following
+/// @param {Array<Id.Instance>} _followers Array of 1-2 Imperial Shuttles following
 /// @param {Int} _path_id The path asset ID to follow
 /// @return {undefined}
-function setup_group_dive_attack(_leader, _follower, _path_id) {
+function setup_group_dive_attack(_leader, _followers, _path_id) {
     if (!instance_exists(_leader) || _path_id == -1) {
         return;
     }
     
+    // Validate followers array
+    var valid_followers = [];
+    for (var i = 0; i < array_length(_followers); i++) {
+        if (instance_exists(_followers[i])) {
+            array_push(valid_followers, _followers[i]);
+        }
+    }
+    
+    // Limit to 2 followers max
+    if (array_length(valid_followers) > 2) {
+        valid_followers = array_slice(valid_followers, 0, 2);
+    }
+    
     with (_leader) {
-        // Store follower reference
-        groupFollowers = [_follower];
+        // Store follower references
+        groupFollowers = valid_followers;
         groupPathOffset = 0;  // Leader is at position 0 on path
         
         // Start the dive path for leader
@@ -224,30 +251,34 @@ function setup_group_dive_attack(_leader, _follower, _path_id) {
         alarm[1] = ENEMY_SHOT_ALARM;
     }
     
-    // Setup the follower
-    if (instance_exists(_follower)) {
-        with (_follower) {
-            // Link to leader
-            groupLeader = _leader.id;
-            
-            // Set path offset (followers start 15% behind leader on path)
-            groupPathOffset = 0.15;
-            
-            // Start following the same path
-            path_start(_path_id, moveSpeed, 0, 0);
-            
-            // Set initial path position to offset (followers start behind leader)
-            path_position = groupPathOffset;
-            
-            // Transition to dive attack state
-            enemyState = EnemyState.IN_DIVE_ATTACK;
-            
-            // Set shooting timer (slightly offset for visual variety)
-            alarm[1] = ENEMY_SHOT_ALARM + 10;
+    // Setup each follower
+    for (var i = 0; i < array_length(valid_followers); i++) {
+        var follower = valid_followers[i];
+        if (instance_exists(follower)) {
+            with (follower) {
+                // Link to leader
+                groupLeader = _leader.id;
+                
+                // Set path offset (followers start behind leader on path)
+                // First follower: 15% offset, second follower: 30% offset
+                groupPathOffset = 0.15 + (i * 0.15);
+                
+                // Start following the same path
+                path_start(_path_id, moveSpeed, 0, 0);
+                
+                // Set initial path position to offset (followers start behind leader)
+                path_position = groupPathOffset;
+                
+                // Transition to dive attack state
+                enemyState = EnemyState.IN_DIVE_ATTACK;
+                
+                // Set shooting timer (offset for visual variety)
+                alarm[1] = ENEMY_SHOT_ALARM + (10 * (i + 1));
+            }
         }
     }
     
-    // Group dive consumes only ONE dive capacity slot (not two)
+    // Group dive consumes only ONE dive capacity slot (for entire group)
     global.Game.Enemy.diveCapacity--;
 }
 ```
@@ -272,12 +303,12 @@ if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && global.Gam
         
         // Check if this enemy can lead a group dive
         var use_group_dive = false;
-        var follower = noone;
+        var followers = [];
         
         if (canLeadGroupDive && ENEMY_NAME == "oTieIntercepter") {
-            // Try to find an eligible Imperial Shuttle follower
-            follower = find_imperial_shuttle_follower(self);
-            if (follower != noone) {
+            // Try to find eligible Imperial Shuttle followers (1 or 2)
+            followers = find_imperial_shuttle_followers(self);
+            if (array_length(followers) > 0) {
                 use_group_dive = true;
             }
         }
@@ -308,9 +339,9 @@ if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && global.Gam
         }
         
         // Execute dive attack (group or solo)
-        if (use_group_dive && selected_path != -1 && instance_exists(follower)) {
-            // Setup group dive attack
-            setup_group_dive_attack(self, follower, selected_path);
+        if (use_group_dive && selected_path != -1 && array_length(followers) > 0) {
+            // Setup group dive attack (with 1 or 2 followers)
+            setup_group_dive_attack(self, followers, selected_path);
         } else {
             // Solo dive attack (existing behavior)
             if (selected_path != -1) {
@@ -513,30 +544,42 @@ The group dive should consume **ONE dive capacity slot** (for the entire group),
 
 ### Basic Functionality
 - [ ] TieIntercepter can initiate solo dive (existing behavior preserved)
-- [ ] TieIntercepter can initiate group dive with 1 Imperial Shuttle when 1 is available below
-- [ ] TieIntercepter can initiate group dive with 1 Imperial Shuttle when 2 are available below (randomly selects one)
+- [ ] TieIntercepter can initiate group dive with 1 Imperial Shuttle when 1 is available in eligible positions
+- [ ] TieIntercepter can initiate group dive with 1 Imperial Shuttle when 2+ are available (randomly selects 1)
+- [ ] TieIntercepter can initiate group dive with 2 Imperial Shuttles when 2+ are available (randomly selects 2)
 - [ ] TieIntercepter sometimes dives alone even when followers are available (random chance)
-- [ ] Group maintains formation spacing during dive (15% path offset)
+- [ ] Group maintains formation spacing during dive (15% and 30% path offsets for followers)
 - [ ] Group completes dive together
 
 ### Formation Requirements
-- [ ] Only Imperial Shuttles in the same column, directly below (INDEX+5 or INDEX+10) are eligible
-- [ ] Shuttles in adjacent columns are NOT eligible
-- [ ] Shuttles in the same row are NOT eligible
+- [ ] Only TieIntercepters at INDEX 9, 13, 11, or 15 can lead group dives
+- [ ] Each TieIntercepter has hardcoded associated Imperial Shuttle INDEXs:
+  - INDEX 9 → Shuttles at INDEX 22, 10
+  - INDEX 13 → Shuttles at INDEX 10, 2
+  - INDEX 11 → Shuttles at INDEX 4, 12
+  - INDEX 15 → Shuttles at INDEX 12, 17
+- [ ] Only Imperial Shuttles at the specific associated INDEXs are eligible
+- [ ] Shuttles at non-associated INDEXs are NOT eligible
 - [ ] Only shuttles in `IN_FORMATION` state are eligible
+- [ ] If a shuttle is destroyed/not spawned, it cannot be selected
+- [ ] Note: Some Imperial Shuttle INDEXs are shared (10 for both 9 and 13; 12 for both 11 and 15), so a shuttle can only join the group if it matches the initiating TieIntercepter's association
 
 ### Edge Cases
-- [ ] Leader destruction breaks group properly (follower continues solo or returns)
-- [ ] Follower destruction doesn't break leader
+- [ ] Leader destruction breaks group properly (followers continue solo or return)
+- [ ] One follower destruction doesn't break leader or other follower
 - [ ] Multiple groups can exist simultaneously (if dive capacity allows)
-- [ ] Group dive respects dive capacity (counts as 1 dive, not 2)
+- [ ] Group dive respects dive capacity (counts as 1 dive, not 2 or 3)
 - [ ] Leader beam weapon works correctly during group dive
 - [ ] Group transitions to loop attack correctly
 - [ ] Group handles final attack state correctly
+- [ ] When 2 eligible shuttles exist, selection of 1 or both is random (50/50)
+- [ ] Shared INDEX handling: When INDEX 10 exists, only joins group for TieIntercepter 9 or 13 based on which initiated
+- [ ] Shared INDEX handling: When INDEX 12 exists, only joins group for TieIntercepter 11 or 15 based on which initiated
 
 ### Visual/Gameplay
-- [ ] Follower maintains consistent spacing behind leader
-- [ ] Path following looks smooth and natural
+- [ ] Followers maintain consistent spacing behind leader (15% and 30% offsets)
+- [ ] Path following looks smooth and natural for both 1 and 2 followers
+- [ ] Formation spacing looks correct with 2 followers (not overlapping)
 - [ ] No visual glitches during group dive
 - [ ] Sound effects play correctly for group dives
 
@@ -545,7 +588,7 @@ The group dive should consume **ONE dive capacity slot** (for the entire group),
 ## Implementation Order
 
 1. **Phase 1**: Add data structures (variables to Create_0.gml, flags to enemy-specific Create events)
-2. **Phase 2**: Create helper functions (`find_imperial_shuttle_follower`, `setup_group_dive_attack`)
+2. **Phase 2**: Create helper functions (`find_imperial_shuttle_followers`, `setup_group_dive_attack`)
 3. **Phase 3**: Modify dive trigger logic in Step_0.gml IN_FORMATION state
 4. **Phase 4**: Add follower synchronization in Step_0.gml IN_DIVE_ATTACK state
 5. **Phase 5**: Add cleanup logic in Destroy_0.gml
@@ -556,20 +599,23 @@ The group dive should consume **ONE dive capacity slot** (for the entire group),
 ## Design Notes
 
 ### Path Offset Strategy
-- **Fixed offset (0.15)**: Simple, predictable, creates visible formation spacing
-- Followers start 15% behind leader on the path
+- **Progressive offsets**: First follower at 15%, second follower at 30% behind leader
+- Creates visible formation spacing with multiple followers
 - This creates the classic "trailing" formation effect from Galaga
 
 ### Randomization Strategy
 - **50% chance** to use group dive if eligible followers exist
 - This means TieIntercepter will dive alone ~50% of the time even with followers available
-- When 2 eligible shuttles exist, randomly selects one (not both)
+- When 1 eligible shuttle exists: uses it
+- When 2 eligible shuttles exist: randomly selects 1 or both (50/50 chance)
+- When 3 eligible shuttles exist: randomly selects 1 or 2 (equal probability)
 
 ### Formation Validation
-- Uses INDEX math to verify exact column alignment
-- Checks `INDEX mod 5` for column matching
-- Checks `floor(INDEX / 5)` for row relationship
-- Only checks positions INDEX+5 and INDEX+10 (directly below, up to 2 rows)
+- Uses hardcoded switch statement to map TieIntercepter INDEX to associated Shuttle INDEXs
+- Four TieIntercepters at INDEX: 9, 13, 11, 15 (left to right)
+- Each TieIntercepter has exactly 2 associated Imperial Shuttle positions
+- Validates that Imperial Shuttles exist at the specific INDEX values
+- No positional math required - purely INDEX-based lookup
 
 ### Performance Considerations
 - Helper function uses single `with` loop to find candidates
@@ -581,11 +627,11 @@ The group dive should consume **ONE dive capacity slot** (for the entire group),
 ## Future Enhancements (Optional)
 
 1. **Configurable Randomization**: Make solo/group dive probability configurable
-2. **Multiple Followers**: Allow 2 shuttles to follow simultaneously (if both available)
-3. **Visual Indicators**: Show connection lines or glow effects for group members
-4. **Coordinated Shooting**: Synchronize follower shots with leader
-5. **Dynamic Grouping**: Allow enemies to join group mid-dive
-6. **Different Formations**: V-shape, line, diamond formations during dive
+2. **Visual Indicators**: Show connection lines or glow effects for group members
+3. **Coordinated Shooting**: Synchronize follower shots with leader
+4. **Dynamic Grouping**: Allow enemies to join group mid-dive
+5. **Different Formations**: V-shape, line, diamond formations during dive
+6. **Variable Path Offsets**: Adjust offsets based on number of followers for better spacing
 
 ---
 
@@ -605,11 +651,12 @@ The group dive should consume **ONE dive capacity slot** (for the entire group),
 ## Summary
 
 This implementation provides a complete solution for group dive attacks matching classic Galaga mechanics. The system:
-- Respects formation positioning requirements (exactly below, same column)
-- Randomly selects from eligible followers or dives solo
-- Maintains proper path synchronization during dives
+- Uses hardcoded INDEX relationships for precise formation control (4 TieIntercepters at INDEX 9, 13, 11, 15)
+- Each TieIntercepter has 2 associated Imperial Shuttle INDEXs hardcoded in a switch statement
+- Randomly selects 0, 1, or 2 followers from eligible shuttles based on INDEX lookups
+- Maintains proper path synchronization during dives with progressive offsets (15% and 30%)
 - Handles cleanup and edge cases appropriately
 - Preserves existing solo dive behavior
 
-The implementation is modular, testable, and follows existing code patterns in the project.
+The implementation is modular, testable, and follows existing code patterns in the project. The hardcoded INDEX approach ensures precise control over which enemies can group together, matching the specific formation layout of the game.
 
