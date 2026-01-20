@@ -172,7 +172,7 @@ if (!global.Game.State.isGameOver) {
 	if (oPlayer.captor == id) {
 		
 		// Player was captured - initiate rescue sequence!
-		oPlayer.shipStatus = ShipState.RELEASING;
+		oPlayer.shipState = ShipState.RELEASING;
 		oPlayer.rescued_fighter_x = beam_weapon.player_x;
 		oPlayer.rescued_fighter_y = beam_weapon.player_y;
 

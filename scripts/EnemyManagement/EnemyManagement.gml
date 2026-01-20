@@ -48,7 +48,7 @@ function canTransform() {
 	// === PLAYER STATE CHECKS ===
 	// Player must be active && vulnerable for transformation to make sense
 	var playerVulnerable = instance_exists(oPlayer) &&
-	                       (oPlayer.shipStatus == ShipState.ACTIVE) &&
+	                       (oPlayer.shipState == ShipState.ACTIVE) &&
 	                       (oPlayer.regain == 0) &&
 	                       (oPlayer.alarm[PlayerAlarmIndex.TiMER] == -1);
 

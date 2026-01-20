@@ -248,7 +248,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && global.Game.State.spawnOpen == 0 && oPlayer.alarm[4] == -1) {
 			if (
 				irandom(10) == 0 && global.Game.State.prohibitDive == 0 &&
-				alarm[2] == -1 && oPlayer.shipStatus == ShipState.ACTIVE && oPlayer.regain == 0
+				alarm[2] == -1 && oPlayer.shipState == ShipState.ACTIVE && oPlayer.regain == 0
 			) {
 				/// All conditions met - initiate dive attack
 
@@ -357,14 +357,14 @@ else if (enemyMode == EnemyMode.STANDARD) {
 						var withinBem = (oPlayer.x > x-BEAM_CAPTURE_WIDTH && oPlayer.x < x+BEAM_CAPTURE_WIDTH);
 
 						/// Check if player is within capture zone && is vulnerable
-						if (withinBem && oPlayer.shipStatus == ShipState.ACTIVE) {
+						if (withinBem && oPlayer.shipState == ShipState.ACTIVE) {
 
 							// check if we're within the BEAM period, ie 1/3 to 2/3 of the BEAM time period
 							if ( (alarm[3] < (2 * global.Game.Enemy.beamDuration) / 3) && (alarm[3] > global.Game.Enemy.beamDuration / 3) ) {
 								beam_weapon.state = BEAM_STATE.CAPTURE_PLAYER;
 
 								/// Player is captured by beam!
-								oPlayer.shipStatus = ShipState.CAPTURED;
+								oPlayer.shipState = ShipState.CAPTURED;
 								// FIGTHER CAPTURED MESSAGE
 								oPlayer.alarm[5] = 300;
 

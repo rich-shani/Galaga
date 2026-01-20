@@ -5,7 +5,7 @@
 ///              state transitions, and game flow control
 /// 
 /// This is the primary event that runs every frame during gameplay. It implements
-/// a state machine that processes different behaviors based on the current shipStatus.
+/// a state machine that processes different behaviors based on the current shipState.
 /// 
 /// State Machine Flow:
 ///   • ACTIVE     → Normal gameplay, full player control (movement, shooting)
@@ -34,7 +34,7 @@
 /// @author Galaga Wars Team
 /// @event Step (Event 0) - Runs every frame
 /// @related Create_0.gml - Variable initialization
-/// @related Draw_0.gml - Rendering based on shipStatus and shipImage
+/// @related Draw_0.gml - Rendering based on shipState and shipImage
 /// @related Collision_oEnemyShot.gml - Triggered when hit by enemy projectile
 /// @related objects/oEnemyBase/Step_0.gml - Enemy capture logic
 /// ========================================================================
@@ -79,13 +79,13 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	// SHIP STATE MACHINE - Main Behavior Controller
 	// ========================================================================
 	/// @description Central state machine that processes different behaviors
-	///              based on current shipStatus. Each state has distinct logic:
+	///              based on current shipState. Each state has distinct logic:
 	///              • ACTIVE: Input handling, movement, shooting
 	///              • CAPTURED/DEAD: Death animation, life loss, respawn logic
 	///              • RELEASING: Rescue animation, docking sequence
 	///              • RESPAWN: Timer wait, position reset, reactivation
 	/// ========================================================================
-	switch (shipStatus) {
+	switch (shipState) {
 		case ShipState.ACTIVE:
 			/// ========================================================================
 			/// ACTIVE STATE - Normal Player Control
@@ -430,10 +430,10 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				if (global.Game.Player.lives > 0) {
 					// === PLAYER HAS LIVES REMAINING - RESPAWN ===
 					
-					if (shipStatus == ShipState.DEAD) {
+					if (shipState == ShipState.DEAD) {
 						// === DEAD STATE RESPAWN ===
 						// Player was destroyed, prepare to respawn after delay
-						shipStatus = ShipState.RESPAWN;
+						shipState = ShipState.RESPAWN;
 						shotMode = ShotMode.SINGLE;  // Always respawn in SINGLE mode (lose dual fighter if had one)
 
 						// Set respawn timer to PLAYER_RESPAWN_DELAY_FRAMES (180 frames = 3 seconds at 60 FPS)
@@ -444,7 +444,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 						// === CAPTURED STATE RESPAWN ===
 						// Player was captured, prepare to respawn after delay
 						// Note: Different timer (alarm[5]) is used for captured state
-						shipStatus = ShipState.RESPAWN;
+						shipState = ShipState.RESPAWN;
 						
 						// Set captured respawn timer (300 frames = 5 seconds at 60 FPS)
 						// Longer delay for captured state to allow for capture sequence completion
@@ -560,7 +560,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				
 				// Transition to RESPAWN state for brief delay before reactivation
 				// This gives a moment for the player to see the dual fighter formation
-				shipStatus = ShipState.RESPAWN;	
+				shipState = ShipState.RESPAWN;	
 				
 				// Set ship sprite to center/straight position (facing forward)
 				shipImage = 2;
@@ -586,7 +586,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 			///   • RELEASING state: Rescue completion (alarm[1] set to PLAYER_RESPAWN_DELAY_FRAMES/2)
 			/// 
 			/// When timer expires:
-			///   • shipStatus changes to ACTIVE (player regains control)
+			///   • shipState changes to ACTIVE (player regains control)
 			///   • Position resets to center-bottom of screen
 			///   • Player can immediately start moving and shooting
 			/// ========================================================================
@@ -625,7 +625,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				// REACTIVATE PLAYER - Return to Normal Gameplay
 				// ========================================================================
 				// Return to normal gameplay state - player regains full control
-				shipStatus = ShipState.ACTIVE;
+				shipState = ShipState.ACTIVE;
 
 				// ========================================================================
 				// RESET POSITION - Move to Starting Location

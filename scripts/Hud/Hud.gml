@@ -575,7 +575,7 @@ function Draw_Debug_Overlay() {
 	draw_text(_x, _current_y, "Shot Mode: " + shotMode);
 	_current_y += _line_height;
 
-	var shipState = instance_exists(oPlayer) ? GetShipStateName(oPlayer.shipStatus) : "N/A";
+	var shipState = instance_exists(oPlayer) ? GetShipStateName(oPlayer.shipState) : "N/A";
 	draw_text(_x, _current_y, "Ship State: " + shipState);
 	_current_y += _line_height;
 

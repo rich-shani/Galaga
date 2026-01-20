@@ -501,7 +501,7 @@ function Game_Loop(){
 	// === EARLY EXITS ===
 	// Skip processing if game is paused || transitioning to next level
 	// do not spawn a wave if the Ship isn't active (eg its RESPAWNING)
-	if (global.Game.State.isPaused || oPlayer.shipStatus != ShipState.ACTIVE) return;
+	if (global.Game.State.isPaused || oPlayer.shipState != ShipState.ACTIVE) return;
 	else if (!global.Game.Rogue.checkPerWave) {
 
 		// pre-compute the wave to SPAWN, include any rogue enemies (and randomize their position in the SPANN)

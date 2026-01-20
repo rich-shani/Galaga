@@ -80,7 +80,7 @@ else if (shotMode == ShotMode.SINGLE) {
 	// ========================================================================
 	// Change ship status to DEAD state
 	// Step_0.gml will process death logic (life loss, respawn, game over)
-	shipStatus = ShipState.DEAD;	
+	shipState = ShipState.DEAD;	
 
 	// ========================================================================
 	// DEATH ANIMATION DELAY - Pause Before Processing Death Logic

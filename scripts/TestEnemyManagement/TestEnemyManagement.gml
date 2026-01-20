@@ -181,17 +181,17 @@ function test_canTransform_returnsFalseWhenNoPlayer() {
 /// @function test_canTransform_returnsFalseWhenPlayerNotActive
 /// @description Test that canTransform returns false when player is not active
 function test_canTransform_returnsFalseWhenPlayerNotActive() {
-    // NOTE: This test requires accessing player instance and changing shipStatus
+    // NOTE: This test requires accessing player instance and changing shipState
 
     // Setup example:
     // if (instance_exists(oPlayer)) {
-    //     var saved_status = oPlayer.shipStatus;
-    //     oPlayer.shipStatus = ShipState.CAPTURED;
+    //     var saved_status = oPlayer.shipState;
+    //     oPlayer.shipState = ShipState.CAPTURED;
     //
     //     // Execute from enemy context: canTransform() should return false
     //
     //     // Restore
-    //     oPlayer.shipStatus = saved_status;
+    //     oPlayer.shipState = saved_status;
     // }
 
     // Placeholder assertion

@@ -6,7 +6,7 @@
 ///              sequence completes.
 /// 
 /// Capture Respawn Flow:
-///   1. Player is captured by enemy (shipStatus = CAPTURED)
+///   1. Player is captured by enemy (shipState = CAPTURED)
 ///   2. Capture sequence plays (player follows captor)
 ///   3. Step_0.gml (DEAD/CAPTURED state) sets alarm[5] = 300 frames (5 seconds)
 ///   4. Timer counts down to -1 (expires)

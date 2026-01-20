@@ -10,7 +10,7 @@
 ///
 /// State Requirements:
 ///   • Game mode must be GAME_ACTIVE (prevents hits during menus/transitions)
-///   • Player shipStatus must be ACTIVE (prevents hits during death/respawn/capture)
+///   • Player shipState must be ACTIVE (prevents hits during death/respawn/capture)
 ///
 /// Shield Protection:
 ///   • If player's shield is active (isShieldActive == true), skip damage
@@ -34,7 +34,7 @@
 // Check if player is in valid state to be hit
 // Must be ACTIVE (not CAPTURED, DEAD, RESPAWN, RELEASING)
 // and game must be in GAME_ACTIVE mode (not menu, attract mode, etc.)
-if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == ShipState.ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipState == ShipState.ACTIVE) {
 	// Process enemy's collision damage (reduces enemy hitCount)
 	// This alarm[11] handles the enemy side of the collision
 	alarm[11] = 1;

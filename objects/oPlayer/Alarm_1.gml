@@ -29,7 +29,7 @@
 /// @author Galaga Wars Team
 /// @event Alarm 1 - Respawn delay timer
 /// @related Step_0.gml - Sets alarm[1] and checks expiration in RESPAWN state
-/// @related Create_0.gml - Initializes shipStatus and respawn variables
+/// @related Create_0.gml - Initializes shipState and respawn variables
 /// ========================================================================
 
 // Timer completion is handled in Step_0.gml RESPAWN state (checks alarm[1] == -1)

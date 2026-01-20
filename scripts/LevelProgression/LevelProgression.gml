@@ -89,7 +89,7 @@ function readyForNextLevel(_alarm_level_advance, _nextlevel) {
 
 	// === CONDITION 4: PLAYER READY ===
 	var playerReady = instance_exists(oPlayer) &&
-	                  (oPlayer.shipStatus == ShipState.ACTIVE);
+	                  (oPlayer.shipState == ShipState.ACTIVE);
 
 	// === CONDITION 5: GAME IN ACTIVE MODE ===
 	var gameActive = (global.Game.State.mode == GameMode.GAME_ACTIVE);

@@ -20,7 +20,7 @@
 /// @related oEnemyBase/Step_0.gml:56-67 - Where this alarm is set
 /// @related EnemyShot object - The projectile created by this event
 
-if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipStatus == ShipState.ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && instance_exists(oPlayer) && oPlayer.shipState == ShipState.ACTIVE) {
 	// Check if we can spawn more shots (limit MAX_ENEMY_SHOTS concurrent enemy shots)
 	 if (global.shot_pool.stats.current_active < MAX_ENEMY_SHOTS) {
 		// Only shoot if difficulty level is high enough

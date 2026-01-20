@@ -24,7 +24,7 @@
 /// @related Step_0.gml - Decrements shieldTimer each frame when active
 /// @related Draw_0.gml - Draws shield visual effect around player
 
-if (shipStatus == ShipState.ACTIVE) {
+if (shipState == ShipState.ACTIVE) {
 	// Play pickup sound effect
 	global.Game.Controllers.audioManager.playSound(GCredit);
 

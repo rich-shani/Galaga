@@ -1,7 +1,7 @@
 // We should only be able to use the Shield during an active LEVEL
 if (global.Game.State.isPaused || 
 	global.Game.State.mode != GameMode.GAME_ACTIVE ||
-	oPlayer.shipStatus != ShipState.ACTIVE) {
+	oPlayer.shipState != ShipState.ACTIVE) {
 		// not in an ACTIVE state to use the Shield
 		return;
 	}

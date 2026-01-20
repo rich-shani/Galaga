@@ -95,7 +95,7 @@ function isPlayerInCaptureZone() {
     if (!withinBeamHorizontally) return false;
 
     // === PLAYER VULNERABILITY CHECK ===
-    if (oPlayer.shipStatus != ShipState.ACTIVE) return false;
+    if (oPlayer.shipState != ShipState.ACTIVE) return false;
 
     return true;
 }
@@ -122,7 +122,7 @@ function capturePlayer() {
     beam_weapon.state = BEAM_STATE.CAPTURE_PLAYER;
 
     // === CAPTURE PLAYER ===
-    oPlayer.shipStatus = ShipState.CAPTURED;
+    oPlayer.shipState = ShipState.CAPTURED;
     oPlayer.captor = id;
     global.Game.Enemy.capturedPlayer = true;
 

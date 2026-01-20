@@ -32,7 +32,7 @@ if (nextlevel == 1) {
 			Set_Nebula_Color(global.Game.Level.current);		
 			
 			// reset the position to the center && show READY
-			oPlayer.shipStatus = ShipState.RESPAWN;
+			oPlayer.shipState = ShipState.RESPAWN;
 			
 		    /// Reset global wave counter to 0 to start a new wave global.Game.Input.characterCycle.
 		    global.Game.Level.wave = 0;

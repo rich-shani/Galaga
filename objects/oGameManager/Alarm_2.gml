@@ -17,7 +17,7 @@ if (global.Game.Challenge.isActive && global.Game.Level.wave == CHALLENGE_TOTAL_
             }
 			
 			// hide PLAYER during results presentation ...
-			if (oPlayer.shipStatus != ShipState.HIDDEN) oPlayer.shipStatus = ShipState.HIDDEN;
+			if (oPlayer.shipState != ShipState.HIDDEN) oPlayer.shipState = ShipState.HIDDEN;
 			
             break;
 

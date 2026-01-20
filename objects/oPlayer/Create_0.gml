@@ -70,9 +70,9 @@ SHIP_MOVE_INCREMENT = PLAYER_SHIP_MOVE_INCREMENT_WARS;
 /// @related ShipState enum in GameConstants.gml
 /// ========================================================================
 
-/// @var shipStatus - Current state of the player ship (ShipState enum value)
+/// @var shipState - Current state of the player ship (ShipState enum value)
 ///                   Initialized to ACTIVE to start gameplay immediately
-shipStatus = ShipState.ACTIVE;
+shipState = ShipState.ACTIVE;
 
 // ========================================================================
 // SHOT MODE ENUM - Single vs Dual Fighter Configuration
@@ -180,10 +180,10 @@ regain = 0;
 /// 
 /// Capture Sequence:
 ///   1. Enemy (TIE Intercepter) uses beam weapon to capture player
-///   2. shipStatus changes to CAPTURED
+///   2. shipState changes to CAPTURED
 ///   3. captor variable stores reference to capturing enemy
 ///   4. Player follows captor's position (handled in enemy object)
-///   5. When captor is destroyed, shipStatus changes to RELEASING
+///   5. When captor is destroyed, shipState changes to RELEASING
 ///   6. Rescued fighter descends from captor's position to dock with player
 ///   7. Once docked, shotMode changes to DOUBLE (dual fighter mode)
 /// 

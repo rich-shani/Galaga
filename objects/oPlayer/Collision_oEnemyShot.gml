@@ -13,7 +13,7 @@
 /// 
 /// State Requirements:
 ///   • Game mode must be GAME_ACTIVE (prevents hits during menus/transitions)
-///   • Player shipStatus must be ACTIVE (prevents hits during death/respawn/capture)
+///   • Player shipState must be ACTIVE (prevents hits during death/respawn/capture)
 /// 
 /// Damage Processing:
 ///   • Actual damage/hit logic is handled in Alarm_11.gml (alarm[11] event)
@@ -56,7 +56,7 @@ if (global.shot_pool != undefined) {
 // This prevents edge cases where player could be hit during inappropriate states,
 // such as during respawn animation, game over sequence, or capture sequence.
 // ========================================================================
-if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipStatus == ShipState.ACTIVE) {
+if (global.Game.State.mode == GameMode.GAME_ACTIVE && oPlayer.shipState == ShipState.ACTIVE) {
 
 	// ========================================================================
 	// SHIELD CHECK - Skip Damage if Shield is Active

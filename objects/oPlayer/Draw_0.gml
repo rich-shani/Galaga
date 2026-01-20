@@ -26,7 +26,7 @@
 /// 
 /// @author Galaga Wars Team
 /// @event Draw (Event 0) - Runs every frame for rendering
-/// @related Step_0.gml - Updates shipImage and shipStatus variables
+/// @related Step_0.gml - Updates shipImage and shipState variables
 /// @related Create_0.gml - Initializes shipImage and shotMode variables
 /// ========================================================================
 
@@ -44,7 +44,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	// Draw ship sprite with thrusters when player is active and flying
 	// Includes dual fighter support and animated thruster effects
 	// ========================================================================
-	if (shipStatus == ShipState.ACTIVE) {
+	if (shipState == ShipState.ACTIVE) {
 
 		// ========================================================================
 		// MAIN SHIP SPRITE - Primary Player Fighter
@@ -182,7 +182,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	// Draw main ship and descending rescued fighter during rescue sequence
 	// Rescued fighter position is interpolated in Step_0.gml (RELEASING state)
 	// ========================================================================
-	else if (shipStatus == ShipState.RELEASING) {
+	else if (shipState == ShipState.RELEASING) {
 		// Draw main player ship sprite (centered position)
 		draw_sprite_ext(xwing_sprite_sheet, 2, x, y, 0.8, 0.8, 0, c_white, 1);
 		
@@ -198,7 +198,7 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 	// The player ship follows the captor's position and is drawn by the enemy
 	// This prevents duplicate rendering or positioning conflicts
 	// ========================================================================
-	else if (shipStatus == ShipState.CAPTURED) {
+	else if (shipState == ShipState.CAPTURED) {
 		// No rendering - handled by captor enemy object
 	}
 }
