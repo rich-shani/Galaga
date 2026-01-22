@@ -24,13 +24,12 @@ if (global.Game.Challenge.isActive && global.Game.Level.wave == CHALLENGE_TOTAL_
         case 5:
             // Award special bonus || multiplied score
             if (global.Game.Player.shotTotal == 40) {
-                global.Game.Player.score += PERFECT_CLEAR_BONUS; // Perfect bonus
+               // global.Game.Player.score += PERFECT_CLEAR_BONUS; // Perfect bonus
+				global.Game.Controllers.scoreManager.addScore(PERFECT_CLEAR_BONUS);
             } else {
-                global.Game.Player.score += global.Game.Player.shotTotal * 100; // Score based on shots
+                //global.Game.Player.score += global.Game.Player.shotTotal * 100; // Score based on shots
+				global.Game.Controllers.scoreManager.addScore(global.Game.Player.shotTotal * 100);
             }
-			
-			// score has been updated, check for extra life condition
-			checkForExtraLives();
 		
             break;
     }

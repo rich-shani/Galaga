@@ -187,8 +187,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 			enemyState = EnemyState.IN_FORMATION;
 					
-			// set alarm : to give time for the Draw function to ROTATE the ship to down direction
-			alarm[0]=60;
+			// Start rotation to face down
+			alarm[EnemyAlarmIndex.FORMATION_ROTATION] = FORMATION_ALARM_DELAY;
 		}
 		else { 
 			// continue to move towards the formation position
@@ -465,18 +465,9 @@ else if (enemyMode == EnemyMode.STANDARD) {
 
 				// check if we're the last two enemies left ...
 				if (global.Game.Enemy.count <= 2) {
-					enemyState = EnemyState.IN_FINAL_ATTACK;
-					
-					start_final_attack_dive(self);  // Initialize first dive immediately
-				} else {						
-					x = breathex;
-					y = SPAWN_TOP_Y;
-					speed = entranceSpeed;	
-
-					// reset beam state
-					if (beam_weapon.available) { beam_weapon.state = BEAM_STATE.READY; }
-					
-					enemyState = EnemyState.MOVE_INTO_FORMATION;
+					start_final_attack(self);  // Initialize first dive immediately
+				} else {	
+					start_dive_completion(self);
 				}
 			}
 		}
@@ -496,7 +487,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			// reset to the top of screen && move into formation
 			path_end();
 				
-			start_final_attack_dive(self);
+			start_final_attack(self);
 		}
 	}
 }

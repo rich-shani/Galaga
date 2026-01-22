@@ -78,7 +78,10 @@ function WaveSpawner(_spawn_data, _challenge_data, _rogue_config) constructor {
 			array_insert(enemy_wave_info, irandom(array_length(enemy_wave_info)-1), rogueElement);
 		}
 			
-		return;
+		// this flag is set to false, at the end of each WAVE (within Game_Loop_Standard)
+		global.Game.Rogue.checkPerWave = true;	
+		
+		return true;
 	}
 	
 	static spawnEnemyGroup = function() {

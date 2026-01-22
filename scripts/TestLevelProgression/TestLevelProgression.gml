@@ -34,7 +34,7 @@ function test_checkForExtraLives_awardsAtFirstThreshold() {
     global.Game.Player.additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;  // 70000
 
     // Execute: Check for extra lives
-    checkForExtraLives();
+    global.Game.Controllers.scoreManager.checkForExtraLife();
 
     // Assert: Life awarded and threshold updated
     assert_equals(global.Game.Player.lives, 4, "Should award extra life at first threshold");
@@ -53,7 +53,7 @@ function test_checkForExtraLives_awardsAtAdditionalThreshold() {
     global.Game.Player.additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;  // 70000
 
     // Execute: Check for extra lives
-    checkForExtraLives();
+    global.Game.Controllers.scoreManager.checkForExtraLife();
 
     // Assert: Life awarded and threshold incremented by 70000
     assert_equals(global.Game.Player.lives, 5, "Should award extra life at 90k threshold");
@@ -70,7 +70,7 @@ function test_checkForExtraLives_doesNotAwardBelowThreshold() {
     global.Game.Player.additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;
 
     // Execute: Check for extra lives
-    checkForExtraLives();
+    global.Game.Controllers.scoreManager.checkForExtraLife();
 
     // Assert: No life awarded, threshold unchanged
     assert_equals(global.Game.Player.lives, 3, "Should not award life below threshold");
@@ -90,7 +90,7 @@ function test_checkForExtraLives_doesNotAwardAboveMaxScore() {
     var lives_before = global.Game.Player.lives;
 
     // Execute: Check for extra lives
-    checkForExtraLives();
+    global.Game.Controllers.scoreManager.checkForExtraLife();
 
     // Assert: No life awarded (prevents infinite lives)
     assert_equals(global.Game.Player.lives, lives_before,
@@ -107,7 +107,7 @@ function test_checkForExtraLives_resetsFirstLifeMarker() {
     global.Game.Player.additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;  // 70000
 
     // Execute: Check for extra lives
-    checkForExtraLives();
+    global.Game.Controllers.scoreManager.checkForExtraLife();
 
     // Assert: First life marker should reset to 0 then increment by 70000
     // Expected: 0 + 70000 = 70000
@@ -125,7 +125,7 @@ function test_checkForExtraLives_incrementsThreshold() {
     global.Game.Player.additional = 70000;
 
     // Execute: Check for extra lives
-    checkForExtraLives();
+    global.Game.Controllers.scoreManager.checkForExtraLife();
 
     // Assert: Threshold should increment by 70000
     assert_equals(global.Game.Player.firstlife, 230000,
@@ -142,7 +142,7 @@ function test_checkForExtraLives_playsSound() {
     global.Game.Player.additional = EXTRA_LIFE_ADDITIONAL_THRESHOLD;
 
     // Execute: Check for extra lives
-    checkForExtraLives();
+    global.Game.Controllers.scoreManager.checkForExtraLife();
 
     // Assert: This test verifies the function completes without error
     // Sound playing cannot be directly tested without audio mocking

@@ -24,3 +24,6 @@ event_inherited();
 /// TIE Intercepters are equipped with a special beam weapon
 /// that can be fired during dive attack sequences
 beam_weapon.available = true;
+
+// this enemy type can lead a group dive
+dive_group.canLead = true;

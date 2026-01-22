@@ -28,7 +28,9 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
 	load_highscores();
 	
 	// RESET all game parameters
-    global.Game.Player.score = 0;
+    // global.Game.Player.score = 0;
+	global.Game.Controllers.scoreManager.reset();
+	
     global.Game.Player.lives = get_config_value("PLAYER", "STARTING_LIVES", 3);
 		
 	// NOTE: Most global variables are already initialized in init_globals() called from Create_0

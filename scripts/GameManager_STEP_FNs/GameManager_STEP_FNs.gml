@@ -209,9 +209,36 @@ function Game_Loop_Standard() {
 	// Each pattern has multiple waves, each wave has 40 enemies total
 	// Enemies spawn in groups with delays between each group
 
+     // Cache enemy shot count once per frame (used by 40 enemies)
+     // Use pool's active count if available, otherwise fall back to instance_number
+     global.Game.Enemy.shotCount = (global.shot_pool != undefined) ? global.shot_pool.stats.current_active : instance_number(oEnemyShot);
+	 
+	// calculate the Enemy breathing global.Game.Input.characterCycle - once per frame (used by 40 enemies)
+     if (global.Game.Enemy.breathePhase != undefined) {
+         global.Game.Enemy.breathePhase_normalized = global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX;
+     }	 
+
+    // === ENEMY DIVE CAPACITY HANDLING ===
+	// Calculate how many enemies can dive simultaneously
+	// Prevents overwhelming the player with too many attacks at once
+	checkDiveCapacity();
+
+    // === BREATHING ANIMATION MECHANIC ===
+	// Update the oscillating "breathing" motion of the formation
+	// Creates the iconic Galaga wave effect && syncs audio
+	controlEnemyFormation();
+	
 	// SPAWN all ENEMY WAVES within the PATTERN
     if (!patternComplete()) {
+	
+		// pre-compute the enemy spawn wave once per wave
+		// this allows us to add ROGUE enemies into the wave in advance of starting to spawn each enemy
+		if (!global.Game.Rogue.checkPerWave) {
 
+			// pre-compute the wave to SPAWN, include any rogue enemies (and randomize their position in the SPANN)
+			global.Game.Controllers.waveSpawner.computeEnemiesForWave();
+		}
+		
 		// === ENEMY SPAWNING TIMER ===
 		// alarm[AlarmIndex.SPAWN_DELAY] controls delay between spawns (WAVE_SPAWN_DELAY = 9 frames)
 		// When alarm[AlarmIndex.SPAWN_DELAY] == -1, spawn timer is inactive && we can spawn
@@ -498,18 +525,9 @@ function Game_Loop_Challenge() {
 /// @return {undefined}
 function Game_Loop(){
 
-	// === EARLY EXITS ===
 	// Skip processing if game is paused || transitioning to next level
 	// do not spawn a wave if the Ship isn't active (eg its RESPAWNING)
 	if (global.Game.State.isPaused || oPlayer.shipState != ShipState.ACTIVE) return;
-	else if (!global.Game.Rogue.checkPerWave) {
-
-		// pre-compute the wave to SPAWN, include any rogue enemies (and randomize their position in the SPANN)
-		global.Game.Controllers.waveSpawner.computeEnemiesForWave();
-			
-		// flag is reset, at the end of each WAVE (within Game_Loop_Standard)
-		global.Game.Rogue.checkPerWave = true;	
-	}
 	
 	// === CHECK LEVEL ADVANCE CONDITIONS ===
 	// Pass current state to readyForNextLevel() for context-independent validation
@@ -524,39 +542,10 @@ function Game_Loop(){
 		return;
 	}
 
-     // Cache enemy shot count once per frame (used by 40 enemies)
-     // Use pool's active count if available, otherwise fall back to instance_number
-     global.Game.Enemy.shotCount = (global.shot_pool != undefined) ? global.shot_pool.stats.current_active : instance_number(oEnemyShot);
-	 
-	// calculate the Enemy breathing global.Game.Input.characterCycle - once per frame (used by 40 enemies)
-     if (global.Game.Enemy.breathePhase != undefined) {
-         global.Game.Enemy.breathePhase_normalized =
-             global.Game.Enemy.breathePhase / BREATHING_CYCLE_MAX;
-     }
-	 
-	// === EXTRA LIVES ===
-	// Award extra lives at score milestones (20k, then every 70k)
-	// Delegate to ScoreManager controller
-	if (global.Game.Controllers.scoreManager != undefined) {
-		global.Game.Controllers.scoreManager.checkForExtraLife();
-	}
-
-    // === ENEMY DIVE CAPACITY HANDLING ===
-	// Calculate how many enemies can dive simultaneously
-	// Prevents overwhelming the player with too many attacks at once
-	checkDiveCapacity();
-
-    // === BREATHING ANIMATION MECHANIC ===
-	// Update the oscillating "breathing" motion of the formation
-	// Creates the iconic Galaga wave effect && syncs audio
-	controlEnemyFormation();
-
 	// ====================================================================
 	// GAME MODE ROUTING: Standard Wave Gameplay vs Challenge Stage
 	// ====================================================================
-	// global.Game.Challenge.countdown tracks progress toward challenge stages
-	// When > 0: Normal gameplay with formations
-	// When == 0: Challenge stage (every 4th level)
+
 	if (global.Game.Challenge.isActive) {
 		Game_Loop_Challenge();
 	}

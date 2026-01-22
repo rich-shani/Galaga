@@ -201,3 +201,15 @@ beam_weapon = {
 	player_x : 0,
 	player_y : 0
 };
+
+/// ================================================================
+/// GROUP DIVE SYSTEM - Variables for coordinated dive attacks
+/// ================================================================
+/// Allows enemies to dive together, with followers maintaining
+/// the same path trajectory as their leader.
+/// ================================================================
+
+dive_group = {
+	canLead : false,
+	followers : [],
+};

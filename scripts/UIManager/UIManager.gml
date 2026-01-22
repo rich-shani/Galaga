@@ -18,7 +18,7 @@ function UIManager() constructor {
     };
 
     // Character global.Game.Input.characterCycle for high score entry
-    characterCycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZ .";
+    //characterCycle = "ABCDEFGHIJKLMNOPQRSTUVWXYZ .";
 
     // Update display digits from current score
     updateScoreDisplay = function(score) {

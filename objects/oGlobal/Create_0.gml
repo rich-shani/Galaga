@@ -10,9 +10,9 @@ show_debug_message("[GameConfig] Configuration loaded");
 
 global.Game = {
 	Input: {
-		gamePad: false,
+		useGamepad: false,
 		fullScreen: false,
-		characterCycle: "ABCDEFGHIJKLMNOPQRSTUVWXYZ ."
+		characterCycle: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	},
 	Timing: {
 	    frameCounter: 0,

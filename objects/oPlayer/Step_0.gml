@@ -136,9 +136,15 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 					shipImage = 2;  // Center ship sprite (default/straight position)
 				}
 
+				// === SHIELD BUTTON - Gamepad ===
+				// Check if X BUTTON (gp_face3) is pressed
+				if (gamepad_button_check_pressed(0, gp_face3) && !isShieldActive) activateShield(self);
+				else if (gamepad_button_check_released(0, gp_face3)) deactivateShield(self);
+				
 				// === FIRE BUTTON - Gamepad ===
 				// Check if A button (gp_face1) was pressed this frame
 				// Only triggers on button press, not hold (check_pressed vs check)
+				// Can't fire weapon while SHIELD is active
 				if (!isShieldActive && gamepad_button_check_pressed(0, gp_face1)) fireIsPressed = true;
 			}
 			else {
@@ -161,8 +167,13 @@ if (global.Game.State.mode == GameMode.GAME_ACTIVE) {
 				else if (xDirection == 1) shipImage = 3;   // Right-tilted sprite
 				else shipImage = 2;                        // Centered sprite (no movement)
 
+				// === SHIELD BUTTON - S key ===
+				if (keyboard_check_pressed(ord("S")) && !isShieldActive) activateShield(self);
+				else if (keyboard_check_released(ord("S"))) deactivateShield(self);
+				
 				// === FIRE BUTTON - Keyboard ===
 				// Spacebar triggers shooting (only on key press, not hold)
+				// Can't fire weapon while SHIELD is active
 				if (!isShieldActive && keyboard_check_pressed(vk_space)) fireIsPressed = true;
 			}
 

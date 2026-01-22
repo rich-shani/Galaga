@@ -64,7 +64,8 @@ else if (ScreenShown == TITLE_SCREEN.INSTRUCTIONS) {
 	// check if START has been pressed ...
 	var startGame = false;
 	
-	if (keyboard_check_pressed(vk_space)) startGame = true;
+	if (gamepad_is_connected(0) && (gamepad_button_check_pressed(0, gp_start))) startGame = true;
+	else if (keyboard_check_pressed(vk_space)) startGame = true;
 	
 	// if player presses space, start the actual game
     if (startGame) {

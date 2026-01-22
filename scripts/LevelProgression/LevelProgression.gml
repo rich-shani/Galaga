@@ -12,48 +12,6 @@
 /// IMPORTANT: These functions rely on being called from oGameManager context
 ///            where instance variables (alarm, nextlevel) are available
 
-/// @function checkForExtraLives
-/// @description Checks if the player has reached score milestones and awards extra lives
-///              Tracks milestones using global.Game.Player.firstlife and .additional
-///              First life at EXTRA_LIFE_FIRST_THRESHOLD (default 20,000)
-///              Subsequent lives at EXTRA_LIFE_ADDITIONAL_THRESHOLD intervals (default 70,000)
-///              Stops awarding lives after MAX_SCORE_FOR_EXTRA_LIVES (default 1,000,000)
-///
-/// NOTE: Must be called from oGameManager context
-///
-/// @return {undefined}
-function checkForExtraLives() {
-	// === EXTRA LIFE THRESHOLD LOGIC ===
-	// Award life if:
-	//   1. Score > firstlife threshold
-	//   2. Score < max score limit (prevents infinite lives)
-	//   3. Player hasn't reached max lives cap
-
-	var max_score = get_config_value("SCORE", "MAX_SCORE_FOR_EXTRA_LIVES", MAX_SCORE_FOR_EXTRA_LIVES);
-
-	if (global.Game.Player.score > global.Game.Player.firstlife &&
-	    global.Game.Player.score < max_score) {
-
-	    // === RESET FIRST LIFE MARKER ===
-	    // After awarding first life at 20k, reset the marker to 0
-	    // This ensures the threshold calculation works correctly
-	    if (global.Game.Player.firstlife == EXTRA_LIFE_FIRST_THRESHOLD) {
-	        global.Game.Player.firstlife = 0;
-	    }
-
-	    // === INCREMENT THRESHOLD ===
-	    // Move to next threshold (e.g., 20k -> 90k -> 160k -> 230k)
-	    global.Game.Player.firstlife += global.Game.Player.additional;
-
-	    // === AWARD EXTRA LIFE ===
-	    global.Game.Controllers.audioManager.playSound(GLife);  // Play extra life sound effect
-	    global.Game.Player.lives += 1;
-
-	    // === LOG FOR DEBUG ===
-	    log_error("Extra life awarded at score: " + string(global.Game.Player.score), "checkForExtraLives", 1);
-	}
-}
-
 /// @function readyForNextLevel
 /// @description Validates that all conditions are met for advancing to the next level
 ///              Ensures no active spawning, all enemies cleared, and player is ready

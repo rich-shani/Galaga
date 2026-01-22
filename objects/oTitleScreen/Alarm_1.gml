@@ -24,7 +24,7 @@ if (ScreenShown == TITLE_SCREEN.TITLE) {
 		
 		instance_create(360*global.Game.Display.scale+x,336*global.Game.Display.scale+y,oExplosion); 
 		instance_create_layer(360*global.Game.Display.scale+x, 336*global.Game.Display.scale+y, 
-									"GameSprites", oPointsDisplay, { spriteFrame: 4 });  // 1600 points
+									"GameSprites", oPointsDisplay, { spriteFrame: 5 });  // 1600 points
 	}
 
 	if (sequence == 12) {

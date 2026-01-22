@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ShieldEffect",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ShieldEffect",
+  "parent":{
+    "name":"PlayerLogic",
+    "path":"folders/Scripts/PlayerLogic.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

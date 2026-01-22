@@ -41,8 +41,32 @@ function shift_scores_for_new_high_score(position, new_score) {
 /// @return {undefined}
 function Enter_Initials() {
 
+	var charDirection = 0;
+	var charSelected = false;
+	
+	if (global.Game.Input.useGamepad) {
+		// === HORIZONTAL MOVEMENT - Analog Stick ===
+		// Read horizontal axis value from left analog stick (-1.0 to 1.0)
+		// Apply deadzone of 0.1 to prevent drift when stick is released
+		// Values outside deadzone trigger movement, inside deadzone = centered
+		var _h_input = gamepad_axis_value(0, gp_axislh);
+		// Determine movement direction and ship sprite based on analog input
+		if (_h_input > 0.1) charDirection = 1;
+		else if (_h_input < -0.1) charDirection = -1;
+		
+		// is the A button pressed?
+		charSelected = gamepad_button_check_pressed(0, gp_face1);
+	}
+	else { // keyboard check
+		if (keyboard_check(vk_right)) charDirection = 1;
+		else if (keyboard_check(vk_left)) charDirection = -1;
+		
+		// is the SPACE key pressed?
+		charSelected = keyboard_check_pressed(vk_space);
+	}
+			
     // === NAVIGATE LEFT THROUGH CHARACTER CYCLE ===
-    if keyboard_check(vk_left) && alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
+    if (charDirection == -1 && alarm[AlarmIndex.INPUT_COOLDOWN] == -1) {
         cyc -= 1;  // Move to previous character
         if cyc <= 0 {
             cyc = string_length(global.Game.Input.characterCycle); // Wrap to last character
@@ -51,7 +75,7 @@ function Enter_Initials() {
     }
 
     // === NAVIGATE RIGHT THROUGH CHARACTER CYCLE ===
-    if keyboard_check(vk_right) && alarm[AlarmIndex.INPUT_COOLDOWN] == -1 {
+    else if (charDirection == 1 && alarm[AlarmIndex.INPUT_COOLDOWN] == -1) {
         cyc += 1; // Move to next character
         if cyc > string_length(global.Game.Input.characterCycle) {
             cyc = 1; // Wrap to first character
@@ -59,8 +83,8 @@ function Enter_Initials() {
         alarm[AlarmIndex.INPUT_COOLDOWN] = 10; // Input cooldown
     }
 
-    // === SELECT CHARACTER (SPACE KEY) ===
-    if (keyboard_check_pressed(vk_space) && loop > 0 && global.Game.State.results < 5) {
+    // === SELECT CHARACTER (SPACE KEY, or A BUTTON on GAMEPAD) ===
+    if (charSelected && loop > 0 && global.Game.State.results < 5) {
 
         // Get new character from global.Game.Input.characterCycle string
         var _new_char = string_char_at(global.Game.Input.characterCycle, cyc);
@@ -86,7 +110,7 @@ function Enter_Initials() {
         global.Game.HighScores.initials_idx = global.Game.State.results - 2;  // 0-based index (0, 1, or 2)
         cyc = 1;  // Reset character global.Game.Input.characterCycle
 
-        if global.Game.State.results == 5 {
+        if (global.Game.State.results == 5) {
             // === ALL 3 CHARACTERS ENTERED ===
 
             // Get finalized initials && score for this position

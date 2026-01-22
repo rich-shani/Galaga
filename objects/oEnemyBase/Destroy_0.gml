@@ -68,8 +68,9 @@ if (!global.Game.State.isGameOver) {
 		}
 
 		// assign points
-		global.Game.Player.score += points;
-
+		// global.Game.Player.score += points;
+		global.Game.Controllers.scoreManager.addScore(points);
+		
 		// check if beam_weapon enabled, as this enemy also shows POINTS scored
 		if (beam_weapon.available) {
 			instance_create_layer(x, y, "GameSprites", oPointsDisplay, { spriteFrame: score_to_sprite_frame(points) });
@@ -104,8 +105,9 @@ if (!global.Game.State.isGameOver) {
 		if trans == 1 {
 			/// Increment transformation counter && award transformation bonus
 			global.Game.Enemy.transformCount += 1;
-			global.Game.Player.score += TRANSFORMATION_BONUS;  // Fixed bonus per transformed enemy
-
+			//global.Game.Player.score += TRANSFORMATION_BONUS;  // Fixed bonus per transformed enemy
+			global.Game.Controllers.scoreManager.addScore(TRANSFORMATION_BONUS);
+			
 			/// After 3 transformation kills, spawn TransPoints bonus
 			if global.Game.Enemy.transformCount == 3 {
 				instance_create_layer(round(x), round(y), "GameSprites", TransPoints);
@@ -163,9 +165,6 @@ if (!global.Game.State.isGameOver) {
 				}
 			}
 		}
-		
-		// score has been updated, check for extra life condition
-		checkForExtraLives();
 	}
 	
 	// check if this enemy had a CAPTURED PLAYER

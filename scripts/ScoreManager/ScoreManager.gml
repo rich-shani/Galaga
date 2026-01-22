@@ -35,6 +35,17 @@ function ScoreManager() constructor {
 		global.Game.Player.score += _points;
 		total_score = global.Game.Player.score;
 
+		// ========================================================================
+		// HIGH SCORE COMPARISON AND UPDATE
+		// ========================================================================
+		// Compare current player score with displayed high score
+		// If current score is higher, update the displayed high score
+		// This provides real-time feedback when player achieves a new high score
+		// ========================================================================
+		if (global.Game.Player.score > global.Game.HighScores.display) {
+			global.Game.HighScores.display = global.Game.Player.score;
+		}
+	
 		// Check for extra life
 		return checkForExtraLife();
 	};
@@ -58,14 +69,15 @@ function ScoreManager() constructor {
 	/// @return {Bool} True if extra life was awarded
 	static checkForExtraLife = function() {
 		// Check if score exceeds next threshold
-		if (total_score > next_extra_life_score && total_score < max_extra_life_score) {
+		if (total_score >= next_extra_life_score && total_score < max_extra_life_score) {
 
-			// Reset first life marker after initial award
+			// Reset first life marker after initial award (20k)
 			if (next_extra_life_score == EXTRA_LIFE_FIRST_THRESHOLD) {
 				next_extra_life_score = 0;
 			}
 
-			// Move to next threshold
+		    // === INCREMENT THRESHOLD ===
+		    // Move to next threshold (e.g., 70k -> 140k -> 210k -> 280k)
 			next_extra_life_score += extra_life_interval;
 
 			// Award life

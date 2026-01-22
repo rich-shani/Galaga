@@ -13,14 +13,13 @@ if ds_map_find_value(async_load, "id") == global.gmscoreboard_response{
 		//on set-score request
 		if type == "set-score"{
 			if status == "success"{
-		//		show_message("Score entered!");
-				get_scores(5); //update score data.
+				get_scores(5);
 			}
 			if status == "duplicate"{
-	//			show_message(error);	
+				show_message(error);	
 			}
 			if status == "error"{
-	//			show_message(error);	
+				show_message(error);	
 			}
 		}
 		

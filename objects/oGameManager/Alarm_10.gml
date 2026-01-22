@@ -117,9 +117,11 @@ if (nextlevel == 2) {
 
     /// Set shot counters (shotcount, global.Game.Player.shotTotal) to 0 if LEVEL 1
     if (global.Game.Level.current == 1) {
-		global.Game.Player.score = 0;
-		global.Game.Player.shotCount = 0;
-		global.Game.Player.shotTotal = 0;
+		//global.Game.Player.score = 0;
+		global.Game.Controllers.scoreManager.reset();
+		
+		//global.Game.Player.shotCount = 0;
+		//global.Game.Player.shotTotal = 0;
 		global.Game.Enemy.capturedPlayer = false;
 	}
 			
