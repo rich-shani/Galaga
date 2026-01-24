@@ -13,15 +13,15 @@
 /// ================================================================
 
 // ensure no looping sounds are still playing ...
-global.Game.Controllers.audioManager.stopSound(GBeam);
-global.Game.Controllers.audioManager.stopSound(GCaptured);
+global.Game.Controllers.audioManager.stopAll();
 
 if (!global.Game.State.isGameOver) {
 	/// === BOUNDARY CHECK ===
 	/// Only award points && play effects for on-screen kills
 	/// This prevents exploiting off-screen enemy kills for free points
 	/// Boundaries: Y between -64 && 592, X between -64 && 464 (scaled)
-	if (y > SPAWN_TOP_Y && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && x > SCREEN_LEFT_X && x < SCREEN_RIGHT_X * global.Game.Display.scale) {
+	if (y > SPAWN_TOP_Y && y < SCREEN_BOTTOM_Y * global.Game.Display.scale && 
+		x > SCREEN_LEFT_X && x < SCREEN_RIGHT_X * global.Game.Display.scale) {
 
 		/// ================================================================
 		/// SCORING SYSTEM - Award points based on enemy state
@@ -43,9 +43,8 @@ if (!global.Game.State.isGameOver) {
 			/// SHIELD PICKUP DROP SYSTEM
 			/// ================================================================
 			/// Shield pickups have a chance to drop when enemies are killed.
-			/// When collected, grants the player 2 seconds of invincibility
-			/// with a visual shield effect.
-			/// Drop chance: 15% (adjustable via SHIELD_PICKUP_DROP_CHANCE)
+			/// When used, grants the player invincibility with a visual shield effect.
+			/// Drop chance: 50% (adjustable via SHIELD_PICKUP_DROP_CHANCE)
 			/// ================================================================
 			// 50% chance to drop a shield pickup
 			if ((global.Game.Enemy.count > 2) && (irandom(99) < 50)) {
@@ -57,11 +56,28 @@ if (!global.Game.State.isGameOver) {
 				/// Award higher points for diving enemies (more dangerous)
 				if (!global.Game.Challenge.isActive) {
 
-					// CALC: if this is a group leader and we killed the followers, then extra points
-					// if there was 2 followers and both are killed
-					// vs one kill vs none
-					
-					points = attributes.DIVE_POINT_VALUE;
+					// if the BOSS is diving as part of a group then extra points!
+					if (dive_group.canLead) {
+						switch (array_length(dive_group.followers)) {
+							case 2:
+								points = attributes.DIVE_POINT_VALUE * 4;
+								break;
+							case 1:
+								points = attributes.DIVE_POINT_VALUE * 2;
+								break;
+							default:
+								points = attributes.DIVE_POINT_VALUE;
+								break;
+						}
+						
+						// display the points on screen for Group Leader kills
+						instance_create_layer(x, y, "GameSprites", oPointsDisplay, 
+											{ spriteFrame: score_to_sprite_frame(points) });
+						
+					}
+					else {
+						points = attributes.DIVE_POINT_VALUE;
+					}
 				} else {
 					points = attributes.CHALLENGE_POINT_VALUE;
 				}
@@ -74,11 +90,6 @@ if (!global.Game.State.isGameOver) {
 		// assign points
 		// global.Game.Player.score += points;
 		global.Game.Controllers.scoreManager.addScore(points);
-		
-		// check if this is a group leader enemy
-		if (dive_group.canLead) {
-			instance_create_layer(x, y, "GameSprites", oPointsDisplay, { spriteFrame: score_to_sprite_frame(points) });
-		}
 		
 		/// ================================================================
 		/// TRANSFORMATION TRACKING AND COMBO SYSTEM

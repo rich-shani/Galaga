@@ -278,7 +278,7 @@ else if (enemyMode == EnemyMode.STANDARD) {
 				// check if this enemy can lead a group dive
 				if (dive_group.canLead) {
 					// do we have followers for this dive?
-					dive_group.followers = find_imperial_shuttle_followers(self);
+					dive_group.followers = find_enemy_followers(self);
 					
 					setup_group_dive_attack(self, selected_path);
 				}
