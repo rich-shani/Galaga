@@ -245,7 +245,8 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		///
 		/// Dive trigger probability: ~10% per frame (irandom(10) == 0)
 
-		if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && global.Game.State.spawnOpen == 0 && oPlayer.alarm[4] == -1) {
+		if (instance_exists(oPlayer) && global.Game.Enemy.diveCapacity > 0 && 
+				global.Game.State.spawnOpen == 0 && oPlayer.alarm[4] == -1) {
 			if (
 				irandom(10) == 0 && global.Game.State.prohibitDive == 0 &&
 				alarm[2] == -1 && oPlayer.shipState == ShipState.ACTIVE && oPlayer.regain == 0
@@ -258,33 +259,37 @@ else if (enemyMode == EnemyMode.STANDARD) {
 					oGameManager.alarm[0] = PROHIBIT_RESET_DELAY;
 				}
 
-				// Set shooting timer (shots during dive)
-				alarm[1] = ENEMY_SHOT_ALARM;
-
-				// Play dive sound effect
-				global.Game.Controllers.audioManager.stopSound(GDive);
-				global.Game.Controllers.audioManager.playSound(GDive);
-
 				/// === DIVE PATH SELECTION ===
 				/// Choose appropriate dive path based on starting formation position
 				/// This creates asymmetric dives that depend on initial position
-
+				var selected_path = -1;
 				if (xstart > SCREEN_CENTER_X * global.Game.Display.scale) {
 					// Enemy on right side of formation → use right dive path
 					if (attributes.STANDARD.DIVE_PATH1 != noone) {
-						var path_id = safe_get_asset(attributes.STANDARD.DIVE_PATH1, -1);
-						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
+						selected_path = safe_get_asset(attributes.STANDARD.DIVE_PATH1, -1);
 					}
 				} else {
 					// Enemy on left side of formation → use left dive path
 					if (attributes.STANDARD.DIVE_ALT_PATH1 != noone) {
-						var path_id = safe_get_asset(attributes.STANDARD.DIVE_ALT_PATH1, -1);
-						if (path_id != -1) path_start(path_id, moveSpeed, 0, 0);
+						selected_path = safe_get_asset(attributes.STANDARD.DIVE_ALT_PATH1, -1);
 					}
 				}
 
-				// Transition to dive attack state
-				enemyState = EnemyState.IN_DIVE_ATTACK;
+				// check if this enemy can lead a group dive
+				if (dive_group.canLead) {
+					// do we have followers for this dive?
+					dive_group.followers = find_imperial_shuttle_followers(self);
+					
+					setup_group_dive_attack(self, selected_path);
+				}
+				else {
+					// set the enemy dive PATH
+					setup_dive_attack(self, selected_path);
+				}
+
+				// Play dive sound effect
+				global.Game.Controllers.audioManager.stopSound(GDive);
+				global.Game.Controllers.audioManager.playSound(GDive);
 			}
 		}
 
@@ -309,8 +314,11 @@ else if (enemyMode == EnemyMode.STANDARD) {
 		/// ================================================================
 		if (beam_weapon.available && instance_exists(oPlayer) && (oPlayer.shotMode == ShotMode.SINGLE)) {
 
-			// is the enemy in the ZONE where they can deploy the beam?
-			if (abs(y - (BEAM_ACTIVATION_Y * global.Game.Display.scale)) < moveSpeed) {
+			// check if this enemy, that has a BEAM weapon, is currently in a dive group with other enemies?
+			if (array_length(dive_group.followers) > 0) {
+				// do not activate the BEAM, as the enemy is part of a dive group
+			}
+			else if (abs(y - (BEAM_ACTIVATION_Y * global.Game.Display.scale)) < moveSpeed) { // is the enemy in the ZONE where they can deploy the beam?
 				
 				// is the beam READY to deploy?
 				if (beam_weapon.state == BEAM_STATE.READY) {
@@ -425,11 +433,12 @@ else if (enemyMode == EnemyMode.STANDARD) {
 			}
 		}
 
-		// follow DIVE path until a certain Y location ...
-		if (y <= DIVE_Y_THRESHOLD * global.Game.Display.scale) {
-			// do nothing ... execute DIVE PATH
-		}
-		else if ((y > DIVE_Y_THRESHOLD * global.Game.Display.scale)) {
+		/// ================================================================
+		/// BOTTOM OF SCREEN LOGIC - LOOP, FINAL_ATTACK or RETURN TO FORMATION
+		/// ================================================================	
+		/// follow DIVE path until a certain Y location ...
+		
+		if ((y > DIVE_Y_THRESHOLD * global.Game.Display.scale)) {
 			// loop if we have more than 2 enemies left on the screen (otherwise, we will move into FINAL ATTACK mode)
 			if (attributes.CAN_LOOP && global.Game.Enemy.count > 2) {
 

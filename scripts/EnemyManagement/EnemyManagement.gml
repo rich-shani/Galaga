@@ -89,13 +89,12 @@ function checkDiveCapacity() {
     for (var i = 0; i < array_length(enemy_types); i++) {
         with (enemy_types[i]) {
             if (enemyState != EnemyState.IN_FORMATION || alarm[EnemyAlarmIndex.DIVE_ATTACK] > -1) {
-                global.Game.Enemy.diveCapacity -= 1;
+				
+				// only count if this enemy is NOT following a leader as part of a group dive
+				if (!dive_group.isFollowing) global.Game.Enemy.diveCapacity -= 1;
             }
         }
     }
-
-    // Boss dive cap handling: maximum of 2 bosses can dive
-    global.Game.Enemy.bossCap = 2;
 }
 
 /// @function _init_breathing_state

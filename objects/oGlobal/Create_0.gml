@@ -81,9 +81,7 @@ global.Game = {
 		shotCount: 0,
         animationSpeed: 0,
         escortCount: 0,
-        fighterStore: 0,
-        bossCount: 1,
-        bossCap: get_config_value("ENEMIES", "MAX_BOSS_DIVE_CAP", 2)
+        fighterStore: 0
     },
     Rogue: {
         level: 0,

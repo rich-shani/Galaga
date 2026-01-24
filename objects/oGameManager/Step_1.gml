@@ -72,8 +72,6 @@ if (global.Game.State.mode == GameMode.INITIALIZE) {
         global.Game.Enemy.difficultyLevel    = 2;
         global.Game.Enemy.transformNum      = 0;
         global.Game.Enemy.transformTokens = 0;
-        global.Game.Enemy.bossCap       = 2;
-        global.Game.Enemy.bossCount     = 1;
         global.Game.Enemy.beamCheck     = 0;
         global.Game.Enemy.transformCount    = 0;
         global.Game.Enemy.escortCount   = 0;

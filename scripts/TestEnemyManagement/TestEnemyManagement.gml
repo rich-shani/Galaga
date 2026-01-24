@@ -28,7 +28,6 @@ function runEnemyManagementTests() {
 
     test_checkDiveCapacity_resetsToDiveCapacityStart();
     test_checkDiveCapacity_reducesByOneForDivingEnemy();
-    test_checkDiveCapacity_setsBossCapToTwo();
 
     endTestSuite();
 }
@@ -262,21 +261,4 @@ function test_checkDiveCapacity_reducesByOneForDivingEnemy() {
 
     // Placeholder assertion
     assert_true(true, "Test placeholder - requires enemy instance creation");
-}
-
-/// @function test_checkDiveCapacity_setsBossCapToTwo
-/// @description Test that checkDiveCapacity always sets boss cap to 2
-function test_checkDiveCapacity_setsBossCapToTwo() {
-    // Setup: Set boss cap to different value
-    var saved_boss_cap = global.Game.Enemy.bossCap;
-    global.Game.Enemy.bossCap = 0;
-
-    // Execute: Check dive capacity
-    checkDiveCapacity();
-
-    // Assert: Boss cap should be set to 2
-    assert_equals(global.Game.Enemy.bossCap, 2, "Boss cap should always be set to 2");
-
-    // Restore (not necessary as it's always set, but good practice)
-    global.Game.Enemy.bossCap = saved_boss_cap;
 }

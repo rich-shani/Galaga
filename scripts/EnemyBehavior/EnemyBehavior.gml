@@ -67,7 +67,10 @@ function start_dive_completion(_enemy) {
 		if (beam_weapon.available) {
 			beam_weapon.state = BEAM_STATE.READY;
 		}
-
+		// Reset group dive logic
+		if (array_length(dive_group.followers) > 0) dive_group.followers = [];
+		else if (dive_group.isFollowing) dive_group.isFollowing = false;
+		
 		enemyState = EnemyState.MOVE_INTO_FORMATION;
 	}
 }
@@ -104,20 +107,24 @@ function start_final_attack(_enemy) {
 	}
 }
 
-/// @function find_imperial_shuttle_followers
-/// @description Finds up to 2 Imperial Shuttles associated with a TieIntercepter
+/// @function find_enemy_followers
+/// @description Finds up to 2 enemies associated with a TieIntercepter
 ///              based on hardcoded INDEX relationships. Returns array of 0, 1, or 2
 ///              follower instance IDs.
 /// @param {Id.Instance} _leader The TieIntercepter initiating the dive
 /// @return {Array<Id.Instance>} Array of selected follower enemy IDs (empty if none)
-function find_imperial_shuttle_followers(_leader) {
+function find_enemy_followers(_leader) {
     var result = [];
     
     // Validate leader
-    if (!instance_exists(_leader)) {
-        return result;
-    }
+    if (!instance_exists(_leader)) return result;
     
+	// if the leader has a captured player, then do not DIVE in a group
+	if (oPlayer.captor == _leader.id) return result;
+	
+	// 25% random chance: sometimes dive alone even if followers available
+	if (irandom(3) == 0) return result;  // Solo dive
+	
     var leader_index = _leader.INDEX;
     
     // Hardcoded mapping: TieIntercepter INDEX -> Imperial Shuttle INDEXs
@@ -130,8 +137,8 @@ function find_imperial_shuttle_followers(_leader) {
             associated_indices = [22, 10];
             break;
         case 11:
-            // Third TieIntercepter -> Shuttles at INDEX 10, 12
-            associated_indices = [10, 12];
+            // Third TieIntercepter -> Shuttles at INDEX 10, 4
+            associated_indices = [10, 4];
             break;
         case 13:
             // Second TieIntercepter -> Shuttles at INDEX 4, 12
@@ -149,9 +156,10 @@ function find_imperial_shuttle_followers(_leader) {
     // Find actual Imperial Shuttle instances at these INDEX positions
     var candidates = [];
     
-    with (oImperialShuttle) {
-        // Check if this enemy is IN_FORMATION
-        if (enemyState == EnemyState.IN_FORMATION) { 
+	// only canFollow enemies (eg oImperialShuttle) at specific INDEX locations, can form a dive group
+    with (oEnemyBase) {
+        // Check if this enemy can be part of a dive group AND is IN_FORMATION
+        if (dive_group.canFollow && enemyState == EnemyState.IN_FORMATION) { 
             
             // Check if this enemy's INDEX matches any associated position
             var is_candidate = false;
@@ -168,14 +176,8 @@ function find_imperial_shuttle_followers(_leader) {
         }
     }
     
-    // Randomly decide whether to use group dive (50% chance if candidates exist)
     if (array_length(candidates) == 0) {
         return result;  // No eligible followers
-    }
-    
-    // Random chance: sometimes dive alone even if followers available
-    if (irandom(1) == 0) {
-        return result;  // Solo dive (50% chance)
     }
     
     // Select 1 or 2 followers randomly
@@ -184,14 +186,65 @@ function find_imperial_shuttle_followers(_leader) {
         array_push(result, candidates[0]);
     } else if (array_length(candidates) == 2) {
         // Two candidates - randomly decide: use 1 or both
-        if (irandom(1) == 0) {
-            // Use one (randomly selected)
-            array_push(result, candidates[irandom(1)]);
-        } else {
+		if (irandom(2) == 0) { // 33% chance to use just one
+			// Use one (randomly selected)
+			array_push(result, candidates[irandom(1)]);
+		} else { // 66% chance to use both
             // Use both
             result = candidates;
-        }
+		}
     }
     
     return result;
+}
+
+/// @function setup_dive_attack
+/// @description Configures and initiates a group dive attack with a leader
+///              and 1-2 followers. Followers follow the leader's path with
+///              slight offsets to maintain formation spacing.
+/// @param {Id.Instance} _enemy
+/// @param {Int} _path_id The path asset ID to follow
+/// @param {delay} _delay offset to delay the firing of the enemy missile(s)
+/// @return {undefined}
+function setup_dive_attack(_enemy, _path_id, _delay = 0) {
+	
+	with (_enemy) {
+        // Start the dive path for leader
+        path_start(_path_id, moveSpeed, 0, 0);
+        enemyState = EnemyState.IN_DIVE_ATTACK;
+        
+        // Set shooting timer (shots during dive)
+        alarm[1] = ENEMY_SHOT_ALARM + _delay;
+	}
+}
+
+/// @function setup_group_dive_attack
+/// @description Configures and initiates a group dive attack with a leader
+///              and 1-2 followers. Followers follow the leader's path with
+///              slight offsets to maintain formation spacing.
+/// @param {Id.Instance} _leader The TieIntercepter leading the dive
+/// @param {Int} _path_id The path asset ID to follow
+/// @return {undefined}
+function setup_group_dive_attack(_leader, _path_id) {
+    if (!instance_exists(_leader) || _path_id == -1) {
+        return;
+    }
+    
+	// set the Group leader dive PATH
+	setup_dive_attack(_leader, _path_id);
+    
+    // Setup each follower
+    for (var i = 0; i < array_length(dive_group.followers); i++) {
+        var follower = dive_group.followers[i];
+        if (instance_exists(follower)) {
+
+            // set each of the followers on the same PATH as the Group Leader   
+			setup_dive_attack(follower, _path_id, (10 * (i + 1)));
+			
+			// set the isFollowing flag on this enemy
+			// we use this flag to calculate the total number of enemies that are in a DIVE
+			// as we count a group as one dive (not 2, or 3)
+			follower.dive_group.isFollowing = true;
+        }
+    }
 }

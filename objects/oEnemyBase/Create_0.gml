@@ -30,10 +30,6 @@ enemyState = EnemyState.ENTER_SCREEN;
 
 // default is STANDARD enemy mode
 enemyMode = EnemyMode.STANDARD;
-	
-// Flag indicating if the enemy is an escort, initialized to 0 (0 = not escort, 1 = escort).
-// Escorts may have special behaviors, such as accompanying a boss || following unique paths.
-escort = 0;
 
 baseSpeed = 6;
 moveSpeed = baseSpeed * global.Game.Difficulty.speedMultiplier;
@@ -212,4 +208,7 @@ beam_weapon = {
 dive_group = {
 	canLead : false,
 	followers : [],
+	
+	canFollow : false,
+	isFollowing : false
 };

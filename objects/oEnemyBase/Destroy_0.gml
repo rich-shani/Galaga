@@ -56,7 +56,11 @@ if (!global.Game.State.isGameOver) {
 			if (trans == 0) {
 				/// Award higher points for diving enemies (more dangerous)
 				if (!global.Game.Challenge.isActive) {
-//				if (global.Game.Challenge.countdown > 0) {
+
+					// CALC: if this is a group leader and we killed the followers, then extra points
+					// if there was 2 followers and both are killed
+					// vs one kill vs none
+					
 					points = attributes.DIVE_POINT_VALUE;
 				} else {
 					points = attributes.CHALLENGE_POINT_VALUE;
@@ -71,8 +75,8 @@ if (!global.Game.State.isGameOver) {
 		// global.Game.Player.score += points;
 		global.Game.Controllers.scoreManager.addScore(points);
 		
-		// check if beam_weapon enabled, as this enemy also shows POINTS scored
-		if (beam_weapon.available) {
+		// check if this is a group leader enemy
+		if (dive_group.canLead) {
 			instance_create_layer(x, y, "GameSprites", oPointsDisplay, { spriteFrame: score_to_sprite_frame(points) });
 		}
 		
