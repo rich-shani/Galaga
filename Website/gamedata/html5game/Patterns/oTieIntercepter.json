@@ -1,0 +1,43 @@
+{
+  "ENEMY_NAME": "oTieIntercepter",
+  "HEALTH": 2,
+
+  "CAN_LOOP": false,
+
+  "POINT_VALUE": 150,
+  "DIVE_POINT_VALUE": 400,
+  "CHALLENGE_POINT_VALUE": 100,
+
+  "STANDARD": {
+    "SPEED": 6,
+    "FIRE_RATE": 0.02,
+
+    "BULLET_TYPE": "EnemyShot",
+    "BULLET_SPEED": 12,
+    "BULLET_DAMAGE": 1,
+
+    "DIVE_CHANCE": 0.1,
+    "DIVE_PATH1": "TI_PATH1",
+    "DIVE_ALT_PATH1": "TI_PATH1_FLIP",
+    "DIVE_PATH2": "TI_PATH2",
+    "DIVE_ALT_PATH2": "TI_PATH2_FLIP",
+    "DIVE_SPEED": 4,
+    "DIVE_FIRE_RATE": 0.04
+  },
+  "ROGUE": {
+    "SPEED": 6,
+    "FIRE_RATE": 0.02,
+
+    "BULLET_TYPE": "EnemyShot",
+    "BULLET_SPEED": 12,
+    "BULLET_DAMAGE": 1,
+
+    "DIVE_CHANCE": 0.1,
+    "DIVE_PATH1": "TI_PATH1",
+    "DIVE_ALT_PATH1": "TI_PATH1_FLIP",
+    "DIVE_PATH2": "TI_PATH2",
+    "DIVE_ALT_PATH2": "TI_PATH2_FLIP",
+    "DIVE_SPEED": 4,
+    "DIVE_FIRE_RATE": 0.04
+  }
+}

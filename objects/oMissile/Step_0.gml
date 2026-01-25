@@ -37,7 +37,8 @@ if (y < MISSILE_OFFSCREEN) {
 		if (global.debug) {
 			show_debug_message("[oMissile] Off-screen, releasing: " + string(self) + " (id: " + string(id) + ")");
 		}
-		global.missile_pool.release(self.id);
+		// Pass self (instance) directly, not self.id - HTML5 compatibility fix
+		global.missile_pool.release(self);
 	} else {
 		instance_destroy();
 	}

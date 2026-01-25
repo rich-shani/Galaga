@@ -40,7 +40,8 @@
 // ========================================================================
 if (global.shot_pool != undefined) {
 	// Use object pool system - recycle the shot instance for better performance
-	global.shot_pool.release(other.id);
+	// Pass other (instance) directly, not other.id - HTML5 compatibility fix
+	global.shot_pool.release(other);
 } else {
 	// Fallback: Destroy instance directly (slower, but works if pool unavailable)
 	instance_destroy(other);

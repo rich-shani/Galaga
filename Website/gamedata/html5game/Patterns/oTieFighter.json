@@ -1,0 +1,45 @@
+{
+  "ENEMY_NAME": "oTieFighter",
+  "HEALTH": 1,
+
+  "CAN_LOOP": true,
+  "LOOP_PATH": "TF_LOOP_PATH",
+  "LOOP_ALT_PATH": "TF_LOOP_PATH_FLIP",
+
+  "POINT_VALUE": 50,
+  "DIVE_POINT_VALUE": 100,
+  "CHALLENGE_POINT_VALUE": 100,
+
+  "STANDARD": {
+    "SPEED": 6,
+    "FIRE_RATE": 0.02,
+
+    "BULLET_TYPE": "EnemyShot",
+    "BULLET_SPEED": 12,
+    "BULLET_DAMAGE": 1,
+
+    "DIVE_CHANCE": 0.1,
+    "DIVE_PATH1": "TF_PATH1",
+    "DIVE_ALT_PATH1": "TF_PATH1_FLIP",
+    "DIVE_PATH2": "TF_PATH2",
+    "DIVE_ALT_PATH2": "TF_PATH2_FLIP",
+    "DIVE_SPEED": 4,
+    "DIVE_FIRE_RATE": 0.04
+  },
+  "ROGUE": {
+    "SPEED": 6,
+    "FIRE_RATE": 0.02,
+
+    "BULLET_TYPE": "EnemyShot",
+    "BULLET_SPEED": 12,
+    "BULLET_DAMAGE": 1,
+
+    "DIVE_CHANCE": 0.1,
+    "DIVE_PATH1": "TF_PATH1",
+    "DIVE_ALT_PATH1": "TF_PATH1_FLIP",
+    "DIVE_PATH2": "TF_PATH2",
+    "DIVE_ALT_PATH2": "TF_PATH2_FLIP",
+    "DIVE_SPEED": 4,
+    "DIVE_FIRE_RATE": 0.04
+  }
+}

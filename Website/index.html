@@ -11,7 +11,7 @@
             box-sizing: border-box;
         }
 
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
         :root {
             --neon-yellow: #FFFF00;
@@ -26,7 +26,7 @@
         body {
             background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-bg-2) 100%);
             color: var(--neon-cyan);
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'VT323', monospace;
             overflow-x: hidden;
             position: relative;
             min-height: 100vh;
@@ -252,9 +252,9 @@
             justify-content: center;
         }
 
-        .btn {
+        .btn, button.btn {
             padding: 15px 30px;
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'VT323', monospace;
             font-size: 0.8em;
             border: 3px solid var(--neon-cyan);
             background: rgba(0, 0, 0, 0.5);
@@ -476,6 +476,36 @@
                 text-shadow: 0 0 20px var(--neon-cyan), 0 0 30px var(--neon-cyan), 0 0 40px var(--neon-magenta);
             }
         }
+
+        /* Game container styles */
+        .gm4html5_div_class {
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #canvas {
+            image-rendering: optimizeSpeed;
+            -webkit-interpolation-mode: nearest-neighbor;
+            -ms-touch-action: none;
+            touch-action: none;
+            margin: 0px;
+            padding: 0px;
+            border: 0px;
+        }
+
+        :-webkit-full-screen #canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        :-webkit-full-screen {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -489,6 +519,23 @@
 
     <!-- Main Container -->
     <div class="container">
+        <!-- Arcade Cabinet Section -->
+        <div class="arcade-cabinet">
+            <h2>INSERT COIN TO PLAY</h2>
+            <p style="font-size: 0.7em; margin-bottom: 20px;">
+                Ready to defend against the Imperial forces? Launch Galaga Wars now!
+            </p>
+            <a href="gamedata/index.html" target="_blank" class="btn primary">▶ PLAY NOW</a>
+            
+            <div style="margin-top: 30px; padding: 20px; background: rgba(0, 0, 0, 0.5); border: 2px solid var(--neon-cyan); border-radius: 10px;">
+                <h3 style="color: var(--neon-yellow); text-shadow: 0 0 10px var(--neon-yellow); margin-bottom: 15px; font-size: 1.5em; letter-spacing: 2px;">🎮 CONTROLS</h3>
+                <div style="text-align: center; font-size: 1.2em; line-height: 2;">
+                    <p><strong style="color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green);">1</strong> - Insert Coin &nbsp;&nbsp;&nbsp;&nbsp; <strong style="color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green);">S</strong> - Enable Shield</p>
+                    <p><strong style="color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green);">← →</strong> - Move Left / Right &nbsp;&nbsp;&nbsp;&nbsp; <strong style="color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green);">SPACE</strong> - Start Game / Fire</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Game Concept Section -->
         <section class="section">
             <h1>🎮 ABOUT THE GAME</h1>
@@ -621,129 +668,15 @@
             </p>
         </section>
 
-        <!-- Technical Section -->
-        <section class="section">
-            <h1>💻 TECHNICAL EXCELLENCE</h1>
-
-            <h2>Professional Game Architecture</h2>
-            <p>
-                This game demonstrates enterprise-level programming practices rarely seen in
-                arcade games:
-            </p>
-
-            <div class="grid">
-                <div class="feature">
-                    <h3>State Machines</h3>
-                    <p>12-state game flow machine prevents invalid states and organizes gameplay.</p>
-                </div>
-                <div class="feature">
-                    <h3>Inheritance</h3>
-                    <p>Enemy hierarchy eliminates 65% code duplication through smart inheritance.</p>
-                </div>
-                <div class="feature">
-                    <h3>Data-Driven Design</h3>
-                    <p>All configuration in JSON files. Change gameplay without recompiling.</p>
-                </div>
-                <div class="feature">
-                    <h3>Error Handling</h3>
-                    <p>550+ lines of defensive programming prevent crashes and log issues.</p>
-                </div>
-                <div class="feature">
-                    <h3>Object Pooling</h3>
-                    <p>Reuse instead of create/destroy for guaranteed 60 FPS performance.</p>
-                </div>
-                <div class="feature">
-                    <h3>Automated Testing</h3>
-                    <p>9 test suites with 2,000+ lines ensure code quality and catch regressions.</p>
-                </div>
-            </div>
-
-            <p style="margin-top: 20px;">
-                Built with <strong>GameMaker Studio 2</strong>, the professional game engine used
-                by studios worldwide. 11,000+ lines of clean, documented, production-quality code
-                with a 6-month development cycle demonstrating real software engineering practices.
-            </p>
-        </section>
-
-        <!-- Arcade Cabinet Section -->
-        <div class="arcade-cabinet">
-            <h2>INSERT COIN TO PLAY</h2>
-            <p style="font-size: 0.7em; margin-bottom: 20px;">
-                Ready to defend against the Imperial forces? Launch Galaga Wars now!
-            </p>
-            <a href="#launch-game" class="btn primary">▶ PLAY NOW</a>
-            <a href="https://github.com" target="_blank" class="btn">📖 VIEW SOURCE CODE</a>
-        </div>
-
         <!-- Gallery Placeholder -->
         <section class="section">
             <h1>🎨 GAMEPLAY SCREENSHOTS</h1>
             <p>
-                More gameplay images and videos coming soon when the web version is compiled
-                from the GameMaker export!
+                Experience the action-packed gameplay of Galaga Wars!
             </p>
-            <div style="text-align: center; padding: 40px; background: rgba(0, 0, 0, 0.5); border: 2px dashed var(--neon-cyan);">
-                <div style="font-size: 4em; margin-bottom: 20px;">🎮</div>
-                <p style="color: var(--neon-magenta); font-size: 0.8em;">
-                    GAMEPLAY IMAGES WILL APPEAR HERE
-                </p>
-                <p style="font-size: 0.65em;">
-                    GameMaker web export coming soon...
-                </p>
-            </div>
+            <img src="Game_preview.png" alt="Galaga Wars Game Preview" class="game-image">
         </section>
 
-        <!-- Launch Section -->
-        <section class="section" id="launch-game">
-            <h1>🚀 LAUNCH GALAGA WARS</h1>
-            <p>
-                The web version is being prepared! Compiled directly from the GameMaker
-                source code, you'll soon be able to play Galaga Wars right here in your browser.
-            </p>
-            <div style="text-align: center; padding: 40px; background: rgba(0, 0, 0, 0.5); border: 2px dashed var(--neon-yellow);">
-                <div style="font-size: 3em; margin-bottom: 20px; animation: pulse 1s infinite;">⏳</div>
-                <p style="color: var(--neon-yellow); font-size: 0.9em;">
-                    GAME EMBEDDED HERE SOON
-                </p>
-                <p style="font-size: 0.65em;">
-                    Once GameMaker exports the HTML5 version, the game will launch on this page.
-                </p>
-            </div>
-        </section>
-
-        <!-- Learn More Section -->
-        <section class="section">
-            <h1>📚 EDUCATIONAL VALUE</h1>
-            <p>
-                Galaga Wars isn't just a game - it's a teaching tool for computer science students.
-                The codebase demonstrates professional programming practices taught at universities
-                and used at major game studios.
-            </p>
-
-            <div class="grid">
-                <div class="feature">
-                    <h3>🎓 LEARN OOP</h3>
-                    <p>Study real inheritance hierarchies, polymorphism, and encapsulation in production code.</p>
-                </div>
-                <div class="feature">
-                    <h3>🏗️ ARCHITECTURE</h3>
-                    <p>Understand state machines, design patterns, and large system organization.</p>
-                </div>
-                <div class="feature">
-                    <h3>🧪 TESTING</h3>
-                    <p>See how professionals write 2,000+ lines of test code for game systems.</p>
-                </div>
-                <div class="feature">
-                    <h3>🚀 CAREER PREP</h3>
-                    <p>Learn the patterns used at EA, Ubisoft, Microsoft, and Unreal Engine studios.</p>
-                </div>
-            </div>
-
-            <p style="margin-top: 20px;">
-                Perfect for computer science classrooms, bootcamps, and self-taught developers.
-                The complete source code is available for study and modification.
-            </p>
-        </section>
     </div>
 
     <!-- Footer -->
@@ -758,5 +691,6 @@
             </span>
         </p>
     </footer>
+
 </body>
 </html>

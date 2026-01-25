@@ -23,7 +23,8 @@ if (global.missile_pool != undefined) {
 	if (global.debug) {
 		show_debug_message("[oEnemyBase] Collision with missile, releasing: " + string(other) + " (other.id: " + string(other.id) + ")");
 	}
-	global.missile_pool.release(other.id);
+	// Pass other (instance) directly, not other.id - HTML5 compatibility fix
+	global.missile_pool.release(other);
 } else {
 	instance_destroy(other);
 }
