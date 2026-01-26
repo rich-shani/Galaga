@@ -68,7 +68,7 @@ if (!initialized) {
 if (y > SCREEN_BOTTOM_Y * global.Game.Display.scale) {
 	if (global.shot_pool != undefined) {
 		// Pass self (instance) directly, not self.id - HTML5 compatibility fix
-		global.shot_pool.release(self);
+		global.shot_pool.release(id);
 	} else {
 		instance_destroy();
 	}

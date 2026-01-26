@@ -36,7 +36,7 @@ if (image_index > 9.8) {
 	if (global.explosion2_pool != undefined) {
 		// Use object pool system - recycle this explosion instance for better performance
 		// Pass self (instance) directly, not self.id - HTML5 compatibility fix
-		global.explosion2_pool.release(self);
+		global.explosion2_pool.release(id);
 	} else {
 		// Fallback: Destroy instance directly if pool system unavailable
 		instance_destroy();

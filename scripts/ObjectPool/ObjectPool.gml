@@ -130,7 +130,19 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 		}
 
 		// Remove from active list
-		var index = ds_list_find_index(active_instances, _instance);
+		// NOTE; ds_list_find_index does not work in the HTML5 version\
+		// instead iterate across the list, and check the ID for the instance to find the match
+		// OLD CODE: var index = ds_list_find_index(active_instances, _instance);
+		var index = -1;
+		
+		for(var i = 0; i < ds_list_size(active_instances); i++){
+		    var next = ds_list_find_value(active_instances, i);
+			if (next.id == _instance.id) {
+				index = i;
+				break;
+			}
+		}	
+		
 		if (index == -1) {
 			if (global.debug) {
 				// DEBUG: Instance not found in active list - let's investigate
