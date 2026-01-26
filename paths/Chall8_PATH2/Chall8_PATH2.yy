@@ -1,0 +1,25 @@
+{
+  "$GMPath":"",
+  "%Name":"Chall8_PATH2",
+  "closed":false,
+  "kind":1,
+  "name":"Chall8_PATH2",
+  "parent":{
+    "name":"Challenge_8",
+    "path":"folders/Paths/GalagaWars/ChallengeStage/Challenge_8.yy",
+  },
+  "points":[
+    {"speed":100.0,"x":-64.0,"y":992.0,},
+    {"speed":100.0,"x":160.0,"y":992.0,},
+    {"speed":100.0,"x":512.0,"y":864.0,},
+    {"speed":100.0,"x":608.0,"y":736.0,},
+    {"speed":100.0,"x":608.0,"y":480.0,},
+    {"speed":100.0,"x":384.0,"y":480.0,},
+    {"speed":100.0,"x":384.0,"y":736.0,},
+    {"speed":100.0,"x":640.0,"y":736.0,},
+    {"speed":100.0,"x":960.0,"y":96.0,},
+  ],
+  "precision":5,
+  "resourceType":"GMPath",
+  "resourceVersion":"2.0",
+}
