@@ -81,8 +81,7 @@ function precache_assets() {
 
 	// Common paths (entrance paths)
 	var entrance_paths = [
-		"Ent_Top_L2R", "Ent_Top_R2L", "Ent_Top_L2R_Flip", "Ent_Top_R2L_Flip",
-		"Ent_Bot_L2R", "Ent_Bot_R2L", "Ent_Bot_L2R_Flip", "Ent_Bot_R2L_Flip"
+		"Ent_Top_L2R", "Ent_Top_R2L", "Ent_Bot_L2R", "Ent_Bot_R2L"
 	];
 	for (var i = 0; i < array_length(entrance_paths); i++) {
 		get_cached_asset(entrance_paths[i]);
@@ -90,8 +89,8 @@ function precache_assets() {
 
 	// Dive paths (TIE Fighter)
 	var dive_paths = [
-		"TF_Dive1", "TF_Dive1_Flip", "TF_Dive2", "TF_Dive2_Flip",
-		"TF_Loop", "TF_Loop_Flip"
+		"TF_PATH1", "TF_PATH1_FLIP", "TF_PATH2", "TF_PATH2_FLIP",
+		"TF_LOOP_PATH", "TF_LOOP_PATH_FLIP"
 	];
 	for (var i = 0; i < array_length(dive_paths); i++) {
 		get_cached_asset(dive_paths[i]);
@@ -99,8 +98,7 @@ function precache_assets() {
 
 	// Dive paths (TIE Interceptor)
 	var interceptor_paths = [
-		"TI_Dive1", "TI_Dive1_Flip", "TI_Dive2", "TI_Dive2_Flip",
-		"TI_Loop", "TI_Loop_Flip"
+		"TI_PATH1", "TI_PATH1_FLIP", "TI_PATH2", "TI_PATH2_FLIP"
 	];
 	for (var i = 0; i < array_length(interceptor_paths); i++) {
 		get_cached_asset(interceptor_paths[i]);
@@ -108,8 +106,7 @@ function precache_assets() {
 
 	// Dive paths (Imperial Shuttle)
 	var shuttle_paths = [
-		"IS_Dive1", "IS_Dive1_Flip", "IS_Dive2", "IS_Dive2_Flip",
-		"IS_Loop", "IS_Loop_Flip"
+		"IS_PATH1", "IS_PATH1_FLIP", "IS_PATH2", "IS_PATH2_FLIP"
 	];
 	for (var i = 0; i < array_length(shuttle_paths); i++) {
 		get_cached_asset(shuttle_paths[i]);
@@ -117,16 +114,16 @@ function precache_assets() {
 
 	// Challenge paths
 	for (var i = 1; i <= 8; i++) {
-		get_cached_asset("Chall" + string(i) + "_Path1");
-		get_cached_asset("Chall" + string(i) + "_Path1_Flip");
-		get_cached_asset("Chall" + string(i) + "_Path2");
-		get_cached_asset("Chall" + string(i) + "_Path2_Flip");
+		get_cached_asset("Chall" + string(i) + "_PATH1");
+		get_cached_asset("Chall" + string(i) + "_PATH1_FLIP");
+		get_cached_asset("Chall" + string(i) + "PATH2");
+		get_cached_asset("Chall" + string(i) + "_PATH2_FLIP");
 	}
 
-	// Rogue paths
-	for (var i = 1; i <= 8; i++) {
-		get_cached_asset("ROGUE_" + string(i));
-	}
+	//// Rogue paths
+	//for (var i = 1; i <= 8; i++) {
+	//	get_cached_asset("ROGUE_" + string(i));
+	//}
 
 	// Projectile objects
 	get_cached_asset("oMissile");
