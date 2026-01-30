@@ -137,7 +137,7 @@ function ObjectPool(_object_type, _layer_name, _initial_size, _max_size) constru
 		
 		for(var i = 0; i < ds_list_size(active_instances); i++){
 		    var next = ds_list_find_value(active_instances, i);
-			if (next.id == _instance.id) {
+			if (next != undefined && (next.id == _instance.id)) {
 				index = i;
 				break;
 			}

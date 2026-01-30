@@ -59,10 +59,10 @@
     },
     {
       "CHALLENGE_ID": 5,
-      "PATH1": "Chall5_1",
-      "PATH2": "Chall5_2",
-      "PATH1_FLIP": "Chall5_1Flip",
-      "PATH2_FLIP": "Chall5_2Flip",
+      "PATH1": "Chall5_PATH1",
+      "PATH2": "Chall5_PATH2",
+      "PATH1_FLIP": "Chall5_PATH1_FLIP",
+      "PATH2_FLIP": "Chall5_PATH2_FLIP",
       "WAVES": [
         { "WAVE_ID": 0, "DOUBLED": false, "ENEMY": "oTieFighter" },
         { "WAVE_ID": 1, "DOUBLED": false, "ENEMY": "oImperialShuttle" },
@@ -73,10 +73,10 @@
     },
     {
       "CHALLENGE_ID": 6,
-      "PATH1": "Chall6_1",
-      "PATH2": "Chall6_2",
-      "PATH1_FLIP": "Chall6_1Flip",
-      "PATH2_FLIP": "Chall6_2Flip",
+      "PATH1": "Chall6_PATH1",
+      "PATH2": "Chall6_PATH2",
+      "PATH1_FLIP": "Chall6_PATH1_FLIP",
+      "PATH2_FLIP": "Chall6_PATH2_FLIP",
       "WAVES": [
         { "WAVE_ID": 0, "DOUBLED": false, "ENEMY": "oTieFighter" },
         { "WAVE_ID": 1, "DOUBLED": true, "ENEMY": "oImperialShuttle" },
@@ -87,10 +87,10 @@
     },
     {
       "CHALLENGE_ID": 7,
-      "PATH1": "Chall7_1",
-      "PATH2": "Chall7_2",
-      "PATH1_FLIP": "Chall7_1Flip",
-      "PATH2_FLIP": "Chall7_2Flip",
+      "PATH1": "Chall7_PATH1",
+      "PATH2": "Chall7_PATH2",
+      "PATH1_FLIP": "Chall7_PATH1_FLIP",
+      "PATH2_FLIP": "Chall7_PATH2_FLIP",
       "WAVES": [
         { "WAVE_ID": 0, "DOUBLED": false, "ENEMY": "oTieFighter" },
         { "WAVE_ID": 1, "DOUBLED": false, "ENEMY": "oImperialShuttle" },
@@ -101,10 +101,10 @@
     },
     {
       "CHALLENGE_ID": 8,
-      "PATH1": "Chall8_1",
-      "PATH2": "Chall8_2",
-      "PATH1_FLIP": "Chall8_1Flip",
-      "PATH2_FLIP": "Chall8_2Flip",
+      "PATH1": "Chall8_PATH1",
+      "PATH2": "Chall8_PATH2",
+      "PATH1_FLIP": "Chall8_PATH1_FLIP",
+      "PATH2_FLIP": "Chall8_PATH2_FLIP",
       "WAVES": [
         { "WAVE_ID": 0, "DOUBLED": true, "ENEMY": "oTieFighter" },
         { "WAVE_ID": 1, "DOUBLED": false, "ENEMY": "oImperialShuttle" },
