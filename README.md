@@ -2,6 +2,12 @@
 
 A Star Wars themed remake of the classic Galaga arcade game, built in GameMaker Studio 2. Pilot an X-Wing against waves of TIE Fighters, TIE Interceptors, and Imperial Shuttles in a formation-based shooter with faithful arcade mechanics and modern visual polish.
 
+## Play Now
+
+**[Play Galaga Wars in your browser at elmgames.com](http://www.elmgames.com/galagawars)**
+
+No install required — runs directly in Chrome, Firefox, or Safari.
+
 ---
 
 ## Features
