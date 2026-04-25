@@ -1,4 +1,0 @@
-# For creating the Galaga Wars Grade 10 PowerPoint presentation
-# Install: pip install -r requirements-presentation.txt
-# Run: python create_galaga_presentation.py
-python-pptx>=0.6.21
